@@ -8,7 +8,7 @@ import styles from './page.module.css';
 async function getHistory(): Promise<ModelHistory[]> {
   try {
     const { getPriceHistory } = await import('@/lib/pricing-queries');
-    const history = await getPriceHistory(30);
+    const history = await getPriceHistory(365);
     return history.length > 0 ? history : getFallbackHistory();
   } catch {
     return getFallbackHistory();

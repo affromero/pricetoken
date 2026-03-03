@@ -27,6 +27,24 @@ const cost = calculateModelCost(
 
 console.log(cost.totalCost); // $4.50`;
 
+const curlAuthExample = `curl https://pricetoken.ai/api/v1/pricing \\
+  -H "Authorization: Bearer pt_live_YOUR_KEY"`;
+
+const jsAuthExample = `const res = await fetch("https://pricetoken.ai/api/v1/pricing", {
+  headers: {
+    "Authorization": "Bearer pt_live_YOUR_KEY",
+  },
+});
+const data = await res.json();`;
+
+const pythonAuthExample = `import requests
+
+r = requests.get(
+    "https://pricetoken.ai/api/v1/pricing",
+    headers={"Authorization": "Bearer pt_live_YOUR_KEY"},
+)
+pricing = r.json()["data"]`;
+
 export default function DocsPage() {
   return (
     <>
@@ -104,11 +122,64 @@ export default function DocsPage() {
               <span className={styles.tableValue}>1,000 requests / day</span>
             </div>
           </div>
+          <p className={styles.textNote}>
+            API keys are free — no charges, ever. Key holders just get 10x higher rate limits.
+          </p>
           <p className={styles.text}>
             Rate limit headers are included in every response:{' '}
             <code>X-RateLimit-Limit</code>, <code>X-RateLimit-Remaining</code>,{' '}
             <code>X-RateLimit-Reset</code>.
           </p>
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.heading}>API Keys</h2>
+          <p className={styles.text}>
+            API keys are <strong>completely free</strong> — there are no charges, no credit card
+            required, and no usage fees. Keys simply unlock higher rate limits (1,000 requests/day
+            instead of 100).
+          </p>
+          <h3 className={styles.subheading}>Key Format</h3>
+          <p className={styles.text}>
+            All keys use the <code className={styles.keyExample}>pt_</code> prefix:
+          </p>
+          <p className={styles.keyExample}>pt_live_abc123def456...</p>
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.heading}>Authentication</h2>
+          <p className={styles.text}>
+            Pass your API key via the <code>Authorization</code> header using Bearer token format:
+          </p>
+          <CodeBlock
+            tabs={[
+              { label: 'curl', code: curlAuthExample },
+              { label: 'JavaScript', code: jsAuthExample },
+              { label: 'Python', code: pythonAuthExample },
+            ]}
+          />
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.heading}>Get an API Key</h2>
+          <div className={styles.comingSoon}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+            </svg>
+            <div>
+              <h3 className={styles.subheading}>Self-service signup coming soon</h3>
+              <p className={styles.text}>
+                In the meantime, you can request a free API key by{' '}
+                <a href="https://github.com/nichochar/pricetoken/issues/new?title=API+Key+Request&labels=api-key">
+                  opening a GitHub issue
+                </a>{' '}
+                or emailing <a href="mailto:hello@pricetoken.ai">hello@pricetoken.ai</a>.
+              </p>
+              <p className={styles.text}>
+                <strong>Keys are free</strong> — no credit card, no trial period, no catches.
+              </p>
+            </div>
+          </div>
         </section>
 
         <section className={styles.section}>

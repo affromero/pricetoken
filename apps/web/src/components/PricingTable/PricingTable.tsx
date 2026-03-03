@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { ModelPricing } from 'pricetoken';
+import { ProviderFilterChips, PROVIDER_COLORS } from '@/components/ProviderFilterChips/ProviderFilterChips';
 import styles from './PricingTable.module.css';
 
 interface PricingTableProps {
@@ -9,12 +10,6 @@ interface PricingTableProps {
 }
 
 type SortKey = 'provider' | 'displayName' | 'inputPerMTok' | 'outputPerMTok';
-
-const PROVIDER_COLORS: Record<string, string> = {
-  anthropic: 'var(--pt-provider-anthropic)',
-  openai: 'var(--pt-provider-openai)',
-  google: 'var(--pt-provider-google)',
-};
 
 export function PricingTable({ pricing }: PricingTableProps) {
   const [sortKey, setSortKey] = useState<SortKey>('inputPerMTok');
@@ -53,24 +48,7 @@ export function PricingTable({ pricing }: PricingTableProps) {
 
   return (
     <div className={styles.root}>
-      <div className={styles.filters}>
-        <button
-          className={`${styles.chip} ${!filter ? styles.chipActive : ''}`}
-          onClick={() => setFilter('')}
-        >
-          All
-        </button>
-        {providers.map((p) => (
-          <button
-            key={p}
-            className={`${styles.chip} ${filter === p ? styles.chipActive : ''}`}
-            onClick={() => setFilter(p)}
-            style={{ '--chip-color': PROVIDER_COLORS[p] ?? 'var(--pt-accent)' } as React.CSSProperties}
-          >
-            {p}
-          </button>
-        ))}
-      </div>
+      <ProviderFilterChips providers={providers} selected={filter} onSelect={setFilter} />
 
       <div className={styles.tableWrapper}>
         <table className={styles.table}>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { ModelPricing } from 'pricetoken';
+import { ProviderFilterChips } from '@/components/ProviderFilterChips/ProviderFilterChips';
 import styles from './ModelCompare.module.css';
 
 interface ModelCompareProps {
@@ -11,7 +12,27 @@ interface ModelCompareProps {
 const MAX_COMPARE = 5;
 
 export function ModelCompare({ pricing }: ModelCompareProps) {
+  const [providerFilter, setProviderFilter] = useState('');
   const [selected, setSelected] = useState<string[]>([]);
+
+  const providers = [...new Set(pricing.map((m) => m.provider))];
+  const filteredPricing = providerFilter
+    ? pricing.filter((m) => m.provider === providerFilter)
+    : pricing;
+
+  const filteredModelIds = new Set(filteredPricing.map((m) => m.modelId));
+  const visibleSelected = selected.filter((id) => filteredModelIds.has(id));
+
+  function handleProviderChange(provider: string) {
+    setProviderFilter(provider);
+    setSelected((prev) => {
+      const nextFiltered = provider
+        ? pricing.filter((m) => m.provider === provider)
+        : pricing;
+      const nextIds = new Set(nextFiltered.map((m) => m.modelId));
+      return prev.filter((id) => nextIds.has(id));
+    });
+  }
 
   function toggleModel(modelId: string) {
     setSelected((prev) => {
@@ -23,18 +44,22 @@ export function ModelCompare({ pricing }: ModelCompareProps) {
     });
   }
 
-  const selectedModels = pricing.filter((m) => selected.includes(m.modelId));
+  const selectedModels = pricing.filter((m) => visibleSelected.includes(m.modelId));
   const maxInput = Math.max(...selectedModels.map((m) => m.inputPerMTok), 0.01);
   const maxOutput = Math.max(...selectedModels.map((m) => m.outputPerMTok), 0.01);
 
   return (
     <div className={styles.root}>
+      <div className={styles.providerFilter}>
+        <ProviderFilterChips providers={providers} selected={providerFilter} onSelect={handleProviderChange} />
+      </div>
+
       <div className={styles.picker}>
         <p className={styles.pickerLabel}>
           Select up to {MAX_COMPARE} models to compare ({selected.length}/{MAX_COMPARE})
         </p>
         <div className={styles.chips}>
-          {pricing.map((m) => (
+          {filteredPricing.map((m) => (
             <button
               key={m.modelId}
               className={`${styles.chip} ${selected.includes(m.modelId) ? styles.chipSelected : ''}`}
