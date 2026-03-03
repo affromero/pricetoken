@@ -2,11 +2,11 @@ import { describe, it, expect } from 'vitest';
 import { PRICING_PROVIDERS } from './providers';
 
 describe('PRICING_PROVIDERS', () => {
-  it('exports configs for all 3 providers', () => {
+  it('exports configs for all 4 providers', () => {
     expect(Object.keys(PRICING_PROVIDERS)).toEqual(
-      expect.arrayContaining(['openai', 'anthropic', 'google'])
+      expect.arrayContaining(['openai', 'anthropic', 'google', 'deepseek'])
     );
-    expect(Object.keys(PRICING_PROVIDERS)).toHaveLength(3);
+    expect(Object.keys(PRICING_PROVIDERS)).toHaveLength(4);
   });
 
   it('all URLs are valid HTTPS URLs', () => {
@@ -36,6 +36,12 @@ describe('PRICING_PROVIDERS', () => {
   it('uses the correct Google AI dev URL', () => {
     expect(PRICING_PROVIDERS.google!.url).toBe(
       'https://ai.google.dev/gemini-api/docs/pricing'
+    );
+  });
+
+  it('uses the correct DeepSeek API docs URL', () => {
+    expect(PRICING_PROVIDERS.deepseek!.url).toBe(
+      'https://api-docs.deepseek.com/quick_start/pricing'
     );
   });
 });

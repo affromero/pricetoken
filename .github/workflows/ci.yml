@@ -15,9 +15,13 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: Install Doppler CLI
+        uses: dopplerhq/cli-action@v3
       - run: npm ci
       - run: npx prisma generate --schema=apps/web/prisma/schema.prisma
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run test
       - run: npm run build
+    env:
+      DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}

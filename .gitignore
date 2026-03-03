@@ -8,3 +8,4 @@ dist/
 prisma/generated/
 coverage/
 .turbo/
+.doppler.yaml

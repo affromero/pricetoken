@@ -7,7 +7,7 @@ export function Footer() {
         <span className={styles.brand}>PriceToken</span>
         <div className={styles.links}>
           <a
-            href="https://github.com/afromero/pricetoken"
+            href="https://github.com/affromero/pricetoken"
             className={styles.link}
             target="_blank"
             rel="noopener noreferrer"

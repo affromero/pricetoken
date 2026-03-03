@@ -6,12 +6,14 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace=@pricetoken/web",
+    "dev": "doppler run -- npm run dev --workspace=@pricetoken/web",
     "build": "npm run build --workspaces --if-present",
     "lint": "eslint .",
     "typecheck": "tsc -b",
     "test": "vitest run",
-    "ci": "npm run lint && npm run typecheck && npm run test && npm run build"
+    "ci": "npm run lint && npm run typecheck && npm run test && npm run build",
+    "seed": "doppler run -- npx tsx scripts/seed.ts",
+    "fetch-pricing": "doppler run -- npx tsx scripts/fetch-pricing.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

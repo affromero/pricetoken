@@ -45,6 +45,14 @@ vi.mock('./fetcher/store', () => ({
   getPriceHistory: vi.fn(() => Promise.resolve([])),
 }));
 
+vi.mock('./fetcher/providers', () => ({
+  PRICING_PROVIDERS: {
+    openai: { url: 'https://developers.openai.com/api/docs/pricing', displayName: 'OpenAI' },
+    anthropic: { url: 'https://platform.claude.com/docs/en/docs/about-claude/models', displayName: 'Anthropic' },
+    google: { url: 'https://ai.google.dev/gemini-api/docs/pricing', displayName: 'Google' },
+  },
+}));
+
 import {
   getCurrentPricing,
   getModelPricing,
@@ -82,11 +90,14 @@ describe('getModelPricing', () => {
 });
 
 describe('getProviderSummaries', () => {
-  it('returns one summary per provider', async () => {
+  it('returns one summary per provider with display names', async () => {
     const result = await getProviderSummaries();
     expect(result).toHaveLength(3);
     const ids = result.map((p) => p.id).sort();
     expect(ids).toEqual(['anthropic', 'google', 'openai']);
+    expect(result.find((p) => p.id === 'anthropic')!.displayName).toBe('Anthropic');
+    expect(result.find((p) => p.id === 'openai')!.displayName).toBe('OpenAI');
+    expect(result.find((p) => p.id === 'google')!.displayName).toBe('Google');
   });
 
   it('includes cheapest prices', async () => {

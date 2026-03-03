@@ -1,5 +1,6 @@
 import type { ModelPricing, ProviderSummary } from 'pricetoken';
 import { getLatestPricing, getPriceHistory } from './fetcher/store';
+import { PRICING_PROVIDERS } from './fetcher/providers';
 
 export async function getCurrentPricing(provider?: string): Promise<ModelPricing[]> {
   return getLatestPricing(provider);
@@ -22,7 +23,9 @@ export async function getProviderSummaries(): Promise<ProviderSummary[]> {
 
   for (const model of all) {
     if (!providerMap.has(model.provider)) {
-      providerMap.set(model.provider, { displayName: model.provider, models: [] });
+      const config = PRICING_PROVIDERS[model.provider];
+      const displayName = config?.displayName ?? model.provider;
+      providerMap.set(model.provider, { displayName, models: [] });
     }
     providerMap.get(model.provider)!.models.push(model);
   }

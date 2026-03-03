@@ -16,4 +16,8 @@ export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
     url: 'https://ai.google.dev/gemini-api/docs/pricing',
     displayName: 'Google',
   },
+  deepseek: {
+    url: 'https://api-docs.deepseek.com/quick_start/pricing',
+    displayName: 'DeepSeek',
+  },
 };

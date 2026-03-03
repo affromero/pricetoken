@@ -2,7 +2,7 @@
 
 Real-time LLM pricing data. One API.
 
-[![CI](https://github.com/afromero/pricetoken/actions/workflows/ci.yml/badge.svg)](https://github.com/afromero/pricetoken/actions/workflows/ci.yml)
+[![CI](https://github.com/affromero/pricetoken/actions/workflows/ci.yml/badge.svg)](https://github.com/affromero/pricetoken/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/pricetoken)](https://www.npmjs.com/package/pricetoken)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
@@ -77,7 +77,7 @@ Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-R
 ### Development
 
 ```bash
-git clone https://github.com/afromero/pricetoken.git
+git clone https://github.com/affromero/pricetoken.git
 cd pricetoken
 npm install
 docker compose up -d

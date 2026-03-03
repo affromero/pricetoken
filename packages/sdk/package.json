@@ -14,11 +14,11 @@
   ],
   "homepage": "https://pricetoken.ai",
   "bugs": {
-    "url": "https://github.com/afromero/pricetoken/issues"
+    "url": "https://github.com/affromero/pricetoken/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/afromero/pricetoken.git",
+    "url": "https://github.com/affromero/pricetoken.git",
     "directory": "packages/sdk"
   },
   "license": "MIT",
