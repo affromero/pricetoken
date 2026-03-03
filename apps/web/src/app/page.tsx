@@ -44,7 +44,7 @@ export default async function HomePage() {
         <section className={styles.features}>
           <div className={styles.feature}>
             <h3>Free REST API</h3>
-            <p>100 requests/day free. No signup required. JSON responses with CORS enabled.</p>
+            <p>30 requests/hour free. No signup required. JSON responses with CORS enabled.</p>
           </div>
           <div className={styles.feature}>
             <h3>npm Package</h3>

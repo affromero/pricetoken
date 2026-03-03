@@ -39,7 +39,7 @@ const providers = await pt.getProviders();
 
 ## Authentication
 
-Free tier: 100 requests/day (no key required).
+Free tier: 30 requests/hour (no key required).
 
 For higher limits, pass an API key:
 
