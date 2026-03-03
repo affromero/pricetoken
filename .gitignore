@@ -4,6 +4,7 @@ dist/
 .env
 .env.local
 .env.*.local
+.npmrc
 *.tsbuildinfo
 prisma/generated/
 coverage/
