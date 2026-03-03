@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "typecheck": "tsc -b",
     "test": "vitest run",
-    "ci": "npm run lint && npm run typecheck && npm run test && npm run build"
+    "ci": "npm run lint && npm run typecheck && npm run test && npm run build",
+    "setup-dns": "doppler run -- npx tsx scripts/setup-dns.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
