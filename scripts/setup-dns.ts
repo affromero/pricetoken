@@ -1,9 +1,9 @@
 /**
- * One-time Cloudflare DNS setup for pricetoken.ai
+ * One-time Cloudflare DNS + email routing setup for pricetoken.ai
  *
  * Usage: doppler run -- npx tsx scripts/setup-dns.ts
  *
- * Required env: CF_DNS_API_TOKEN, CF_ZONE_ID, HETZNER_IP
+ * Required env: CF_DNS_API_TOKEN, CF_ZONE_ID, CF_ACCOUNT_ID, HETZNER_IP, EMAIL_FORWARD_TO
  */
 
 const CF_API = 'https://api.cloudflare.com/client/v4';
@@ -28,7 +28,13 @@ interface CfMutateResponse {
   errors: { message: string }[];
 }
 
-const REQUIRED_ENV = ['CF_DNS_API_TOKEN', 'CF_ZONE_ID', 'HETZNER_IP'] as const;
+interface CfGenericResponse {
+  success: boolean;
+  result: Record<string, unknown>;
+  errors: { message: string }[];
+}
+
+const REQUIRED_ENV = ['CF_DNS_API_TOKEN', 'CF_ZONE_ID', 'CF_ACCOUNT_ID', 'HETZNER_IP', 'EMAIL_FORWARD_TO'] as const;
 
 function getEnv(key: string): string {
   const value = process.env[key];
@@ -128,6 +134,67 @@ async function main() {
   console.log('Upserting DNS records:');
   for (const record of records) {
     await upsertRecord(zoneId, existing, record);
+  }
+
+  // ---- Email Routing ----
+  const accountId = getEnv('CF_ACCOUNT_ID');
+  const forwardTo = getEnv('EMAIL_FORWARD_TO');
+
+  console.log('\nSetting up email routing...');
+
+  // 1. Enable email routing (auto-creates MX + SPF records)
+  const enableRes = await cfFetch<CfGenericResponse>(
+    `/zones/${zoneId}/email/routing/dns`,
+    { method: 'POST', body: JSON.stringify({}) }
+  );
+  if (enableRes.success) {
+    console.log('  Email routing enabled (MX + SPF records created)');
+  } else {
+    const alreadyEnabled = enableRes.errors.some((e) =>
+      e.message.toLowerCase().includes('already')
+    );
+    if (alreadyEnabled) {
+      console.log('  SKIP  Email routing already enabled');
+    } else {
+      console.error('  WARN  Enable email routing:', enableRes.errors);
+    }
+  }
+
+  // 2. Create destination address (requires manual verification via email)
+  const destRes = await cfFetch<CfGenericResponse>(
+    `/accounts/${accountId}/email/routing/addresses`,
+    { method: 'POST', body: JSON.stringify({ email: forwardTo }) }
+  );
+  if (destRes.success) {
+    console.log(`  CREATE destination: ${forwardTo} (check inbox to verify)`);
+  } else {
+    const alreadyExists = destRes.errors.some((e) =>
+      e.message.toLowerCase().includes('already')
+    );
+    if (alreadyExists) {
+      console.log(`  SKIP  Destination ${forwardTo} already exists`);
+    } else {
+      console.error('  WARN  Create destination:', destRes.errors);
+    }
+  }
+
+  // 3. Set catch-all rule → forward everything to destination
+  const catchAllRes = await cfFetch<CfGenericResponse>(
+    `/zones/${zoneId}/email/routing/rules/catch_all`,
+    {
+      method: 'PUT',
+      body: JSON.stringify({
+        enabled: true,
+        name: 'Catch-all forward to personal email',
+        matchers: [{ type: 'all' }],
+        actions: [{ type: 'forward', value: [forwardTo] }],
+      }),
+    }
+  );
+  if (catchAllRes.success) {
+    console.log(`  UPDATE catch-all → ${forwardTo}`);
+  } else {
+    console.error('  FAIL  Update catch-all:', catchAllRes.errors);
   }
 
   console.log('\nDone.');
