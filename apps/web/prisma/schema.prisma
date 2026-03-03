@@ -45,3 +45,20 @@ model FetcherConfig {
   enabled            Boolean  @default(true)
   updatedAt          DateTime @updatedAt
 }
+
+model ApiUsageLog {
+  id           String   @id @default(cuid())
+  provider     String
+  model        String
+  operation    String   @default("pricing_extraction")
+  inputTokens  Int
+  outputTokens Int
+  costUsd      Float
+  durationMs   Int?
+  error        String?
+  metadata     Json?
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([provider, createdAt])
+}

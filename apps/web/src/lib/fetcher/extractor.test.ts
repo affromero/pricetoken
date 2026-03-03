@@ -2,6 +2,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 const mockExtract = vi.fn();
 
+vi.mock('@/lib/usage-logger', () => ({
+  logUsage: vi.fn(),
+}));
+
 vi.mock('./ai-registry', () => ({
   EXTRACTION_PROVIDERS: {
     anthropic: {

@@ -1,4 +1,5 @@
 import { getFetcherConfig } from '@/lib/fetcher-config';
+import { logUsage } from '@/lib/usage-logger';
 import { EXTRACTION_PROVIDERS } from './ai-registry';
 import type { ExtractionResult } from './ai-registry';
 import { SYSTEM_PROMPT } from './system-prompt';
@@ -38,16 +39,35 @@ export async function extractPricing(
   const truncated = pageText.slice(0, config.maxTextLength);
   const userPrompt = `Extract ${pricingProvider} model pricing from this page:\n\n${truncated}`;
 
+  const startTime = Date.now();
   let result: ExtractionResult;
   try {
     result = await extractionProvider.extract(apiKey, config.extractionModel, SYSTEM_PROMPT, userPrompt);
   } catch (err) {
+    logUsage({
+      provider: config.extractionProvider,
+      model: config.extractionModel,
+      inputTokens: 0,
+      outputTokens: 0,
+      durationMs: Date.now() - startTime,
+      error: err instanceof Error ? err.message : String(err),
+      metadata: { pricingProvider },
+    });
     throw new Error(
       `Extraction failed with ${config.extractionProvider}/${config.extractionModel}: ${err instanceof Error ? err.message : String(err)}`
     );
   }
 
   const models = parseModels(result.content, pricingProvider);
+
+  logUsage({
+    provider: config.extractionProvider,
+    model: config.extractionModel,
+    inputTokens: result.usage.inputTokens,
+    outputTokens: result.usage.outputTokens,
+    durationMs: Date.now() - startTime,
+    metadata: { pricingProvider, modelsExtracted: models.length },
+  });
 
   return {
     models,
