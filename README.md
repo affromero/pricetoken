@@ -9,6 +9,8 @@ Real-time LLM pricing data. One API.
 
 Free REST API for real-time pricing data across OpenAI, Anthropic, Google, and more. Open source, self-hostable.
 
+![PriceToken — Real-time LLM pricing dashboard](assets/hero.png)
+
 ## Quick Start
 
 ### npm Package
@@ -93,6 +95,16 @@ npm run dev
 cp .env.example .env  # Configure DATABASE_URL, REDIS_URL, ANTHROPIC_API_KEY
 docker compose -f docker-compose.prod.yml up -d
 ```
+
+## Screenshots
+
+| Cost Calculator | Compare Models |
+|:---:|:---:|
+| ![Calculator](assets/calculator.png) | ![Compare](assets/compare.png) |
+
+| Price History | API Docs |
+|:---:|:---:|
+| ![History](assets/history.png) | ![Docs](assets/docs.png) |
 
 ## Architecture
 
