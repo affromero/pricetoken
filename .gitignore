@@ -9,3 +9,4 @@ prisma/generated/
 coverage/
 .turbo/
 .doppler.yaml
+.claude/
