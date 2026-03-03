@@ -12,6 +12,7 @@
   --pt-provider-anthropic: #d4a574;
   --pt-provider-openai: #10a37f;
   --pt-provider-google: #4285f4;
+  --pt-provider-deepseek: #4D6BFE;
   --font-heading: var(--font-body, 'Inter', sans-serif);
   --font-mono: 'JetBrains Mono', monospace;
   --radius: 8px;

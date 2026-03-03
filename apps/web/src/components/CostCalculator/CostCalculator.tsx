@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { calculateCost } from 'pricetoken';
 import type { ModelPricing } from 'pricetoken';
+import { ProviderFilterChips } from '@/components/ProviderFilterChips/ProviderFilterChips';
 import styles from './CostCalculator.module.css';
 
 interface CostCalculatorProps {
@@ -10,11 +11,26 @@ interface CostCalculatorProps {
 }
 
 export function CostCalculator({ pricing }: CostCalculatorProps) {
+  const [providerFilter, setProviderFilter] = useState('');
   const [selectedModelId, setSelectedModelId] = useState(pricing[0]?.modelId ?? '');
   const [inputTokens, setInputTokens] = useState(100_000);
   const [outputTokens, setOutputTokens] = useState(10_000);
 
-  const selectedModel = pricing.find((m) => m.modelId === selectedModelId);
+  const providers = [...new Set(pricing.map((m) => m.provider))];
+  const filteredPricing = providerFilter
+    ? pricing.filter((m) => m.provider === providerFilter)
+    : pricing;
+
+  const effectiveModelId =
+    filteredPricing.some((m) => m.modelId === selectedModelId)
+      ? selectedModelId
+      : filteredPricing[0]?.modelId ?? '';
+
+  if (effectiveModelId !== selectedModelId) {
+    setSelectedModelId(effectiveModelId);
+  }
+
+  const selectedModel = pricing.find((m) => m.modelId === effectiveModelId);
 
   const cost = useMemo(() => {
     if (!selectedModel) return null;
@@ -29,6 +45,10 @@ export function CostCalculator({ pricing }: CostCalculatorProps) {
 
   return (
     <div className={styles.root}>
+      <div className={styles.providerFilter}>
+        <ProviderFilterChips providers={providers} selected={providerFilter} onSelect={setProviderFilter} />
+      </div>
+
       <div className={styles.field}>
         <label className={styles.label} htmlFor="model-select">
           Model
@@ -36,10 +56,10 @@ export function CostCalculator({ pricing }: CostCalculatorProps) {
         <select
           id="model-select"
           className={styles.select}
-          value={selectedModelId}
+          value={effectiveModelId}
           onChange={(e) => setSelectedModelId(e.target.value)}
         >
-          {pricing.map((m) => (
+          {filteredPricing.map((m) => (
             <option key={m.modelId} value={m.modelId}>
               {m.displayName} ({m.provider})
             </option>
