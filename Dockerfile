@@ -53,7 +53,10 @@ COPY --from=deps --chown=pricetoken:pricetoken /app/node_modules ./node_modules
 
 # Standalone server + built app
 COPY --from=builder --chown=pricetoken:pricetoken /app/apps/web/.next/standalone ./
+# Static assets: server.js looks at both ./.next/static and ./apps/web/.next/static
+COPY --from=builder --chown=pricetoken:pricetoken /app/apps/web/.next/static ./.next/static
 COPY --from=builder --chown=pricetoken:pricetoken /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder /app/apps/web/public ./public
 COPY --from=builder /app/apps/web/public ./apps/web/public
 COPY --from=builder --chown=pricetoken:pricetoken /app/apps/web/prisma ./apps/web/prisma
 
