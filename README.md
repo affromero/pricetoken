@@ -1,13 +1,20 @@
+<div align="center">
+
 # PriceToken
 
-Real-time LLM pricing data. One API.
+**The missing API for LLM pricing.**
 
-<!-- Badge visible when repo is public or when viewing on GitHub while authenticated -->
+Real-time pricing data scraped from providers, served via REST API, visualized on a website, and distributed as an npm package.
+
 [![CI](https://github.com/affromero/pricetoken/actions/workflows/ci.yml/badge.svg)](https://github.com/affromero/pricetoken/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/pricetoken)](https://www.npmjs.com/package/pricetoken)
+[![npm downloads](https://img.shields.io/npm/dm/pricetoken)](https://www.npmjs.com/package/pricetoken)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/pricetoken)](https://bundlephobia.com/package/pricetoken)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/affromero/pricetoken/pulls)
 
-Free REST API for real-time pricing data across OpenAI, Anthropic, Google, and more. Open source, self-hostable.
+</div>
 
 ![PriceToken — Real-time LLM pricing dashboard](assets/hero.png)
 
@@ -68,6 +75,34 @@ curl https://pricetoken.ai/api/v1/pricing/cheapest
 
 Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`.
 
+## How Data is Verified
+
+PriceToken uses a multi-agent verification pipeline to ensure pricing accuracy:
+
+1. **Scrape** — Puppeteer fetches each provider's official pricing page daily
+2. **Extract** — An AI agent extracts structured pricing data from the raw page text
+3. **Verify** — Three independent AI agents from different providers (Claude Haiku, GPT-4.1 Mini, Gemini Flash) cross-check every data point against the raw text. A model is only accepted when at least two agents agree.
+4. **Prior check** — Extracted prices are compared against the last known snapshot. Price changes exceeding 50% are flagged for manual review, even if all agents agree.
+
+Models that fail verification are logged but never saved to the database. If a daily run fails entirely, pricing updates freeze until an admin reviews and resolves the issue.
+
+## Architecture
+
+```
+Provider pricing pages → Daily cron (AI extraction)
+                              ↓
+                     Multi-agent verification
+                    (3 independent AI agents)
+                              ↓
+                     Prior consistency check
+                              ↓
+              Approved models → PostgreSQL snapshots
+                              ↓
+               Next.js API routes ← Redis cache (5min TTL)
+                              ↓
+                    npm package (typed client)
+```
+
 ## Self-Hosting
 
 ### Prerequisites
@@ -76,6 +111,7 @@ Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-R
 - PostgreSQL 16+
 - Redis 7+
 - AI API key — Anthropic, OpenAI, or Google (for price scraping)
+- (Optional) All three API keys for full multi-agent verification
 
 ### Development
 
@@ -96,6 +132,16 @@ cp .env.example .env  # Configure DATABASE_URL, REDIS_URL, ANTHROPIC_API_KEY
 docker compose -f docker-compose.prod.yml up -d
 ```
 
+### Daily Cron
+
+Set up a daily cron job to trigger the pricing scraper:
+
+```
+0 6 * * * curl -sf -H "Authorization: Bearer $CRON_SECRET" https://your-domain/api/cron/fetch-pricing
+```
+
+Add `CRON_SECRET` to your environment variables.
+
 ## Screenshots
 
 | Cost Calculator | Compare Models |
@@ -106,29 +152,40 @@ docker compose -f docker-compose.prod.yml up -d
 |:---:|:---:|
 | ![History](assets/history.png) | ![Docs](assets/docs.png) |
 
-## Architecture
-
-```
-Provider pricing pages → Daily cron (AI extraction) → PostgreSQL snapshots
-                         ↓
-         Next.js API routes ← Redis cache (5min TTL)
-                         ↓
-              npm package (typed client)
-```
-
 ## Alternatives
 
-| Project | What it does | Differentiator |
-|---------|-------------|----------------|
-| [LiteLLM](https://github.com/BerriAI/litellm) | Proxy + SDK with cost tracking | Unified API gateway, 100+ providers |
-| [pricepertoken.com](https://pricepertoken.com) | Web UI with daily pricing updates | Clean comparison interface |
-| [LLM Price Check](https://llmpricecheck.com) | Side-by-side cost calculator | Visual cost comparison tool |
-| [Helicone](https://helicone.ai/llm-cost) | Observability platform + pricing | Production monitoring + cost tracking |
-| [Artificial Analysis](https://artificialanalysis.ai) | Benchmarks + pricing data | Performance benchmarks alongside pricing |
-| [tokencost](https://github.com/AgentOps-AI/tokencost) | Python cost estimation library | Python-native, AgentOps integration |
-| [llm-prices](https://github.com/simonw/llm-prices) | JSON pricing data | Raw data, minimal tooling |
+| Feature | PriceToken | LiteLLM | tokencost | llm-prices | pricepertoken | LLM Price Check | Helicone | genai-prices | llm-info |
+|---------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Free REST API | **Yes** | No | No | No | No | No | No | No | No |
+| npm Package | **Yes** | No | No | No | No | No | No | **Yes** | **Yes** |
+| Offline Calculator | **Yes** | No | **Yes** | No | No | No | No | **Yes** | No |
+| Price History | **Yes** | No | No | No | Partial | No | **Yes** | **Yes** | No |
+| Self-Hostable | **Yes** | **Yes** | N/A | N/A | No | No | **Yes** | N/A | N/A |
+| Open Source | **Yes** | **Yes** | **Yes** | **Yes** | No | No | **Yes** | **Yes** | **Yes** |
+| AI-Verified Data | **Yes** | No | No | No | No | No | No | No | No |
+| TypeScript Types | **Yes** | No | No | No | No | No | No | **Yes** | **Yes** |
+| Zero Dependencies | **Yes** | No | No | **Yes** | N/A | N/A | No | No | **Yes** |
 
-PriceToken focuses on being a **real-time API** — scraped daily from provider pages, served via REST with Redis caching, and distributed as a zero-dependency npm package with offline cost calculation.
+### PriceToken vs genai-prices (detailed)
+
+[genai-prices](https://github.com/pydantic/genai-prices) by Pydantic is the closest comparable project. Here's a deeper look:
+
+**What we share:** Multi-provider LLM pricing data, Python & JS/TS packages, static pricing data bundled in packages, historic price tracking.
+
+| | PriceToken | genai-prices |
+|---|---|---|
+| **Data source** | AI-powered scraping (Puppeteer + Claude) with multi-agent verification | Hand-curated YAML files + community PRs |
+| **Distribution** | REST API + website + npm SDK | Python/JS packages + raw JSON download |
+| **Web UI** | Full site (table, calculator, history charts, compare) | "TODO: API and web UI" |
+| **API** | Live REST API with Redis caching | "Coming soon..." |
+| **Provider count** | ~handful of major providers | 29 providers, 700+ models |
+| **Backing** | Solo project | Pydantic (established OSS org) |
+
+**PriceToken's advantages:** Live REST API, full web UI with cost calculator and history charts, automated scraping with multi-agent verification — all things genai-prices explicitly lists as TODO or coming soon.
+
+**genai-prices' advantages:** Far broader model coverage (700+ models across 29 providers), variable/tiered pricing support (e.g., Gemini context tiers, DeepSeek off-peak), backed by Pydantic's ecosystem and community contributions.
+
+**See also:** [Artificial Analysis](https://artificialanalysis.ai) — benchmarks and pricing data for comparing AI model performance.
 
 ## Disclaimer
 
