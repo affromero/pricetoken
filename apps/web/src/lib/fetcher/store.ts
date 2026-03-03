@@ -5,7 +5,8 @@ import type { ExtractedModel } from './extractor';
 
 export async function saveSnapshots(
   provider: string,
-  models: ExtractedModel[]
+  models: ExtractedModel[],
+  source: string = 'fetched'
 ): Promise<number> {
   if (models.length === 0) return 0;
 
@@ -17,7 +18,7 @@ export async function saveSnapshots(
     outputPerMTok: m.outputPerMTok,
     contextWindow: m.contextWindow ?? null,
     maxOutputTokens: m.maxOutputTokens ?? null,
-    source: 'fetched',
+    source,
   }));
 
   const result = await prisma.modelPricingSnapshot.createMany({ data });
