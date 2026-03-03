@@ -61,8 +61,8 @@ curl https://pricetoken.ai/api/v1/pricing/cheapest
 
 ### Rate Limits
 
-- **No API key**: 100 requests/day
-- **With API key**: 1,000 requests/day
+- **No API key**: 30 requests/hour
+- **With API key**: 500 requests/hour
 
 Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`.
 
@@ -73,7 +73,7 @@ Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-R
 - Node.js 22+
 - PostgreSQL 16+
 - Redis 7+
-- Anthropic API key (for price scraping)
+- AI API key — Anthropic, OpenAI, or Google (for price scraping)
 
 ### Development
 
@@ -97,7 +97,7 @@ docker compose -f docker-compose.prod.yml up -d
 ## Architecture
 
 ```
-Provider pricing pages → Daily cron (Claude Haiku extraction) → PostgreSQL snapshots
+Provider pricing pages → Daily cron (AI extraction) → PostgreSQL snapshots
                          ↓
          Next.js API routes ← Redis cache (5min TTL)
                          ↓

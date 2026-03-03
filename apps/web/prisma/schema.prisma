@@ -29,7 +29,7 @@ model ApiKey {
   keyHash    String    @unique
   keyPrefix  String
   email      String?
-  rateLimit  Int       @default(1000)
+  rateLimit  Int       @default(500)
   lastUsedAt DateTime?
   createdAt  DateTime  @default(now())
   revokedAt  DateTime?

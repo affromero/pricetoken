@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const FREE_RATE_LIMIT = 100;
-const WINDOW_SECONDS = 86400; // 24 hours
+const FREE_RATE_LIMIT = 30;
+const WINDOW_SECONDS = 3600; // 1 hour
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;

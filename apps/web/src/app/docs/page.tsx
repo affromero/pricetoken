@@ -52,7 +52,7 @@ export default function DocsPage() {
       <main className={styles.root}>
         <h1 className={styles.title}>API Documentation</h1>
         <p className={styles.subtitle}>
-          Free REST API for LLM pricing data. No signup required for 100 requests/day.
+          Free REST API for LLM pricing data. No signup required for 30 requests/hour.
         </p>
 
         <section className={styles.section}>
@@ -120,15 +120,15 @@ export default function DocsPage() {
           <div className={styles.table}>
             <div className={styles.tableRow}>
               <span className={styles.tableLabel}>Without API key</span>
-              <span className={styles.tableValue}>100 requests / day</span>
+              <span className={styles.tableValue}>30 requests / hour</span>
             </div>
             <div className={styles.tableRow}>
               <span className={styles.tableLabel}>With API key</span>
-              <span className={styles.tableValue}>1,000 requests / day</span>
+              <span className={styles.tableValue}>500 requests / hour</span>
             </div>
           </div>
           <p className={styles.textNote}>
-            API keys are free — no charges, ever. Key holders just get 10x higher rate limits.
+            API keys are free — no charges, ever. Key holders get higher rate limits.
           </p>
           <p className={styles.text}>
             Rate limit headers are included in every response:{' '}
@@ -141,8 +141,8 @@ export default function DocsPage() {
           <h2 className={styles.heading}>API Keys</h2>
           <p className={styles.text}>
             API keys are <strong>completely free</strong> — there are no charges, no credit card
-            required, and no usage fees. Keys simply unlock higher rate limits (1,000 requests/day
-            instead of 100).
+            required, and no usage fees. Keys simply unlock higher rate limits (500 requests/hour
+            instead of 30).
           </p>
           <h3 className={styles.subheading}>Key Format</h3>
           <p className={styles.text}>
