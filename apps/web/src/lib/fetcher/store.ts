@@ -3,9 +3,17 @@ import { prisma } from '@/lib/prisma';
 import type { ModelPricing, ModelHistory, PriceHistoryPoint } from 'pricetoken';
 import type { ExtractedModel } from './extractor';
 
+export interface FetchWarning {
+  type: 'models_missing' | 'low_confidence' | 'extraction_error';
+  provider: string;
+  modelIds?: string[];
+  message: string;
+}
+
 export async function saveSnapshots(
   provider: string,
-  models: ExtractedModel[]
+  models: ExtractedModel[],
+  confidence: 'high' | 'low' = 'high'
 ): Promise<number> {
   if (models.length === 0) return 0;
 
@@ -18,6 +26,8 @@ export async function saveSnapshots(
     contextWindow: m.contextWindow ?? null,
     maxOutputTokens: m.maxOutputTokens ?? null,
     source: 'fetched',
+    status: m.status ?? null,
+    confidence,
   }));
 
   const result = await prisma.modelPricingSnapshot.createMany({ data });
@@ -37,6 +47,8 @@ export async function getLatestPricing(provider?: string): Promise<ModelPricing[
       contextWindow: number | null;
       maxOutputTokens: number | null;
       source: string;
+      status: string | null;
+      confidence: string | null;
       createdAt: Date;
     }>
   >(Prisma.sql`
@@ -44,7 +56,7 @@ export async function getLatestPricing(provider?: string): Promise<ModelPricing[
       "modelId", "provider", "displayName",
       "inputPerMTok", "outputPerMTok",
       "contextWindow", "maxOutputTokens",
-      "source", "createdAt"
+      "source", "status", "confidence", "createdAt"
     FROM "ModelPricingSnapshot"
     ${where}
     ORDER BY "modelId", "createdAt" DESC
@@ -59,6 +71,8 @@ export async function getLatestPricing(provider?: string): Promise<ModelPricing[
     contextWindow: s.contextWindow,
     maxOutputTokens: s.maxOutputTokens,
     source: s.source as ModelPricing['source'],
+    status: (s.status as ModelPricing['status']) ?? null,
+    confidence: (s.confidence ?? 'high') as ModelPricing['confidence'],
     lastUpdated: s.createdAt.toISOString(),
   }));
 }
@@ -136,9 +150,51 @@ export async function seedFromStatic(): Promise<number> {
     contextWindow: m.contextWindow,
     maxOutputTokens: m.maxOutputTokens,
     source: 'seed',
+    status: m.status ?? 'active',
+    confidence: m.confidence ?? 'high',
   }));
 
   const result = await prisma.modelPricingSnapshot.createMany({ data });
   console.log(`Seeded ${result.count} pricing snapshots from static data`);
   return result.count;
+}
+
+export async function getLastFetchRun(provider: string) {
+  return prisma.fetchRunLog.findFirst({
+    where: { provider },
+    orderBy: { createdAt: 'desc' },
+  });
+}
+
+export async function saveFetchRun(
+  provider: string,
+  modelsFound: string[],
+  modelsMissing: string[],
+  modelsNew: string[],
+  totalExtracted: number,
+  error?: string
+) {
+  return prisma.fetchRunLog.create({
+    data: { provider, modelsFound, modelsMissing, modelsNew, totalExtracted, error },
+  });
+}
+
+export async function getRecentWarnings(days = 7): Promise<FetchWarning[]> {
+  const since = new Date();
+  since.setDate(since.getDate() - days);
+
+  const runs = await prisma.fetchRunLog.findMany({
+    where: {
+      createdAt: { gte: since },
+      modelsMissing: { isEmpty: false },
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return runs.map((run) => ({
+    type: 'models_missing' as const,
+    provider: run.provider,
+    modelIds: run.modelsMissing,
+    message: `${run.modelsMissing.length} model(s) missing from ${run.provider}: ${run.modelsMissing.join(', ')}`,
+  }));
 }

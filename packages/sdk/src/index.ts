@@ -3,6 +3,8 @@ export { calculateCost, calculateModelCost } from './cost';
 export { STATIC_PRICING } from './static';
 export type {
   ModelPricing,
+  ModelStatus,
+  DataConfidence,
   PriceHistoryPoint,
   ModelHistory,
   ProviderSummary,

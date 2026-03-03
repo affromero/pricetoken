@@ -57,6 +57,8 @@ describe('calculateModelCost', () => {
         contextWindow: null,
         maxOutputTokens: null,
         source: 'seed' as const,
+        status: 'active' as const,
+        confidence: 'high' as const,
         lastUpdated: null,
       },
     ];

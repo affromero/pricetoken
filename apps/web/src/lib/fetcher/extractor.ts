@@ -11,6 +11,7 @@ export interface ExtractedModel {
   outputPerMTok: number;
   contextWindow?: number;
   maxOutputTokens?: number;
+  status?: 'active' | 'deprecated' | 'preview';
 }
 
 export interface ExtractionOutput {
