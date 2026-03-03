@@ -1,0 +1,76 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.description {
+  font-size: 0.9375rem;
+  color: var(--pt-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--pt-border);
+  border-radius: var(--radius);
+  background: var(--pt-surface);
+  text-decoration: none;
+  color: var(--pt-text);
+  transition: border-color 0.15s;
+}
+
+.card:hover {
+  border-color: var(--pt-accent);
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.providerName {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.arrow {
+  margin-left: auto;
+  color: var(--pt-text-secondary);
+  font-size: 0.875rem;
+}
+
+.notices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.notices p {
+  font-size: 0.8125rem;
+  color: var(--pt-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.notices a {
+  color: var(--pt-accent);
+  text-decoration: none;
+}
+
+.notices a:hover {
+  text-decoration: underline;
+}
