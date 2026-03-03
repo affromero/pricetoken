@@ -110,5 +110,5 @@ function getClientIp(request: NextRequest): string {
 }
 
 export const config = {
-  matcher: ['/api/v1/:path*', '/admin/:path*', '/api/admin/:path*'],
+  matcher: ['/api/v1/:path*', '/admin/:path*', '/api/admin/:path*', '/api/cron/:path*'],
 };

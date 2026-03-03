@@ -46,6 +46,19 @@ model FetcherConfig {
   updatedAt          DateTime @updatedAt
 }
 
+model FetchRunSummary {
+  id               String   @id @default(cuid())
+  status           String   // 'success' | 'partial' | 'failed' | 'resolved'
+  providersRun     Int
+  modelsVerified   Int
+  modelsFlagged    Int
+  verificationCost Float
+  errors           String[]
+  createdAt        DateTime @default(now())
+
+  @@index([createdAt])
+}
+
 model ApiUsageLog {
   id           String   @id @default(cuid())
   provider     String
