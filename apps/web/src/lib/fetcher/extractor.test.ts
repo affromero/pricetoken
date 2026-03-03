@@ -149,6 +149,52 @@ describe('extractPricing', () => {
     expect(userPrompt).not.toContain('x'.repeat(51));
   });
 
+  it('extracts status field when present', async () => {
+    const mockModels = [
+      { modelId: 'gpt-4.1', displayName: 'GPT-4.1', inputPerMTok: 2, outputPerMTok: 8, status: 'active' },
+      { modelId: 'gpt-3.5', displayName: 'GPT-3.5', inputPerMTok: 0.5, outputPerMTok: 1.5, status: 'deprecated' },
+    ];
+
+    mockExtract.mockResolvedValue({
+      content: JSON.stringify(mockModels),
+      usage: { inputTokens: 100, outputTokens: 50 },
+    });
+
+    const result = await extractPricing('openai', 'some page text');
+    expect(result.models).toHaveLength(2);
+    expect(result.models[0]!.status).toBe('active');
+    expect(result.models[1]!.status).toBe('deprecated');
+  });
+
+  it('strips invalid status values', async () => {
+    const mockModels = [
+      { modelId: 'gpt-4.1', displayName: 'GPT-4.1', inputPerMTok: 2, outputPerMTok: 8, status: 'unknown' },
+    ];
+
+    mockExtract.mockResolvedValue({
+      content: JSON.stringify(mockModels),
+      usage: { inputTokens: 100, outputTokens: 50 },
+    });
+
+    const result = await extractPricing('openai', 'some page text');
+    expect(result.models[0]!.status).toBeUndefined();
+  });
+
+  it('handles missing status gracefully', async () => {
+    const mockModels = [
+      { modelId: 'gpt-4.1', displayName: 'GPT-4.1', inputPerMTok: 2, outputPerMTok: 8 },
+    ];
+
+    mockExtract.mockResolvedValue({
+      content: JSON.stringify(mockModels),
+      usage: { inputTokens: 100, outputTokens: 50 },
+    });
+
+    const result = await extractPricing('openai', 'some page text');
+    expect(result.models).toHaveLength(1);
+    expect(result.models[0]!.status).toBeUndefined();
+  });
+
   it('throws descriptive error when extraction fails', async () => {
     mockExtract.mockRejectedValue(new Error('API rate limited'));
 
