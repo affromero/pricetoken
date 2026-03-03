@@ -106,6 +106,17 @@ export const STATIC_PRICING: ModelPricing[] = [
 
   // Google
   {
+    modelId: 'gemini-3.1-pro-preview',
+    provider: 'google',
+    displayName: 'Gemini 3.1 Pro Preview',
+    inputPerMTok: 2.0,
+    outputPerMTok: 12.0,
+    contextWindow: 1000000,
+    maxOutputTokens: 65536,
+    source: 'seed',
+    lastUpdated: null,
+  },
+  {
     modelId: 'gemini-2.5-pro',
     provider: 'google',
     displayName: 'Gemini 2.5 Pro',
