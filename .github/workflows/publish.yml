@@ -9,6 +9,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       id-token: write
     steps:
       - uses: actions/checkout@v4
@@ -19,6 +20,7 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npx prisma generate --schema=apps/web/prisma/schema.prisma
+      - run: npm run build --workspace=pricetoken
       - run: npm run typecheck
       - run: npm run test
       - run: npm run build
