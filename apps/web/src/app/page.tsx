@@ -39,6 +39,9 @@ export default async function HomePage() {
 
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Current Pricing</h2>
+          <p className={styles.sectionSubtitle}>
+            Updated daily from official provider pricing pages. Prices in USD per million tokens.
+          </p>
           <PricingTable pricing={pricing} />
         </section>
 
