@@ -1,18 +1,38 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { calculateCost } from 'pricetoken';
 import type { ModelPricing } from 'pricetoken';
+import { CurrencySelector } from '@/components/CurrencySelector/CurrencySelector';
 import styles from './CostCalculator.module.css';
 
 interface CostCalculatorProps {
   pricing: ModelPricing[];
 }
 
-export function CostCalculator({ pricing }: CostCalculatorProps) {
-  const [selectedModelId, setSelectedModelId] = useState(pricing[0]?.modelId ?? '');
+export function CostCalculator({ pricing: initialPricing }: CostCalculatorProps) {
+  const [pricing, setPricing] = useState(initialPricing);
+  const [selectedModelId, setSelectedModelId] = useState(initialPricing[0]?.modelId ?? '');
   const [inputTokens, setInputTokens] = useState(100_000);
   const [outputTokens, setOutputTokens] = useState(10_000);
+  const [currency, setCurrency] = useState('USD');
+
+  const handleCurrencyChange = useCallback(async (code: string) => {
+    setCurrency(code);
+    if (code === 'USD') {
+      setPricing(initialPricing);
+      return;
+    }
+    try {
+      const res = await fetch(`/api/v1/pricing?currency=${code}`);
+      if (res.ok) {
+        const json = await res.json();
+        setPricing(json.data);
+      }
+    } catch {
+      // Fall back to initial pricing
+    }
+  }, [initialPricing]);
 
   const selectedModel = pricing.find((m) => m.modelId === selectedModelId);
 
@@ -27,8 +47,13 @@ export function CostCalculator({ pricing }: CostCalculatorProps) {
     );
   }, [selectedModel, inputTokens, outputTokens]);
 
+  const currencySymbol = currency === 'USD' ? '$' : `${currency} `;
+
   return (
     <div className={styles.root}>
+      <div className={styles.field}>
+        <CurrencySelector onChange={handleCurrencyChange} />
+      </div>
       <div className={styles.field}>
         <label className={styles.label} htmlFor="model-select">
           Model
@@ -85,15 +110,15 @@ export function CostCalculator({ pricing }: CostCalculatorProps) {
         <div className={styles.result}>
           <div className={styles.costRow}>
             <span className={styles.costLabel}>Input cost</span>
-            <span className={styles.costValue}>${cost.inputCost.toFixed(6)}</span>
+            <span className={styles.costValue}>{currencySymbol}{cost.inputCost.toFixed(6)}</span>
           </div>
           <div className={styles.costRow}>
             <span className={styles.costLabel}>Output cost</span>
-            <span className={styles.costValue}>${cost.outputCost.toFixed(6)}</span>
+            <span className={styles.costValue}>{currencySymbol}{cost.outputCost.toFixed(6)}</span>
           </div>
           <div className={`${styles.costRow} ${styles.costTotal}`}>
             <span className={styles.costLabel}>Total</span>
-            <span className={styles.costValue}>${cost.totalCost.toFixed(6)}</span>
+            <span className={styles.costValue}>{currencySymbol}{cost.totalCost.toFixed(6)}</span>
           </div>
         </div>
       )}

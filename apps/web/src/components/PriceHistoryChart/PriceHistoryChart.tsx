@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import {
   LineChart,
   Line,
@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import type { ModelHistory } from 'pricetoken';
+import { CurrencySelector } from '@/components/CurrencySelector/CurrencySelector';
 import styles from './PriceHistoryChart.module.css';
 
 interface PriceHistoryChartProps {
@@ -33,6 +34,26 @@ type PriceType = 'input' | 'output';
 
 export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
   const [priceType, setPriceType] = useState<PriceType>('input');
+  const [currency, setCurrency] = useState('USD');
+  const [exchangeRate, setExchangeRate] = useState(1);
+
+  const handleCurrencyChange = useCallback(async (code: string) => {
+    setCurrency(code);
+    if (code === 'USD') {
+      setExchangeRate(1);
+      return;
+    }
+    try {
+      const res = await fetch('/api/v1/pricing/currencies');
+      if (res.ok) {
+        const json = await res.json();
+        const match = json.data.find((c: { code: string }) => c.code === code);
+        if (match) setExchangeRate(match.rate);
+      }
+    } catch {
+      // Fall back to USD
+    }
+  }, []);
 
   // Merge all dates across models into unified data points
   const allDates = new Set<string>();
@@ -44,17 +65,19 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
 
   const sortedDates = [...allDates].sort();
 
-  const chartData = sortedDates.map((date) => {
+  const chartData = useMemo(() => sortedDates.map((date) => {
     const point: Record<string, string | number> = { date };
     for (const model of history) {
       const match = model.history.find((h) => h.date === date);
       if (match) {
-        point[model.modelId] =
-          priceType === 'input' ? match.inputPerMTok : match.outputPerMTok;
+        const value = priceType === 'input' ? match.inputPerMTok : match.outputPerMTok;
+        point[model.modelId] = value * exchangeRate;
       }
     }
     return point;
-  });
+  }), [sortedDates, history, priceType, exchangeRate]);
+
+  const currencySymbol = currency === 'USD' ? '$' : `${currency} `;
 
   return (
     <div className={styles.root}>
@@ -71,6 +94,7 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
         >
           Output Price
         </button>
+        <CurrencySelector onChange={handleCurrencyChange} />
       </div>
 
       <ResponsiveContainer width="100%" height={400}>
@@ -84,7 +108,7 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
           <YAxis
             stroke="var(--pt-text-secondary)"
             tick={{ fontSize: 12 }}
-            tickFormatter={(v: number) => `$${v}`}
+            tickFormatter={(v: number) => `${currencySymbol}${v}`}
           />
           <Tooltip
             contentStyle={{
@@ -94,7 +118,7 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
               fontSize: '0.8125rem',
             }}
             labelStyle={{ color: 'var(--pt-text)' }}
-            formatter={(value: number) => [`$${value.toFixed(4)}/MTok`]}
+            formatter={(value: number) => [`${currencySymbol}${value.toFixed(4)}/MTok`]}
           />
           <Legend />
           {history.map((model, i) => (

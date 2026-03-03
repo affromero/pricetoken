@@ -2,6 +2,7 @@ import { type NextRequest } from 'next/server';
 import { compareModels } from '@/lib/pricing-queries';
 import { getCached, setCache } from '@/lib/redis';
 import { apiSuccess, apiError } from '@/lib/api-response';
+import { resolveCurrency, convertPricing } from '@/lib/currency-convert';
 import type { ModelPricing } from 'pricetoken';
 
 export async function GET(request: NextRequest) {
@@ -16,15 +17,21 @@ export async function GET(request: NextRequest) {
       return apiError('At least one model ID is required', 400);
     }
 
+    const currencyParam = request.nextUrl.searchParams.get('currency');
     const cacheKey = `pt:cache:compare:${modelIds.sort().join(',')}`;
 
     const cached = await getCached<ModelPricing[]>(cacheKey);
-    if (cached) return apiSuccess(cached, true);
+    let data = cached ?? await compareModels(modelIds);
 
-    const models = await compareModels(modelIds);
-    await setCache(cacheKey, models);
+    if (!cached) await setCache(cacheKey, data);
 
-    return apiSuccess(models);
+    const currencyInfo = await resolveCurrency(currencyParam);
+    if (currencyInfo) {
+      data = convertPricing(data, currencyInfo.exchangeRate);
+      return apiSuccess(data, !!cached, currencyInfo);
+    }
+
+    return apiSuccess(data, !!cached);
   } catch (err) {
     console.error('GET /api/v1/pricing/compare error:', err);
     return apiError('Internal server error', 500);

@@ -42,15 +42,19 @@ export class PriceTokenClient {
     return json.data;
   }
 
-  async getPricing(opts?: { provider?: string }): Promise<ModelPricing[]> {
+  async getPricing(opts?: { provider?: string; currency?: string }): Promise<ModelPricing[]> {
     const params = new URLSearchParams();
     if (opts?.provider) params.set('provider', opts.provider);
+    if (opts?.currency) params.set('currency', opts.currency);
     const qs = params.toString();
     return this.request<ModelPricing[]>(`/api/v1/pricing${qs ? `?${qs}` : ''}`);
   }
 
-  async getModel(modelId: string): Promise<ModelPricing> {
-    return this.request<ModelPricing>(`/api/v1/pricing/${encodeURIComponent(modelId)}`);
+  async getModel(modelId: string, opts?: { currency?: string }): Promise<ModelPricing> {
+    const params = new URLSearchParams();
+    if (opts?.currency) params.set('currency', opts.currency);
+    const qs = params.toString();
+    return this.request<ModelPricing>(`/api/v1/pricing/${encodeURIComponent(modelId)}${qs ? `?${qs}` : ''}`);
   }
 
   async getHistory(opts?: {
@@ -70,14 +74,16 @@ export class PriceTokenClient {
     return this.request<ProviderSummary[]>('/api/v1/pricing/providers');
   }
 
-  async compare(modelIds: string[]): Promise<ModelPricing[]> {
+  async compare(modelIds: string[], opts?: { currency?: string }): Promise<ModelPricing[]> {
     const params = new URLSearchParams({ models: modelIds.join(',') });
+    if (opts?.currency) params.set('currency', opts.currency);
     return this.request<ModelPricing[]>(`/api/v1/pricing/compare?${params}`);
   }
 
-  async getCheapest(opts?: { provider?: string }): Promise<ModelPricing> {
+  async getCheapest(opts?: { provider?: string; currency?: string }): Promise<ModelPricing> {
     const params = new URLSearchParams();
     if (opts?.provider) params.set('provider', opts.provider);
+    if (opts?.currency) params.set('currency', opts.currency);
     const qs = params.toString();
     return this.request<ModelPricing>(`/api/v1/pricing/cheapest${qs ? `?${qs}` : ''}`);
   }

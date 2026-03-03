@@ -62,12 +62,12 @@ export default function DocsPage() {
             <Endpoint
               method="GET"
               path="/api/v1/pricing"
-              description="Current pricing for all models. Filter with ?provider=anthropic"
+              description="Current pricing for all models. Params: ?provider=anthropic&currency=EUR"
             />
             <Endpoint
               method="GET"
               path="/api/v1/pricing/:modelId"
-              description="Single model pricing and metadata."
+              description="Single model pricing and metadata. Param: ?currency=EUR"
             />
             <Endpoint
               method="GET"
@@ -82,12 +82,17 @@ export default function DocsPage() {
             <Endpoint
               method="GET"
               path="/api/v1/pricing/compare"
-              description="Side-by-side comparison. Param: ?models=a,b,c (max 10)"
+              description="Side-by-side comparison. Params: ?models=a,b,c (max 10)&currency=EUR"
             />
             <Endpoint
               method="GET"
               path="/api/v1/pricing/cheapest"
-              description="Cheapest model overall or per provider. Param: ?provider=x"
+              description="Cheapest model overall or per provider. Params: ?provider=x&currency=EUR"
+            />
+            <Endpoint
+              method="GET"
+              path="/api/v1/pricing/currencies"
+              description="Supported currencies with exchange rates."
             />
           </div>
         </section>
@@ -121,7 +126,9 @@ export default function DocsPage() {
   "data": [...],
   "meta": {
     "timestamp": "2026-03-03T12:00:00Z",
-    "cached": false
+    "cached": false,
+    "currency": "EUR",      // only with ?currency
+    "exchangeRate": 0.92    // only with ?currency
   }
 }`,
               },
