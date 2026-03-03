@@ -1,8 +1,16 @@
+import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
 import { ModelCompare } from '@/components/ModelCompare/ModelCompare';
 import { STATIC_PRICING } from 'pricetoken';
 import styles from './page.module.css';
+
+export const metadata: Metadata = {
+  title: 'Compare LLM Models',
+  description:
+    'Side-by-side pricing comparison of LLM models across OpenAI, Anthropic, Google, and more. Find the best value for your use case.',
+  alternates: { canonical: 'https://pricetoken.ai/compare' },
+};
 
 async function getPricing() {
   try {

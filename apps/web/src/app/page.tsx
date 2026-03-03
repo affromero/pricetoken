@@ -1,9 +1,14 @@
+import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
 import { PricingTable } from '@/components/PricingTable/PricingTable';
 import { DataSources } from '@/components/DataSources/DataSources';
 import { STATIC_PRICING } from 'pricetoken';
 import styles from './page.module.css';
+
+export const metadata: Metadata = {
+  alternates: { canonical: 'https://pricetoken.ai' },
+};
 
 async function getPricing() {
   try {
@@ -20,6 +25,22 @@ export default async function HomePage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name: 'PriceToken',
+            url: 'https://pricetoken.ai',
+            applicationCategory: 'DeveloperApplication',
+            operatingSystem: 'Any',
+            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+            description:
+              'Free REST API and npm package for real-time LLM pricing data across OpenAI, Anthropic, Google, and more.',
+          }),
+        }}
+      />
       <Navigation />
       <main className={styles.root}>
         <section className={styles.hero}>

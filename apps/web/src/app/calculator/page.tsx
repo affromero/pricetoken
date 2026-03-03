@@ -1,8 +1,16 @@
+import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
 import { CostCalculator } from '@/components/CostCalculator/CostCalculator';
 import { STATIC_PRICING } from 'pricetoken';
 import styles from './page.module.css';
+
+export const metadata: Metadata = {
+  title: 'LLM Cost Calculator',
+  description:
+    'Estimate the cost of LLM API calls across OpenAI, Anthropic, Google, and more. Enter your token counts and compare prices instantly.',
+  alternates: { canonical: 'https://pricetoken.ai/calculator' },
+};
 
 async function getPricing() {
   try {

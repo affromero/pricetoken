@@ -15,9 +15,28 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'PriceToken — Real-time LLM Pricing API',
+  metadataBase: new URL('https://pricetoken.ai'),
+  title: {
+    default: 'PriceToken — Real-time LLM Pricing API',
+    template: '%s | PriceToken',
+  },
   description:
     'Free REST API for real-time LLM pricing data. Compare costs across OpenAI, Anthropic, Google, and more. Open source, self-hostable.',
+  keywords: [
+    'llm pricing',
+    'ai pricing api',
+    'llm cost calculator',
+    'token cost',
+    'openai pricing',
+    'anthropic pricing',
+    'google ai pricing',
+    'gpt-4 price',
+    'claude price',
+    'gemini price',
+    'llm comparison',
+    'ai model costs',
+    'pricetoken',
+  ],
   openGraph: {
     title: 'PriceToken — Real-time LLM Pricing API',
     description:
@@ -25,11 +44,17 @@ export const metadata: Metadata = {
     url: 'https://pricetoken.ai',
     siteName: 'PriceToken',
     type: 'website',
+    locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'PriceToken — Real-time LLM Pricing API',
     description: 'Free REST API for real-time LLM pricing data.',
+    site: '@afromero',
+    creator: '@afromero',
+  },
+  alternates: {
+    canonical: 'https://pricetoken.ai',
   },
 };
 
@@ -50,7 +75,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'PriceToken',
+              url: 'https://pricetoken.ai',
+              description:
+                'Free REST API for real-time LLM pricing data. Compare costs across providers.',
+            }),
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }
