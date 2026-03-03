@@ -5,7 +5,28 @@ const FREE_RATE_LIMIT = 100;
 const WINDOW_SECONDS = 86400; // 24 hours
 
 export async function middleware(request: NextRequest) {
-  if (!request.nextUrl.pathname.startsWith('/api/v1/')) {
+  const pathname = request.nextUrl.pathname;
+
+  // Admin IP allowlist — check before rate limiting
+  if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) {
+    const clientIp = getClientIp(request);
+    const allowed = (process.env.ADMIN_ALLOWED_IPS ?? '')
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    if (allowed.length === 0 || !allowed.includes(clientIp)) {
+      return NextResponse.json(
+        { error: 'Forbidden', status: 403 },
+        { status: 403 }
+      );
+    }
+
+    return NextResponse.next();
+  }
+
+  // Rate limiting — only for /api/v1/ routes
+  if (!pathname.startsWith('/api/v1/')) {
     return NextResponse.next();
   }
 
@@ -89,5 +110,5 @@ function getClientIp(request: NextRequest): string {
 }
 
 export const config = {
-  matcher: '/api/v1/:path*',
+  matcher: ['/api/v1/:path*', '/admin/:path*', '/api/admin/:path*'],
 };

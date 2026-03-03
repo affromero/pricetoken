@@ -39,6 +39,17 @@ export async function setCache(key: string, value: unknown, ttl = CACHE_TTL): Pr
   }
 }
 
+export async function deleteByPattern(pattern: string): Promise<number> {
+  try {
+    const redis = getRedisClient();
+    const keys = await redis.keys(pattern);
+    if (keys.length === 0) return 0;
+    return redis.del(...keys);
+  } catch {
+    return 0;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Rate limiting with sliding window
 // ---------------------------------------------------------------------------

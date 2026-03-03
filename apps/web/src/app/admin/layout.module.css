@@ -1,0 +1,56 @@
+.root {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background: var(--pt-surface);
+  border-right: 1px solid var(--pt-border);
+  padding: 1.5rem 0;
+  flex-shrink: 0;
+}
+
+.sidebarTitle {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--pt-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.navLink {
+  display: block;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  color: var(--pt-text-secondary);
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+
+.navLink:hover {
+  color: var(--pt-text);
+  background: var(--pt-surface-hover);
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1000px;
+}
+
+.contentTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--pt-text);
+}
