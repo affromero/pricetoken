@@ -10,6 +10,7 @@
   --pt-accent-hover: #16a34a;
   --pt-warning: #f59e0b;
   --pt-error: #ef4444;
+  --pt-preview: #60a5fa;
   --pt-provider-anthropic: #d4a574;
   --pt-provider-openai: #10a37f;
   --pt-provider-google: #4285f4;
@@ -30,6 +31,7 @@
   --pt-text-secondary: #6b7280;
   --pt-accent: #15803d;
   --pt-accent-hover: #166534;
+  --pt-preview: #2563eb;
   --pt-provider-anthropic: #9a6d3f;
   --pt-provider-openai: #0d8a6a;
   --pt-provider-google: #3367d6;

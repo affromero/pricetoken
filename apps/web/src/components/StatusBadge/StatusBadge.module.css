@@ -1,0 +1,27 @@
+.badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-radius: 9999px;
+  line-height: 1.4;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
+.deprecated {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--pt-error);
+}
+
+.preview {
+  background: rgba(96, 165, 250, 0.15);
+  color: var(--pt-preview);
+}
+
+.unverified {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--pt-warning);
+}
