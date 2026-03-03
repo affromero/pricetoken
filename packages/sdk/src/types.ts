@@ -6,7 +6,7 @@ export interface ModelPricing {
   outputPerMTok: number;
   contextWindow: number | null;
   maxOutputTokens: number | null;
-  source: 'fetched' | 'seed' | 'admin';
+  source: 'fetched' | 'seed' | 'admin' | 'verified';
   lastUpdated: string | null;
 }
 
