@@ -23,9 +23,9 @@ RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
+COPY package.json ./
 COPY packages/sdk ./packages/sdk/
 COPY apps/web ./apps/web/
-COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
 COPY tsconfig.base.json ./
 
 ENV NEXT_TELEMETRY_DISABLED=1
