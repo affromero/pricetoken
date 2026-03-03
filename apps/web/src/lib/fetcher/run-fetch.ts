@@ -9,18 +9,28 @@ import {
   type FetchWarning,
 } from './store';
 import { fetchFallbackPricing } from './fallback';
+import { crossVerify } from './cross-verify';
+import { checkPriorConsistency } from './prior-check';
+import { buildConsensus } from './consensus';
+import type { VerificationResult } from './verification-types';
 
-export async function runPricingFetch(): Promise<{
+export interface FetchResult {
   totalModels: number;
+  totalFlagged: number;
   errors: string[];
   warnings: FetchWarning[];
-}> {
+  verificationResults: Map<string, VerificationResult>;
+}
+
+export async function runPricingFetch(): Promise<FetchResult> {
   // Seed DB from static data if empty (first run)
   await seedFromStatic();
 
   let totalModels = 0;
+  let totalFlagged = 0;
   const errors: string[] = [];
   const warnings: FetchWarning[] = [];
+  const verificationResults = new Map<string, VerificationResult>();
 
   for (const [providerId, config] of Object.entries(PRICING_PROVIDERS)) {
     try {
@@ -36,23 +46,46 @@ export async function runPricingFetch(): Promise<{
         continue;
       }
 
-      const saved = await saveSnapshots(providerId, extraction.models);
-      totalModels += saved;
-      console.log(`${config.displayName}: saved ${saved} models`);
+      // Layer 2: Cross-verify with multiple AI agents
+      console.log(`Verifying pricing for ${config.displayName}...`);
+      const agentResults = await crossVerify(pageText, extraction.models);
+
+      // Layer 3: Check against prior snapshots
+      const priorFlags = await checkPriorConsistency(providerId, extraction.models);
+
+      // Layer 4: Build consensus
+      const consensus = buildConsensus(extraction.models, agentResults, priorFlags);
+      verificationResults.set(providerId, consensus);
+
+      // Save only approved models with 'verified' source
+      if (consensus.approved.length > 0) {
+        const saved = await saveSnapshots(providerId, consensus.approved, 'verified');
+        totalModels += saved;
+        console.log(`${config.displayName}: saved ${saved} verified models`);
+      }
+
+      // Log flagged models
+      if (consensus.flagged.length > 0) {
+        totalFlagged += consensus.flagged.length;
+        console.warn(
+          `${config.displayName}: ${consensus.flagged.length} models flagged for review:`,
+          consensus.flagged.map((m) => m.modelId)
+        );
+      }
 
       // Detect missing and new models by comparing with previous run
-      const currentModelIds = extraction.models.map((m) => m.modelId);
+      const currentModelIds = consensus.approved.map((m) => m.modelId);
       const lastRun = await getLastFetchRun(providerId);
       const previousModelIds = lastRun?.modelsFound ?? [];
 
-      const missing = previousModelIds.filter((id) => !currentModelIds.includes(id));
-      const newModels = currentModelIds.filter((id) => !previousModelIds.includes(id));
+      const missing = previousModelIds.filter((id: string) => !currentModelIds.includes(id));
+      const newModels = currentModelIds.filter((id: string) => !previousModelIds.includes(id));
 
       if (missing.length > 0 && config.fallbackUrls?.length) {
         console.log(`Attempting fallback for ${missing.length} missing ${config.displayName} model(s)...`);
         const fallbackResults = await fetchFallbackPricing(providerId, config.fallbackUrls, missing);
         for (const result of fallbackResults) {
-          const fallbackSaved = await saveSnapshots(providerId, result.models, 'low');
+          const fallbackSaved = await saveSnapshots(providerId, result.models, 'fetched', 'low');
           totalModels += fallbackSaved;
           console.log(`Fallback: saved ${fallbackSaved} model(s) from ${result.sourceUrl} (low confidence)`);
           warnings.push({
@@ -73,7 +106,7 @@ export async function runPricingFetch(): Promise<{
         });
       }
 
-      await saveFetchRun(providerId, currentModelIds, missing, newModels, extraction.models.length);
+      await saveFetchRun(providerId, currentModelIds, missing, newModels, consensus.approved.length);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       errors.push(`${config.displayName}: ${message}`);
@@ -82,6 +115,8 @@ export async function runPricingFetch(): Promise<{
     }
   }
 
-  console.log(`Pricing fetch complete: ${totalModels} models, ${errors.length} errors, ${warnings.length} warnings`);
-  return { totalModels, errors, warnings };
+  console.log(
+    `Pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${errors.length} errors, ${warnings.length} warnings`
+  );
+  return { totalModels, totalFlagged, errors, warnings, verificationResults };
 }

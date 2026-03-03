@@ -13,6 +13,7 @@ export interface FetchWarning {
 export async function saveSnapshots(
   provider: string,
   models: ExtractedModel[],
+  source: string = 'fetched',
   confidence: 'high' | 'low' = 'high'
 ): Promise<number> {
   if (models.length === 0) return 0;
@@ -25,7 +26,7 @@ export async function saveSnapshots(
     outputPerMTok: m.outputPerMTok,
     contextWindow: m.contextWindow ?? null,
     maxOutputTokens: m.maxOutputTokens ?? null,
-    source: 'fetched',
+    source,
     status: m.status ?? null,
     confidence,
   }));

@@ -19,6 +19,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link href="/admin/alerts" className={styles.navLink}>
             Alerts
           </Link>
+          <Link href="/admin/fetch-status" className={styles.navLink}>
+            Fetch Status
+          </Link>
         </nav>
       </aside>
       <main className={styles.content}>{children}</main>

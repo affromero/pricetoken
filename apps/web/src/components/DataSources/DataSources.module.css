@@ -4,10 +4,59 @@
   gap: 1.5rem;
 }
 
-.description {
+.pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.step {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  position: relative;
+}
+
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 17px;
+  top: calc(1rem + 36px);
+  bottom: 0;
+  width: 1px;
+  background: var(--pt-border);
+}
+
+.stepNumber {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--pt-accent);
+  color: #0a0a0a;
+  font-size: 0.875rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stepContent {
+  flex: 1;
+  padding-top: 0.25rem;
+}
+
+.stepTitle {
   font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--pt-text);
+  margin-bottom: 0.25rem;
+}
+
+.stepDescription {
+  font-size: 0.8125rem;
   color: var(--pt-text-secondary);
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
 }
 

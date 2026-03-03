@@ -5,6 +5,7 @@ import { getModelCosts } from '@/lib/fetcher/ai-registry';
 export function logUsage(params: {
   provider: string;
   model: string;
+  operation?: string;
   inputTokens: number;
   outputTokens: number;
   durationMs?: number;
@@ -22,6 +23,7 @@ export function logUsage(params: {
       data: {
         provider: params.provider,
         model: params.model,
+        operation: params.operation ?? 'pricing_extraction',
         inputTokens: params.inputTokens,
         outputTokens: params.outputTokens,
         costUsd,
