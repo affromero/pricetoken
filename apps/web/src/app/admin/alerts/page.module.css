@@ -1,0 +1,88 @@
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--pt-text);
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--pt-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+
+.alertList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.alertCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius);
+  color: var(--pt-warning);
+  font-size: 0.875rem;
+}
+
+.alertIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--pt-warning);
+  color: #0a0a0a;
+  font-weight: 700;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.alertContent {
+  flex: 1;
+}
+
+.alertModels {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--pt-text-secondary);
+  margin-top: 0.25rem;
+}
+
+.lowConfTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.lowConfTable th {
+  padding: 0.625rem 1rem;
+  text-align: left;
+  font-weight: 500;
+  color: var(--pt-text-secondary);
+  border-bottom: 1px solid var(--pt-border);
+  background: var(--pt-surface);
+}
+
+.lowConfTable td {
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid var(--pt-border);
+}
+
+.empty {
+  color: var(--pt-text-secondary);
+  font-size: 0.875rem;
+}
