@@ -115,6 +115,16 @@ import type {
 } from 'pricetoken';
 ```
 
+## Disclaimer
+
+Pricing data is provided on a best-effort basis and may be inaccurate, incomplete, or outdated. LLM providers change prices without notice, and our scraping pipeline may not capture every change immediately.
+
+**This data is for informational purposes only. Do not use it as the sole basis for financial decisions.** Always verify pricing directly with the provider before committing to spend.
+
+If you get a bill you weren't expecting, that's between you and your provider — not us. See the [MIT License](LICENSE) under which this project is distributed (specifically the "AS IS" and "NO WARRANTY" clauses).
+
+Found incorrect pricing? [Open an issue](https://github.com/affromero/pricetoken/issues).
+
 ## License
 
 MIT
