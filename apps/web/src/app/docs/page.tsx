@@ -1,7 +1,15 @@
+import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
 import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
 import styles from './page.module.css';
+
+export const metadata: Metadata = {
+  title: 'API Documentation',
+  description:
+    'PriceToken REST API documentation. Endpoints for LLM pricing, cost comparison, price history, and provider data. Free, no signup required.',
+  alternates: { canonical: 'https://pricetoken.ai/docs' },
+};
 
 const curlExample = `curl https://pricetoken.ai/api/v1/pricing`;
 

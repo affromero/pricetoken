@@ -1,9 +1,17 @@
+import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
 import { PriceHistoryChart } from '@/components/PriceHistoryChart/PriceHistoryChart';
 import { STATIC_PRICING } from 'pricetoken';
 import type { ModelHistory } from 'pricetoken';
 import styles from './page.module.css';
+
+export const metadata: Metadata = {
+  title: 'LLM Price History',
+  description:
+    'Track LLM pricing changes over time. Historical price data for OpenAI, Anthropic, Google, and more — updated daily.',
+  alternates: { canonical: 'https://pricetoken.ai/history' },
+};
 
 async function getHistory(): Promise<ModelHistory[]> {
   try {
