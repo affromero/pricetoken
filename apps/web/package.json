@@ -11,14 +11,16 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "next": "^15.1.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^6.0.0",
     "ioredis": "^5.4.0",
-    "recharts": "^2.15.0",
-    "@anthropic-ai/sdk": "^0.39.0",
-    "pricetoken": "*"
+    "next": "^15.1.0",
+    "openai": "^6.25.0",
+    "pricetoken": "*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "recharts": "^2.15.0"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",

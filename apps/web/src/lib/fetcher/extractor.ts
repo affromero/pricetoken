@@ -1,4 +1,6 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { getFetcherConfig } from '@/lib/fetcher-config';
+import { EXTRACTION_PROVIDERS } from './ai-registry';
+import type { ExtractionResult } from './ai-registry';
 import { SYSTEM_PROMPT } from './system-prompt';
 
 export interface ExtractedModel {
@@ -10,34 +12,52 @@ export interface ExtractedModel {
   maxOutputTokens?: number;
 }
 
+export interface ExtractionOutput {
+  models: ExtractedModel[];
+  usage: { inputTokens: number; outputTokens: number };
+  provider: string;
+  model: string;
+}
+
 export async function extractPricing(
-  provider: string,
+  pricingProvider: string,
   pageText: string
-): Promise<ExtractedModel[]> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    throw new Error('ANTHROPIC_API_KEY is required for pricing extraction');
+): Promise<ExtractionOutput> {
+  const config = await getFetcherConfig();
+
+  const extractionProvider = EXTRACTION_PROVIDERS[config.extractionProvider];
+  if (!extractionProvider) {
+    throw new Error(`Unknown extraction provider: ${config.extractionProvider}`);
   }
 
-  const client = new Anthropic({ apiKey });
+  const apiKey = process.env[extractionProvider.envKey];
+  if (!apiKey) {
+    throw new Error(`${extractionProvider.envKey} is required for ${extractionProvider.displayName} extraction`);
+  }
 
-  const response = await client.messages.create({
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 2048,
-    system: SYSTEM_PROMPT,
-    messages: [
-      {
-        role: 'user',
-        content: `Extract ${provider} model pricing from this page:\n\n${pageText}`,
-      },
-    ],
-  });
+  const truncated = pageText.slice(0, config.maxTextLength);
+  const userPrompt = `Extract ${pricingProvider} model pricing from this page:\n\n${truncated}`;
 
-  const text = response.content
-    .filter((block): block is Anthropic.TextBlock => block.type === 'text')
-    .map((block) => block.text)
-    .join('');
+  let result: ExtractionResult;
+  try {
+    result = await extractionProvider.extract(apiKey, config.extractionModel, SYSTEM_PROMPT, userPrompt);
+  } catch (err) {
+    throw new Error(
+      `Extraction failed with ${config.extractionProvider}/${config.extractionModel}: ${err instanceof Error ? err.message : String(err)}`
+    );
+  }
 
+  const models = parseModels(result.content, pricingProvider);
+
+  return {
+    models,
+    usage: result.usage,
+    provider: config.extractionProvider,
+    model: config.extractionModel,
+  };
+}
+
+function parseModels(text: string, pricingProvider: string): ExtractedModel[] {
   try {
     const parsed: unknown = JSON.parse(text);
     if (!Array.isArray(parsed)) return [];
@@ -50,7 +70,7 @@ export async function extractPricing(
         typeof (m as Record<string, unknown>).outputPerMTok === 'number'
     );
   } catch {
-    console.warn(`Failed to parse pricing extraction for ${provider}:`, text.slice(0, 200));
+    console.warn(`Failed to parse pricing extraction for ${pricingProvider}:`, text.slice(0, 200));
     return [];
   }
 }

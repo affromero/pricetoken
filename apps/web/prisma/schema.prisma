@@ -36,3 +36,12 @@ model ApiKey {
 
   @@index([keyHash])
 }
+
+model FetcherConfig {
+  id                 String   @id @default("singleton")
+  extractionProvider String   @default("anthropic")
+  extractionModel    String   @default("claude-haiku-4-5-20251001")
+  maxTextLength      Int      @default(8000)
+  enabled            Boolean  @default(true)
+  updatedAt          DateTime @updatedAt
+}

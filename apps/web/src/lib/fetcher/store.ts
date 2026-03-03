@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import type { ModelPricing, ModelHistory, PriceHistoryPoint } from 'pricetoken';
 import type { ExtractedModel } from './extractor';
@@ -24,9 +25,9 @@ export async function saveSnapshots(
 }
 
 export async function getLatestPricing(provider?: string): Promise<ModelPricing[]> {
-  const where = provider ? `WHERE "provider" = '${provider}'` : '';
+  const where = provider ? Prisma.sql`WHERE "provider" = ${provider}` : Prisma.empty;
 
-  const snapshots = await prisma.$queryRawUnsafe<
+  const snapshots = await prisma.$queryRaw<
     Array<{
       modelId: string;
       provider: string;
@@ -38,7 +39,7 @@ export async function getLatestPricing(provider?: string): Promise<ModelPricing[
       source: string;
       createdAt: Date;
     }>
-  >(`
+  >(Prisma.sql`
     SELECT DISTINCT ON ("modelId")
       "modelId", "provider", "displayName",
       "inputPerMTok", "outputPerMTok",

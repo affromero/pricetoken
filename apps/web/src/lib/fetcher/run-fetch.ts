@@ -19,14 +19,14 @@ export async function runPricingFetch(): Promise<{
       const pageText = await fetchPricingPage(config.url);
 
       console.log(`Extracting pricing for ${config.displayName}...`);
-      const models = await extractPricing(providerId, pageText);
+      const extraction = await extractPricing(providerId, pageText);
 
-      if (models.length === 0) {
+      if (extraction.models.length === 0) {
         errors.push(`${config.displayName}: no models extracted`);
         continue;
       }
 
-      const saved = await saveSnapshots(providerId, models);
+      const saved = await saveSnapshots(providerId, extraction.models);
       totalModels += saved;
       console.log(`${config.displayName}: saved ${saved} models`);
     } catch (err) {
