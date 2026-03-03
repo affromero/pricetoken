@@ -1,0 +1,54 @@
+import type { ModelPricing, ProviderSummary } from 'pricetoken';
+import { getLatestPricing, getPriceHistory } from './fetcher/store';
+
+export async function getCurrentPricing(provider?: string): Promise<ModelPricing[]> {
+  return getLatestPricing(provider);
+}
+
+export async function getModelPricing(modelId: string): Promise<ModelPricing | null> {
+  const all = await getLatestPricing();
+  return all.find((m) => m.modelId === modelId) ?? null;
+}
+
+export { getPriceHistory };
+
+export async function getProviderSummaries(): Promise<ProviderSummary[]> {
+  const all = await getLatestPricing();
+
+  const providerMap = new Map<
+    string,
+    { displayName: string; models: ModelPricing[] }
+  >();
+
+  for (const model of all) {
+    if (!providerMap.has(model.provider)) {
+      providerMap.set(model.provider, { displayName: model.provider, models: [] });
+    }
+    providerMap.get(model.provider)!.models.push(model);
+  }
+
+  return Array.from(providerMap.entries()).map(([id, data]) => ({
+    id,
+    displayName: data.displayName,
+    modelCount: data.models.length,
+    cheapestInputPerMTok: Math.min(...data.models.map((m) => m.inputPerMTok)),
+    cheapestOutputPerMTok: Math.min(...data.models.map((m) => m.outputPerMTok)),
+  }));
+}
+
+export async function compareModels(modelIds: string[]): Promise<ModelPricing[]> {
+  const all = await getLatestPricing();
+  const idSet = new Set(modelIds);
+  return all.filter((m) => idSet.has(m.modelId));
+}
+
+export async function getCheapestModel(provider?: string): Promise<ModelPricing | null> {
+  const all = await getLatestPricing(provider);
+  if (all.length === 0) return null;
+
+  return all.reduce((cheapest, model) =>
+    model.inputPerMTok + model.outputPerMTok < cheapest.inputPerMTok + cheapest.outputPerMTok
+      ? model
+      : cheapest
+  );
+}

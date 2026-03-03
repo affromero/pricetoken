@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ModelPricingSnapshot {
+  id              String   @id @default(cuid())
+  modelId         String
+  provider        String
+  displayName     String   @default("")
+  inputPerMTok    Float
+  outputPerMTok   Float
+  contextWindow   Int?
+  maxOutputTokens Int?
+  source          String   @default("fetched") // "fetched" | "seed" | "admin"
+  createdAt       DateTime @default(now())
+
+  @@index([modelId, createdAt])
+  @@index([createdAt])
+}
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  name       String
+  keyHash    String    @unique
+  keyPrefix  String
+  email      String?
+  rateLimit  Int       @default(1000)
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+  revokedAt  DateTime?
+
+  @@index([keyHash])
+}

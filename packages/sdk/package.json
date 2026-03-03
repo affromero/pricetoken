@@ -1,0 +1,56 @@
+{
+  "name": "pricetoken",
+  "version": "0.1.0",
+  "description": "Real-time LLM pricing data — typed client, cost calculator, and static pricing",
+  "keywords": [
+    "llm",
+    "pricing",
+    "ai",
+    "tokens",
+    "cost",
+    "openai",
+    "anthropic",
+    "google"
+  ],
+  "homepage": "https://pricetoken.ai",
+  "bugs": {
+    "url": "https://github.com/afromero/pricetoken/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/afromero/pricetoken.git",
+    "directory": "packages/sdk"
+  },
+  "license": "MIT",
+  "author": "Andres Romero <me@afromero.co>",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.0.0"
+  }
+}

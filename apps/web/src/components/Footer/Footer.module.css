@@ -1,0 +1,36 @@
+.root {
+  border-top: 1px solid var(--pt-border);
+  padding: 2rem 0;
+  margin-top: auto;
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--pt-text-secondary);
+}
+
+.links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.link {
+  font-size: 0.8125rem;
+  color: var(--pt-text-secondary);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.link:hover {
+  color: var(--pt-text);
+}

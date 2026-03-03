@@ -1,0 +1,66 @@
+.root {
+  border: 1px solid var(--pt-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+  background: var(--pt-surface);
+  border-bottom: 1px solid var(--pt-border);
+}
+
+.tabs {
+  display: flex;
+}
+
+.tab {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--pt-text-secondary);
+  cursor: pointer;
+  transition: color 0.15s;
+  border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+  color: var(--pt-text);
+}
+
+.tabActive {
+  color: var(--pt-text);
+  border-bottom-color: var(--pt-accent);
+}
+
+.copy {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--pt-border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--pt-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.copy:hover {
+  border-color: var(--pt-text-secondary);
+  color: var(--pt-text);
+}
+
+.code {
+  padding: 1rem 1.25rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  color: var(--pt-text);
+}

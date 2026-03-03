@@ -1,0 +1,108 @@
+.root {
+  width: 100%;
+}
+
+.picker {
+  margin-bottom: 2rem;
+}
+
+.pickerLabel {
+  font-size: 0.875rem;
+  color: var(--pt-text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  padding: 0.375rem 0.625rem;
+  border-radius: 9999px;
+  border: 1px solid var(--pt-border);
+  background: transparent;
+  color: var(--pt-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chip:hover:not(:disabled) {
+  border-color: var(--pt-accent);
+  color: var(--pt-text);
+}
+
+.chip:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.chipSelected {
+  background: var(--pt-accent);
+  border-color: var(--pt-accent);
+  color: var(--pt-bg);
+}
+
+.comparison {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sectionTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--pt-text);
+}
+
+.barRow {
+  display: grid;
+  grid-template-columns: 140px 1fr 80px;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.barLabel {
+  font-size: 0.8125rem;
+  color: var(--pt-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barTrack {
+  height: 24px;
+  background: var(--pt-surface);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: var(--pt-accent);
+  border-radius: 4px;
+  min-width: 2px;
+  transition: width 0.3s ease;
+}
+
+.barValue {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--pt-text);
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .barRow {
+    grid-template-columns: 100px 1fr 70px;
+  }
+}

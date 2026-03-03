@@ -1,0 +1,51 @@
+:root {
+  --pt-bg: #0a0a0a;
+  --pt-surface: #141414;
+  --pt-surface-hover: #1c1c1c;
+  --pt-border: #2a2a2a;
+  --pt-text: #e5e5e5;
+  --pt-text-secondary: #888;
+  --pt-accent: #22c55e;
+  --pt-accent-hover: #16a34a;
+  --pt-warning: #f59e0b;
+  --pt-error: #ef4444;
+  --pt-provider-anthropic: #d4a574;
+  --pt-provider-openai: #10a37f;
+  --pt-provider-google: #4285f4;
+  --font-heading: var(--font-body, 'Inter', sans-serif);
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 8px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  background: var(--pt-bg);
+  color: var(--pt-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--pt-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--pt-accent-hover);
+}
+
+code {
+  font-family: var(--font-mono);
+}

@@ -1,0 +1,81 @@
+.root {
+  max-width: 480px;
+  width: 100%;
+}
+
+.field {
+  margin-bottom: 1.25rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--pt-text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.select {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--pt-border);
+  border-radius: var(--radius);
+  background: var(--pt-surface);
+  color: var(--pt-text);
+  cursor: pointer;
+}
+
+.sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.slider {
+  width: 100%;
+  accent-color: var(--pt-accent);
+}
+
+.result {
+  margin-top: 1.5rem;
+  border: 1px solid var(--pt-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.costRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid var(--pt-border);
+}
+
+.costRow:last-child {
+  border-bottom: none;
+}
+
+.costTotal {
+  background: var(--pt-surface);
+}
+
+.costLabel {
+  font-size: 0.8125rem;
+  color: var(--pt-text-secondary);
+}
+
+.costValue {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--pt-accent);
+  font-weight: 600;
+}
+
+.costTotal .costLabel {
+  font-weight: 600;
+  color: var(--pt-text);
+}
+
+.costTotal .costValue {
+  font-size: 1rem;
+}

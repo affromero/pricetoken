@@ -1,0 +1,15 @@
+pricetoken.ai {
+  reverse_proxy localhost:3001
+  encode gzip zstd
+
+  header {
+    Access-Control-Allow-Origin "*"
+    Access-Control-Allow-Methods "GET, OPTIONS"
+    Access-Control-Allow-Headers "Authorization, Content-Type"
+    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    -Server
+  }
+
+  @static path /_next/static/* /favicon.ico
+  header @static Cache-Control "public, max-age=31536000, immutable"
+}
