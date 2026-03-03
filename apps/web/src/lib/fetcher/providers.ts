@@ -1,20 +1,24 @@
 export interface ProviderConfig {
   url: string;
   displayName: string;
+  fallbackUrls?: string[];
 }
 
 export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
   openai: {
     url: 'https://developers.openai.com/api/docs/pricing',
     displayName: 'OpenAI',
+    fallbackUrls: ['https://developers.openai.com/api/docs/models'],
   },
   anthropic: {
     url: 'https://platform.claude.com/docs/en/docs/about-claude/models',
     displayName: 'Anthropic',
+    fallbackUrls: ['https://docs.anthropic.com/en/docs/about-claude/models'],
   },
   google: {
     url: 'https://ai.google.dev/gemini-api/docs/pricing',
     displayName: 'Google',
+    fallbackUrls: ['https://cloud.google.com/vertex-ai/generative-ai/pricing'],
   },
   deepseek: {
     url: 'https://api-docs.deepseek.com/quick_start/pricing',

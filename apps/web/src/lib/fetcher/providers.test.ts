@@ -44,4 +44,24 @@ describe('PRICING_PROVIDERS', () => {
       'https://api-docs.deepseek.com/quick_start/pricing'
     );
   });
+
+  it('fallback URLs are valid HTTPS URLs when present', () => {
+    for (const config of Object.values(PRICING_PROVIDERS)) {
+      if (config.fallbackUrls) {
+        for (const url of config.fallbackUrls) {
+          expect(url).toMatch(/^https:\/\//);
+        }
+      }
+    }
+  });
+
+  it('openai, anthropic, and google have fallback URLs', () => {
+    expect(PRICING_PROVIDERS.openai!.fallbackUrls?.length).toBeGreaterThan(0);
+    expect(PRICING_PROVIDERS.anthropic!.fallbackUrls?.length).toBeGreaterThan(0);
+    expect(PRICING_PROVIDERS.google!.fallbackUrls?.length).toBeGreaterThan(0);
+  });
+
+  it('deepseek has no fallback URLs', () => {
+    expect(PRICING_PROVIDERS.deepseek!.fallbackUrls).toBeUndefined();
+  });
 });

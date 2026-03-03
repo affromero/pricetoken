@@ -11,6 +11,7 @@ export interface ExtractedModel {
   outputPerMTok: number;
   contextWindow?: number;
   maxOutputTokens?: number;
+  status?: 'active' | 'deprecated' | 'preview';
 }
 
 export interface ExtractionOutput {
@@ -81,14 +82,22 @@ function parseModels(text: string, pricingProvider: string): ExtractedModel[] {
   try {
     const parsed: unknown = JSON.parse(text);
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter(
-      (m): m is ExtractedModel =>
-        typeof m === 'object' &&
-        m !== null &&
-        typeof (m as Record<string, unknown>).modelId === 'string' &&
-        typeof (m as Record<string, unknown>).inputPerMTok === 'number' &&
-        typeof (m as Record<string, unknown>).outputPerMTok === 'number'
-    );
+    const VALID_STATUSES = ['active', 'deprecated', 'preview'];
+    return parsed
+      .filter(
+        (m): m is ExtractedModel =>
+          typeof m === 'object' &&
+          m !== null &&
+          typeof (m as Record<string, unknown>).modelId === 'string' &&
+          typeof (m as Record<string, unknown>).inputPerMTok === 'number' &&
+          typeof (m as Record<string, unknown>).outputPerMTok === 'number'
+      )
+      .map((m) => {
+        if (m.status && !VALID_STATUSES.includes(m.status)) {
+          m.status = undefined;
+        }
+        return m;
+      });
   } catch {
     console.warn(`Failed to parse pricing extraction for ${pricingProvider}:`, text.slice(0, 200));
     return [];

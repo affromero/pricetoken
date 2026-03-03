@@ -17,10 +17,25 @@ model ModelPricingSnapshot {
   contextWindow   Int?
   maxOutputTokens Int?
   source          String   @default("fetched") // "fetched" | "seed" | "admin"
+  status          String?  // "active" | "deprecated" | "preview" | null
+  confidence      String   @default("high") // "high" | "low"
   createdAt       DateTime @default(now())
 
   @@index([modelId, createdAt])
   @@index([createdAt])
+}
+
+model FetchRunLog {
+  id             String   @id @default(cuid())
+  provider       String
+  modelsFound    String[]
+  modelsMissing  String[]
+  modelsNew      String[]
+  totalExtracted Int
+  error          String?
+  createdAt      DateTime @default(now())
+
+  @@index([provider, createdAt])
 }
 
 model ApiKey {

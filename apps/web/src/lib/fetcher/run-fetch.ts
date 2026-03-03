@@ -1,17 +1,26 @@
 import { PRICING_PROVIDERS } from './providers';
 import { fetchPricingPage } from './scraper';
 import { extractPricing } from './extractor';
-import { saveSnapshots, seedFromStatic } from './store';
+import {
+  saveSnapshots,
+  seedFromStatic,
+  getLastFetchRun,
+  saveFetchRun,
+  type FetchWarning,
+} from './store';
+import { fetchFallbackPricing } from './fallback';
 
 export async function runPricingFetch(): Promise<{
   totalModels: number;
   errors: string[];
+  warnings: FetchWarning[];
 }> {
   // Seed DB from static data if empty (first run)
   await seedFromStatic();
 
   let totalModels = 0;
   const errors: string[] = [];
+  const warnings: FetchWarning[] = [];
 
   for (const [providerId, config] of Object.entries(PRICING_PROVIDERS)) {
     try {
@@ -23,19 +32,56 @@ export async function runPricingFetch(): Promise<{
 
       if (extraction.models.length === 0) {
         errors.push(`${config.displayName}: no models extracted`);
+        await saveFetchRun(providerId, [], [], [], 0, 'no models extracted');
         continue;
       }
 
       const saved = await saveSnapshots(providerId, extraction.models);
       totalModels += saved;
       console.log(`${config.displayName}: saved ${saved} models`);
+
+      // Detect missing and new models by comparing with previous run
+      const currentModelIds = extraction.models.map((m) => m.modelId);
+      const lastRun = await getLastFetchRun(providerId);
+      const previousModelIds = lastRun?.modelsFound ?? [];
+
+      const missing = previousModelIds.filter((id) => !currentModelIds.includes(id));
+      const newModels = currentModelIds.filter((id) => !previousModelIds.includes(id));
+
+      if (missing.length > 0 && config.fallbackUrls?.length) {
+        console.log(`Attempting fallback for ${missing.length} missing ${config.displayName} model(s)...`);
+        const fallbackResults = await fetchFallbackPricing(providerId, config.fallbackUrls, missing);
+        for (const result of fallbackResults) {
+          const fallbackSaved = await saveSnapshots(providerId, result.models, 'low');
+          totalModels += fallbackSaved;
+          console.log(`Fallback: saved ${fallbackSaved} model(s) from ${result.sourceUrl} (low confidence)`);
+          warnings.push({
+            type: 'low_confidence',
+            provider: providerId,
+            modelIds: result.models.map((m) => m.modelId),
+            message: `${result.models.length} model(s) recovered via fallback for ${config.displayName} (low confidence)`,
+          });
+        }
+      }
+
+      if (missing.length > 0) {
+        warnings.push({
+          type: 'models_missing',
+          provider: providerId,
+          modelIds: missing,
+          message: `${missing.length} model(s) missing from ${config.displayName}: ${missing.join(', ')}`,
+        });
+      }
+
+      await saveFetchRun(providerId, currentModelIds, missing, newModels, extraction.models.length);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       errors.push(`${config.displayName}: ${message}`);
       console.error(`Error fetching ${config.displayName}:`, message);
+      await saveFetchRun(providerId, [], [], [], 0, message).catch(() => {});
     }
   }
 
-  console.log(`Pricing fetch complete: ${totalModels} models, ${errors.length} errors`);
-  return { totalModels, errors };
+  console.log(`Pricing fetch complete: ${totalModels} models, ${errors.length} errors, ${warnings.length} warnings`);
+  return { totalModels, errors, warnings };
 }

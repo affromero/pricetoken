@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import type { ModelPricing } from 'pricetoken';
 import { ProviderFilterChips, PROVIDER_COLORS } from '@/components/ProviderFilterChips/ProviderFilterChips';
 import { CurrencySelector } from '@/components/CurrencySelector/CurrencySelector';
+import { StatusBadge } from '@/components/StatusBadge/StatusBadge';
 import styles from './PricingTable.module.css';
 
 interface PricingTableProps {
@@ -18,6 +19,7 @@ export function PricingTable({ pricing: initialPricing }: PricingTableProps) {
   const [sortAsc, setSortAsc] = useState(true);
   const [filter, setFilter] = useState<string>('');
   const [currency, setCurrency] = useState('USD');
+  const [hideDeprecated, setHideDeprecated] = useState(true);
 
   const providers = [...new Set(pricing.map((m) => m.provider))];
 
@@ -38,7 +40,10 @@ export function PricingTable({ pricing: initialPricing }: PricingTableProps) {
     }
   }, [initialPricing]);
 
-  const filtered = filter ? pricing.filter((m) => m.provider === filter) : pricing;
+  let filtered = filter ? pricing.filter((m) => m.provider === filter) : pricing;
+  if (hideDeprecated) {
+    filtered = filtered.filter((m) => m.status !== 'deprecated');
+  }
 
   const sorted = [...filtered].sort((a, b) => {
     const aVal = a[sortKey];
@@ -72,6 +77,15 @@ export function PricingTable({ pricing: initialPricing }: PricingTableProps) {
     <div className={styles.root}>
       <div className={styles.filters}>
         <ProviderFilterChips providers={providers} selected={filter} onSelect={setFilter} />
+        <label className={styles.toggleLabel}>
+          <input
+            type="checkbox"
+            checked={hideDeprecated}
+            onChange={(e) => setHideDeprecated(e.target.checked)}
+            className={styles.toggleCheckbox}
+          />
+          Hide deprecated
+        </label>
         <CurrencySelector onChange={handleCurrencyChange} />
       </div>
 
@@ -104,7 +118,10 @@ export function PricingTable({ pricing: initialPricing }: PricingTableProps) {
                   />
                   {model.provider}
                 </td>
-                <td className={styles.modelName}>{model.displayName}</td>
+                <td className={styles.modelName}>
+                  {model.displayName}
+                  <StatusBadge status={model.status} confidence={model.confidence} />
+                </td>
                 <td className={styles.price}>{currencySymbol}{formatPrice(model.inputPerMTok)}</td>
                 <td className={styles.price}>{currencySymbol}{formatPrice(model.outputPerMTok)}</td>
                 <td className={styles.context}>

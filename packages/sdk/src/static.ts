@@ -11,6 +11,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 200000,
     maxOutputTokens: 128000,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
   {
@@ -22,6 +24,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 200000,
     maxOutputTokens: 64000,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
   {
@@ -33,6 +37,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 200000,
     maxOutputTokens: 64000,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
 
@@ -46,6 +52,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 1047576,
     maxOutputTokens: 32768,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
   {
@@ -57,6 +65,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 1047576,
     maxOutputTokens: 32768,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
   {
@@ -68,6 +78,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 128000,
     maxOutputTokens: 16384,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
   {
@@ -79,6 +91,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 128000,
     maxOutputTokens: 16384,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
   {
@@ -90,6 +104,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 200000,
     maxOutputTokens: 100000,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
   {
@@ -101,6 +117,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 200000,
     maxOutputTokens: 100000,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
 
@@ -114,6 +132,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 1000000,
     maxOutputTokens: 65536,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
   {
@@ -125,6 +145,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 1048576,
     maxOutputTokens: 65536,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
   {
@@ -136,6 +158,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 1048576,
     maxOutputTokens: 65536,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
   {
@@ -147,6 +171,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 1048576,
     maxOutputTokens: 8192,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
   {
@@ -158,6 +184,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 1048576,
     maxOutputTokens: 8192,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
 
@@ -171,6 +199,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 65536,
     maxOutputTokens: 8192,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
   {
@@ -182,6 +212,8 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 65536,
     maxOutputTokens: 8192,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: null,
   },
 ];

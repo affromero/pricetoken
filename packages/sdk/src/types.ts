@@ -1,3 +1,6 @@
+export type ModelStatus = 'active' | 'deprecated' | 'preview';
+export type DataConfidence = 'high' | 'low';
+
 export interface ModelPricing {
   modelId: string;
   provider: string;
@@ -7,6 +10,8 @@ export interface ModelPricing {
   contextWindow: number | null;
   maxOutputTokens: number | null;
   source: 'fetched' | 'seed' | 'admin';
+  status: ModelStatus | null;
+  confidence: DataConfidence;
   lastUpdated: string | null;
 }
 

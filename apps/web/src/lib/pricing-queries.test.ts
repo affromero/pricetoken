@@ -11,6 +11,8 @@ const mockPricing: ModelPricing[] = [
     contextWindow: 200000,
     maxOutputTokens: 64000,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: '2026-03-01T00:00:00Z',
   },
   {
@@ -22,6 +24,8 @@ const mockPricing: ModelPricing[] = [
     contextWindow: 128000,
     maxOutputTokens: 16384,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: '2026-03-01T00:00:00Z',
   },
   {
@@ -33,6 +37,8 @@ const mockPricing: ModelPricing[] = [
     contextWindow: 1048576,
     maxOutputTokens: 8192,
     source: 'seed',
+    status: 'active',
+    confidence: 'high',
     lastUpdated: '2026-03-01T00:00:00Z',
   },
 ];
