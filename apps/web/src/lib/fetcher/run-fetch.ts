@@ -8,6 +8,7 @@ import {
   saveFetchRun,
   type FetchWarning,
 } from './store';
+import { fetchFallbackPricing } from './fallback';
 
 export async function runPricingFetch(): Promise<{
   totalModels: number;
@@ -46,6 +47,22 @@ export async function runPricingFetch(): Promise<{
 
       const missing = previousModelIds.filter((id) => !currentModelIds.includes(id));
       const newModels = currentModelIds.filter((id) => !previousModelIds.includes(id));
+
+      if (missing.length > 0 && config.fallbackUrls?.length) {
+        console.log(`Attempting fallback for ${missing.length} missing ${config.displayName} model(s)...`);
+        const fallbackResults = await fetchFallbackPricing(providerId, config.fallbackUrls, missing);
+        for (const result of fallbackResults) {
+          const fallbackSaved = await saveSnapshots(providerId, result.models, 'low');
+          totalModels += fallbackSaved;
+          console.log(`Fallback: saved ${fallbackSaved} model(s) from ${result.sourceUrl} (low confidence)`);
+          warnings.push({
+            type: 'low_confidence',
+            provider: providerId,
+            modelIds: result.models.map((m) => m.modelId),
+            message: `${result.models.length} model(s) recovered via fallback for ${config.displayName} (low confidence)`,
+          });
+        }
+      }
 
       if (missing.length > 0) {
         warnings.push({
