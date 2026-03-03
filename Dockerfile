@@ -48,14 +48,14 @@ RUN adduser --system --uid 1001 pricetoken
 
 WORKDIR /app
 
-COPY --from=builder /app/apps/web/public ./apps/web/public
+# Node modules (standalone trace fails in monorepo — copy full deps)
+COPY --from=deps --chown=pricetoken:pricetoken /app/node_modules ./node_modules
+
+# Standalone server + built app
 COPY --from=builder --chown=pricetoken:pricetoken /app/apps/web/.next/standalone ./
 COPY --from=builder --chown=pricetoken:pricetoken /app/apps/web/.next/static ./apps/web/.next/static
-
-# Prisma runtime
+COPY --from=builder /app/apps/web/public ./apps/web/public
 COPY --from=builder --chown=pricetoken:pricetoken /app/apps/web/prisma ./apps/web/prisma
-COPY --from=deps --chown=pricetoken:pricetoken /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=deps --chown=pricetoken:pricetoken /app/node_modules/@prisma ./node_modules/@prisma
 
 USER pricetoken
 WORKDIR /app
