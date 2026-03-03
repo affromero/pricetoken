@@ -5,9 +5,12 @@
 .filters {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 0.5rem;
   flex-wrap: wrap;
-  gap: 0.75rem;
+}
+
+.filters > :last-child {
+  margin-left: auto;
 }
 
 .tableWrapper {
