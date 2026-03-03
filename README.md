@@ -116,6 +116,20 @@ Provider pricing pages → Daily cron (AI extraction) → PostgreSQL snapshots
               npm package (typed client)
 ```
 
+## Alternatives
+
+| Project | What it does | Differentiator |
+|---------|-------------|----------------|
+| [LiteLLM](https://github.com/BerriAI/litellm) | Proxy + SDK with cost tracking | Unified API gateway, 100+ providers |
+| [pricepertoken.com](https://pricepertoken.com) | Web UI with daily pricing updates | Clean comparison interface |
+| [LLM Price Check](https://llmpricecheck.com) | Side-by-side cost calculator | Visual cost comparison tool |
+| [Helicone](https://helicone.ai/llm-cost) | Observability platform + pricing | Production monitoring + cost tracking |
+| [Artificial Analysis](https://artificialanalysis.ai) | Benchmarks + pricing data | Performance benchmarks alongside pricing |
+| [tokencost](https://github.com/AgentOps-AI/tokencost) | Python cost estimation library | Python-native, AgentOps integration |
+| [llm-prices](https://github.com/simonw/llm-prices) | JSON pricing data | Raw data, minimal tooling |
+
+PriceToken focuses on being a **real-time API** — scraped daily from provider pages, served via REST with Redis caching, and distributed as a zero-dependency npm package with offline cost calculation.
+
 ## License
 
 MIT
