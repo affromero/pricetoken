@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import type { ModelPricing } from 'pricetoken';
 import { ProviderFilterChips, PROVIDER_COLORS } from '@/components/ProviderFilterChips/ProviderFilterChips';
+import { CurrencySelector } from '@/components/CurrencySelector/CurrencySelector';
 import styles from './PricingTable.module.css';
 
 interface PricingTableProps {
@@ -11,12 +12,31 @@ interface PricingTableProps {
 
 type SortKey = 'provider' | 'displayName' | 'inputPerMTok' | 'outputPerMTok';
 
-export function PricingTable({ pricing }: PricingTableProps) {
+export function PricingTable({ pricing: initialPricing }: PricingTableProps) {
+  const [pricing, setPricing] = useState(initialPricing);
   const [sortKey, setSortKey] = useState<SortKey>('inputPerMTok');
   const [sortAsc, setSortAsc] = useState(true);
   const [filter, setFilter] = useState<string>('');
+  const [currency, setCurrency] = useState('USD');
 
   const providers = [...new Set(pricing.map((m) => m.provider))];
+
+  const handleCurrencyChange = useCallback(async (code: string) => {
+    setCurrency(code);
+    if (code === 'USD') {
+      setPricing(initialPricing);
+      return;
+    }
+    try {
+      const res = await fetch(`/api/v1/pricing?currency=${code}`);
+      if (res.ok) {
+        const json = await res.json();
+        setPricing(json.data);
+      }
+    } catch {
+      // Fall back to initial pricing
+    }
+  }, [initialPricing]);
 
   const filtered = filter ? pricing.filter((m) => m.provider === filter) : pricing;
 
@@ -41,14 +61,19 @@ export function PricingTable({ pricing }: PricingTableProps) {
   }
 
   function formatPrice(price: number): string {
-    if (price < 0.01) return `$${price.toFixed(4)}`;
-    if (price < 1) return `$${price.toFixed(3)}`;
-    return `$${price.toFixed(2)}`;
+    if (price < 0.01) return `${price.toFixed(4)}`;
+    if (price < 1) return `${price.toFixed(3)}`;
+    return `${price.toFixed(2)}`;
   }
+
+  const currencySymbol = currency === 'USD' ? '$' : `${currency} `;
 
   return (
     <div className={styles.root}>
-      <ProviderFilterChips providers={providers} selected={filter} onSelect={setFilter} />
+      <div className={styles.filters}>
+        <ProviderFilterChips providers={providers} selected={filter} onSelect={setFilter} />
+        <CurrencySelector onChange={handleCurrencyChange} />
+      </div>
 
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
@@ -80,8 +105,8 @@ export function PricingTable({ pricing }: PricingTableProps) {
                   {model.provider}
                 </td>
                 <td className={styles.modelName}>{model.displayName}</td>
-                <td className={styles.price}>{formatPrice(model.inputPerMTok)}</td>
-                <td className={styles.price}>{formatPrice(model.outputPerMTok)}</td>
+                <td className={styles.price}>{currencySymbol}{formatPrice(model.inputPerMTok)}</td>
+                <td className={styles.price}>{currencySymbol}{formatPrice(model.outputPerMTok)}</td>
                 <td className={styles.context}>
                   {model.contextWindow ? `${(model.contextWindow / 1000).toFixed(0)}K` : '—'}
                 </td>

@@ -1,4 +1,8 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { getFetcherConfig } from '@/lib/fetcher-config';
+import { logUsage } from '@/lib/usage-logger';
+import { EXTRACTION_PROVIDERS } from './ai-registry';
+import type { ExtractionResult } from './ai-registry';
+import { SYSTEM_PROMPT } from './system-prompt';
 
 export interface ExtractedModel {
   modelId: string;
@@ -9,46 +13,71 @@ export interface ExtractedModel {
   maxOutputTokens?: number;
 }
 
-const SYSTEM_PROMPT = `You are a pricing data extractor. Extract AI model pricing from the given text.
-Return a JSON array of objects with these fields:
-- modelId: the API model identifier (e.g. "gpt-4.1", "claude-sonnet-4-6", "gemini-2.5-pro")
-- displayName: human-readable name
-- inputPerMTok: price per million input tokens in USD (number)
-- outputPerMTok: price per million output tokens in USD (number)
-- contextWindow: max input context in tokens (number, optional)
-- maxOutputTokens: max output tokens (number, optional)
-
-Only include chat/text generation models. Skip embedding, image, audio, and fine-tuning models.
-Return ONLY the JSON array, no markdown or explanation.`;
+export interface ExtractionOutput {
+  models: ExtractedModel[];
+  usage: { inputTokens: number; outputTokens: number };
+  provider: string;
+  model: string;
+}
 
 export async function extractPricing(
-  provider: string,
+  pricingProvider: string,
   pageText: string
-): Promise<ExtractedModel[]> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    throw new Error('ANTHROPIC_API_KEY is required for pricing extraction');
+): Promise<ExtractionOutput> {
+  const config = await getFetcherConfig();
+
+  const extractionProvider = EXTRACTION_PROVIDERS[config.extractionProvider];
+  if (!extractionProvider) {
+    throw new Error(`Unknown extraction provider: ${config.extractionProvider}`);
   }
 
-  const client = new Anthropic({ apiKey });
+  const apiKey = process.env[extractionProvider.envKey];
+  if (!apiKey) {
+    throw new Error(`${extractionProvider.envKey} is required for ${extractionProvider.displayName} extraction`);
+  }
 
-  const response = await client.messages.create({
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 2048,
-    system: SYSTEM_PROMPT,
-    messages: [
-      {
-        role: 'user',
-        content: `Extract ${provider} model pricing from this page:\n\n${pageText}`,
-      },
-    ],
+  const truncated = pageText.slice(0, config.maxTextLength);
+  const userPrompt = `Extract ${pricingProvider} model pricing from this page:\n\n${truncated}`;
+
+  const startTime = Date.now();
+  let result: ExtractionResult;
+  try {
+    result = await extractionProvider.extract(apiKey, config.extractionModel, SYSTEM_PROMPT, userPrompt);
+  } catch (err) {
+    logUsage({
+      provider: config.extractionProvider,
+      model: config.extractionModel,
+      inputTokens: 0,
+      outputTokens: 0,
+      durationMs: Date.now() - startTime,
+      error: err instanceof Error ? err.message : String(err),
+      metadata: { pricingProvider },
+    });
+    throw new Error(
+      `Extraction failed with ${config.extractionProvider}/${config.extractionModel}: ${err instanceof Error ? err.message : String(err)}`
+    );
+  }
+
+  const models = parseModels(result.content, pricingProvider);
+
+  logUsage({
+    provider: config.extractionProvider,
+    model: config.extractionModel,
+    inputTokens: result.usage.inputTokens,
+    outputTokens: result.usage.outputTokens,
+    durationMs: Date.now() - startTime,
+    metadata: { pricingProvider, modelsExtracted: models.length },
   });
 
-  const text = response.content
-    .filter((block): block is Anthropic.TextBlock => block.type === 'text')
-    .map((block) => block.text)
-    .join('');
+  return {
+    models,
+    usage: result.usage,
+    provider: config.extractionProvider,
+    model: config.extractionModel,
+  };
+}
 
+function parseModels(text: string, pricingProvider: string): ExtractedModel[] {
   try {
     const parsed: unknown = JSON.parse(text);
     if (!Array.isArray(parsed)) return [];
@@ -61,7 +90,7 @@ export async function extractPricing(
         typeof (m as Record<string, unknown>).outputPerMTok === 'number'
     );
   } catch {
-    console.warn(`Failed to parse pricing extraction for ${provider}:`, text.slice(0, 200));
+    console.warn(`Failed to parse pricing extraction for ${pricingProvider}:`, text.slice(0, 200));
     return [];
   }
 }

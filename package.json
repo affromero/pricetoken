@@ -13,7 +13,8 @@
     "test": "vitest run",
     "ci": "npm run lint && npm run typecheck && npm run test && npm run build",
     "seed": "doppler run -- npx tsx scripts/seed.ts",
-    "fetch-pricing": "doppler run -- npx tsx scripts/fetch-pricing.ts"
+    "fetch-pricing": "doppler run -- npx tsx scripts/fetch-pricing.ts",
+    "setup-dns": "doppler run -- npx tsx scripts/setup-dns.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

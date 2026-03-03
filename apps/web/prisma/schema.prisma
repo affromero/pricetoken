@@ -36,3 +36,29 @@ model ApiKey {
 
   @@index([keyHash])
 }
+
+model FetcherConfig {
+  id                 String   @id @default("singleton")
+  extractionProvider String   @default("anthropic")
+  extractionModel    String   @default("claude-haiku-4-5-20251001")
+  maxTextLength      Int      @default(8000)
+  enabled            Boolean  @default(true)
+  updatedAt          DateTime @updatedAt
+}
+
+model ApiUsageLog {
+  id           String   @id @default(cuid())
+  provider     String
+  model        String
+  operation    String   @default("pricing_extraction")
+  inputTokens  Int
+  outputTokens Int
+  costUsd      Float
+  durationMs   Int?
+  error        String?
+  metadata     Json?
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([provider, createdAt])
+}

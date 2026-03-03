@@ -2,6 +2,7 @@
 
 Real-time LLM pricing data. One API.
 
+<!-- Badge visible when repo is public or when viewing on GitHub while authenticated -->
 [![CI](https://github.com/affromero/pricetoken/actions/workflows/ci.yml/badge.svg)](https://github.com/affromero/pricetoken/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/pricetoken)](https://www.npmjs.com/package/pricetoken)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)

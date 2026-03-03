@@ -1,0 +1,34 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: var(--pt-surface);
+  border: 1px solid var(--pt-border);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.cardLabel {
+  font-size: 0.75rem;
+  color: var(--pt-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.cardValue {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--pt-text);
+}
+
+.cardSubtext {
+  font-size: 0.8125rem;
+  color: var(--pt-text-secondary);
+  margin-top: 0.25rem;
+}

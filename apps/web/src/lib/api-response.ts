@@ -1,13 +1,18 @@
 import { NextResponse } from 'next/server';
 import type { PriceTokenResponse, PriceTokenError } from 'pricetoken';
 
-export function apiSuccess<T>(data: T, cached = false): NextResponse<PriceTokenResponse<T>> {
+export function apiSuccess<T>(
+  data: T,
+  cached = false,
+  extraMeta?: { currency?: string; exchangeRate?: number }
+): NextResponse<PriceTokenResponse<T>> {
   return NextResponse.json(
     {
       data,
       meta: {
         timestamp: new Date().toISOString(),
         cached,
+        ...extraMeta,
       },
     },
     {

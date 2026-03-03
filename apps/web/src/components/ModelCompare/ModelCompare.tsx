@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import type { ModelPricing } from 'pricetoken';
 import { ProviderFilterChips } from '@/components/ProviderFilterChips/ProviderFilterChips';
+import { CurrencySelector } from '@/components/CurrencySelector/CurrencySelector';
 import styles from './ModelCompare.module.css';
 
 interface ModelCompareProps {
@@ -11,9 +12,28 @@ interface ModelCompareProps {
 
 const MAX_COMPARE = 5;
 
-export function ModelCompare({ pricing }: ModelCompareProps) {
+export function ModelCompare({ pricing: initialPricing }: ModelCompareProps) {
+  const [pricing, setPricing] = useState(initialPricing);
   const [providerFilter, setProviderFilter] = useState('');
   const [selected, setSelected] = useState<string[]>([]);
+  const [currency, setCurrency] = useState('USD');
+
+  const handleCurrencyChange = useCallback(async (code: string) => {
+    setCurrency(code);
+    if (code === 'USD') {
+      setPricing(initialPricing);
+      return;
+    }
+    try {
+      const res = await fetch(`/api/v1/pricing?currency=${code}`);
+      if (res.ok) {
+        const json = await res.json();
+        setPricing(json.data);
+      }
+    } catch {
+      // Fall back to initial pricing
+    }
+  }, [initialPricing]);
 
   const providers = [...new Set(pricing.map((m) => m.provider))];
   const filteredPricing = providerFilter
@@ -48,6 +68,8 @@ export function ModelCompare({ pricing }: ModelCompareProps) {
   const maxInput = Math.max(...selectedModels.map((m) => m.inputPerMTok), 0.01);
   const maxOutput = Math.max(...selectedModels.map((m) => m.outputPerMTok), 0.01);
 
+  const currencySymbol = currency === 'USD' ? '$' : `${currency} `;
+
   return (
     <div className={styles.root}>
       <div className={styles.providerFilter}>
@@ -55,9 +77,12 @@ export function ModelCompare({ pricing }: ModelCompareProps) {
       </div>
 
       <div className={styles.picker}>
-        <p className={styles.pickerLabel}>
-          Select up to {MAX_COMPARE} models to compare ({selected.length}/{MAX_COMPARE})
-        </p>
+        <div className={styles.pickerHeader}>
+          <p className={styles.pickerLabel}>
+            Select up to {MAX_COMPARE} models to compare ({selected.length}/{MAX_COMPARE})
+          </p>
+          <CurrencySelector onChange={handleCurrencyChange} />
+        </div>
         <div className={styles.chips}>
           {filteredPricing.map((m) => (
             <button
@@ -75,7 +100,7 @@ export function ModelCompare({ pricing }: ModelCompareProps) {
       {selectedModels.length > 0 && (
         <div className={styles.comparison}>
           <div className={styles.section}>
-            <h3 className={styles.sectionTitle}>Input Price ($/MTok)</h3>
+            <h3 className={styles.sectionTitle}>Input Price ({currencySymbol}/MTok)</h3>
             {selectedModels.map((m) => (
               <div key={m.modelId} className={styles.barRow}>
                 <span className={styles.barLabel}>{m.displayName}</span>
@@ -85,13 +110,13 @@ export function ModelCompare({ pricing }: ModelCompareProps) {
                     style={{ width: `${(m.inputPerMTok / maxInput) * 100}%` }}
                   />
                 </div>
-                <span className={styles.barValue}>${m.inputPerMTok.toFixed(4)}</span>
+                <span className={styles.barValue}>{currencySymbol}{m.inputPerMTok.toFixed(4)}</span>
               </div>
             ))}
           </div>
 
           <div className={styles.section}>
-            <h3 className={styles.sectionTitle}>Output Price ($/MTok)</h3>
+            <h3 className={styles.sectionTitle}>Output Price ({currencySymbol}/MTok)</h3>
             {selectedModels.map((m) => (
               <div key={m.modelId} className={styles.barRow}>
                 <span className={styles.barLabel}>{m.displayName}</span>
@@ -101,7 +126,7 @@ export function ModelCompare({ pricing }: ModelCompareProps) {
                     style={{ width: `${(m.outputPerMTok / maxOutput) * 100}%` }}
                   />
                 </div>
-                <span className={styles.barValue}>${m.outputPerMTok.toFixed(4)}</span>
+                <span className={styles.barValue}>{currencySymbol}{m.outputPerMTok.toFixed(4)}</span>
               </div>
             ))}
           </div>

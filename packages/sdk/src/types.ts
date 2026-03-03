@@ -45,6 +45,8 @@ export interface PriceTokenResponse<T> {
   meta: {
     timestamp: string;
     cached: boolean;
+    currency?: string;
+    exchangeRate?: number;
   };
 }
 

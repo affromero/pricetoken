@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import {
   LineChart,
   Line,
@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import type { ModelHistory } from 'pricetoken';
 import { ProviderFilterChips } from '@/components/ProviderFilterChips/ProviderFilterChips';
+import { CurrencySelector } from '@/components/CurrencySelector/CurrencySelector';
 import styles from './PriceHistoryChart.module.css';
 
 interface PriceHistoryChartProps {
@@ -58,6 +59,26 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
   const [priceType, setPriceType] = useState<PriceType>('input');
   const [providerFilter, setProviderFilter] = useState('');
   const [dateRange, setDateRange] = useState<DateRange>('30d');
+  const [currency, setCurrency] = useState('USD');
+  const [exchangeRate, setExchangeRate] = useState(1);
+
+  const handleCurrencyChange = useCallback(async (code: string) => {
+    setCurrency(code);
+    if (code === 'USD') {
+      setExchangeRate(1);
+      return;
+    }
+    try {
+      const res = await fetch('/api/v1/pricing/currencies');
+      if (res.ok) {
+        const json = await res.json();
+        const match = json.data.find((c: { code: string }) => c.code === code);
+        if (match) setExchangeRate(match.rate);
+      }
+    } catch {
+      // Fall back to USD
+    }
+  }, []);
 
   const providers = [...new Set(history.map((m) => m.provider))];
 
@@ -88,13 +109,15 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
       for (const model of filteredHistory) {
         const match = model.history.find((h) => h.date === date);
         if (match) {
-          point[model.modelId] =
-            priceType === 'input' ? match.inputPerMTok : match.outputPerMTok;
+          const value = priceType === 'input' ? match.inputPerMTok : match.outputPerMTok;
+          point[model.modelId] = value * exchangeRate;
         }
       }
       return point;
     });
-  }, [filteredHistory, priceType]);
+  }, [filteredHistory, priceType, exchangeRate]);
+
+  const currencySymbol = currency === 'USD' ? '$' : `${currency} `;
 
   return (
     <div className={styles.root}>
@@ -127,6 +150,7 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
             >
               Output Price
             </button>
+            <CurrencySelector onChange={handleCurrencyChange} />
           </div>
         </div>
       </div>
@@ -142,7 +166,7 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
           <YAxis
             stroke="var(--pt-text-secondary)"
             tick={{ fontSize: 12 }}
-            tickFormatter={(v: number) => `$${v}`}
+            tickFormatter={(v: number) => `${currencySymbol}${v}`}
           />
           <Tooltip
             contentStyle={{
@@ -152,7 +176,7 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
               fontSize: '0.8125rem',
             }}
             labelStyle={{ color: 'var(--pt-text)' }}
-            formatter={(value: number) => [`$${value.toFixed(4)}/MTok`]}
+            formatter={(value: number) => [`${currencySymbol}${value.toFixed(4)}/MTok`]}
           />
           <Legend />
           {filteredHistory.map((model, i) => (
