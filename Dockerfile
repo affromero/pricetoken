@@ -58,7 +58,7 @@ COPY --from=deps --chown=pricetoken:pricetoken /app/node_modules/.prisma ./node_
 COPY --from=deps --chown=pricetoken:pricetoken /app/node_modules/@prisma ./node_modules/@prisma
 
 USER pricetoken
-WORKDIR /app/apps/web
+WORKDIR /app
 EXPOSE 3001
 
 CMD ["node", "server.js"]
