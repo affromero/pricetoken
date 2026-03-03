@@ -5,11 +5,11 @@ export interface ProviderConfig {
 
 export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
   openai: {
-    url: 'https://platform.openai.com/docs/pricing',
+    url: 'https://developers.openai.com/api/docs/pricing',
     displayName: 'OpenAI',
   },
   anthropic: {
-    url: 'https://docs.anthropic.com/en/docs/about-claude/models',
+    url: 'https://platform.claude.com/docs/en/docs/about-claude/models',
     displayName: 'Anthropic',
   },
   google: {
