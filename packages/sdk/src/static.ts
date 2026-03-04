@@ -44,6 +44,32 @@ export const STATIC_PRICING: ModelPricing[] = [
 
   // OpenAI
   {
+    modelId: 'gpt-5.3-chat-latest',
+    provider: 'openai',
+    displayName: 'GPT-5.3 Instant',
+    inputPerMTok: 1.75,
+    outputPerMTok: 14,
+    contextWindow: 128000,
+    maxOutputTokens: 16384,
+    source: 'seed',
+    status: 'active',
+    confidence: 'high',
+    lastUpdated: null,
+  },
+  {
+    modelId: 'gpt-5.3-codex',
+    provider: 'openai',
+    displayName: 'GPT-5.3 Codex',
+    inputPerMTok: 1.75,
+    outputPerMTok: 14,
+    contextWindow: 400000,
+    maxOutputTokens: 128000,
+    source: 'seed',
+    status: 'active',
+    confidence: 'high',
+    lastUpdated: null,
+  },
+  {
     modelId: 'gpt-5.2',
     provider: 'openai',
     displayName: 'GPT-5.2',
