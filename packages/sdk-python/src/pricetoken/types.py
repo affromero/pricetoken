@@ -1,0 +1,111 @@
+"""Type definitions for the PriceToken SDK."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Any, Literal
+
+ModelStatus = Literal["active", "deprecated", "preview"]
+DataConfidence = Literal["high", "low"]
+Source = Literal["fetched", "seed", "admin", "verified"]
+
+
+@dataclass(slots=True)
+class ModelPricing:
+    model_id: str
+    provider: str
+    display_name: str
+    input_per_m_tok: float
+    output_per_m_tok: float
+    context_window: int | None
+    max_output_tokens: int | None
+    source: Source
+    status: ModelStatus | None
+    confidence: DataConfidence
+    last_updated: str | None
+
+
+@dataclass(slots=True)
+class CostEstimate:
+    model_id: str
+    input_tokens: int
+    output_tokens: int
+    input_cost: float
+    output_cost: float
+    total_cost: float
+
+
+@dataclass(slots=True)
+class PriceHistoryPoint:
+    date: str
+    input_per_m_tok: float
+    output_per_m_tok: float
+
+
+@dataclass(slots=True)
+class ModelHistory:
+    model_id: str
+    provider: str
+    display_name: str
+    history: list[PriceHistoryPoint]
+
+
+@dataclass(slots=True)
+class ProviderSummary:
+    id: str
+    display_name: str
+    model_count: int
+    cheapest_input_per_m_tok: float
+    cheapest_output_per_m_tok: float
+
+
+class PriceTokenError(Exception):
+    """Raised when the PriceToken API returns an error."""
+
+    def __init__(self, error: str, status: int) -> None:
+        super().__init__(error)
+        self.error = error
+        self.status = status
+
+
+def _parse_model_pricing(data: dict[str, Any]) -> ModelPricing:
+    return ModelPricing(
+        model_id=data["modelId"],
+        provider=data["provider"],
+        display_name=data["displayName"],
+        input_per_m_tok=data["inputPerMTok"],
+        output_per_m_tok=data["outputPerMTok"],
+        context_window=data.get("contextWindow"),
+        max_output_tokens=data.get("maxOutputTokens"),
+        source=data["source"],
+        status=data.get("status"),
+        confidence=data["confidence"],
+        last_updated=data.get("lastUpdated"),
+    )
+
+
+def _parse_history_point(data: dict[str, Any]) -> PriceHistoryPoint:
+    return PriceHistoryPoint(
+        date=data["date"],
+        input_per_m_tok=data["inputPerMTok"],
+        output_per_m_tok=data["outputPerMTok"],
+    )
+
+
+def _parse_model_history(data: dict[str, Any]) -> ModelHistory:
+    return ModelHistory(
+        model_id=data["modelId"],
+        provider=data["provider"],
+        display_name=data["displayName"],
+        history=[_parse_history_point(p) for p in data["history"]],
+    )
+
+
+def _parse_provider_summary(data: dict[str, Any]) -> ProviderSummary:
+    return ProviderSummary(
+        id=data["id"],
+        display_name=data["displayName"],
+        model_count=data["modelCount"],
+        cheapest_input_per_m_tok=data["cheapestInputPerMTok"],
+        cheapest_output_per_m_tok=data["cheapestOutputPerMTok"],
+    )
