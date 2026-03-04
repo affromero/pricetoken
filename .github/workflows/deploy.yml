@@ -21,7 +21,7 @@ jobs:
             cd ~/pricetoken
             git pull origin main
             docker compose -f docker-compose.prod.yml build --no-cache
-            docker compose -f docker-compose.prod.yml run --rm web npx prisma db push --schema=prisma/schema.prisma
+            docker compose -f docker-compose.prod.yml run --rm web npx prisma db push --schema=apps/web/prisma/schema.prisma
             docker compose -f docker-compose.prod.yml up -d --force-recreate
             sleep 5
             curl -sf http://localhost:3001/api/health || exit 1
