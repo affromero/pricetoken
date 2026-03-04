@@ -18,6 +18,11 @@ export function CostCalculator({ pricing: initialPricing }: CostCalculatorProps)
   const [inputTokens, setInputTokens] = useState(100_000);
   const [outputTokens, setOutputTokens] = useState(10_000);
   const [currency, setCurrency] = useState('USD');
+  const [inputMode, setInputMode] = useState<'sliders' | 'text'>('sliders');
+  const [text, setText] = useState('');
+
+  const estimatedTokens = Math.ceil(text.length / 4);
+  const effectiveInputTokens = inputMode === 'text' ? estimatedTokens : inputTokens;
 
   const handleCurrencyChange = useCallback(async (code: string) => {
     setCurrency(code);
@@ -58,10 +63,10 @@ export function CostCalculator({ pricing: initialPricing }: CostCalculatorProps)
       selectedModel.modelId,
       selectedModel.inputPerMTok,
       selectedModel.outputPerMTok,
-      inputTokens,
+      effectiveInputTokens,
       outputTokens
     );
-  }, [selectedModel, inputTokens, outputTokens]);
+  }, [selectedModel, effectiveInputTokens, outputTokens]);
 
   const currencySymbol = currency === 'USD' ? '$' : `${currency} `;
 
@@ -92,22 +97,59 @@ export function CostCalculator({ pricing: initialPricing }: CostCalculatorProps)
         </select>
       </div>
 
+      <div className={styles.modeToggle}>
+        <button
+          type="button"
+          className={`${styles.toggle} ${inputMode === 'sliders' ? styles.toggleActive : ''}`}
+          onClick={() => setInputMode('sliders')}
+        >
+          Sliders
+        </button>
+        <button
+          type="button"
+          className={`${styles.toggle} ${inputMode === 'text' ? styles.toggleActive : ''}`}
+          onClick={() => setInputMode('text')}
+        >
+          Paste Text
+        </button>
+      </div>
+
       <div className={styles.sliders}>
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor="input-tokens">
-            Input tokens: {inputTokens.toLocaleString()}
-          </label>
-          <input
-            id="input-tokens"
-            type="range"
-            className={styles.slider}
-            min={0}
-            max={10_000_000}
-            step={10_000}
-            value={inputTokens}
-            onChange={(e) => setInputTokens(Number(e.target.value))}
-          />
-        </div>
+        {inputMode === 'text' ? (
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="text-input">
+              Input text — estimated tokens: {estimatedTokens.toLocaleString()}
+            </label>
+            <textarea
+              id="text-input"
+              className={styles.textarea}
+              placeholder="Paste your text here to estimate input token cost…"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+            <div className={styles.textMeta}>
+              {text.length.toLocaleString()} characters · ~{estimatedTokens.toLocaleString()} tokens
+              <br />
+              Estimate: ~4 characters per token. Actual tokenization varies by provider.
+            </div>
+          </div>
+        ) : (
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="input-tokens">
+              Input tokens: {inputTokens.toLocaleString()}
+            </label>
+            <input
+              id="input-tokens"
+              type="range"
+              className={styles.slider}
+              min={0}
+              max={10_000_000}
+              step={10_000}
+              value={inputTokens}
+              onChange={(e) => setInputTokens(Number(e.target.value))}
+            />
+          </div>
+        )}
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="output-tokens">
