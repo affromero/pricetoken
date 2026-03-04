@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.5.0] - 2026-03-04
+
+### Added
+- `launchDate` field across the full stack: SDK types, Prisma schema, static data for all 42 models
+- `after` and `before` date query params on `/api/v1/pricing` and `/api/v1/pricing/cheapest` endpoints for filtering models by launch date
+- Sortable "Launched" column in the PricingTable (formats as "Mon YYYY", nulls sorted last)
+- Launch Price Timeline scatter plot on `/history` page showing price trends across providers over time
+- `after`/`before` params in both TS and Python SDK clients (`getPricing`, `getCheapest`, `get_pricing`, `get_cheapest`)
+- GPT-5.3 Instant and GPT-5.3 Codex to static pricing data
+- Legal disclaimer page (`/legal`) and footer link
+- 7 new tests for date range filtering and SDK param forwarding (188 total)
+
+### Fixed
+- Seed script now backfills `launchDate` on existing DB records (previously only inserted new models)
+- 6 launch dates corrected to use API GA dates instead of announcement dates (Grok 3/Mini, Gemini 2.0 Flash-Lite, DeepSeek V3, GPT-5.3 Codex, GPT-5.1)
+- Deploy workflow seed step added to populate new models on deploy
+
 ## [0.4.1] - 2026-03-04
 
 ### Added
