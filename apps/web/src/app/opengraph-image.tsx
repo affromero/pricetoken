@@ -67,7 +67,7 @@ export default function OGImage() {
               maxWidth: '700px',
             }}
           >
-            Real-time pricing across OpenAI, Anthropic, Google & more.
+            Real-time pricing across a growing list of providers.
             Free REST API + npm package. Open source.
           </p>
         </div>
