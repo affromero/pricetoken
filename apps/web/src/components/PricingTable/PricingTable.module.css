@@ -99,3 +99,8 @@
   font-family: var(--font-mono);
   font-size: 0.8125rem;
 }
+
+.date {
+  color: var(--pt-text-secondary);
+  font-size: 0.8125rem;
+}
