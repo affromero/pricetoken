@@ -1,0 +1,43 @@
+.root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 3rem 0 2rem;
+  color: var(--pt-text);
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.section h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+  color: var(--pt-text);
+}
+
+.section p {
+  font-size: 0.875rem;
+  color: var(--pt-text-secondary);
+  line-height: 1.7;
+  margin: 0 0 0.75rem;
+}
+
+.section a {
+  color: var(--pt-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.section a:hover {
+  color: var(--pt-text);
+}

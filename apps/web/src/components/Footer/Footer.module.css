@@ -34,3 +34,23 @@
 .link:hover {
   color: var(--pt-text);
 }
+
+.disclaimer {
+  max-width: 1200px;
+  margin: 1rem auto 0;
+  padding: 0 1.5rem;
+  font-size: 0.6875rem;
+  color: var(--pt-text-secondary);
+  opacity: 0.6;
+  line-height: 1.5;
+}
+
+.disclaimerLink {
+  color: var(--pt-text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.disclaimerLink:hover {
+  color: var(--pt-text);
+}
