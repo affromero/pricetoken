@@ -1,5 +1,22 @@
 # Changelog
 
+## [py-0.3.0] - 2026-03-04
+
+### Added
+- Python SDK (`packages/sdk-python/`) — zero-dependency Python package mirroring the JS/TS SDK
+- `PriceTokenClient` with all 6 API methods (get_pricing, get_model, get_history, get_providers, compare, get_cheapest)
+- `calculate_cost` and `calculate_model_cost` for offline cost calculation
+- 21 static pricing entries (Anthropic, OpenAI, Google, DeepSeek)
+- Full type coverage with `dataclass(slots=True)` and PEP 561 `py.typed` marker
+- `ci-python` job in CI workflow (ruff, mypy strict, pytest)
+- `publish-python.yml` workflow for PyPI publishing on `py-v*` tags
+- Python quick start section and PyPI badge in root README
+- PyPI Package row in comparison table
+
+### Fixed
+- ESLint `no-undef` for `process` in `.mjs` files
+- `package-lock.json` sync for `@pricetoken/sdk-python` workspace
+
 ## [0.3.0] - 2026-03-04
 
 ### Added
