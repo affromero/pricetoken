@@ -1,0 +1,79 @@
+.totals {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.totalCard {
+  background: var(--pt-surface);
+  border: 1px solid var(--pt-border);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.totalLabel {
+  font-size: 0.75rem;
+  color: var(--pt-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.totalValue {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--pt-accent);
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--pt-text);
+  margin-bottom: 1rem;
+}
+
+.chartWrapper {
+  background: var(--pt-surface);
+  border: 1px solid var(--pt-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table th {
+  text-align: left;
+  padding: 0.625rem 0.75rem;
+  color: var(--pt-text-secondary);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--pt-border);
+}
+
+.table td {
+  padding: 0.625rem 0.75rem;
+  color: var(--pt-text);
+  border-bottom: 1px solid var(--pt-border);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.empty {
+  color: var(--pt-text-secondary);
+  font-style: italic;
+  padding: 2rem;
+  text-align: center;
+}
