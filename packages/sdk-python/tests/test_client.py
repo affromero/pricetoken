@@ -156,3 +156,42 @@ class TestPriceTokenClient:
         with pytest.raises(PriceTokenError, match="HTTP 500") as exc_info:
             client.get_pricing()
         assert exc_info.value.status == 500
+
+    @patch("pricetoken.client.urllib.request.urlopen")
+    def test_telemetry_not_sent_when_disabled(self, mock_urlopen: MagicMock) -> None:
+        mock_urlopen.return_value = _mock_response([])
+        client = PriceTokenClient(base_url="https://test.api")
+
+        client.get_pricing()
+
+        assert mock_urlopen.call_count == 1
+
+    @patch("pricetoken.client.threading.Thread")
+    @patch("pricetoken.client.urllib.request.urlopen")
+    def test_telemetry_sent_via_thread_when_enabled(
+        self, mock_urlopen: MagicMock, mock_thread_cls: MagicMock
+    ) -> None:
+        mock_urlopen.return_value = _mock_response([])
+        mock_thread = MagicMock()
+        mock_thread_cls.return_value = mock_thread
+        client = PriceTokenClient(base_url="https://test.api", telemetry=True)
+
+        client.get_pricing()
+
+        mock_thread_cls.assert_called_once()
+        mock_thread.start.assert_called_once()
+        assert mock_thread_cls.call_args[1]["daemon"] is True
+
+    @patch("pricetoken.client.threading.Thread")
+    @patch("pricetoken.client.urllib.request.urlopen")
+    def test_telemetry_sent_only_once(
+        self, mock_urlopen: MagicMock, mock_thread_cls: MagicMock
+    ) -> None:
+        mock_urlopen.return_value = _mock_response([])
+        mock_thread_cls.return_value = MagicMock()
+        client = PriceTokenClient(base_url="https://test.api", telemetry=True)
+
+        client.get_pricing()
+        client.get_pricing()
+
+        assert mock_thread_cls.call_count == 1
