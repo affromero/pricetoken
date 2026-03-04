@@ -42,10 +42,12 @@ export class PriceTokenClient {
     return json.data;
   }
 
-  async getPricing(opts?: { provider?: string; currency?: string }): Promise<ModelPricing[]> {
+  async getPricing(opts?: { provider?: string; currency?: string; after?: string; before?: string }): Promise<ModelPricing[]> {
     const params = new URLSearchParams();
     if (opts?.provider) params.set('provider', opts.provider);
     if (opts?.currency) params.set('currency', opts.currency);
+    if (opts?.after) params.set('after', opts.after);
+    if (opts?.before) params.set('before', opts.before);
     const qs = params.toString();
     return this.request<ModelPricing[]>(`/api/v1/pricing${qs ? `?${qs}` : ''}`);
   }
@@ -80,10 +82,12 @@ export class PriceTokenClient {
     return this.request<ModelPricing[]>(`/api/v1/pricing/compare?${params}`);
   }
 
-  async getCheapest(opts?: { provider?: string; currency?: string }): Promise<ModelPricing> {
+  async getCheapest(opts?: { provider?: string; currency?: string; after?: string; before?: string }): Promise<ModelPricing> {
     const params = new URLSearchParams();
     if (opts?.provider) params.set('provider', opts.provider);
     if (opts?.currency) params.set('currency', opts.currency);
+    if (opts?.after) params.set('after', opts.after);
+    if (opts?.before) params.set('before', opts.before);
     const qs = params.toString();
     return this.request<ModelPricing>(`/api/v1/pricing/cheapest${qs ? `?${qs}` : ''}`);
   }

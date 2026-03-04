@@ -88,7 +88,7 @@ export default function DocsPage() {
             <Endpoint
               method="GET"
               path="/api/v1/pricing"
-              description="Current pricing for all models. Params: ?provider=anthropic&currency=EUR"
+              description="Current pricing for all models. Params: ?provider=anthropic&currency=EUR&after=2025-01-01&before=2025-12-31"
             />
             <Endpoint
               method="GET"
@@ -113,7 +113,7 @@ export default function DocsPage() {
             <Endpoint
               method="GET"
               path="/api/v1/pricing/cheapest"
-              description="Cheapest model overall or per provider. Params: ?provider=x&currency=EUR"
+              description="Cheapest model overall or per provider. Params: ?provider=x&currency=EUR&after=2025-01-01&before=2025-12-31"
             />
             <Endpoint
               method="GET"

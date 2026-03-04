@@ -29,6 +29,7 @@ export async function saveSnapshots(
     source,
     status: m.status ?? null,
     confidence,
+    launchDate: null,
   }));
 
   const result = await prisma.modelPricingSnapshot.createMany({ data });
@@ -50,6 +51,7 @@ export async function getLatestPricing(provider?: string): Promise<ModelPricing[
       source: string;
       status: string | null;
       confidence: string | null;
+      launchDate: Date | null;
       createdAt: Date;
     }>
   >(Prisma.sql`
@@ -57,7 +59,7 @@ export async function getLatestPricing(provider?: string): Promise<ModelPricing[
       "modelId", "provider", "displayName",
       "inputPerMTok", "outputPerMTok",
       "contextWindow", "maxOutputTokens",
-      "source", "status", "confidence", "createdAt"
+      "source", "status", "confidence", "launchDate", "createdAt"
     FROM "ModelPricingSnapshot"
     ${where}
     ORDER BY "modelId", "createdAt" DESC
@@ -75,6 +77,7 @@ export async function getLatestPricing(provider?: string): Promise<ModelPricing[
     status: (s.status as ModelPricing['status']) ?? null,
     confidence: (s.confidence ?? 'high') as ModelPricing['confidence'],
     lastUpdated: s.createdAt.toISOString(),
+    launchDate: s.launchDate?.toISOString().split('T')[0] ?? null,
   }));
 }
 
@@ -160,6 +163,7 @@ export async function seedFromStatic(): Promise<number> {
     source: 'seed',
     status: m.status ?? 'active',
     confidence: m.confidence ?? 'high',
+    launchDate: m.launchDate ? new Date(m.launchDate) : null,
   }));
 
   const result = await prisma.modelPricingSnapshot.createMany({ data });

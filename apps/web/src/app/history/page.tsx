@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
 import { PriceHistoryChart } from '@/components/PriceHistoryChart/PriceHistoryChart';
+import { LaunchPriceChart } from '@/components/LaunchPriceChart/LaunchPriceChart';
 import { STATIC_PRICING } from 'pricetoken';
-import type { ModelHistory } from 'pricetoken';
+import type { ModelHistory, ModelPricing } from 'pricetoken';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -23,6 +24,16 @@ async function getHistory(): Promise<ModelHistory[]> {
   }
 }
 
+async function getPricingData(): Promise<ModelPricing[]> {
+  try {
+    const { getCurrentPricing } = await import('@/lib/pricing-queries');
+    const pricing = await getCurrentPricing();
+    return pricing.length > 0 ? pricing : STATIC_PRICING;
+  } catch {
+    return STATIC_PRICING;
+  }
+}
+
 function getFallbackHistory(): ModelHistory[] {
   const today = new Date().toISOString().split('T')[0]!;
   return STATIC_PRICING.map((m) => ({
@@ -36,7 +47,7 @@ function getFallbackHistory(): ModelHistory[] {
 }
 
 export default async function HistoryPage() {
-  const history = await getHistory();
+  const [history, pricing] = await Promise.all([getHistory(), getPricingData()]);
 
   return (
     <>
@@ -48,6 +59,14 @@ export default async function HistoryPage() {
         </p>
         <div className={styles.chart}>
           <PriceHistoryChart history={history} />
+        </div>
+
+        <h2 className={styles.sectionTitle}>Launch Price Timeline</h2>
+        <p className={styles.subtitle}>
+          See how model pricing compares at launch across providers and time.
+        </p>
+        <div className={styles.chart}>
+          <LaunchPriceChart pricing={pricing} />
         </div>
       </main>
       <Footer />

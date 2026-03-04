@@ -119,6 +119,36 @@ describe('PriceTokenClient', () => {
     await expect(client.getModel('nonexistent')).rejects.toThrow('Model not found');
   });
 
+  it('getPricing forwards after and before date params', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getPricing({ after: '2025-01-01', before: '2025-12-31' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('after=2025-01-01'),
+      expect.anything()
+    );
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('before=2025-12-31'),
+      expect.anything()
+    );
+  });
+
+  it('getCheapest forwards after and before date params', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse({}) as Response
+    );
+
+    await client.getCheapest({ after: '2025-06-01' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('after=2025-06-01'),
+      expect.anything()
+    );
+  });
+
   it('throws on HTTP error with no JSON body', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue({
       ok: false,

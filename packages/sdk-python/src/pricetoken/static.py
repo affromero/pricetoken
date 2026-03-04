@@ -16,6 +16,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2026-02-05",
     ),
     ModelPricing(
         model_id="claude-sonnet-4-6",
@@ -29,6 +30,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2026-02-17",
     ),
     ModelPricing(
         model_id="claude-haiku-4-5-20251001",
@@ -42,8 +44,37 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-10-15",
     ),
     # OpenAI
+    ModelPricing(
+        model_id="gpt-5.3-chat-latest",
+        provider="openai",
+        display_name="GPT-5.3 Instant",
+        input_per_m_tok=1.75,
+        output_per_m_tok=14,
+        context_window=128_000,
+        max_output_tokens=16_384,
+        source="seed",
+        status="active",
+        confidence="high",
+        last_updated=None,
+        launch_date="2026-03-03",
+    ),
+    ModelPricing(
+        model_id="gpt-5.3-codex",
+        provider="openai",
+        display_name="GPT-5.3 Codex",
+        input_per_m_tok=1.75,
+        output_per_m_tok=14,
+        context_window=400_000,
+        max_output_tokens=128_000,
+        source="seed",
+        status="active",
+        confidence="high",
+        last_updated=None,
+        launch_date="2026-02-24",
+    ),
     ModelPricing(
         model_id="gpt-5.2",
         provider="openai",
@@ -56,6 +87,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-12-11",
     ),
     ModelPricing(
         model_id="gpt-5",
@@ -69,6 +101,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-08-07",
     ),
     ModelPricing(
         model_id="gpt-5-mini",
@@ -82,6 +115,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-08-07",
     ),
     ModelPricing(
         model_id="gpt-5-nano",
@@ -95,6 +129,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-08-07",
     ),
     ModelPricing(
         model_id="gpt-4.1",
@@ -108,6 +143,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-04-14",
     ),
     ModelPricing(
         model_id="gpt-4.1-mini",
@@ -121,6 +157,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-04-14",
     ),
     ModelPricing(
         model_id="gpt-4.1-nano",
@@ -134,6 +171,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-04-14",
     ),
     ModelPricing(
         model_id="gpt-4o",
@@ -147,6 +185,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2024-05-13",
     ),
     ModelPricing(
         model_id="gpt-4o-mini",
@@ -160,6 +199,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2024-07-18",
     ),
     ModelPricing(
         model_id="o3",
@@ -173,6 +213,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-04-16",
     ),
     ModelPricing(
         model_id="o4-mini",
@@ -186,6 +227,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-04-16",
     ),
     ModelPricing(
         model_id="gpt-5.1",
@@ -199,6 +241,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-11-13",
     ),
     ModelPricing(
         model_id="o3-pro",
@@ -212,6 +255,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-06-10",
     ),
     ModelPricing(
         model_id="o3-mini",
@@ -225,6 +269,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-01-31",
     ),
     # Google
     ModelPricing(
@@ -239,6 +284,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-06-17",
     ),
     ModelPricing(
         model_id="gemini-2.5-flash",
@@ -252,6 +298,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-06-17",
     ),
     ModelPricing(
         model_id="gemini-2.0-flash",
@@ -265,6 +312,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-02-05",
     ),
     ModelPricing(
         model_id="gemini-2.0-flash-lite",
@@ -278,6 +326,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-02-25",
     ),
     ModelPricing(
         model_id="gemini-2.5-flash-lite",
@@ -291,6 +340,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date=None,
     ),
     ModelPricing(
         model_id="gemini-3.1-pro-preview",
@@ -304,6 +354,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="preview",
         confidence="high",
         last_updated=None,
+        launch_date=None,
     ),
     ModelPricing(
         model_id="gemini-3-flash-preview",
@@ -317,6 +368,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="preview",
         confidence="high",
         last_updated=None,
+        launch_date=None,
     ),
     # DeepSeek
     ModelPricing(
@@ -331,6 +383,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2024-12-26",
     ),
     ModelPricing(
         model_id="deepseek-reasoner",
@@ -344,6 +397,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-01-20",
     ),
     # xAI
     ModelPricing(
@@ -358,6 +412,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date=None,
     ),
     ModelPricing(
         model_id="grok-4.1-fast",
@@ -371,6 +426,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date=None,
     ),
     ModelPricing(
         model_id="grok-3",
@@ -384,6 +440,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-04-09",
     ),
     ModelPricing(
         model_id="grok-3-mini",
@@ -397,6 +454,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-04-09",
     ),
     # Mistral
     ModelPricing(
@@ -411,6 +469,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-12-02",
     ),
     ModelPricing(
         model_id="mistral-medium-3",
@@ -424,6 +483,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-05-07",
     ),
     ModelPricing(
         model_id="codestral",
@@ -437,6 +497,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-01-13",
     ),
     ModelPricing(
         model_id="mistral-small-3.1",
@@ -450,5 +511,6 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
+        launch_date="2025-03-17",
     ),
 ]

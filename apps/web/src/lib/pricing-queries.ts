@@ -2,8 +2,16 @@ import type { ModelPricing, ProviderSummary } from 'pricetoken';
 import { getLatestPricing, getPriceHistory } from './fetcher/store';
 import { PRICING_PROVIDERS } from './fetcher/providers';
 
-export async function getCurrentPricing(provider?: string): Promise<ModelPricing[]> {
-  return getLatestPricing(provider);
+export interface DateRange {
+  after?: string;
+  before?: string;
+}
+
+export async function getCurrentPricing(provider?: string, dateRange?: DateRange): Promise<ModelPricing[]> {
+  let models = await getLatestPricing(provider);
+  if (dateRange?.after) models = models.filter((m) => m.launchDate && m.launchDate >= dateRange.after!);
+  if (dateRange?.before) models = models.filter((m) => m.launchDate && m.launchDate <= dateRange.before!);
+  return models;
 }
 
 export async function getModelPricing(modelId: string): Promise<ModelPricing | null> {
@@ -45,8 +53,10 @@ export async function compareModels(modelIds: string[]): Promise<ModelPricing[]>
   return all.filter((m) => idSet.has(m.modelId));
 }
 
-export async function getCheapestModel(provider?: string): Promise<ModelPricing | null> {
-  const all = await getLatestPricing(provider);
+export async function getCheapestModel(provider?: string, dateRange?: DateRange): Promise<ModelPricing | null> {
+  let all = await getLatestPricing(provider);
+  if (dateRange?.after) all = all.filter((m) => m.launchDate && m.launchDate >= dateRange.after!);
+  if (dateRange?.before) all = all.filter((m) => m.launchDate && m.launchDate <= dateRange.before!);
   if (all.length === 0) return null;
 
   return all.reduce((cheapest, model) =>

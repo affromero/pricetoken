@@ -11,7 +11,7 @@ interface PricingTableProps {
   pricing: ModelPricing[];
 }
 
-type SortKey = 'provider' | 'displayName' | 'inputPerMTok' | 'outputPerMTok';
+type SortKey = 'provider' | 'displayName' | 'inputPerMTok' | 'outputPerMTok' | 'launchDate';
 
 export function PricingTable({ pricing: initialPricing }: PricingTableProps) {
   const [pricing, setPricing] = useState(initialPricing);
@@ -46,6 +46,14 @@ export function PricingTable({ pricing: initialPricing }: PricingTableProps) {
   }
 
   const sorted = [...filtered].sort((a, b) => {
+    if (sortKey === 'launchDate') {
+      const aDate = a.launchDate ?? '';
+      const bDate = b.launchDate ?? '';
+      if (!aDate && !bDate) return 0;
+      if (!aDate) return 1;
+      if (!bDate) return -1;
+      return sortAsc ? aDate.localeCompare(bDate) : bDate.localeCompare(aDate);
+    }
     const aVal = a[sortKey];
     const bVal = b[sortKey];
     if (typeof aVal === 'number' && typeof bVal === 'number') {
@@ -63,6 +71,12 @@ export function PricingTable({ pricing: initialPricing }: PricingTableProps) {
       setSortKey(key);
       setSortAsc(true);
     }
+  }
+
+  function formatLaunchDate(iso: string): string {
+    const [year, month] = iso.split('-');
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${months[parseInt(month!, 10) - 1]} ${year}`;
   }
 
   function formatPrice(price: number): string {
@@ -106,6 +120,9 @@ export function PricingTable({ pricing: initialPricing }: PricingTableProps) {
                 Output/MTok {sortKey === 'outputPerMTok' ? (sortAsc ? '↑' : '↓') : ''}
               </th>
               <th>Context</th>
+              <th onClick={() => handleSort('launchDate')} className={styles.sortable}>
+                Launched {sortKey === 'launchDate' ? (sortAsc ? '↑' : '↓') : ''}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -126,6 +143,9 @@ export function PricingTable({ pricing: initialPricing }: PricingTableProps) {
                 <td className={styles.price}>{currencySymbol}{formatPrice(model.outputPerMTok)}</td>
                 <td className={styles.context}>
                   {model.contextWindow ? `${(model.contextWindow / 1000).toFixed(0)}K` : '—'}
+                </td>
+                <td className={styles.date}>
+                  {model.launchDate ? formatLaunchDate(model.launchDate) : '—'}
                 </td>
               </tr>
             ))}

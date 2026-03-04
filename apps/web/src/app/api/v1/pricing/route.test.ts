@@ -39,6 +39,7 @@ const mockModels = [
     status: 'active' as const,
     confidence: 'high' as const,
     lastUpdated: '2026-03-01T00:00:00Z',
+    launchDate: '2026-02-17',
   },
 ];
 
@@ -59,8 +60,8 @@ describe('GET /api/v1/pricing', () => {
     expect(res.status).toBe(200);
     expect(body.data).toEqual(mockModels);
     expect(body.meta.cached).toBe(false);
-    expect(mockGetCurrentPricing).toHaveBeenCalledWith(undefined);
-    expect(mockGetCached).toHaveBeenCalledWith('pt:cache:pricing:all');
+    expect(mockGetCurrentPricing).toHaveBeenCalledWith(undefined, undefined);
+    expect(mockGetCached).toHaveBeenCalledWith('pt:cache:pricing:all::');
   });
 
   it('returns cached data on cache hit', async () => {
@@ -81,8 +82,8 @@ describe('GET /api/v1/pricing', () => {
     const req = new NextRequest('http://localhost/api/v1/pricing?provider=anthropic');
     await GET(req);
 
-    expect(mockGetCached).toHaveBeenCalledWith('pt:cache:pricing:anthropic');
-    expect(mockGetCurrentPricing).toHaveBeenCalledWith('anthropic');
+    expect(mockGetCached).toHaveBeenCalledWith('pt:cache:pricing:anthropic::');
+    expect(mockGetCurrentPricing).toHaveBeenCalledWith('anthropic', undefined);
   });
 
   it('converts currency when requested', async () => {
@@ -130,6 +131,17 @@ describe('GET /api/v1/pricing', () => {
     const res = await GET(req);
 
     expect(res.headers.get('Cache-Control')).toBe('public, max-age=300');
+  });
+
+  it('passes after and before date params to getCurrentPricing', async () => {
+    mockGetCached.mockResolvedValue(null);
+    mockGetCurrentPricing.mockResolvedValue(mockModels);
+
+    const req = new NextRequest('http://localhost/api/v1/pricing?after=2025-01-01&before=2025-12-31');
+    await GET(req);
+
+    expect(mockGetCurrentPricing).toHaveBeenCalledWith(undefined, { after: '2025-01-01', before: '2025-12-31' });
+    expect(mockGetCached).toHaveBeenCalledWith('pt:cache:pricing:all:2025-01-01:2025-12-31');
   });
 
   it('returns 500 with apiError shape on unexpected error', async () => {

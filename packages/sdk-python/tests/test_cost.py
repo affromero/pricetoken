@@ -60,6 +60,7 @@ class TestCalculateModelCost:
                 status="active",
                 confidence="high",
                 last_updated=None,
+                launch_date=None,
             ),
         ]
         result = calculate_model_cost("custom-model", 2_000_000, 1_000_000, custom)

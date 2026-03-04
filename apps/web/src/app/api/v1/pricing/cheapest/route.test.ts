@@ -38,6 +38,7 @@ const mockModel = {
   status: 'active' as const,
   confidence: 'high' as const,
   lastUpdated: '2026-03-01T00:00:00Z',
+  launchDate: '2025-02-05',
 };
 
 describe('GET /api/v1/pricing/cheapest', () => {
@@ -57,7 +58,7 @@ describe('GET /api/v1/pricing/cheapest', () => {
     expect(res.status).toBe(200);
     expect(body.data.modelId).toBe('gemini-2.0-flash-lite');
     expect(body.meta.cached).toBe(false);
-    expect(mockGetCached).toHaveBeenCalledWith('pt:cache:cheapest:all');
+    expect(mockGetCached).toHaveBeenCalledWith('pt:cache:cheapest:all::');
   });
 
   it('returns cached model on cache hit', async () => {
@@ -78,8 +79,8 @@ describe('GET /api/v1/pricing/cheapest', () => {
     const req = new NextRequest('http://localhost/api/v1/pricing/cheapest?provider=openai');
     await GET(req);
 
-    expect(mockGetCached).toHaveBeenCalledWith('pt:cache:cheapest:openai');
-    expect(mockGetCheapestModel).toHaveBeenCalledWith('openai');
+    expect(mockGetCached).toHaveBeenCalledWith('pt:cache:cheapest:openai::');
+    expect(mockGetCheapestModel).toHaveBeenCalledWith('openai', undefined);
   });
 
   it('returns 404 when no pricing data available', async () => {
@@ -113,8 +114,8 @@ describe('GET /api/v1/pricing/cheapest', () => {
     const req = new NextRequest('http://localhost/api/v1/pricing/cheapest?provider=anthropic');
     await GET(req);
 
-    expect(mockGetCached).toHaveBeenCalledWith('pt:cache:cheapest:anthropic');
-    expect(mockSetCache).toHaveBeenCalledWith('pt:cache:cheapest:anthropic', mockModel);
+    expect(mockGetCached).toHaveBeenCalledWith('pt:cache:cheapest:anthropic::');
+    expect(mockSetCache).toHaveBeenCalledWith('pt:cache:cheapest:anthropic::', mockModel);
   });
 
   it('converts currency when requested', async () => {

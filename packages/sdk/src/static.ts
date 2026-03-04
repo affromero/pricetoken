@@ -14,6 +14,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2026-02-05',
   },
   {
     modelId: 'claude-sonnet-4-6',
@@ -27,6 +28,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2026-02-17',
   },
   {
     modelId: 'claude-haiku-4-5-20251001',
@@ -40,6 +42,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-10-15',
   },
 
   // OpenAI
@@ -55,6 +58,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2026-03-03',
   },
   {
     modelId: 'gpt-5.3-codex',
@@ -68,6 +72,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2026-02-24',
   },
   {
     modelId: 'gpt-5.2',
@@ -81,6 +86,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-12-11',
   },
   {
     modelId: 'gpt-5',
@@ -94,6 +100,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-08-07',
   },
   {
     modelId: 'gpt-5-mini',
@@ -107,6 +114,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-08-07',
   },
   {
     modelId: 'gpt-5-nano',
@@ -120,6 +128,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-08-07',
   },
   {
     modelId: 'gpt-4.1',
@@ -133,6 +142,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-04-14',
   },
   {
     modelId: 'gpt-4.1-mini',
@@ -146,6 +156,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-04-14',
   },
   {
     modelId: 'gpt-4.1-nano',
@@ -159,6 +170,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-04-14',
   },
   {
     modelId: 'gpt-4o',
@@ -172,6 +184,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2024-05-13',
   },
   {
     modelId: 'gpt-4o-mini',
@@ -185,6 +198,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2024-07-18',
   },
   {
     modelId: 'o3',
@@ -198,6 +212,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-04-16',
   },
   {
     modelId: 'o4-mini',
@@ -211,6 +226,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-04-16',
   },
   {
     modelId: 'gpt-5.1',
@@ -224,6 +240,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-11-13',
   },
   {
     modelId: 'o3-pro',
@@ -237,6 +254,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-06-10',
   },
   {
     modelId: 'o3-mini',
@@ -250,6 +268,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-01-31',
   },
 
   // Google
@@ -265,6 +284,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-06-17',
   },
   {
     modelId: 'gemini-2.5-flash',
@@ -278,6 +298,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-06-17',
   },
   {
     modelId: 'gemini-2.0-flash',
@@ -291,6 +312,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-02-05',
   },
   {
     modelId: 'gemini-2.0-flash-lite',
@@ -304,6 +326,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-02-25',
   },
   {
     modelId: 'gemini-2.5-flash-lite',
@@ -317,6 +340,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: null,
   },
   {
     modelId: 'gemini-3.1-pro-preview',
@@ -330,6 +354,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'preview',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: null,
   },
   {
     modelId: 'gemini-3-flash-preview',
@@ -343,6 +368,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'preview',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: null,
   },
 
   // DeepSeek
@@ -358,6 +384,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2024-12-26',
   },
   {
     modelId: 'deepseek-reasoner',
@@ -371,6 +398,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-01-20',
   },
 
   // xAI
@@ -386,6 +414,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: null,
   },
   {
     modelId: 'grok-4.1-fast',
@@ -399,6 +428,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: null,
   },
   {
     modelId: 'grok-3',
@@ -412,6 +442,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-04-09',
   },
   {
     modelId: 'grok-3-mini',
@@ -425,6 +456,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-04-09',
   },
 
   // Mistral
@@ -440,6 +472,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-12-02',
   },
   {
     modelId: 'mistral-medium-3',
@@ -453,6 +486,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-05-07',
   },
   {
     modelId: 'codestral',
@@ -466,6 +500,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-01-13',
   },
   {
     modelId: 'mistral-small-3.1',
@@ -479,5 +514,6 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
+    launchDate: '2025-03-17',
   },
 ];

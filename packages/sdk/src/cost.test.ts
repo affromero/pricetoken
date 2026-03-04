@@ -60,6 +60,7 @@ describe('calculateModelCost', () => {
         status: 'active' as const,
         confidence: 'high' as const,
         lastUpdated: null,
+        launchDate: null,
       },
     ];
     const result = calculateModelCost('custom-model', 2_000_000, 1_000_000, custom);
