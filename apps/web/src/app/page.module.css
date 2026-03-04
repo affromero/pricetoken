@@ -51,6 +51,49 @@
   color: var(--pt-accent);
 }
 
+.curlExample {
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 520px;
+  text-align: left;
+  border: 1px solid var(--pt-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.curlHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  background: var(--pt-surface);
+  border-bottom: 1px solid var(--pt-border);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+
+.curlMethod {
+  font-weight: 700;
+  color: var(--pt-accent);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.curlUrl {
+  color: var(--pt-text-secondary);
+}
+
+.curlResponse {
+  margin: 0;
+  padding: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--pt-text-secondary);
+  background: var(--pt-bg);
+  overflow-x: auto;
+}
+
 .section {
   width: 100%;
   padding: 3rem 0;
