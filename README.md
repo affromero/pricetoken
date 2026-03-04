@@ -10,6 +10,7 @@ Real-time pricing data scraped from providers, served via REST API, visualized o
 [![npm](https://img.shields.io/npm/v/pricetoken)](https://www.npmjs.com/package/pricetoken)
 [![PyPI](https://img.shields.io/pypi/v/pricetoken)](https://pypi.org/project/pricetoken/)
 [![npm downloads](https://img.shields.io/npm/dt/pricetoken)](https://www.npmjs.com/package/pricetoken)
+[![PyPI downloads](https://img.shields.io/pypi/dm/pricetoken)](https://pypi.org/project/pricetoken/)
 [![npm package size](https://img.shields.io/npm/unpacked-size/pricetoken)](https://www.npmjs.com/package/pricetoken)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
