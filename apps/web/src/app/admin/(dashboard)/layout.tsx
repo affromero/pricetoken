@@ -1,11 +1,23 @@
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { COOKIE_NAME, verifySessionToken } from '@/lib/admin-auth';
+import { LogoutButton } from '@/components/LogoutButton/LogoutButton';
 import styles from './layout.module.css';
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(COOKIE_NAME)?.value;
+  const valid = token ? await verifySessionToken(token) : false;
+  if (!valid) redirect('/admin/login');
+
   return (
     <div className={styles.root}>
       <aside className={styles.sidebar}>
-        <div className={styles.sidebarTitle}>Admin</div>
+        <div className={styles.sidebarHeader}>
+          <div className={styles.sidebarTitle}>Admin</div>
+          <LogoutButton />
+        </div>
         <nav className={styles.nav}>
           <Link href="/admin" className={styles.navLink}>
             Overview
