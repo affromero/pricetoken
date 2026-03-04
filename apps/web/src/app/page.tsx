@@ -37,7 +37,7 @@ export default async function HomePage() {
             operatingSystem: 'Any',
             offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
             description:
-              'Free REST API and npm package for real-time LLM pricing data across OpenAI, Anthropic, Google, and more.',
+              'Free REST API, npm package, and Python SDK for real-time LLM pricing data across OpenAI, Anthropic, Google, and more.',
           }),
         }}
       />
@@ -55,6 +55,7 @@ export default async function HomePage() {
           </p>
           <div className={styles.cta}>
             <code className={styles.install}>npm install pricetoken</code>
+            <code className={styles.install}>pip install pricetoken</code>
           </div>
         </section>
 
@@ -77,8 +78,8 @@ export default async function HomePage() {
             <p>30 requests/hour free. No signup required. JSON responses with CORS enabled.</p>
           </div>
           <div className={styles.feature}>
-            <h3>npm Package</h3>
-            <p>Typed client, offline cost calculator, and static pricing data. Zero runtime deps.</p>
+            <h3>npm & PyPI Packages</h3>
+            <p>Typed clients for JS/TS and Python. Offline cost calculator and static pricing data. Zero runtime deps.</p>
           </div>
           <div className={styles.feature}>
             <h3>Open Source</h3>
