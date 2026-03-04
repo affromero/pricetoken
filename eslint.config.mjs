@@ -8,6 +8,12 @@ export default tseslint.config(
     ignores: ['**/node_modules/**', '**/dist/**', '**/.next/**', '**/prisma/generated/**', '**/next-env.d.ts'],
   },
   {
+    files: ['**/*.mjs'],
+    languageOptions: {
+      globals: { process: 'readonly' },
+    },
+  },
+  {
     rules: {
       '@typescript-eslint/no-unused-vars': [
         'error',
