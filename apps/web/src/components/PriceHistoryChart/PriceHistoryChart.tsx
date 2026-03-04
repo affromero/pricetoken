@@ -169,6 +169,7 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
             tickFormatter={(v: number) => `${currencySymbol}${v}`}
           />
           <Tooltip
+            shared={false}
             contentStyle={{
               background: 'var(--pt-surface)',
               border: '1px solid var(--pt-border)',
@@ -176,7 +177,7 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
               fontSize: '0.8125rem',
             }}
             labelStyle={{ color: 'var(--pt-text)' }}
-            formatter={(value: number) => [`${currencySymbol}${value.toFixed(4)}/MTok`]}
+            formatter={(value: number, name: string) => [`${currencySymbol}${value.toFixed(2)}/MTok`, name]}
           />
           <Legend />
           {filteredHistory.map((model, i) => (
