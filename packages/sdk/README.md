@@ -74,7 +74,7 @@ Access bundled pricing without network calls:
 ```typescript
 import { STATIC_PRICING } from 'pricetoken';
 
-console.log(STATIC_PRICING.length); // 16 models
+console.log(STATIC_PRICING.length); // 21 models
 ```
 
 ## API
