@@ -72,7 +72,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2026-02-05',
+    launchDate: '2026-02-24',
   },
   {
     modelId: 'gpt-5.2',
@@ -240,7 +240,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-11-12',
+    launchDate: '2025-11-13',
   },
   {
     modelId: 'o3-pro',
@@ -326,7 +326,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-02-05',
+    launchDate: '2025-02-25',
   },
   {
     modelId: 'gemini-2.5-flash-lite',
@@ -384,7 +384,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2024-12-27',
+    launchDate: '2024-12-26',
   },
   {
     modelId: 'deepseek-reasoner',
@@ -442,7 +442,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-02-17',
+    launchDate: '2025-04-09',
   },
   {
     modelId: 'grok-3-mini',
@@ -456,7 +456,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-02-17',
+    launchDate: '2025-04-09',
   },
 
   // Mistral

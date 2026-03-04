@@ -73,7 +73,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2026-02-05",
+        launch_date="2026-02-24",
     ),
     ModelPricing(
         model_id="gpt-5.2",
@@ -241,7 +241,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2025-11-12",
+        launch_date="2025-11-13",
     ),
     ModelPricing(
         model_id="o3-pro",
@@ -326,7 +326,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2025-02-05",
+        launch_date="2025-02-25",
     ),
     ModelPricing(
         model_id="gemini-2.5-flash-lite",
@@ -383,7 +383,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2024-12-27",
+        launch_date="2024-12-26",
     ),
     ModelPricing(
         model_id="deepseek-reasoner",
@@ -440,7 +440,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2025-02-17",
+        launch_date="2025-04-09",
     ),
     ModelPricing(
         model_id="grok-3-mini",
@@ -454,7 +454,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2025-02-17",
+        launch_date="2025-04-09",
     ),
     # Mistral
     ModelPricing(
