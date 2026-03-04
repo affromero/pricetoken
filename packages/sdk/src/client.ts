@@ -6,21 +6,46 @@ import type {
   PriceTokenError,
 } from './types';
 
+const SDK_VERSION = '0.5.0';
+
 export interface ClientOptions {
   baseUrl?: string;
   apiKey?: string;
+  telemetry?: boolean;
 }
 
 export class PriceTokenClient {
   private readonly baseUrl: string;
   private readonly apiKey?: string;
+  private readonly telemetryEnabled: boolean;
+  private telemetrySent = false;
 
   constructor(options?: ClientOptions) {
     this.baseUrl = (options?.baseUrl ?? 'https://pricetoken.ai').replace(/\/$/, '');
     this.apiKey = options?.apiKey;
+    this.telemetryEnabled = options?.telemetry ?? false;
+  }
+
+  private sendTelemetry(): void {
+    if (!this.telemetryEnabled || this.telemetrySent) return;
+    this.telemetrySent = true;
+
+    const runtime =
+      typeof globalThis.process !== 'undefined'
+        ? `node-${globalThis.process.version?.replace('v', '') ?? 'unknown'}`
+        : 'browser';
+
+    fetch(`${this.baseUrl}/api/v1/telemetry`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sdk: 'js', version: SDK_VERSION, runtime }),
+    }).catch(() => {
+      // fire-and-forget
+    });
   }
 
   private async request<T>(path: string): Promise<T> {
+    this.sendTelemetry();
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
     };
