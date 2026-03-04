@@ -31,6 +31,10 @@ COPY tsconfig.base.json ./
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
+# Build the SDK workspace first (web imports 'pricetoken')
+WORKDIR /app/packages/sdk
+RUN npx tsup src/index.ts --format cjs,esm --dts --clean
+
 WORKDIR /app/apps/web
 RUN npm run build
 
