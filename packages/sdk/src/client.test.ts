@@ -158,4 +158,74 @@ describe('PriceTokenClient', () => {
 
     await expect(client.getPricing()).rejects.toThrow('HTTP 500');
   });
+
+  it('does not send telemetry when disabled (default)', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getPricing();
+
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('/api/v1/pricing'),
+      expect.anything()
+    );
+  });
+
+  it('sends telemetry POST on first API call when enabled', async () => {
+    const telemetryClient = new PriceTokenClient({
+      baseUrl: 'https://test.api',
+      telemetry: true,
+    });
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await telemetryClient.getPricing();
+
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/telemetry',
+      expect.objectContaining({ method: 'POST' })
+    );
+  });
+
+  it('sends telemetry only once across multiple calls', async () => {
+    const telemetryClient = new PriceTokenClient({
+      baseUrl: 'https://test.api',
+      telemetry: true,
+    });
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await telemetryClient.getPricing();
+    await telemetryClient.getPricing();
+
+    const telemetryCalls = fetchSpy.mock.calls.filter(
+      (call) => (call[0] as string).includes('/telemetry')
+    );
+    expect(telemetryCalls).toHaveLength(1);
+  });
+
+  it('does not throw when telemetry fetch fails', async () => {
+    const telemetryClient = new PriceTokenClient({
+      baseUrl: 'https://test.api',
+      telemetry: true,
+    });
+
+    let callCount = 0;
+    vi.spyOn(globalThis, 'fetch').mockImplementation((url) => {
+      callCount++;
+      if ((url as string).includes('/telemetry')) {
+        return Promise.reject(new Error('network error'));
+      }
+      return Promise.resolve(mockResponse([]) as Response);
+    });
+
+    const result = await telemetryClient.getPricing();
+    expect(result).toEqual([]);
+    expect(callCount).toBe(2);
+  });
 });

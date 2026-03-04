@@ -34,6 +34,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link href="/admin/fetch-status" className={styles.navLink}>
             Fetch Status
           </Link>
+          <Link href="/admin/downloads" className={styles.navLink}>
+            Downloads
+          </Link>
         </nav>
       </aside>
       <main className={styles.content}>{children}</main>

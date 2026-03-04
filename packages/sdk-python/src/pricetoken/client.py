@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import platform
+import threading
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -30,11 +32,40 @@ class PriceTokenClient:
         *,
         base_url: str = "https://pricetoken.ai",
         api_key: str | None = None,
+        telemetry: bool = False,
     ) -> None:
         self._base_url = base_url.rstrip("/")
         self._api_key = api_key
+        self._telemetry_enabled = telemetry
+        self._telemetry_sent = False
+
+    def _send_telemetry(self) -> None:
+        if not self._telemetry_enabled or self._telemetry_sent:
+            return
+        self._telemetry_sent = True
+
+        from pricetoken import __version__
+
+        runtime = f"python-{platform.python_version()}"
+        url = f"{self._base_url}/api/v1/telemetry"
+        payload = json.dumps({"sdk": "python", "version": __version__, "runtime": runtime}).encode()
+
+        def _ping() -> None:
+            try:
+                req = urllib.request.Request(
+                    url,
+                    data=payload,
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                urllib.request.urlopen(req, timeout=5)
+            except Exception:
+                pass
+
+        threading.Thread(target=_ping, daemon=True).start()
 
     def _request(self, path: str) -> Any:
+        self._send_telemetry()
         headers = {"Content-Type": "application/json"}
         if self._api_key:
             headers["Authorization"] = f"Bearer {self._api_key}"

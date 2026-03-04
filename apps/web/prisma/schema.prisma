@@ -91,3 +91,16 @@ model ApiUsageLog {
   @@index([createdAt])
   @@index([provider, createdAt])
 }
+
+model SdkTelemetryPing {
+  id        String   @id @default(cuid())
+  sdk       String   // "js" | "python"
+  version   String
+  runtime   String
+  ip        String
+  userAgent String   @default("")
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([sdk, createdAt])
+}
