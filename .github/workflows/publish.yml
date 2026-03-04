@@ -24,6 +24,6 @@ jobs:
       - run: npm run typecheck
       - run: npm run test
       - run: npm run build
-      - run: cd packages/sdk && npm publish --access public
+      - run: cd packages/sdk && npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
