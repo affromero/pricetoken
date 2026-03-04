@@ -25,6 +25,38 @@ r = requests.get("https://pricetoken.ai/api/v1/pricing")
 pricing = r.json()["data"]
 print(pricing)`;
 
+const launchDateCurlExample = `# Models launched in 2025 or later
+curl "https://pricetoken.ai/api/v1/pricing?after=2025-01-01"
+
+# Models launched before 2025
+curl "https://pricetoken.ai/api/v1/pricing?before=2025-01-01"
+
+# Models launched in H1 2025
+curl "https://pricetoken.ai/api/v1/pricing?after=2025-01-01&before=2025-07-01"
+
+# Cheapest model launched since October 2025
+curl "https://pricetoken.ai/api/v1/pricing/cheapest?after=2025-10-01"`;
+
+const launchDateJsExample = `import { PriceTokenClient } from 'pricetoken';
+
+const client = new PriceTokenClient();
+
+// Models launched in 2025 or later
+const recent = await client.getPricing({ after: '2025-01-01' });
+
+// Cheapest model launched since October 2025
+const cheapest = await client.getCheapest({ after: '2025-10-01' });`;
+
+const launchDatePyExample = `from pricetoken import PriceTokenClient
+
+client = PriceTokenClient()
+
+# Models launched in 2025 or later
+recent = client.get_pricing(after="2025-01-01")
+
+# Cheapest model launched since October 2025
+cheapest = client.get_cheapest(after="2025-10-01")`;
+
 const costExample = `import { calculateModelCost } from 'pricetoken';
 
 const cost = calculateModelCost(
@@ -80,6 +112,22 @@ export default function DocsPage() {
             Calculate costs without any API call — works in browsers, Node.js, and edge runtimes.
           </p>
           <CodeBlock tabs={[{ label: 'JavaScript', code: costExample }]} />
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.heading}>Filter by Launch Date</h2>
+          <p className={styles.text}>
+            Every model includes a <code>launchDate</code> field (API GA date). Use the{' '}
+            <code>after</code> and <code>before</code> query params on{' '}
+            <code>/pricing</code> and <code>/cheapest</code> to filter by date range.
+          </p>
+          <CodeBlock
+            tabs={[
+              { label: 'curl', code: launchDateCurlExample },
+              { label: 'JavaScript', code: launchDateJsExample },
+              { label: 'Python', code: launchDatePyExample },
+            ]}
+          />
         </section>
 
         <section className={styles.section}>
@@ -202,7 +250,18 @@ export default function DocsPage() {
               {
                 label: 'Success',
                 code: `{
-  "data": [...],
+  "data": [
+    {
+      "modelId": "claude-sonnet-4-6",
+      "provider": "anthropic",
+      "displayName": "Claude Sonnet 4.6",
+      "inputPerMTok": 3,
+      "outputPerMTok": 15,
+      "contextWindow": 200000,
+      "launchDate": "2026-02-17",
+      ...
+    }
+  ],
   "meta": {
     "timestamp": "2026-03-03T12:00:00Z",
     "cached": false,

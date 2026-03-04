@@ -340,7 +340,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date=None,
+        launch_date="2025-07-22",
     ),
     ModelPricing(
         model_id="gemini-3.1-pro-preview",
@@ -354,7 +354,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="preview",
         confidence="high",
         last_updated=None,
-        launch_date=None,
+        launch_date="2026-02-19",
     ),
     ModelPricing(
         model_id="gemini-3-flash-preview",
@@ -368,7 +368,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="preview",
         confidence="high",
         last_updated=None,
-        launch_date=None,
+        launch_date="2025-12-17",
     ),
     # DeepSeek
     ModelPricing(
@@ -412,7 +412,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date=None,
+        launch_date="2025-07-09",
     ),
     ModelPricing(
         model_id="grok-4.1-fast",
@@ -426,7 +426,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date=None,
+        launch_date="2025-11-19",
     ),
     ModelPricing(
         model_id="grok-3",

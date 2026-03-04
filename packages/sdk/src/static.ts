@@ -340,7 +340,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: null,
+    launchDate: '2025-07-22',
   },
   {
     modelId: 'gemini-3.1-pro-preview',
@@ -354,7 +354,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'preview',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: null,
+    launchDate: '2026-02-19',
   },
   {
     modelId: 'gemini-3-flash-preview',
@@ -368,7 +368,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'preview',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: null,
+    launchDate: '2025-12-17',
   },
 
   // DeepSeek
@@ -414,7 +414,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: null,
+    launchDate: '2025-07-09',
   },
   {
     modelId: 'grok-4.1-fast',
@@ -428,7 +428,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: null,
+    launchDate: '2025-11-19',
   },
   {
     modelId: 'grok-3',
