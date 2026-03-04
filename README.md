@@ -8,7 +8,7 @@ Real-time pricing data scraped from providers, served via REST API, visualized o
 
 [![CI](https://github.com/affromero/pricetoken/actions/workflows/ci.yml/badge.svg)](https://github.com/affromero/pricetoken/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/pricetoken)](https://www.npmjs.com/package/pricetoken)
-[![npm downloads](https://img.shields.io/npm/dm/pricetoken)](https://www.npmjs.com/package/pricetoken)
+[![npm downloads](https://img.shields.io/npm/dt/pricetoken)](https://www.npmjs.com/package/pricetoken)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/pricetoken)](https://bundlephobia.com/package/pricetoken)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
