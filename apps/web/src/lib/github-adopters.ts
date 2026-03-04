@@ -6,14 +6,16 @@ export interface Adopter {
   description: string;
   avatarUrl: string;
   file: string;
+  displayName?: string;
 }
 
 const KNOWN_ADOPTERS: Adopter[] = [
   {
-    fullName: 'nicholasgriffintn/sotto',
-    htmlUrl: 'https://github.com/nicholasgriffintn/sotto',
-    description: 'Sotto — AI-powered podcast production platform',
-    avatarUrl: 'https://github.com/nicholasgriffintn.png?size=40',
+    fullName: 'SottoFM',
+    htmlUrl: 'https://sotto.fm',
+    description: 'AI-powered podcast creation and remixing platform',
+    avatarUrl: 'https://sotto.fm/apple-touch-icon.png',
+    displayName: 'Sotto',
     file: 'package.json',
   },
 ];

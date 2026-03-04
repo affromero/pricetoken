@@ -22,6 +22,22 @@ Real-time pricing data scraped from providers, served via REST API, visualized o
 
 ![PriceToken — Real-time LLM pricing dashboard](assets/hero.png)
 
+## Trusted by
+
+<table>
+  <tr>
+    <td align="center" width="200">
+      <a href="https://sotto.fm">
+        <img src="https://sotto.fm/apple-touch-icon.png" width="48" alt="Sotto" /><br />
+        <strong>Sotto</strong><br />
+        <sub>AI-powered podcast creation<br />and remixing platform</sub>
+      </a>
+    </td>
+  </tr>
+</table>
+
+<sub>Using PriceToken? <a href="https://github.com/affromero/pricetoken/issues">Let us know</a> and we'll add you here.</sub>
+
 ## Quick Start
 
 ### JavaScript / TypeScript
