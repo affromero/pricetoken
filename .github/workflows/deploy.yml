@@ -18,7 +18,7 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
-            cd /opt/pricetoken
+            cd ~/pricetoken
             git pull origin main
             docker compose -f docker-compose.prod.yml build
             docker compose -f docker-compose.prod.yml run --rm web npx prisma db push --schema=prisma/schema.prisma

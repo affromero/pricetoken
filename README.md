@@ -15,6 +15,8 @@ Real-time pricing data scraped from providers, served via REST API, visualized o
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/affromero/pricetoken/pulls)
 
+[**pricetoken.ai**](https://pricetoken.ai) — Live dashboard, cost calculator, and API docs
+
 </div>
 
 ![PriceToken — Real-time LLM pricing dashboard](assets/hero.png)
