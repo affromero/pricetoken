@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.3.1] - 2026-03-04
+
+### Changed
+- Admin authentication: replaced IP allowlist with password + HMAC-signed session cookies
+- Admin routes restructured with Next.js route groups — login page has no sidebar
+
+### Added
+- `/admin/login` page with password form
+- `POST /api/admin/auth` login endpoint with timing-safe password comparison
+- `POST /api/admin/auth/logout` endpoint
+- Logout button in admin sidebar
+- Session cookie auth library (`admin-auth.ts`) using `crypto.subtle` (Edge-compatible)
+
+### Removed
+- `ADMIN_ALLOWED_IPS` env var — replaced by `ADMIN_PASSWORD` + `ADMIN_SESSION_SECRET`
+
 ## [py-0.3.0] - 2026-03-04
 
 ### Added
