@@ -29,6 +29,7 @@ async function main() {
     source: 'seed',
     status: m.status ?? 'active',
     confidence: m.confidence ?? 'high',
+    launchDate: m.launchDate ? new Date(m.launchDate) : null,
   }));
 
   const result = await prisma.modelPricingSnapshot.createMany({ data });

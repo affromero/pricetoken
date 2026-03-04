@@ -83,6 +83,24 @@ describe('getCurrentPricing', () => {
     expect(result).toHaveLength(1);
     expect(result[0]!.provider).toBe('anthropic');
   });
+
+  it('filters by after date', async () => {
+    const result = await getCurrentPricing(undefined, { after: '2025-01-01' });
+    expect(result).toHaveLength(2);
+    expect(result.map((m) => m.modelId).sort()).toEqual(['claude-sonnet-4-6', 'gemini-2.0-flash-lite']);
+  });
+
+  it('filters by before date', async () => {
+    const result = await getCurrentPricing(undefined, { before: '2025-12-31' });
+    expect(result).toHaveLength(2);
+    expect(result.map((m) => m.modelId).sort()).toEqual(['gemini-2.0-flash-lite', 'gpt-4o']);
+  });
+
+  it('filters by after and before date range', async () => {
+    const result = await getCurrentPricing(undefined, { after: '2025-01-01', before: '2025-12-31' });
+    expect(result).toHaveLength(1);
+    expect(result[0]!.modelId).toBe('gemini-2.0-flash-lite');
+  });
 });
 
 describe('getModelPricing', () => {
@@ -152,5 +170,16 @@ describe('getCheapestModel', () => {
     const result = await getCheapestModel('anthropic');
     expect(result).not.toBeNull();
     expect(result!.modelId).toBe('claude-sonnet-4-6');
+  });
+
+  it('returns cheapest within a date range', async () => {
+    const result = await getCheapestModel(undefined, { after: '2025-01-01' });
+    expect(result).not.toBeNull();
+    expect(result!.modelId).toBe('gemini-2.0-flash-lite');
+  });
+
+  it('returns null when no models match date range', async () => {
+    const result = await getCheapestModel(undefined, { after: '2030-01-01' });
+    expect(result).toBeNull();
   });
 });
