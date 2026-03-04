@@ -25,4 +25,13 @@ export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
     url: 'https://api-docs.deepseek.com/quick_start/pricing',
     displayName: 'DeepSeek',
   },
+  xai: {
+    url: 'https://docs.x.ai/docs/models',
+    displayName: 'xAI',
+  },
+  mistral: {
+    url: 'https://mistral.ai/pricing',
+    displayName: 'Mistral',
+    requiresBrowser: true,
+  },
 };
