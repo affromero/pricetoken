@@ -66,6 +66,9 @@ jobs:
               fi
             done
 
+            echo "Seeding new models..."
+            docker compose -f docker-compose.prod.yml exec web npx tsx scripts/seed.ts
+
             echo "Cleaning up old images..."
             docker image prune -f
 
