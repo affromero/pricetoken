@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.1] - 2026-03-04
+
+### Added
+- Comprehensive API route handler tests: 67 tests across all 8 public endpoints covering HTTP status codes, CORS headers, Cache-Control, cache behavior, query params, currency conversion, and response shapes
+- Curl example with JSON response preview in landing page hero section
+
+### Fixed
+- Seed script now inserts missing models instead of skipping when database already has data
+
 ## [0.4.0] - 2026-03-04
 
 ### Added
