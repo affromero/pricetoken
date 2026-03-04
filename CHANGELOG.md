@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.3.0] - 2026-03-04
+
+### Added
+- Multi-agent verification pipeline: three AI providers (Anthropic, OpenAI, Google) cross-check extracted pricing with 2-of-3 consensus
+- Admin panel with IP allowlist: fetch status dashboard, alerts page, cost tracking, and provider config
+- Admin icon in navigation bar (visible to allowed IPs only)
+- Daily cron trigger for automated pricing fetches
+- Paste-text input mode for the cost calculator
+- Model lifecycle status detection (active, deprecated) with StatusBadge component
+- Missing model detection with admin warnings and fallback URL pipeline
+- Custom pill dropdown for currency selector
+- Full SEO suite: OpenGraph metadata, security headers, structured data
+- Trust system with model status badges and confidence scores
+- Auto-deploy on push to main via GitHub Actions
+
+### Fixed
+- Static pricing data corrections: removed hallucinated models, fixed context windows and prices
+- SDK workspace build order in Docker
+- OG metadata and social sharing image
+- Price history chart tooltip precision (2 decimal places)
+
+### Changed
+- README overhauled with feature comparison table and verification explanation
+- DataSources component updated with 4-step pipeline explanation
+
 ## [0.2.0] - 2026-03-03
 
 ### Added
