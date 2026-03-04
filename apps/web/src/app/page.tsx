@@ -3,7 +3,7 @@ import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
 import { PricingTable } from '@/components/PricingTable/PricingTable';
 import { DataSources } from '@/components/DataSources/DataSources';
-import { UsedBy } from '@/components/UsedBy/UsedBy';
+import { TrustedBy } from '@/components/TrustedBy/TrustedBy';
 import { STATIC_PRICING } from 'pricetoken';
 import styles from './page.module.css';
 
@@ -95,7 +95,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <UsedBy />
+        <TrustedBy />
       </main>
       <Footer />
     </>
