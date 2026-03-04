@@ -19,6 +19,8 @@ async function main() {
     contextWindow: m.contextWindow,
     maxOutputTokens: m.maxOutputTokens,
     source: 'seed',
+    status: m.status ?? 'active',
+    confidence: m.confidence ?? 'high',
   }));
 
   const result = await prisma.modelPricingSnapshot.createMany({ data });

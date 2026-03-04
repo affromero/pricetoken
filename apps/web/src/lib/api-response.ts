@@ -10,6 +10,7 @@ export function apiSuccess<T>(
     {
       data,
       meta: {
+        currency: 'USD',
         timestamp: new Date().toISOString(),
         cached,
         ...extraMeta,
