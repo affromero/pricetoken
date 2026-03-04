@@ -2,6 +2,7 @@ export interface ProviderConfig {
   url: string;
   displayName: string;
   fallbackUrls?: string[];
+  requiresBrowser?: boolean;
 }
 
 export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
@@ -23,5 +24,14 @@ export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
   deepseek: {
     url: 'https://api-docs.deepseek.com/quick_start/pricing',
     displayName: 'DeepSeek',
+  },
+  xai: {
+    url: 'https://docs.x.ai/docs/models',
+    displayName: 'xAI',
+  },
+  mistral: {
+    url: 'https://mistral.ai/pricing',
+    displayName: 'Mistral',
+    requiresBrowser: true,
   },
 };

@@ -2,11 +2,11 @@ import { describe, it, expect } from 'vitest';
 import { PRICING_PROVIDERS } from './providers';
 
 describe('PRICING_PROVIDERS', () => {
-  it('exports configs for all 4 providers', () => {
+  it('exports configs for all 6 providers', () => {
     expect(Object.keys(PRICING_PROVIDERS)).toEqual(
-      expect.arrayContaining(['openai', 'anthropic', 'google', 'deepseek'])
+      expect.arrayContaining(['openai', 'anthropic', 'google', 'deepseek', 'xai', 'mistral'])
     );
-    expect(Object.keys(PRICING_PROVIDERS)).toHaveLength(4);
+    expect(Object.keys(PRICING_PROVIDERS)).toHaveLength(6);
   });
 
   it('all URLs are valid HTTPS URLs', () => {
@@ -61,7 +61,25 @@ describe('PRICING_PROVIDERS', () => {
     expect(PRICING_PROVIDERS.google!.fallbackUrls?.length).toBeGreaterThan(0);
   });
 
-  it('deepseek has no fallback URLs', () => {
+  it('deepseek, xai, and mistral have no fallback URLs', () => {
     expect(PRICING_PROVIDERS.deepseek!.fallbackUrls).toBeUndefined();
+    expect(PRICING_PROVIDERS.xai!.fallbackUrls).toBeUndefined();
+    expect(PRICING_PROVIDERS.mistral!.fallbackUrls).toBeUndefined();
+  });
+
+  it('uses the correct xAI docs URL', () => {
+    expect(PRICING_PROVIDERS.xai!.url).toBe('https://docs.x.ai/docs/models');
+  });
+
+  it('uses the correct Mistral pricing URL', () => {
+    expect(PRICING_PROVIDERS.mistral!.url).toBe('https://mistral.ai/pricing');
+  });
+
+  it('mistral requires browser scraping', () => {
+    expect(PRICING_PROVIDERS.mistral!.requiresBrowser).toBe(true);
+  });
+
+  it('xai does not require browser scraping', () => {
+    expect(PRICING_PROVIDERS.xai!.requiresBrowser).toBeUndefined();
   });
 });

@@ -15,6 +15,8 @@
   --pt-provider-openai: #10a37f;
   --pt-provider-google: #4285f4;
   --pt-provider-deepseek: #4D6BFE;
+  --pt-provider-xai: #e44d26;
+  --pt-provider-mistral: #f7a832;
   --font-heading: var(--font-body, 'Inter', sans-serif);
   --font-mono: 'JetBrains Mono', monospace;
   --radius: 8px;
@@ -36,6 +38,8 @@
   --pt-provider-openai: #0d8a6a;
   --pt-provider-google: #3367d6;
   --pt-provider-deepseek: #3a54d4;
+  --pt-provider-xai: #c43a1a;
+  --pt-provider-mistral: #d48a1a;
 }
 
 *,

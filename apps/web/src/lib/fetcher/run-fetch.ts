@@ -1,5 +1,5 @@
 import { PRICING_PROVIDERS } from './providers';
-import { fetchPricingPage } from './scraper';
+import { fetchPricingPage, fetchPricingPageWithBrowser } from './scraper';
 import { extractPricing } from './extractor';
 import {
   saveSnapshots,
@@ -35,7 +35,9 @@ export async function runPricingFetch(): Promise<FetchResult> {
   for (const [providerId, config] of Object.entries(PRICING_PROVIDERS)) {
     try {
       console.log(`Fetching pricing for ${config.displayName}...`);
-      const pageText = await fetchPricingPage(config.url);
+      const pageText = config.requiresBrowser
+        ? await fetchPricingPageWithBrowser(config.url)
+        : await fetchPricingPage(config.url);
 
       console.log(`Extracting pricing for ${config.displayName}...`);
       const extraction = await extractPricing(providerId, pageText);
@@ -83,7 +85,7 @@ export async function runPricingFetch(): Promise<FetchResult> {
 
       if (missing.length > 0 && config.fallbackUrls?.length) {
         console.log(`Attempting fallback for ${missing.length} missing ${config.displayName} model(s)...`);
-        const fallbackResults = await fetchFallbackPricing(providerId, config.fallbackUrls, missing);
+        const fallbackResults = await fetchFallbackPricing(providerId, config.fallbackUrls, missing, config.requiresBrowser);
         for (const result of fallbackResults) {
           const fallbackSaved = await saveSnapshots(providerId, result.models, 'fetched', 'low');
           totalModels += fallbackSaved;

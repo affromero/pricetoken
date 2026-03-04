@@ -10,7 +10,10 @@
     "cost",
     "openai",
     "anthropic",
-    "google"
+    "google",
+    "xai",
+    "mistral",
+    "grok"
   ],
   "homepage": "https://pricetoken.ai",
   "bugs": {

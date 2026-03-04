@@ -13,6 +13,8 @@ export const PROVIDER_COLORS: Record<string, string> = {
   openai: 'var(--pt-provider-openai)',
   google: 'var(--pt-provider-google)',
   deepseek: 'var(--pt-provider-deepseek)',
+  xai: 'var(--pt-provider-xai)',
+  mistral: 'var(--pt-provider-mistral)',
 };
 
 export function ProviderFilterChips({ providers, selected, onSelect }: ProviderFilterChipsProps) {

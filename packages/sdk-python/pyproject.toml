@@ -10,7 +10,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 authors = [{ name = "Andres Romero", email = "me@afromero.co" }]
-keywords = ["llm", "pricing", "ai", "tokens", "cost", "openai", "anthropic", "google"]
+keywords = ["llm", "pricing", "ai", "tokens", "cost", "openai", "anthropic", "google", "xai", "mistral", "grok"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
