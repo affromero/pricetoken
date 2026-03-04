@@ -150,25 +150,43 @@ export async function seedFromStatic(): Promise<number> {
   ).map((r: { modelId: string }) => r.modelId);
 
   const missing = STATIC_PRICING.filter((m) => !existingIds.includes(m.modelId));
-  if (missing.length === 0) return 0;
+  let created = 0;
 
-  const data = missing.map((m) => ({
-    modelId: m.modelId,
-    provider: m.provider,
-    displayName: m.displayName,
-    inputPerMTok: m.inputPerMTok,
-    outputPerMTok: m.outputPerMTok,
-    contextWindow: m.contextWindow,
-    maxOutputTokens: m.maxOutputTokens,
-    source: 'seed',
-    status: m.status ?? 'active',
-    confidence: m.confidence ?? 'high',
-    launchDate: m.launchDate ? new Date(m.launchDate) : null,
-  }));
+  if (missing.length > 0) {
+    const data = missing.map((m) => ({
+      modelId: m.modelId,
+      provider: m.provider,
+      displayName: m.displayName,
+      inputPerMTok: m.inputPerMTok,
+      outputPerMTok: m.outputPerMTok,
+      contextWindow: m.contextWindow,
+      maxOutputTokens: m.maxOutputTokens,
+      source: 'seed',
+      status: m.status ?? 'active',
+      confidence: m.confidence ?? 'high',
+      launchDate: m.launchDate ? new Date(m.launchDate) : null,
+    }));
 
-  const result = await prisma.modelPricingSnapshot.createMany({ data });
-  console.log(`Seeded ${result.count} new models (${existingIds.length} already existed)`);
-  return result.count;
+    const result = await prisma.modelPricingSnapshot.createMany({ data });
+    created = result.count;
+    console.log(`Seeded ${created} new models (${existingIds.length} already existed)`);
+  }
+
+  // Backfill launchDate on existing records that are missing it
+  const withDates = STATIC_PRICING.filter((m) => m.launchDate);
+  let updated = 0;
+  for (const m of withDates) {
+    const { count } = await prisma.modelPricingSnapshot.updateMany({
+      where: { modelId: m.modelId, launchDate: null },
+      data: { launchDate: new Date(m.launchDate!) },
+    });
+    updated += count;
+  }
+  if (updated > 0) {
+    console.log(`Backfilled launchDate on ${updated} existing records`);
+  }
+
+  return created;
 }
 
 export async function getLastFetchRun(provider: string) {
