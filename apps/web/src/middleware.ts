@@ -39,13 +39,18 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Telemetry handles its own rate limiting — exempt from general limiter
+  if (pathname === '/api/v1/telemetry') {
+    return NextResponse.next();
+  }
+
   // Handle CORS preflight
   if (request.method === 'OPTIONS') {
     return new NextResponse(null, {
       status: 204,
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Authorization, Content-Type',
         'Access-Control-Max-Age': '86400',
       },
