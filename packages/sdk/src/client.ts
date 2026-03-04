@@ -6,7 +6,7 @@ import type {
   PriceTokenError,
 } from './types';
 
-interface ClientOptions {
+export interface ClientOptions {
   baseUrl?: string;
   apiKey?: string;
 }
