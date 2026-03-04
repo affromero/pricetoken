@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.6.0] - 2026-03-04
+
+### Added
+- Opt-in SDK telemetry for both npm and Python packages — fire-and-forget ping on first API call when `telemetry: true` is set
+- `POST /api/v1/telemetry` endpoint with 10/hr rate limit per IP, silent drop on errors
+- Admin downloads page (`/admin/downloads`) with npm/PyPI download stats, telemetry pings chart, and SDK breakdown table
+- "Used by" section on landing page powered by GitHub Code Search (Redis-cached, seeded adopters)
+- `SdkTelemetryPing` Prisma model for telemetry storage
+- Gemini 3.1 Flash-Lite and Gemini 3 Pro added to static pricing data
+- PyPI monthly downloads badge in README
+- Python SDK linting (ruff + mypy) added to root CI pipeline
+- 11 new tests across telemetry endpoint, JS SDK, and Python SDK (188 total)
+
+### Changed
+- Middleware CORS methods expanded from `GET, OPTIONS` to `GET, POST, OPTIONS`
+- Telemetry route exempted from general API rate limiter (uses its own 10/hr limit)
+
 ## [0.5.0] - 2026-03-04
 
 ### Added
