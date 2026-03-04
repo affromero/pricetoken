@@ -6,7 +6,10 @@ import json
 import urllib.error
 import urllib.parse
 import urllib.request
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
 
 from pricetoken.types import (
     ModelHistory,
@@ -51,7 +54,7 @@ class PriceTokenClient:
                 raise PriceTokenError(f"HTTP {exc.code}", exc.code) from exc
 
     @staticmethod
-    def _build_qs(params: dict[str, str | int | None]) -> str:
+    def _build_qs(params: Mapping[str, str | int | None]) -> str:
         filtered = {k: str(v) for k, v in params.items() if v is not None}
         if not filtered:
             return ""

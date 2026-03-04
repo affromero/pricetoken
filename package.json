@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "typecheck": "tsc -b",
     "test": "vitest run",
-    "ci": "npm run lint && npm run typecheck && npm run test && npm run build",
+    "ci:python": "cd packages/sdk-python && uv run ruff check && uv run ruff format --check && uv run mypy src && uv run pytest",
+    "ci": "npm run lint && npm run typecheck && npm run test && npm run build && npm run ci:python",
     "seed": "doppler run -- npx tsx scripts/seed.ts",
     "fetch-pricing": "doppler run -- npx tsx scripts/fetch-pricing.ts",
     "setup-dns": "doppler run -- npx tsx scripts/setup-dns.ts"

@@ -23,10 +23,6 @@ from pricetoken.types import (
 )
 
 __all__ = [
-    "__version__",
-    "PriceTokenClient",
-    "calculate_cost",
-    "calculate_model_cost",
     "STATIC_PRICING",
     "CostEstimate",
     "DataConfidence",
@@ -34,7 +30,11 @@ __all__ = [
     "ModelPricing",
     "ModelStatus",
     "PriceHistoryPoint",
+    "PriceTokenClient",
     "PriceTokenError",
     "ProviderSummary",
     "Source",
+    "__version__",
+    "calculate_cost",
+    "calculate_model_cost",
 ]

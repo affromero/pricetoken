@@ -26,14 +26,13 @@ def _mock_response(data: Any) -> MagicMock:
 
 def _mock_error(status: int, error: str) -> urllib.error.HTTPError:
     body = json.dumps({"error": error, "status": status}).encode()
-    exc = urllib.error.HTTPError(
+    return urllib.error.HTTPError(
         url="https://test.api",
         code=status,
         msg=error,
         hdrs=None,  # type: ignore[arg-type]
         fp=io.BytesIO(body),
     )
-    return exc
 
 
 class TestPriceTokenClient:
