@@ -38,6 +38,7 @@ const mockModel = {
   status: 'active' as const,
   confidence: 'high' as const,
   lastUpdated: '2026-03-01T00:00:00Z',
+  launchDate: '2025-02-05',
 };
 
 describe('GET /api/v1/pricing/cheapest', () => {

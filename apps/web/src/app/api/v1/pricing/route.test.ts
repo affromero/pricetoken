@@ -39,6 +39,7 @@ const mockModels = [
     status: 'active' as const,
     confidence: 'high' as const,
     lastUpdated: '2026-03-01T00:00:00Z',
+    launchDate: '2026-02-17',
   },
 ];
 

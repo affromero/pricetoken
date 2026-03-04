@@ -19,6 +19,7 @@ model ModelPricingSnapshot {
   source          String   @default("fetched") // "fetched" | "seed" | "admin"
   status          String?  // "active" | "deprecated" | "preview" | null
   confidence      String   @default("high") // "high" | "low"
+  launchDate      DateTime?
   createdAt       DateTime @default(now())
 
   @@index([modelId, createdAt])

@@ -66,6 +66,7 @@ class TestPriceTokenClient:
                 "status": "active",
                 "confidence": "high",
                 "lastUpdated": None,
+                "launchDate": None,
             }
         ]
         mock_urlopen.return_value = _mock_response(mock_data)
@@ -100,6 +101,7 @@ class TestPriceTokenClient:
                 "status": "active",
                 "confidence": "high",
                 "lastUpdated": None,
+                "launchDate": None,
             }
         )
         client = PriceTokenClient(base_url="https://test.api")

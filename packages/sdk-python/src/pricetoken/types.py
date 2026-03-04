@@ -23,6 +23,7 @@ class ModelPricing:
     status: ModelStatus | None
     confidence: DataConfidence
     last_updated: str | None
+    launch_date: str | None
 
 
 @dataclass(slots=True)
@@ -81,6 +82,7 @@ def _parse_model_pricing(data: dict[str, Any]) -> ModelPricing:
         status=data.get("status"),
         confidence=data["confidence"],
         last_updated=data.get("lastUpdated"),
+        launch_date=data.get("launchDate"),
     )
 
 

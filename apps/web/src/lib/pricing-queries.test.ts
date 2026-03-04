@@ -14,6 +14,7 @@ const mockPricing: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: '2026-03-01T00:00:00Z',
+    launchDate: '2026-02-17',
   },
   {
     modelId: 'gpt-4o',
@@ -27,6 +28,7 @@ const mockPricing: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: '2026-03-01T00:00:00Z',
+    launchDate: '2024-05-13',
   },
   {
     modelId: 'gemini-2.0-flash-lite',
@@ -40,6 +42,7 @@ const mockPricing: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: '2026-03-01T00:00:00Z',
+    launchDate: '2025-02-05',
   },
 ];
 

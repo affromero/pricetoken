@@ -13,6 +13,7 @@ export interface ModelPricing {
   status: ModelStatus | null;
   confidence: DataConfidence;
   lastUpdated: string | null;
+  launchDate: string | null;
 }
 
 export interface PriceHistoryPoint {
