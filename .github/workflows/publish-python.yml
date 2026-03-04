@@ -3,6 +3,7 @@ name: Publish Python SDK
 on:
   push:
     tags:
+      - 'v*'
       - 'py-v*'
 
 jobs:
