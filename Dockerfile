@@ -64,6 +64,13 @@ COPY --from=builder /app/apps/web/public ./public
 COPY --from=builder /app/apps/web/public ./apps/web/public
 COPY --from=builder --chown=pricetoken:pricetoken /app/apps/web/prisma ./apps/web/prisma
 
+# Seed script + SDK source (for STATIC_PRICING import)
+COPY --from=builder --chown=pricetoken:pricetoken /app/packages/sdk/src/static.ts ./packages/sdk/src/static.ts
+COPY --from=builder --chown=pricetoken:pricetoken /app/packages/sdk/src/types.ts ./packages/sdk/src/types.ts
+COPY --chown=pricetoken:pricetoken scripts/seed.ts ./scripts/seed.ts
+COPY --chown=pricetoken:pricetoken tsconfig.base.json ./tsconfig.base.json
+COPY --chown=pricetoken:pricetoken packages/sdk/tsconfig.json ./packages/sdk/tsconfig.json
+
 USER pricetoken
 WORKDIR /app
 EXPOSE 3001

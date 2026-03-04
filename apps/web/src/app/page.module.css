@@ -53,44 +53,38 @@
 
 .curlExample {
   margin-top: 1.5rem;
-  width: 100%;
-  max-width: 520px;
   text-align: left;
   border: 1px solid var(--pt-border);
   border-radius: var(--radius);
   overflow: hidden;
 }
 
-.curlHeader {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+.curlCommand {
+  display: block;
   padding: 0.625rem 1rem;
   background: var(--pt-surface);
-  border-bottom: 1px solid var(--pt-border);
   font-family: var(--font-mono);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
+  color: var(--pt-text);
+  white-space: nowrap;
+  overflow-x: auto;
 }
 
-.curlMethod {
-  font-weight: 700;
+.curlPrompt {
   color: var(--pt-accent);
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-}
-
-.curlUrl {
-  color: var(--pt-text-secondary);
+  font-weight: 700;
+  user-select: none;
 }
 
 .curlResponse {
   margin: 0;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  line-height: 1.5;
+  font-size: 0.6875rem;
+  line-height: 1.4;
   color: var(--pt-text-secondary);
-  background: var(--pt-bg);
+  border-top: 1px solid var(--pt-border);
+  white-space: nowrap;
   overflow-x: auto;
 }
 

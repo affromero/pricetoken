@@ -58,23 +58,11 @@ export default async function HomePage() {
             <code className={styles.install}>pip install pricetoken</code>
           </div>
           <div className={styles.curlExample}>
-            <div className={styles.curlHeader}>
-              <span className={styles.curlMethod}>GET</span>
-              <span className={styles.curlUrl}>curl https://pricetoken.ai/api/v1/pricing</span>
-            </div>
-            <pre className={styles.curlResponse}>{`{
-  "data": [
-    {
-      "modelId": "claude-sonnet-4-6",
-      "provider": "anthropic",
-      "inputPerMTok": 3,
-      "outputPerMTok": 15,
-      "contextWindow": 200000
-    },
-    ...
-  ],
-  "meta": { "currency": "USD", "cached": false }
-}`}</pre>
+            <code className={styles.curlCommand}>
+              <span className={styles.curlPrompt}>$</span>{' '}
+              curl https://pricetoken.ai/api/v1/pricing
+            </code>
+            <pre className={styles.curlResponse}>{`{ "data": [{ "modelId": "claude-sonnet-4-6", "inputPerMTok": 3, ... }], "meta": { "currency": "USD" } }`}</pre>
           </div>
         </section>
 
