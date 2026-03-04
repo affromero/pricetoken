@@ -6,7 +6,7 @@ import type {
   PriceTokenError,
 } from './types';
 
-const SDK_VERSION = '0.5.0';
+const SDK_VERSION = '0.6.0';
 
 export interface ClientOptions {
   baseUrl?: string;
