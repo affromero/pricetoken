@@ -14,6 +14,25 @@ export async function fetchPricingPage(url: string): Promise<string> {
   return stripHtml(html);
 }
 
+export async function fetchPricingPageWithBrowser(url: string): Promise<string> {
+  const puppeteer = await import('puppeteer-core');
+  const browser = await puppeteer.launch({
+    headless: true,
+    executablePath: process.env.CHROME_PATH ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
+  try {
+    const page = await browser.newPage();
+    await page.setUserAgent('PriceToken/1.0 (https://pricetoken.ai)');
+    await page.goto(url, { waitUntil: 'networkidle2', timeout: 30_000 });
+    await new Promise((r) => setTimeout(r, 2_000));
+    const html = await page.content();
+    return stripHtml(html);
+  } finally {
+    await browser.close();
+  }
+}
+
 export function stripHtml(html: string): string {
   return html
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')

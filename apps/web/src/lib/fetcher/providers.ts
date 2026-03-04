@@ -2,6 +2,7 @@ export interface ProviderConfig {
   url: string;
   displayName: string;
   fallbackUrls?: string[];
+  requiresBrowser?: boolean;
 }
 
 export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
