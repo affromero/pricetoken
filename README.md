@@ -152,23 +152,25 @@ Add `CRON_SECRET` to your environment variables.
 |:---:|:---:|
 | ![History](assets/history.png) | ![Docs](assets/docs.png) |
 
-## Alternatives
+## Related Projects
 
-| Feature | PriceToken | LiteLLM | tokencost | llm-prices | pricepertoken | LLM Price Check | Helicone | genai-prices | llm-info |
-|---------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| Free REST API | **Yes** | No | No | No | No | No | No | No | No |
-| npm Package | **Yes** | No | No | No | No | No | No | **Yes** | **Yes** |
-| Offline Calculator | **Yes** | No | **Yes** | No | No | No | No | **Yes** | No |
-| Price History | **Yes** | No | No | No | Partial | No | **Yes** | **Yes** | No |
-| Self-Hostable | **Yes** | **Yes** | N/A | N/A | No | No | **Yes** | N/A | N/A |
-| Open Source | **Yes** | **Yes** | **Yes** | **Yes** | No | No | **Yes** | **Yes** | **Yes** |
-| AI-Verified Data | **Yes** | No | No | No | No | No | No | No | No |
-| TypeScript Types | **Yes** | No | No | No | No | No | No | **Yes** | **Yes** |
-| Zero Dependencies | **Yes** | No | No | **Yes** | N/A | N/A | No | No | **Yes** |
+There are several great projects tackling LLM pricing from different angles. We're grateful to all of them for pushing this space forward — PriceToken builds on ideas pioneered by many of these tools.
 
-### PriceToken vs genai-prices (detailed)
+| Feature | PriceToken | [LiteLLM](https://github.com/BerriAI/litellm) | [tokencost](https://github.com/AgentOps-AI/tokencost) | [pricepertoken](https://pricepertoken.com) | [LLM Price Check](https://llmpricecheck.com) | [Helicone](https://github.com/Helicone/helicone) | [genai-prices](https://github.com/pydantic/genai-prices) | [llm-info](https://www.npmjs.com/package/llm-info) |
+|---------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Free REST API | **Yes** | No | No | No | No | No | No | No |
+| npm Package | **Yes** | No | No | No | No | No | **Yes** | **Yes** |
+| Offline Calculator | **Yes** | No | **Yes** | No | No | No | **Yes** | No |
+| Price History | **Yes** | No | No | Partial | No | No | **Yes** | No |
+| Self-Hostable | **Yes** | **Yes** | N/A | No | No | **Yes** | N/A | N/A |
+| Open Source | **Yes** | **Yes** | **Yes** | No | No | **Yes** | **Yes** | **Yes** |
+| AI-Verified Data | **Yes** | No | No | No | No | No | No | No |
+| TypeScript Types | **Yes** | No | No | No | No | No | **Yes** | **Yes** |
+| Zero Dependencies | **Yes** | No | No | N/A | N/A | No | No | **Yes** |
 
-[genai-prices](https://github.com/pydantic/genai-prices) by Pydantic is the closest comparable project. Here's a deeper look:
+### PriceToken & genai-prices
+
+[genai-prices](https://github.com/pydantic/genai-prices) by Pydantic is the closest project in scope, and a great resource — especially for its breadth of provider coverage.
 
 **What we share:** Multi-provider LLM pricing data, Python & JS/TS packages, static pricing data bundled in packages, historic price tracking.
 
@@ -176,14 +178,16 @@ Add `CRON_SECRET` to your environment variables.
 |---|---|---|
 | **Data source** | AI-powered scraping (Puppeteer + Claude) with multi-agent verification | Hand-curated YAML files + community PRs |
 | **Distribution** | REST API + website + npm SDK | Python/JS packages + raw JSON download |
-| **Web UI** | Full site (table, calculator, history charts, compare) | "TODO: API and web UI" |
-| **API** | Live REST API with Redis caching | "Coming soon..." |
+| **Web UI** | Full site (table, calculator, history charts, compare) | Planned |
+| **API** | Live REST API with Redis caching | Planned |
 | **Provider count** | ~handful of major providers | 29 providers, 700+ models |
 | **Backing** | Solo project | Pydantic (established OSS org) |
 
-**PriceToken's advantages:** Live REST API, full web UI with cost calculator and history charts, automated scraping with multi-agent verification — all things genai-prices explicitly lists as TODO or coming soon.
+**Where PriceToken focuses:** Live REST API, full web UI with cost calculator and history charts, and automated scraping with multi-agent verification.
 
-**genai-prices' advantages:** Far broader model coverage (700+ models across 29 providers), variable/tiered pricing support (e.g., Gemini context tiers, DeepSeek off-peak), backed by Pydantic's ecosystem and community contributions.
+**Where genai-prices shines:** Far broader model coverage (700+ models across 29 providers), variable/tiered pricing support (e.g., Gemini context tiers, DeepSeek off-peak), and the strength of Pydantic's ecosystem and community.
+
+Depending on your needs, you might use one or both — they complement each other well.
 
 **See also:** [Artificial Analysis](https://artificialanalysis.ai) — benchmarks and pricing data for comparing AI model performance.
 
