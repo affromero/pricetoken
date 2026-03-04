@@ -4,10 +4,11 @@
 
 **The missing API for LLM pricing.**
 
-Real-time pricing data scraped from providers, served via REST API, visualized on a website, and distributed as an npm package.
+Real-time pricing data scraped from providers, served via REST API, visualized on a website, and distributed as npm and PyPI packages.
 
 [![CI](https://github.com/affromero/pricetoken/actions/workflows/ci.yml/badge.svg)](https://github.com/affromero/pricetoken/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/pricetoken)](https://www.npmjs.com/package/pricetoken)
+[![PyPI](https://img.shields.io/pypi/v/pricetoken)](https://pypi.org/project/pricetoken/)
 [![npm downloads](https://img.shields.io/npm/dm/pricetoken)](https://www.npmjs.com/package/pricetoken)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/pricetoken)](https://bundlephobia.com/package/pricetoken)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue)](https://www.typescriptlang.org/)
@@ -20,7 +21,7 @@ Real-time pricing data scraped from providers, served via REST API, visualized o
 
 ## Quick Start
 
-### npm Package
+### JavaScript / TypeScript
 
 ```bash
 npm install pricetoken
@@ -36,6 +37,24 @@ const pricing = await client.getPricing();
 // Calculate cost (offline — no API call)
 const cost = calculateModelCost('claude-sonnet-4-6', 1_000_000, 100_000);
 console.log(cost.totalCost); // $4.50
+```
+
+### Python
+
+```bash
+pip install pricetoken
+```
+
+```python
+from pricetoken import PriceTokenClient, calculate_model_cost
+
+# Fetch live pricing
+client = PriceTokenClient()
+pricing = client.get_pricing()
+
+# Calculate cost (offline — no API call)
+cost = calculate_model_cost("claude-sonnet-4-6", 1_000_000, 100_000)
+print(cost.total_cost)  # $4.50
 ```
 
 ### REST API
@@ -158,6 +177,7 @@ Add `CRON_SECRET` to your environment variables.
 |---------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | Free REST API | **Yes** | No | No | No | No | No | No | No | No |
 | npm Package | **Yes** | No | No | No | No | No | No | **Yes** | **Yes** |
+| PyPI Package | **Yes** | **Yes** | **Yes** | No | No | No | No | **Yes** | No |
 | Offline Calculator | **Yes** | No | **Yes** | No | No | No | No | **Yes** | No |
 | Price History | **Yes** | No | No | No | Partial | No | **Yes** | **Yes** | No |
 | Self-Hostable | **Yes** | **Yes** | N/A | N/A | No | No | **Yes** | N/A | N/A |

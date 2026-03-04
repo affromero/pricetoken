@@ -12,3 +12,9 @@ coverage/
 .doppler.yaml
 .claude/
 CLAUDE.md
+
+# Python
+__pycache__/
+*.egg-info/
+*.pyc
+.venv/
