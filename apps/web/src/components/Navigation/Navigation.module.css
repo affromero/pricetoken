@@ -47,6 +47,17 @@
   color: var(--pt-text);
 }
 
+.adminLink {
+  display: flex;
+  align-items: center;
+  color: var(--pt-text-secondary);
+  transition: color 0.15s;
+}
+
+.adminLink:hover {
+  color: var(--pt-accent);
+}
+
 @media (max-width: 640px) {
   .links {
     gap: 1rem;

@@ -1,8 +1,24 @@
+import { headers } from 'next/headers';
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/ThemeToggle/ThemeToggle';
 import styles from './Navigation.module.css';
 
-export function Navigation() {
+async function isAdmin(): Promise<boolean> {
+  const hdrs = await headers();
+  const clientIp =
+    hdrs.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+    hdrs.get('x-real-ip') ??
+    '';
+  const allowed = (process.env.ADMIN_ALLOWED_IPS ?? '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return allowed.length > 0 && allowed.includes(clientIp);
+}
+
+export async function Navigation() {
+  const admin = await isAdmin();
+
   return (
     <nav className={styles.root}>
       <div className={styles.inner}>
@@ -23,6 +39,22 @@ export function Navigation() {
             <Link href="/docs" className={styles.link}>
               API Docs
             </Link>
+            {admin && (
+              <Link href="/admin" className={styles.adminLink} title="Admin Panel">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M8 1.5a1.25 1.25 0 0 1 1.177.824l.963 2.681 2.825.213a1.25 1.25 0 0 1 .712 2.19l-2.142 1.818.658 2.77a1.25 1.25 0 0 1-1.863 1.354L8 11.885 5.67 13.35a1.25 1.25 0 0 1-1.863-1.354l.658-2.77-2.142-1.818a1.25 1.25 0 0 1 .712-2.19l2.825-.213.963-2.681A1.25 1.25 0 0 1 8 1.5Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </Link>
+            )}
           </div>
           <ThemeToggle />
         </div>
