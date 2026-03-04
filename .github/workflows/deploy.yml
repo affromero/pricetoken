@@ -26,3 +26,26 @@ jobs:
             sleep 5
             curl -sf http://localhost:3001/api/health || exit 1
             echo "Deploy complete"
+
+      - name: Notify Telegram (success)
+        if: success()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: |
+            ✅ PriceToken deployed successfully
+            Commit: ${{ github.sha }}
+            By: ${{ github.actor }}
+
+      - name: Notify Telegram (failure)
+        if: failure()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: |
+            ❌ PriceToken deploy failed
+            Commit: ${{ github.sha }}
+            By: ${{ github.actor }}
+            Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
