@@ -166,7 +166,7 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
           <YAxis
             stroke="var(--pt-text-secondary)"
             tick={{ fontSize: 12 }}
-            tickFormatter={(v: number) => `${currencySymbol}${v}`}
+            tickFormatter={(v: number) => `${currencySymbol}${v.toFixed(3)}`}
           />
           <Tooltip
             shared={false}

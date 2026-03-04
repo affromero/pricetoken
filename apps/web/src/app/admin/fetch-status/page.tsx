@@ -93,7 +93,7 @@ export default function FetchStatusPage() {
                 <td className={styles.mono}>{run.providersRun}</td>
                 <td className={styles.mono}>{run.modelsVerified}</td>
                 <td className={styles.mono}>{run.modelsFlagged}</td>
-                <td className={styles.mono}>${run.verificationCost.toFixed(4)}</td>
+                <td className={styles.mono}>${run.verificationCost.toFixed(3)}</td>
                 <td>
                   {run.errors.length > 0 && (
                     <span className={styles.errorCount}>{run.errors.length} error(s)</span>

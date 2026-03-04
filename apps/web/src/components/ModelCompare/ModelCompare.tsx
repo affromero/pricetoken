@@ -110,7 +110,7 @@ export function ModelCompare({ pricing: initialPricing }: ModelCompareProps) {
                     style={{ width: `${(m.inputPerMTok / maxInput) * 100}%` }}
                   />
                 </div>
-                <span className={styles.barValue}>{currencySymbol}{m.inputPerMTok.toFixed(4)}</span>
+                <span className={styles.barValue}>{currencySymbol}{m.inputPerMTok.toFixed(3)}</span>
               </div>
             ))}
           </div>
@@ -126,7 +126,7 @@ export function ModelCompare({ pricing: initialPricing }: ModelCompareProps) {
                     style={{ width: `${(m.outputPerMTok / maxOutput) * 100}%` }}
                   />
                 </div>
-                <span className={styles.barValue}>{currencySymbol}{m.outputPerMTok.toFixed(4)}</span>
+                <span className={styles.barValue}>{currencySymbol}{m.outputPerMTok.toFixed(3)}</span>
               </div>
             ))}
           </div>

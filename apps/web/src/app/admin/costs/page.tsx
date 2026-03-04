@@ -18,7 +18,7 @@ interface CostData {
 }
 
 function formatCost(usd: number): string {
-  return `$${usd.toFixed(4)}`;
+  return `$${usd.toFixed(3)}`;
 }
 
 export default function AdminCostsPage() {
