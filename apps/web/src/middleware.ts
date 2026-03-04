@@ -7,19 +7,28 @@ const WINDOW_SECONDS = 3600; // 1 hour
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // Admin IP allowlist — check before rate limiting
+  // Admin session cookie auth — exempt login page and auth API
   if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) {
-    const clientIp = getClientIp(request);
-    const allowed = (process.env.ADMIN_ALLOWED_IPS ?? '')
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean);
+    if (
+      pathname === '/admin/login' ||
+      pathname === '/api/admin/auth' ||
+      pathname === '/api/admin/auth/logout'
+    ) {
+      return NextResponse.next();
+    }
 
-    if (allowed.length === 0 || !allowed.includes(clientIp)) {
-      return NextResponse.json(
-        { error: 'Forbidden', status: 403 },
-        { status: 403 }
-      );
+    const { verifySessionToken, COOKIE_NAME } = await import('@/lib/admin-auth');
+    const token = request.cookies.get(COOKIE_NAME)?.value;
+    const valid = token ? await verifySessionToken(token) : false;
+
+    if (!valid) {
+      if (pathname.startsWith('/api/')) {
+        return NextResponse.json(
+          { error: 'Unauthorized', status: 401 },
+          { status: 401 },
+        );
+      }
+      return NextResponse.redirect(new URL('/admin/login', request.url));
     }
 
     return NextResponse.next();
@@ -110,5 +119,5 @@ function getClientIp(request: NextRequest): string {
 }
 
 export const config = {
-  matcher: ['/api/v1/:path*', '/admin/:path*', '/api/admin/:path*', '/api/cron/:path*'],
+  matcher: ['/api/v1/:path*', '/admin', '/admin/:path*', '/api/admin/:path*', '/api/cron/:path*'],
 };

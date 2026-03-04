@@ -1,19 +1,14 @@
-import { headers } from 'next/headers';
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/ThemeToggle/ThemeToggle';
+import { COOKIE_NAME, verifySessionToken } from '@/lib/admin-auth';
 import styles from './Navigation.module.css';
 
 async function isAdmin(): Promise<boolean> {
-  const hdrs = await headers();
-  const clientIp =
-    hdrs.get('x-forwarded-for')?.split(',')[0]?.trim() ??
-    hdrs.get('x-real-ip') ??
-    '';
-  const allowed = (process.env.ADMIN_ALLOWED_IPS ?? '')
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean);
-  return allowed.length > 0 && allowed.includes(clientIp);
+  const cookieStore = await cookies();
+  const token = cookieStore.get(COOKIE_NAME)?.value;
+  if (!token) return false;
+  return verifySessionToken(token);
 }
 
 export async function Navigation() {

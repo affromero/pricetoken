@@ -11,6 +11,14 @@
   flex-shrink: 0;
 }
 
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
 .sidebarTitle {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -18,8 +26,6 @@
   color: var(--pt-accent);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 0 1.25rem;
-  margin-bottom: 1.5rem;
 }
 
 .nav {

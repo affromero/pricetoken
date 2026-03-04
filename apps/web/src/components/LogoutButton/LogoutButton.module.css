@@ -1,0 +1,17 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--pt-border);
+  border-radius: 6px;
+  padding: 0.375rem;
+  color: var(--pt-text-secondary);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.root:hover {
+  color: var(--pt-error);
+  border-color: var(--pt-error);
+}
