@@ -9,10 +9,13 @@ export async function GET(request: NextRequest) {
   try {
     const provider = request.nextUrl.searchParams.get('provider') ?? undefined;
     const currencyParam = request.nextUrl.searchParams.get('currency');
-    const cacheKey = `pt:cache:cheapest:${provider ?? 'all'}`;
+    const after = request.nextUrl.searchParams.get('after') ?? undefined;
+    const before = request.nextUrl.searchParams.get('before') ?? undefined;
+    const dateRange = (after || before) ? { after, before } : undefined;
+    const cacheKey = `pt:cache:cheapest:${provider ?? 'all'}:${after ?? ''}:${before ?? ''}`;
 
     const cached = await getCached<ModelPricing>(cacheKey);
-    let model = cached ?? await getCheapestModel(provider);
+    let model = cached ?? await getCheapestModel(provider, dateRange);
 
     if (!model) {
       return apiError('No pricing data available', 404);

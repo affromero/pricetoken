@@ -62,9 +62,11 @@ class PriceTokenClient:
         *,
         provider: str | None = None,
         currency: str | None = None,
+        after: str | None = None,
+        before: str | None = None,
     ) -> list[ModelPricing]:
         """Get current pricing for all models."""
-        qs = self._build_qs({"provider": provider, "currency": currency})
+        qs = self._build_qs({"provider": provider, "currency": currency, "after": after, "before": before})
         data: list[dict[str, Any]] = self._request(f"/api/v1/pricing{qs}")
         return [_parse_model_pricing(m) for m in data]
 
@@ -113,8 +115,10 @@ class PriceTokenClient:
         *,
         provider: str | None = None,
         currency: str | None = None,
+        after: str | None = None,
+        before: str | None = None,
     ) -> ModelPricing:
         """Get the cheapest model."""
-        qs = self._build_qs({"provider": provider, "currency": currency})
+        qs = self._build_qs({"provider": provider, "currency": currency, "after": after, "before": before})
         data: dict[str, Any] = self._request(f"/api/v1/pricing/cheapest{qs}")
         return _parse_model_pricing(data)

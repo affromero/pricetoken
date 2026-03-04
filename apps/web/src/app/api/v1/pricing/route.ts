@@ -9,10 +9,13 @@ export async function GET(request: NextRequest) {
   try {
     const provider = request.nextUrl.searchParams.get('provider') ?? undefined;
     const currencyParam = request.nextUrl.searchParams.get('currency');
-    const cacheKey = `pt:cache:pricing:${provider ?? 'all'}`;
+    const after = request.nextUrl.searchParams.get('after') ?? undefined;
+    const before = request.nextUrl.searchParams.get('before') ?? undefined;
+    const dateRange = (after || before) ? { after, before } : undefined;
+    const cacheKey = `pt:cache:pricing:${provider ?? 'all'}:${after ?? ''}:${before ?? ''}`;
 
     const cached = await getCached<ModelPricing[]>(cacheKey);
-    let data = cached ?? await getCurrentPricing(provider);
+    let data = cached ?? await getCurrentPricing(provider, dateRange);
 
     if (!cached) await setCache(cacheKey, data);
 
