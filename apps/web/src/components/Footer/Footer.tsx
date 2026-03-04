@@ -22,6 +22,14 @@ export function Footer() {
           >
             npm
           </a>
+          <a
+            href="https://pypi.org/project/pricetoken"
+            className={styles.link}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            PyPI
+          </a>
           <a href="/api/health" className={styles.link}>
             Status
           </a>
