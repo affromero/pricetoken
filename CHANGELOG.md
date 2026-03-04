@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.4.0] - 2026-03-04
+
+### Added
+- xAI provider (Grok 4, Grok 4.1 Fast, Grok 3, Grok 3 Mini)
+- Mistral provider (Mistral Large 3, Mistral Medium 3, Codestral, Mistral Small 3.1)
+- OpenAI models: GPT-5.1, o3 Pro, o3 Mini
+- Google preview models: Gemini 3.1 Pro Preview, Gemini 3 Flash Preview
+- Puppeteer-based scraping for JS-rendered pricing pages (React SPAs)
+- Provider brand colors for xAI and Mistral in dark/light themes
+- PyPI install option in landing page hero CTA
+
+### Fixed
+- Deploy workflow Prisma schema path
+- Docker build caching in deploy workflow
+- USD currency included in API responses by default
+
 ## [0.3.1] - 2026-03-04
 
 ### Changed
