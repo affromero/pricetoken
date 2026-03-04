@@ -137,12 +137,19 @@ export async function getPriceHistory(
 }
 
 export async function seedFromStatic(): Promise<number> {
-  const count = await prisma.modelPricingSnapshot.count();
-  if (count > 0) return 0;
-
   const { STATIC_PRICING } = await import('pricetoken');
 
-  const data = STATIC_PRICING.map((m) => ({
+  const existingIds = (
+    await prisma.modelPricingSnapshot.findMany({
+      select: { modelId: true },
+      distinct: ['modelId'],
+    })
+  ).map((r: { modelId: string }) => r.modelId);
+
+  const missing = STATIC_PRICING.filter((m) => !existingIds.includes(m.modelId));
+  if (missing.length === 0) return 0;
+
+  const data = missing.map((m) => ({
     modelId: m.modelId,
     provider: m.provider,
     displayName: m.displayName,
@@ -156,7 +163,7 @@ export async function seedFromStatic(): Promise<number> {
   }));
 
   const result = await prisma.modelPricingSnapshot.createMany({ data });
-  console.log(`Seeded ${result.count} pricing snapshots from static data`);
+  console.log(`Seeded ${result.count} new models (${existingIds.length} already existed)`);
   return result.count;
 }
 

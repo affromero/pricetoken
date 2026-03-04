@@ -4,13 +4,21 @@ import { STATIC_PRICING } from '../packages/sdk/src/static';
 const prisma = new PrismaClient();
 
 async function main() {
-  const count = await prisma.modelPricingSnapshot.count();
-  if (count > 0) {
-    console.log(`Database already has ${count} pricing snapshots, skipping seed.`);
+  const existingIds = (
+    await prisma.modelPricingSnapshot.findMany({
+      select: { modelId: true },
+      distinct: ['modelId'],
+    })
+  ).map((r) => r.modelId);
+
+  const missing = STATIC_PRICING.filter((m) => !existingIds.includes(m.modelId));
+
+  if (missing.length === 0) {
+    console.log(`All ${STATIC_PRICING.length} models already seeded, nothing to do.`);
     return;
   }
 
-  const data = STATIC_PRICING.map((m) => ({
+  const data = missing.map((m) => ({
     modelId: m.modelId,
     provider: m.provider,
     displayName: m.displayName,
@@ -24,7 +32,7 @@ async function main() {
   }));
 
   const result = await prisma.modelPricingSnapshot.createMany({ data });
-  console.log(`Seeded ${result.count} pricing snapshots.`);
+  console.log(`Seeded ${result.count} new models (${existingIds.length} already existed).`);
 }
 
 main()
