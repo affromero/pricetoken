@@ -153,3 +153,21 @@
   font-size: 0.875rem;
   color: var(--pt-text);
 }
+
+@media (max-width: 768px) {
+  .root {
+    padding: 2rem 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .path {
+    word-break: break-all;
+  }
+
+  .endpointHeader {
+    flex-wrap: wrap;
+  }
+}
