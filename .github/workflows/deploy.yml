@@ -66,6 +66,20 @@ jobs:
             printf "ALTER USER %s WITH PASSWORD '%s';\n" "$PG_USER" "$POSTGRES_PASSWORD" | \
               docker compose -f docker-compose.prod.yml exec -T postgres psql -U "$PG_USER"
 
+            echo "Waiting for postgres to accept connections..."
+            for i in $(seq 1 15); do
+              if docker compose -f docker-compose.prod.yml exec -T postgres pg_isready -U "${PG_USER}" -q 2>/dev/null; then
+                echo "Postgres ready (attempt $i)"
+                break
+              fi
+              echo "Attempt $i/15 — postgres not ready"
+              sleep 2
+              if [ "$i" -eq 15 ]; then
+                echo "Postgres failed to start after 30s"
+                exit 1
+              fi
+            done
+
             echo "Running Prisma migrations..."
             docker compose -f docker-compose.prod.yml run --rm --no-deps web npx prisma db push --schema=apps/web/prisma/schema.prisma
 
