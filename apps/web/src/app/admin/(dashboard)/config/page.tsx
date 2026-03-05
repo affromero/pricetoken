@@ -4,9 +4,15 @@ import { useState, useEffect, useCallback } from 'react';
 import { EXTRACTION_PROVIDERS } from '@/lib/fetcher/ai-registry';
 import styles from './page.module.css';
 
+interface VerificationAgent {
+  provider: string;
+  model: string;
+}
+
 interface ConfigData {
   extractionProvider: string;
   extractionModel: string;
+  verificationAgents: VerificationAgent[];
   maxTextLength: number;
   enabled: boolean;
 }
@@ -15,6 +21,8 @@ export default function AdminConfigPage() {
   const [config, setConfig] = useState<ConfigData | null>(null);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [newAgentProvider, setNewAgentProvider] = useState('');
+  const [newAgentModel, setNewAgentModel] = useState('');
 
   const loadConfig = useCallback(async () => {
     const res = await fetch('/api/admin/config');
@@ -101,6 +109,68 @@ export default function AdminConfigPage() {
             min={1000}
             max={100000}
           />
+        </div>
+
+        <div className={styles.field}>
+          <label className={styles.label}>Verification Agents</label>
+          <div className={styles.agentList}>
+            {config.verificationAgents.map((agent, i) => (
+              <div key={`${agent.provider}-${agent.model}`} className={styles.agentRow}>
+                <span className={styles.agentLabel}>
+                  {EXTRACTION_PROVIDERS[agent.provider]?.displayName ?? agent.provider} / {agent.model}
+                </span>
+                <button
+                  className={styles.removeButton}
+                  onClick={() => {
+                    const next = config.verificationAgents.filter((_, idx) => idx !== i);
+                    setConfig({ ...config, verificationAgents: next });
+                  }}
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+          <div className={styles.addAgentRow}>
+            <select
+              className={styles.select}
+              value={newAgentProvider}
+              onChange={(e) => {
+                setNewAgentProvider(e.target.value);
+                setNewAgentModel(EXTRACTION_PROVIDERS[e.target.value]?.models[0]?.id ?? '');
+              }}
+            >
+              <option value="">Provider...</option>
+              {Object.entries(EXTRACTION_PROVIDERS).map(([key, p]) => (
+                <option key={key} value={key}>{p.displayName}</option>
+              ))}
+            </select>
+            <select
+              className={styles.select}
+              value={newAgentModel}
+              onChange={(e) => setNewAgentModel(e.target.value)}
+              disabled={!newAgentProvider}
+            >
+              <option value="">Model...</option>
+              {(EXTRACTION_PROVIDERS[newAgentProvider]?.models ?? []).map((m) => (
+                <option key={m.id} value={m.id}>{m.name}</option>
+              ))}
+            </select>
+            <button
+              className={styles.button}
+              disabled={!newAgentProvider || !newAgentModel}
+              onClick={() => {
+                setConfig({
+                  ...config,
+                  verificationAgents: [...config.verificationAgents, { provider: newAgentProvider, model: newAgentModel }],
+                });
+                setNewAgentProvider('');
+                setNewAgentModel('');
+              }}
+            >
+              Add
+            </button>
+          </div>
         </div>
 
         <div className={styles.toggle}>

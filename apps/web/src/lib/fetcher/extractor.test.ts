@@ -20,6 +20,12 @@ vi.mock('./ai-registry', () => ({
       models: [{ id: 'gpt-4.1-mini', name: 'GPT-4.1 Mini', costPer1kInput: 0.0004, costPer1kOutput: 0.0016 }],
       extract: (...args: unknown[]) => mockExtract(...args),
     },
+    'claude-code': {
+      displayName: 'Claude Code (Max)',
+      envKey: 'CLAUDE_CODE_ENABLED',
+      models: [{ id: 'sonnet', name: 'Claude Sonnet (via CLI)', costPer1kInput: 0, costPer1kOutput: 0 }],
+      extract: (...args: unknown[]) => mockExtract(...args),
+    },
   },
   getModelCosts: vi.fn().mockReturnValue({ costPer1kInput: 0.001, costPer1kOutput: 0.005 }),
 }));
@@ -29,6 +35,7 @@ vi.mock('@/lib/fetcher-config', () => ({
     id: 'singleton',
     extractionProvider: 'anthropic',
     extractionModel: 'claude-haiku-4-5-20251001',
+    verificationAgents: [],
     maxTextLength: 8000,
     enabled: true,
     updatedAt: new Date(),
@@ -111,6 +118,7 @@ describe('extractPricing', () => {
       id: 'singleton',
       extractionProvider: 'openai',
       extractionModel: 'gpt-4.1-mini',
+      verificationAgents: [],
       maxTextLength: 8000,
       enabled: true,
       updatedAt: new Date(),
@@ -131,6 +139,7 @@ describe('extractPricing', () => {
       id: 'singleton',
       extractionProvider: 'anthropic',
       extractionModel: 'claude-haiku-4-5-20251001',
+      verificationAgents: [],
       maxTextLength: 50,
       enabled: true,
       updatedAt: new Date(),
@@ -201,5 +210,44 @@ describe('extractPricing', () => {
     await expect(extractPricing('openai', 'text')).rejects.toThrow(
       'Extraction failed with anthropic/claude-haiku-4-5-20251001: API rate limited'
     );
+  });
+
+  it('uses claude-code provider when configured', async () => {
+    process.env.CLAUDE_CODE_ENABLED = 'true';
+    vi.mocked(getFetcherConfig).mockResolvedValue({
+      id: 'singleton',
+      extractionProvider: 'claude-code',
+      extractionModel: 'sonnet',
+      verificationAgents: [],
+      maxTextLength: 8000,
+      enabled: true,
+      updatedAt: new Date(),
+    });
+
+    mockExtract.mockResolvedValue({
+      content: JSON.stringify([{ modelId: 'test', displayName: 'Test', inputPerMTok: 1, outputPerMTok: 2 }]),
+      usage: { inputTokens: 0, outputTokens: 0 },
+    });
+
+    const result = await extractPricing('anthropic', 'some page text');
+    expect(result.provider).toBe('claude-code');
+    expect(result.model).toBe('sonnet');
+    expect(result.usage.inputTokens).toBe(0);
+    expect(result.usage.outputTokens).toBe(0);
+  });
+
+  it('throws when CLAUDE_CODE_ENABLED is not set', async () => {
+    delete process.env.CLAUDE_CODE_ENABLED;
+    vi.mocked(getFetcherConfig).mockResolvedValue({
+      id: 'singleton',
+      extractionProvider: 'claude-code',
+      extractionModel: 'sonnet',
+      verificationAgents: [],
+      maxTextLength: 8000,
+      enabled: true,
+      updatedAt: new Date(),
+    });
+
+    await expect(extractPricing('openai', 'text')).rejects.toThrow('CLAUDE_CODE_ENABLED');
   });
 });

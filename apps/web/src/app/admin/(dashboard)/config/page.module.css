@@ -85,3 +85,46 @@
   color: var(--pt-error);
   border: 1px solid rgba(239, 68, 68, 0.2);
 }
+
+.agentList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.agentRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--pt-surface);
+  border: 1px solid var(--pt-border);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+}
+
+.agentLabel {
+  font-size: 0.8125rem;
+  font-family: var(--font-mono);
+  color: var(--pt-text);
+}
+
+.removeButton {
+  background: none;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: var(--pt-error);
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.removeButton:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.addAgentRow {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
