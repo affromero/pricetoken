@@ -278,7 +278,7 @@ export const STATIC_IMAGE_PRICING: ImageModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2024-10-01',
+    launchDate: '2024-10-02',
   },
   {
     modelId: 'flux-1.1-pro-ultra',
@@ -294,7 +294,7 @@ export const STATIC_IMAGE_PRICING: ImageModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2024-11-01',
+    launchDate: '2024-11-06',
   },
   {
     modelId: 'flux-1.1-pro-raw',
@@ -310,7 +310,7 @@ export const STATIC_IMAGE_PRICING: ImageModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2024-11-01',
+    launchDate: '2024-11-06',
   },
   {
     modelId: 'flux-1-kontext-pro',
@@ -326,7 +326,7 @@ export const STATIC_IMAGE_PRICING: ImageModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-06-01',
+    launchDate: '2025-05-29',
   },
   {
     modelId: 'flux-1-kontext-max',
@@ -342,7 +342,7 @@ export const STATIC_IMAGE_PRICING: ImageModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-06-01',
+    launchDate: '2025-05-29',
   },
   {
     modelId: 'flux-1-fill-pro',
@@ -358,7 +358,7 @@ export const STATIC_IMAGE_PRICING: ImageModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2024-10-01',
+    launchDate: '2024-11-01',
   },
   // Black Forest Labs — FLUX.2 series (megapixel-based, price = first MP flat rate)
   {
@@ -375,7 +375,7 @@ export const STATIC_IMAGE_PRICING: ImageModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-01-15',
+    launchDate: '2026-01-15',
   },
   {
     modelId: 'flux-2-klein-9b',
@@ -391,7 +391,7 @@ export const STATIC_IMAGE_PRICING: ImageModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-01-15',
+    launchDate: '2026-01-15',
   },
   {
     modelId: 'flux-2-pro',
@@ -407,7 +407,7 @@ export const STATIC_IMAGE_PRICING: ImageModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-01-15',
+    launchDate: '2025-11-25',
   },
   {
     modelId: 'flux-2-flex',
@@ -423,7 +423,7 @@ export const STATIC_IMAGE_PRICING: ImageModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-01-15',
+    launchDate: '2025-11-25',
   },
 
   // Amazon

@@ -278,7 +278,7 @@ STATIC_IMAGE_PRICING: list[ImageModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2024-10-01",
+        launch_date="2024-10-02",
     ),
     ImageModelPricing(
         model_id="flux-1.1-pro-ultra",
@@ -294,7 +294,7 @@ STATIC_IMAGE_PRICING: list[ImageModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2024-11-01",
+        launch_date="2024-11-06",
     ),
     ImageModelPricing(
         model_id="flux-1.1-pro-raw",
@@ -310,7 +310,7 @@ STATIC_IMAGE_PRICING: list[ImageModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2024-11-01",
+        launch_date="2024-11-06",
     ),
     ImageModelPricing(
         model_id="flux-1-kontext-pro",
@@ -326,7 +326,7 @@ STATIC_IMAGE_PRICING: list[ImageModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2025-06-01",
+        launch_date="2025-05-29",
     ),
     ImageModelPricing(
         model_id="flux-1-kontext-max",
@@ -342,7 +342,7 @@ STATIC_IMAGE_PRICING: list[ImageModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2025-06-01",
+        launch_date="2025-05-29",
     ),
     ImageModelPricing(
         model_id="flux-1-fill-pro",
@@ -358,7 +358,7 @@ STATIC_IMAGE_PRICING: list[ImageModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2024-10-01",
+        launch_date="2024-11-01",
     ),
     # Black Forest Labs — FLUX.2 series (megapixel-based, price = first MP flat rate)
     ImageModelPricing(
@@ -375,7 +375,7 @@ STATIC_IMAGE_PRICING: list[ImageModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2025-01-15",
+        launch_date="2026-01-15",
     ),
     ImageModelPricing(
         model_id="flux-2-klein-9b",
@@ -391,7 +391,7 @@ STATIC_IMAGE_PRICING: list[ImageModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2025-01-15",
+        launch_date="2026-01-15",
     ),
     ImageModelPricing(
         model_id="flux-2-pro",
@@ -407,7 +407,7 @@ STATIC_IMAGE_PRICING: list[ImageModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2025-01-15",
+        launch_date="2025-11-25",
     ),
     ImageModelPricing(
         model_id="flux-2-flex",
@@ -423,7 +423,7 @@ STATIC_IMAGE_PRICING: list[ImageModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2025-01-15",
+        launch_date="2025-11-25",
     ),
     # Amazon — Nova Canvas
     ImageModelPricing(
