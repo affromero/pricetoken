@@ -78,15 +78,21 @@ export async function extractPricing(
   };
 }
 
-function stripMarkdownFences(text: string): string {
+function extractJson(text: string): string {
   const trimmed = text.trim();
-  const match = trimmed.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?\s*```$/);
-  return match ? match[1]!.trim() : trimmed;
+  // Strip markdown fences
+  const fenced = trimmed.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?\s*```$/);
+  if (fenced) return fenced[1]!.trim();
+  // Extract JSON array from surrounding text (LLMs sometimes add reasoning)
+  const first = trimmed.indexOf('[');
+  const last = trimmed.lastIndexOf(']');
+  if (first !== -1 && last > first) return trimmed.slice(first, last + 1);
+  return trimmed;
 }
 
 function parseModels(text: string, pricingProvider: string): ExtractedModel[] {
   try {
-    const parsed: unknown = JSON.parse(stripMarkdownFences(text));
+    const parsed: unknown = JSON.parse(extractJson(text));
     if (!Array.isArray(parsed)) return [];
     const VALID_STATUSES = ['active', 'deprecated', 'preview'];
     return parsed
