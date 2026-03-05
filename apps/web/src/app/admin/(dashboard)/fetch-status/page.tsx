@@ -17,6 +17,8 @@ interface FetchRunSummary {
 export default function FetchStatusPage() {
   const [runs, setRuns] = useState<FetchRunSummary[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetching, setFetching] = useState(false);
+  const [fetchStatus, setFetchStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   const loadRuns = useCallback(async () => {
     try {
@@ -41,6 +43,25 @@ export default function FetchStatusPage() {
     }
   };
 
+  const handleFetchNow = async () => {
+    setFetching(true);
+    setFetchStatus(null);
+    try {
+      const res = await fetch('/api/admin/fetch', { method: 'POST' });
+      if (res.ok) {
+        setFetchStatus({ type: 'success', message: 'Fetch completed' });
+        loadRuns();
+      } else {
+        const json = await res.json();
+        setFetchStatus({ type: 'error', message: json.error ?? 'Fetch failed' });
+      }
+    } catch {
+      setFetchStatus({ type: 'error', message: 'Network error' });
+    } finally {
+      setFetching(false);
+    }
+  };
+
   const isFrozen = runs.length > 0 && runs[0]!.status === 'failed';
 
   if (loading) return null;
@@ -54,12 +75,23 @@ export default function FetchStatusPage() {
         <span className={styles.bannerText}>
           {isFrozen ? 'Frozen — requires review' : 'Active'}
         </span>
-        {isFrozen && (
-          <button className={styles.unfreezeBtn} onClick={handleUnfreeze}>
-            Unfreeze
+        <div className={styles.bannerActions}>
+          {isFrozen && (
+            <button className={styles.unfreezeBtn} onClick={handleUnfreeze}>
+              Unfreeze
+            </button>
+          )}
+          <button className={styles.fetchBtn} onClick={handleFetchNow} disabled={fetching}>
+            {fetching ? 'Fetching...' : 'Fetch Now'}
           </button>
-        )}
+        </div>
       </div>
+
+      {fetchStatus && (
+        <div className={`${styles.fetchStatus} ${fetchStatus.type === 'success' ? styles.fetchSuccess : styles.fetchError}`}>
+          {fetchStatus.message}
+        </div>
+      )}
 
       {runs.length > 0 ? (
         <table className={styles.table}>
