@@ -77,6 +77,16 @@ export default async function HomePage() {
               <span className={styles.modalityLabel}>Video</span>
               <span className={styles.modalityMeta}>$/minute</span>
             </Link>
+            <div className={styles.modalityCardDisabled}>
+              <span className={styles.modalityIcon}>W</span>
+              <span className={styles.modalityLabel}>3D / World</span>
+              <span className={styles.modalityMeta}>coming soon</span>
+              <div className={styles.modalityTooltip}>
+                No standard pricing unit exists yet. Providers use credits,
+                subscriptions, or per-generation fees — no apples-to-apples
+                comparison is possible today.
+              </div>
+            </div>
           </div>
         </section>
 
@@ -89,6 +99,37 @@ export default async function HomePage() {
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>How We Get Our Data</h2>
           <DataSources />
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>3D / World Models</h2>
+          <p className={styles.sectionSubtitle}>
+            We&apos;re tracking the emerging world model space. Once providers converge on a
+            standard pricing unit, we&apos;ll add full comparisons.
+          </p>
+          <div className={styles.comingSoonGrid}>
+            {[
+              { name: 'World Labs', url: 'https://www.worldlabs.ai' },
+              { name: 'Google Genie', url: 'https://deepmind.google/technologies/genie/' },
+              { name: 'Meshy', url: 'https://www.meshy.ai' },
+              { name: 'Tripo', url: 'https://www.tripo3d.ai' },
+              { name: 'Rodin', url: 'https://hyperhuman.deemos.com' },
+              { name: 'Sloyd', url: 'https://www.sloyd.ai' },
+              { name: 'SpaitialAI', url: 'https://www.spaitial.ai' },
+            ].map((provider) => (
+              <a
+                key={provider.name}
+                href={provider.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.comingSoonCard}
+              >
+                <span className={styles.comingSoonDot} />
+                <span className={styles.comingSoonName}>{provider.name}</span>
+                <span className={styles.comingSoonArrow}>&rarr;</span>
+              </a>
+            ))}
+          </div>
         </section>
 
         <section className={styles.features}>
