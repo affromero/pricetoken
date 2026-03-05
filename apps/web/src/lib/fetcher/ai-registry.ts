@@ -127,6 +127,46 @@ export const EXTRACTION_PROVIDERS: Record<string, ProviderConfig> = {
       };
     },
   },
+  'claude-code': {
+    displayName: 'Claude Code (Max)',
+    envKey: 'CLAUDE_CODE_ENABLED',
+    models: [
+      { id: 'sonnet', name: 'Claude Sonnet (via CLI)', costPer1kInput: 0, costPer1kOutput: 0 },
+      { id: 'opus', name: 'Claude Opus (via CLI)', costPer1kInput: 0, costPer1kOutput: 0 },
+    ],
+    extract: async (_apiKey, model, systemPrompt, userPrompt) => {
+      const { spawn } = await import(/* webpackIgnore: true */ 'child_process');
+
+      const fullPrompt = `${systemPrompt}\n\n${userPrompt}`;
+
+      const result = await new Promise<string>((resolve, reject) => {
+        const proc = spawn('claude', ['--print', '--model', model, '--max-tokens', '4096'], {
+          timeout: 120_000,
+        });
+
+        let stdout = '';
+        let stderr = '';
+        proc.stdout.on('data', (d: Buffer) => {
+          stdout += d.toString();
+        });
+        proc.stderr.on('data', (d: Buffer) => {
+          stderr += d.toString();
+        });
+        proc.on('close', (code) => {
+          if (code !== 0) reject(new Error(`claude CLI exited ${code}: ${stderr}`));
+          else resolve(stdout.trim());
+        });
+        proc.on('error', reject);
+        proc.stdin.write(fullPrompt);
+        proc.stdin.end();
+      });
+
+      return {
+        content: result,
+        usage: { inputTokens: 0, outputTokens: 0 },
+      };
+    },
+  },
 };
 
 export function getModelCosts(

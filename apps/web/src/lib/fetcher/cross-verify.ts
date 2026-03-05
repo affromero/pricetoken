@@ -1,6 +1,7 @@
 import { EXTRACTION_PROVIDERS } from './ai-registry';
 import { logUsage } from '@/lib/usage-logger';
 import { VERIFICATION_SYSTEM_PROMPT } from './verification-prompt';
+import { getFetcherConfig, parseVerificationAgents } from '@/lib/fetcher-config';
 import type { ExtractedModel } from './extractor';
 import type { AgentVerification, ModelVerdict } from './verification-types';
 
@@ -9,23 +10,20 @@ interface VerificationAgent {
   model: string;
 }
 
-const VERIFICATION_AGENTS: VerificationAgent[] = [
-  { provider: 'anthropic', model: 'claude-haiku-4-5-20251001' },
-  { provider: 'openai', model: 'gpt-4.1-mini' },
-  { provider: 'google', model: 'gemini-2.5-flash' },
-];
-
 export async function crossVerify(
   pageText: string,
   models: ExtractedModel[]
 ): Promise<AgentVerification[]> {
+  const config = await getFetcherConfig();
+  const agents = parseVerificationAgents(config);
+
   const modelsJson = JSON.stringify(models, null, 2);
   const userPrompt = `Verify these extracted prices against the raw page text.\n\nRaw text:\n${pageText.slice(0, 6000)}\n\nExtracted data:\n${modelsJson}`;
 
-  const availableAgents = VERIFICATION_AGENTS.filter((agent) => {
-    const config = EXTRACTION_PROVIDERS[agent.provider];
-    if (!config) return false;
-    const apiKey = process.env[config.envKey];
+  const availableAgents = agents.filter((agent) => {
+    const providerConfig = EXTRACTION_PROVIDERS[agent.provider];
+    if (!providerConfig) return false;
+    const apiKey = process.env[providerConfig.envKey];
     return !!apiKey;
   });
 

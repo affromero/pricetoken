@@ -51,6 +51,32 @@ export async function PATCH(request: NextRequest) {
       update.enabled = body.enabled;
     }
 
+    if ('verificationAgents' in body) {
+      if (!Array.isArray(body.verificationAgents)) {
+        return NextResponse.json({ error: 'verificationAgents must be an array' }, { status: 400 });
+      }
+      for (const agent of body.verificationAgents) {
+        if (
+          typeof agent !== 'object' ||
+          agent === null ||
+          typeof agent.provider !== 'string' ||
+          typeof agent.model !== 'string'
+        ) {
+          return NextResponse.json(
+            { error: 'Each verification agent must have provider and model strings' },
+            { status: 400 }
+          );
+        }
+        if (!(agent.provider in EXTRACTION_PROVIDERS)) {
+          return NextResponse.json(
+            { error: `Invalid verification agent provider: ${agent.provider}` },
+            { status: 400 }
+          );
+        }
+      }
+      update.verificationAgents = body.verificationAgents;
+    }
+
     if (Object.keys(update).length === 0) {
       return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 });
     }
