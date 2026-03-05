@@ -22,7 +22,6 @@ export const PROVIDER_COLORS: Record<string, string> = {
   amazon: 'var(--pt-provider-amazon)',
   stability: 'var(--pt-provider-stability)',
   bfl: 'var(--pt-provider-bfl)',
-  'black-forest-labs': 'var(--pt-provider-bfl)',
   recraft: 'var(--pt-provider-recraft)',
   bytedance: 'var(--pt-provider-bytedance)',
   fal: 'var(--pt-provider-fal)',

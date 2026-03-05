@@ -18,8 +18,8 @@ export const IMAGE_PRICING_PROVIDERS: Record<string, ImageProviderConfig> = {
     url: 'https://platform.stability.ai/pricing',
     displayName: 'Stability AI',
   },
-  'black-forest-labs': {
-    url: 'https://docs.bfl.ml/',
+  bfl: {
+    url: 'https://docs.bfl.ml/quick_start/pricing',
     displayName: 'Black Forest Labs',
   },
   amazon: {
