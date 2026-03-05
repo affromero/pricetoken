@@ -175,14 +175,14 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
               dataKey="date"
               stroke="var(--pt-text-secondary)"
               tick={{ fontSize: mobile ? 10 : 12 }}
-              tickFormatter={mobile ? formatShortDate : undefined}
-              interval={mobile ? 'preserveStartEnd' : undefined}
+              tickFormatter={formatShortDate}
+              interval="preserveStartEnd"
             />
             <YAxis
               stroke="var(--pt-text-secondary)"
               tick={{ fontSize: mobile ? 10 : 12 }}
-              width={mobile ? 40 : undefined}
-              tickCount={mobile ? 5 : undefined}
+              width={mobile ? 40 : 60}
+              tickCount={mobile ? 5 : 5}
               tickFormatter={(v: number) =>
                 mobile
                   ? `${currencySymbol}${v < 1 ? v.toFixed(1) : Math.round(v)}`

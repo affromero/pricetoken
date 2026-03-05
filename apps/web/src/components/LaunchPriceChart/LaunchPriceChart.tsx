@@ -132,7 +132,7 @@ export function LaunchPriceChart({ pricing }: LaunchPriceChartProps) {
               tickFormatter={formatDateTick}
               stroke="var(--pt-text-secondary)"
               tick={{ fontSize: mobile ? 10 : 12 }}
-              interval={mobile ? 'preserveStartEnd' : undefined}
+              interval="preserveStartEnd"
               name="Launch Date"
             />
             <YAxis
@@ -142,8 +142,8 @@ export function LaunchPriceChart({ pricing }: LaunchPriceChartProps) {
               domain={logScale ? ['auto', 'auto'] : [0, 'auto']}
               stroke="var(--pt-text-secondary)"
               tick={{ fontSize: mobile ? 10 : 12 }}
-              width={mobile ? 40 : undefined}
-              tickCount={mobile ? 5 : undefined}
+              width={mobile ? 40 : 60}
+              tickCount={mobile ? 5 : 5}
               tickFormatter={(v: number) =>
                 mobile
                   ? v >= 1 ? `$${Math.round(v)}` : `$${v.toFixed(1)}`
