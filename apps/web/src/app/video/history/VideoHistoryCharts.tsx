@@ -17,6 +17,10 @@ const VIDEO_PRICE_FIELDS = [
 export function VideoHistoryCharts({ history, pricing }: VideoHistoryChartsProps) {
   return (
     <>
+      <h2 className={styles.sectionTitle}>Cost Per Minute Over Time</h2>
+      <p className={styles.subtitle}>
+        Track how video generation pricing changes over time.
+      </p>
       <div className={styles.chart}>
         <VideoPriceHistoryChart history={history} />
       </div>

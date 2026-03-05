@@ -17,6 +17,10 @@ const IMAGE_PRICE_FIELDS = [
 export function ImageHistoryCharts({ history, pricing }: ImageHistoryChartsProps) {
   return (
     <>
+      <h2 className={styles.sectionTitle}>Price Per Image Over Time</h2>
+      <p className={styles.subtitle}>
+        Track how image generation pricing changes over time.
+      </p>
       <div className={styles.chart}>
         <ImagePriceHistoryChart history={history} />
       </div>
