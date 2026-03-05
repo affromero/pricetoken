@@ -40,6 +40,7 @@ export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
   xai: {
     url: 'https://docs.x.ai/docs/models',
     displayName: 'xAI',
+    requiresBrowser: true,
   },
   mistral: {
     url: 'https://mistral.ai/pricing',
@@ -53,13 +54,16 @@ export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
   cohere: {
     url: 'https://cohere.com/pricing',
     displayName: 'Cohere',
+    requiresBrowser: true,
   },
   ai21: {
     url: 'https://www.ai21.com/pricing',
     displayName: 'AI21',
+    requiresBrowser: true,
   },
   amazon: {
     url: 'https://aws.amazon.com/bedrock/pricing/',
     displayName: 'Amazon',
+    requiresBrowser: true,
   },
 };
