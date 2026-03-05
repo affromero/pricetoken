@@ -12,7 +12,7 @@ import type {
   VideoProviderSummary,
 } from './types';
 
-const SDK_VERSION = '0.8.0';
+const SDK_VERSION = '0.7.0';
 
 export interface ClientOptions {
   baseUrl?: string;

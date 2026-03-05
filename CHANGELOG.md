@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.8.0] - 2026-03-05
+## [0.7.0] - 2026-03-05
 
 ### Added
 - **Video AI pricing module** — 9 providers (Runway, Sora, Veo, Kling, Luma, Pika, MiniMax, Seedance, FAL) with 17 models tracked at cost-per-minute granularity
@@ -12,7 +12,7 @@
   - Python SDK mirror with `calculate_video_cost()` and all video client methods
 - **Image generation pricing module** — 11 providers (OpenAI, Google, Stability, BFL, Amazon, Recraft, Mistral, Bytedance, fal, Ideogram, xAI) with image models tracked at cost-per-image
   - `ImagePricingSnapshot` Prisma model, image SDK types, static seed data
-  - Image extraction pipeline with cross-verification, prior-consistency checks, and consensus (new in 0.8.0)
+  - Image extraction pipeline with cross-verification, prior-consistency checks, and consensus (new in 0.7.0)
   - `/api/v1/image/*` routes
   - Image pricing table page with inline calculator
   - SDK client methods and Python mirror
