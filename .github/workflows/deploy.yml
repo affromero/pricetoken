@@ -28,7 +28,7 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
-          envs: REPO_TOKEN
+          envs: REPO_TOKEN,DOPPLER_PRD_TOKEN
           script: |
             set -e
             cd ~/pricetoken
@@ -40,6 +40,19 @@ jobs:
             echo "Syncing Caddy config..."
             sudo cp ~/pricetoken/Caddyfile /etc/caddy/conf.d/pricetoken.ai
             sudo caddy reload --config /etc/caddy/Caddyfile --force
+
+            echo "Generating .env from Doppler..."
+            if ! command -v doppler &>/dev/null; then
+              curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh | sudo sh
+            fi
+            DOPPLER_TOKEN="${DOPPLER_PRD_TOKEN}" doppler secrets download --no-file --format env-no-quotes > ~/pricetoken/.env
+
+            echo "Writing systemd env file..."
+            mkdir -p ~/.config/pricetoken
+            DOPPLER_TOKEN="${DOPPLER_PRD_TOKEN}" doppler secrets get CRON_SECRET --plain > /tmp/pt-cron-env
+            echo "CRON_SECRET=$(cat /tmp/pt-cron-env)" > ~/.config/pricetoken/env
+            chmod 600 ~/.config/pricetoken/env
+            rm -f /tmp/pt-cron-env
 
             echo "Building containers..."
             docker compose -f docker-compose.prod.yml build --no-cache
@@ -81,6 +94,7 @@ jobs:
             echo "Deploy complete!"
         env:
           REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+          DOPPLER_PRD_TOKEN: ${{ secrets.DOPPLER_PRD_TOKEN }}
 
   notify:
     name: Telegram Notification
