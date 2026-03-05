@@ -1,5 +1,12 @@
 export type ModelStatus = 'active' | 'deprecated' | 'preview';
-export type DataConfidence = 'high' | 'low';
+export type DataConfidence = 'high' | 'medium' | 'low';
+export type ConfidenceLevel = 'high' | 'medium' | 'low';
+
+export interface FreshnessInfo {
+  lastVerified: string;
+  ageHours: number;
+  stale: boolean;
+}
 
 export interface ModelPricing {
   modelId: string;
@@ -9,9 +16,12 @@ export interface ModelPricing {
   outputPerMTok: number;
   contextWindow: number | null;
   maxOutputTokens: number | null;
-  source: 'fetched' | 'seed' | 'admin' | 'verified';
+  source: 'fetched' | 'seed' | 'admin' | 'verified' | 'carried';
   status: ModelStatus | null;
   confidence: DataConfidence;
+  confidenceScore: number;
+  confidenceLevel: ConfidenceLevel;
+  freshness: FreshnessInfo;
   lastUpdated: string | null;
   launchDate: string | null;
 }
@@ -73,9 +83,12 @@ export interface ImageModelPricing {
   qualityTier: ImageQualityTier;
   maxResolution: string | null;
   supportedFormats: string[];
-  source: 'fetched' | 'seed' | 'admin';
+  source: 'fetched' | 'seed' | 'admin' | 'verified' | 'carried';
   status: ModelStatus | null;
   confidence: DataConfidence;
+  confidenceScore: number;
+  confidenceLevel: ConfidenceLevel;
+  freshness: FreshnessInfo;
   lastUpdated: string | null;
   launchDate: string | null;
 }
@@ -114,9 +127,12 @@ export interface VideoModelPricing {
   resolution: string | null;
   maxDuration: number | null;
   qualityMode: string | null;
-  source: 'fetched' | 'seed' | 'admin' | 'verified';
+  source: 'fetched' | 'seed' | 'admin' | 'verified' | 'carried';
   status: ModelStatus | null;
   confidence: DataConfidence;
+  confidenceScore: number;
+  confidenceLevel: ConfidenceLevel;
+  freshness: FreshnessInfo;
   lastUpdated: string | null;
   launchDate: string | null;
 }

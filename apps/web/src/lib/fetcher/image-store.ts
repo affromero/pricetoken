@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import type { ImageModelPricing, ImageModelHistory, ImagePriceHistoryPoint } from 'pricetoken';
+import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
 
 export interface ExtractedImageModel {
   modelId: string;
@@ -18,7 +19,8 @@ export async function saveImageSnapshots(
   provider: string,
   models: ExtractedImageModel[],
   source: string = 'fetched',
-  confidence: 'high' | 'low' = 'high'
+  confidence: 'high' | 'low' = 'high',
+  agentTotal?: number
 ): Promise<number> {
   if (models.length === 0) return 0;
   const data = models.map((m) => ({
@@ -34,6 +36,8 @@ export async function saveImageSnapshots(
     source,
     status: m.status ?? null,
     confidence,
+    agentApprovals: 'agentApprovals' in m ? (m as unknown as { agentApprovals: number }).agentApprovals : null,
+    agentTotal: agentTotal ?? null,
     launchDate: null,
   }));
   const result = await prisma.imagePricingSnapshot.createMany({ data });
@@ -56,6 +60,8 @@ export async function getLatestImagePricing(provider?: string): Promise<ImageMod
       source: string;
       status: string | null;
       confidence: string | null;
+      agentApprovals: number | null;
+      agentTotal: number | null;
       launchDate: Date | null;
       createdAt: Date;
     }>
@@ -65,28 +71,44 @@ export async function getLatestImagePricing(provider?: string): Promise<ImageMod
       "pricePerImage", "pricePerMegapixel",
       "defaultResolution", "qualityTier",
       "maxResolution", "supportedFormats",
-      "source", "status", "confidence", "launchDate", "createdAt"
+      "source", "status", "confidence",
+      "agentApprovals", "agentTotal",
+      "launchDate", "createdAt"
     FROM "ImagePricingSnapshot"
     ${where}
     ORDER BY "modelId", "createdAt" DESC
   `);
 
-  return snapshots.map((s) => ({
-    modelId: s.modelId,
-    provider: s.provider,
-    displayName: s.displayName,
-    pricePerImage: s.pricePerImage,
-    pricePerMegapixel: s.pricePerMegapixel,
-    defaultResolution: s.defaultResolution,
-    qualityTier: s.qualityTier as ImageModelPricing['qualityTier'],
-    maxResolution: s.maxResolution,
-    supportedFormats: s.supportedFormats,
-    source: s.source as ImageModelPricing['source'],
-    status: (s.status as ImageModelPricing['status']) ?? null,
-    confidence: (s.confidence ?? 'high') as ImageModelPricing['confidence'],
-    lastUpdated: s.createdAt.toISOString(),
-    launchDate: s.launchDate?.toISOString().split('T')[0] ?? null,
-  }));
+  return snapshots.map((s) => {
+    const score = computeConfidenceScore({
+      source: s.source,
+      createdAt: s.createdAt,
+      agentApprovals: s.agentApprovals,
+      agentTotal: s.agentTotal,
+      priceUnchanged: true,
+    });
+    const level = confidenceLevelFromScore(score);
+    const freshness = computeFreshness(s.createdAt);
+    return {
+      modelId: s.modelId,
+      provider: s.provider,
+      displayName: s.displayName,
+      pricePerImage: s.pricePerImage,
+      pricePerMegapixel: s.pricePerMegapixel,
+      defaultResolution: s.defaultResolution,
+      qualityTier: s.qualityTier as ImageModelPricing['qualityTier'],
+      maxResolution: s.maxResolution,
+      supportedFormats: s.supportedFormats,
+      source: s.source as ImageModelPricing['source'],
+      status: (s.status as ImageModelPricing['status']) ?? null,
+      confidence: level,
+      confidenceScore: score,
+      confidenceLevel: level,
+      freshness,
+      lastUpdated: s.createdAt.toISOString(),
+      launchDate: s.launchDate?.toISOString().split('T')[0] ?? null,
+    };
+  });
 }
 
 export async function getImagePriceHistory(

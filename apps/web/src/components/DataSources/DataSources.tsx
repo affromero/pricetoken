@@ -26,6 +26,12 @@ const PIPELINE_STEPS = [
     description:
       'Verified models are saved as timestamped snapshots in PostgreSQL, so you can track price changes over time.',
   },
+  {
+    number: 5,
+    title: 'Score',
+    description:
+      'Each model gets a Bayesian confidence score (0\u2013100). We start with a prior based on data source (verified scrape = 0.90, manual seed = 0.55, stale carry-forward = 0.25), then update with evidence: agent consensus, data age, and price stability. The result is a principled, interpretable score that decays naturally as data ages.',
+  },
 ];
 
 export function DataSources() {

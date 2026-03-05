@@ -108,6 +108,20 @@ PriceToken uses a multi-agent verification pipeline to ensure pricing accuracy:
 
 Models that fail verification are logged but never saved to the database. If a daily run fails entirely, pricing updates freeze until an admin reviews and resolves the issue.
 
+### Confidence Scoring
+
+Every model gets a Bayesian confidence score (0–100) computed at query time. The score starts with a prior based on data source (verified scrape = 0.90, manual seed = 0.55, stale carry-forward = 0.25), then updates with evidence: agent consensus strength, data age, and price stability. Scores decay naturally as data ages — a model verified 2 hours ago scores ~99, while week-old seed data scores ~62.
+
+| Field | Description |
+|-------|-------------|
+| `confidenceScore` | 0–100 numeric score |
+| `confidenceLevel` | `"high"` (≥80), `"medium"` (50–79), `"low"` (<50) |
+| `freshness.lastVerified` | ISO timestamp of last verification |
+| `freshness.ageHours` | Hours since last verification |
+| `freshness.stale` | `true` if older than 48 hours |
+
+See the [docs](https://pricetoken.ai/docs) for the full Bayesian model and prior table.
+
 ## Architecture
 
 ```

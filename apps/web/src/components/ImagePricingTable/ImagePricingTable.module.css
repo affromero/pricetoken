@@ -101,6 +101,10 @@
   color: var(--pt-text-secondary);
 }
 
+.freshness {
+  white-space: nowrap;
+}
+
 .date {
   color: var(--pt-text-secondary);
   font-size: 0.8125rem;
@@ -110,7 +114,9 @@
   .table th:nth-child(5),
   .table td:nth-child(5),
   .table th:nth-child(6),
-  .table td:nth-child(6) {
+  .table td:nth-child(6),
+  .table th:nth-child(7),
+  .table td:nth-child(7) {
     display: none;
   }
 

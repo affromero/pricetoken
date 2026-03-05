@@ -11,6 +11,10 @@ export function StatusBadge({ status, confidence }: StatusBadgeProps) {
     return <span className={`${styles.badge} ${styles.unverified}`}>unverified</span>;
   }
 
+  if (confidence === 'medium') {
+    return <span className={`${styles.badge} ${styles.unverified}`}>unverified</span>;
+  }
+
   if (status === 'deprecated') {
     return <span className={`${styles.badge} ${styles.deprecated}`}>deprecated</span>;
   }

@@ -3,6 +3,7 @@
 import pytest
 
 from pricetoken import STATIC_VIDEO_PRICING
+from pricetoken.types import FreshnessInfo
 from pricetoken.video_cost import calculate_video_cost, calculate_video_model_cost
 
 
@@ -52,6 +53,9 @@ class TestCalculateVideoModelCost:
                 source="seed",
                 status="active",
                 confidence="high",
+                confidence_score=65,
+                confidence_level="medium",
+                freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
                 last_updated=None,
                 launch_date=None,
             ),

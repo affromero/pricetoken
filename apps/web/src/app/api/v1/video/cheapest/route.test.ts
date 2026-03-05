@@ -35,6 +35,9 @@ const mockModel = {
   source: 'seed' as const,
   status: 'active' as const,
   confidence: 'high' as const,
+  confidenceScore: 65,
+  confidenceLevel: 'medium' as const,
+  freshness: { lastVerified: '2026-03-01T00:00:00Z', ageHours: 0, stale: false },
   lastUpdated: '2026-03-01T00:00:00Z',
   launchDate: '2025-09-01',
 };

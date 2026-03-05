@@ -2,12 +2,14 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import type { VideoModelPricing, VideoModelHistory, VideoPriceHistoryPoint } from 'pricetoken';
 import type { ExtractedVideoModel } from './video-extractor';
+import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
 
 export async function saveVideoSnapshots(
   provider: string,
   models: ExtractedVideoModel[],
   source: string = 'fetched',
-  confidence: 'high' | 'low' = 'high'
+  confidence: 'high' | 'low' = 'high',
+  agentTotal?: number
 ): Promise<number> {
   if (models.length === 0) return 0;
 
@@ -22,6 +24,8 @@ export async function saveVideoSnapshots(
     source,
     status: m.status ?? null,
     confidence,
+    agentApprovals: 'agentApprovals' in m ? (m as unknown as { agentApprovals: number }).agentApprovals : null,
+    agentTotal: agentTotal ?? null,
     launchDate: null,
   }));
 
@@ -44,6 +48,8 @@ export async function getLatestVideoPricing(provider?: string): Promise<VideoMod
       source: string;
       status: string | null;
       confidence: string | null;
+      agentApprovals: number | null;
+      agentTotal: number | null;
       launchDate: Date | null;
       createdAt: Date;
     }>
@@ -51,26 +57,42 @@ export async function getLatestVideoPricing(provider?: string): Promise<VideoMod
     SELECT DISTINCT ON ("modelId")
       "modelId", "provider", "displayName",
       "costPerMinute", "resolution", "maxDuration", "qualityMode",
-      "source", "status", "confidence", "launchDate", "createdAt"
+      "source", "status", "confidence",
+      "agentApprovals", "agentTotal",
+      "launchDate", "createdAt"
     FROM "VideoPricingSnapshot"
     ${where}
     ORDER BY "modelId", "createdAt" DESC
   `);
 
-  return snapshots.map((s) => ({
-    modelId: s.modelId,
-    provider: s.provider,
-    displayName: s.displayName,
-    costPerMinute: s.costPerMinute,
-    resolution: s.resolution,
-    maxDuration: s.maxDuration,
-    qualityMode: s.qualityMode,
-    source: s.source as VideoModelPricing['source'],
-    status: (s.status as VideoModelPricing['status']) ?? null,
-    confidence: (s.confidence ?? 'high') as VideoModelPricing['confidence'],
-    lastUpdated: s.createdAt.toISOString(),
-    launchDate: s.launchDate?.toISOString().split('T')[0] ?? null,
-  }));
+  return snapshots.map((s) => {
+    const score = computeConfidenceScore({
+      source: s.source,
+      createdAt: s.createdAt,
+      agentApprovals: s.agentApprovals,
+      agentTotal: s.agentTotal,
+      priceUnchanged: true,
+    });
+    const level = confidenceLevelFromScore(score);
+    const freshness = computeFreshness(s.createdAt);
+    return {
+      modelId: s.modelId,
+      provider: s.provider,
+      displayName: s.displayName,
+      costPerMinute: s.costPerMinute,
+      resolution: s.resolution,
+      maxDuration: s.maxDuration,
+      qualityMode: s.qualityMode,
+      source: s.source as VideoModelPricing['source'],
+      status: (s.status as VideoModelPricing['status']) ?? null,
+      confidence: level,
+      confidenceScore: score,
+      confidenceLevel: level,
+      freshness,
+      lastUpdated: s.createdAt.toISOString(),
+      launchDate: s.launchDate?.toISOString().split('T')[0] ?? null,
+    };
+  });
 }
 
 export async function getVideoPriceHistory(

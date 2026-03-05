@@ -19,6 +19,8 @@ model ModelPricingSnapshot {
   source          String   @default("fetched") // "fetched" | "seed" | "admin"
   status          String?  // "active" | "deprecated" | "preview" | null
   confidence      String   @default("high") // "high" | "low"
+  agentApprovals  Int?
+  agentTotal      Int?
   launchDate      DateTime?
   createdAt       DateTime @default(now())
 
@@ -40,6 +42,8 @@ model ImagePricingSnapshot {
   source            String   @default("fetched")
   status            String?
   confidence        String   @default("high")
+  agentApprovals    Int?
+  agentTotal        Int?
   launchDate        DateTime?
   createdAt         DateTime @default(now())
 
@@ -126,6 +130,8 @@ model VideoPricingSnapshot {
   source        String   @default("fetched")
   status        String?
   confidence    String   @default("high")
+  agentApprovals Int?
+  agentTotal    Int?
   launchDate    DateTime?
   createdAt     DateTime @default(now())
 

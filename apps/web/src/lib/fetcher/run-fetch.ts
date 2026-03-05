@@ -100,7 +100,7 @@ export async function runPricingFetch(): Promise<FetchResult> {
 
       // Save only approved models with 'verified' source
       if (consensus.approved.length > 0) {
-        const saved = await saveSnapshots(providerId, consensus.approved, 'verified');
+        const saved = await saveSnapshots(providerId, consensus.approved, 'verified', 'high', agentResults.length);
         totalModels += saved;
         console.log(`${config.displayName}: saved ${saved} verified models`);
       }

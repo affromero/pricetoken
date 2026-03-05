@@ -371,6 +371,63 @@ export default function DocsPage() {
         </section>
 
         <section className={styles.section}>
+          <h2 className={styles.heading}>Confidence Scoring</h2>
+          <p className={styles.text}>
+            Every model includes a Bayesian confidence score (0&ndash;100) that reflects how much you can
+            trust the pricing data. The score is computed at query time so it naturally decays as data ages.
+          </p>
+          <h3 className={styles.subheading}>How it works</h3>
+          <p className={styles.text}>
+            We use log-odds Bayesian updating: start with a prior based on data source, then update with
+            evidence from agent consensus, data age, and price stability.
+          </p>
+          <p className={styles.formula}>
+            <code>P(correct) = sigmoid(log_prior + LLR_agents + LLR_age + LLR_stability)</code>
+          </p>
+          <div className={styles.table}>
+            <div className={styles.tableRow}>
+              <span className={styles.tableLabel}>Source prior</span>
+              <span className={styles.tableValue}>verified=0.90, admin=0.85, seed=0.55, fetched=0.40, carried=0.25</span>
+            </div>
+            <div className={styles.tableRow}>
+              <span className={styles.tableLabel}>Agent consensus</span>
+              <span className={styles.tableValue}>3/3 approve: +1.5 LLR, 1/3: -0.7 LLR</span>
+            </div>
+            <div className={styles.tableRow}>
+              <span className={styles.tableLabel}>Age decay</span>
+              <span className={styles.tableValue}>+1.0 at 0 days, 0.0 at 7 days, -1.5 at 14+ days</span>
+            </div>
+            <div className={styles.tableRow}>
+              <span className={styles.tableLabel}>Price stability</span>
+              <span className={styles.tableValue}>Unchanged: +0.3, changed: -0.3</span>
+            </div>
+          </div>
+          <h3 className={styles.subheading}>Response fields</h3>
+          <div className={styles.table}>
+            <div className={styles.tableRow}>
+              <span className={styles.tableLabel}><code>confidenceScore</code></span>
+              <span className={styles.tableValue}>0&ndash;100 numeric score</span>
+            </div>
+            <div className={styles.tableRow}>
+              <span className={styles.tableLabel}><code>confidenceLevel</code></span>
+              <span className={styles.tableValue}>&quot;high&quot; (&ge;80), &quot;medium&quot; (50&ndash;79), &quot;low&quot; (&lt;50)</span>
+            </div>
+            <div className={styles.tableRow}>
+              <span className={styles.tableLabel}><code>freshness.lastVerified</code></span>
+              <span className={styles.tableValue}>ISO 8601 timestamp of last verification</span>
+            </div>
+            <div className={styles.tableRow}>
+              <span className={styles.tableLabel}><code>freshness.ageHours</code></span>
+              <span className={styles.tableValue}>Hours since last verification</span>
+            </div>
+            <div className={styles.tableRow}>
+              <span className={styles.tableLabel}><code>freshness.stale</code></span>
+              <span className={styles.tableValue}>true if data is older than 48 hours</span>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.section}>
           <h2 className={styles.heading}>Response Format</h2>
           <CodeBlock
             tabs={[
@@ -385,12 +442,19 @@ export default function DocsPage() {
       "inputPerMTok": 3,
       "outputPerMTok": 15,
       "contextWindow": 200000,
+      "confidenceScore": 97,
+      "confidenceLevel": "high",
+      "freshness": {
+        "lastVerified": "2026-03-05T08:00:00Z",
+        "ageHours": 4,
+        "stale": false
+      },
       "launchDate": "2026-02-17",
       ...
     }
   ],
   "meta": {
-    "timestamp": "2026-03-03T12:00:00Z",
+    "timestamp": "2026-03-05T12:00:00Z",
     "cached": false,
     "currency": "EUR",      // only with ?currency
     "exchangeRate": 0.92    // only with ?currency
