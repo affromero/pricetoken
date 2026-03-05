@@ -12,4 +12,9 @@ export type {
   CostEstimate,
   PriceTokenResponse,
   PriceTokenError,
+  VideoModelPricing,
+  VideoCostEstimate,
+  VideoPriceHistoryPoint,
+  VideoModelHistory,
+  VideoProviderSummary,
 } from './types';

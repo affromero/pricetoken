@@ -20,6 +20,11 @@ from pricetoken.types import (
     PriceTokenError,
     ProviderSummary,
     Source,
+    VideoCostEstimate,
+    VideoModelHistory,
+    VideoModelPricing,
+    VideoPriceHistoryPoint,
+    VideoProviderSummary,
 )
 
 __all__ = [
@@ -34,6 +39,11 @@ __all__ = [
     "PriceTokenError",
     "ProviderSummary",
     "Source",
+    "VideoCostEstimate",
+    "VideoModelHistory",
+    "VideoModelPricing",
+    "VideoPriceHistoryPoint",
+    "VideoProviderSummary",
     "__version__",
     "calculate_cost",
     "calculate_model_cost",

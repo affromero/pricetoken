@@ -60,3 +60,44 @@ export interface PriceTokenError {
   error: string;
   status: number;
 }
+
+export interface VideoModelPricing {
+  modelId: string;
+  provider: string;
+  displayName: string;
+  costPerMinute: number;
+  resolution: string | null;
+  maxDuration: number | null;
+  qualityMode: string | null;
+  source: 'fetched' | 'seed' | 'admin' | 'verified';
+  status: ModelStatus | null;
+  confidence: DataConfidence;
+  lastUpdated: string | null;
+  launchDate: string | null;
+}
+
+export interface VideoCostEstimate {
+  modelId: string;
+  durationSeconds: number;
+  costPerMinute: number;
+  totalCost: number;
+}
+
+export interface VideoPriceHistoryPoint {
+  date: string;
+  costPerMinute: number;
+}
+
+export interface VideoModelHistory {
+  modelId: string;
+  provider: string;
+  displayName: string;
+  history: VideoPriceHistoryPoint[];
+}
+
+export interface VideoProviderSummary {
+  id: string;
+  displayName: string;
+  modelCount: number;
+  cheapestCostPerMinute: number;
+}

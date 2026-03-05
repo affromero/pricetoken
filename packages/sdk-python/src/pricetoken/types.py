@@ -111,3 +111,91 @@ def _parse_provider_summary(data: dict[str, Any]) -> ProviderSummary:
         cheapest_input_per_m_tok=data["cheapestInputPerMTok"],
         cheapest_output_per_m_tok=data["cheapestOutputPerMTok"],
     )
+
+
+@dataclass(slots=True)
+class VideoModelPricing:
+    model_id: str
+    provider: str
+    display_name: str
+    cost_per_minute: float
+    resolution: str | None
+    max_duration: int | None
+    quality_mode: str | None
+    source: Source
+    status: ModelStatus | None
+    confidence: DataConfidence
+    last_updated: str | None
+    launch_date: str | None
+
+
+@dataclass(slots=True)
+class VideoCostEstimate:
+    model_id: str
+    duration_seconds: float
+    cost_per_minute: float
+    total_cost: float
+
+
+@dataclass(slots=True)
+class VideoPriceHistoryPoint:
+    date: str
+    cost_per_minute: float
+
+
+@dataclass(slots=True)
+class VideoModelHistory:
+    model_id: str
+    provider: str
+    display_name: str
+    history: list[VideoPriceHistoryPoint]
+
+
+@dataclass(slots=True)
+class VideoProviderSummary:
+    id: str
+    display_name: str
+    model_count: int
+    cheapest_cost_per_minute: float
+
+
+def _parse_video_model_pricing(data: dict[str, Any]) -> VideoModelPricing:
+    return VideoModelPricing(
+        model_id=data["modelId"],
+        provider=data["provider"],
+        display_name=data["displayName"],
+        cost_per_minute=data["costPerMinute"],
+        resolution=data.get("resolution"),
+        max_duration=data.get("maxDuration"),
+        quality_mode=data.get("qualityMode"),
+        source=data["source"],
+        status=data.get("status"),
+        confidence=data["confidence"],
+        last_updated=data.get("lastUpdated"),
+        launch_date=data.get("launchDate"),
+    )
+
+
+def _parse_video_history_point(data: dict[str, Any]) -> VideoPriceHistoryPoint:
+    return VideoPriceHistoryPoint(
+        date=data["date"],
+        cost_per_minute=data["costPerMinute"],
+    )
+
+
+def _parse_video_model_history(data: dict[str, Any]) -> VideoModelHistory:
+    return VideoModelHistory(
+        model_id=data["modelId"],
+        provider=data["provider"],
+        display_name=data["displayName"],
+        history=[_parse_video_history_point(p) for p in data["history"]],
+    )
+
+
+def _parse_video_provider_summary(data: dict[str, Any]) -> VideoProviderSummary:
+    return VideoProviderSummary(
+        id=data["id"],
+        display_name=data["displayName"],
+        model_count=data["modelCount"],
+        cheapest_cost_per_minute=data["cheapestCostPerMinute"],
+    )
