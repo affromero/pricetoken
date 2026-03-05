@@ -171,6 +171,49 @@ export default function DocsPage() {
           </div>
         </section>
 
+        <p className={styles.textNote}>
+          Text pricing is also available at <code>/api/v1/pricing/text/...</code> — identical to the base <code>/api/v1/pricing/...</code> endpoints.
+        </p>
+
+        <section className={styles.section}>
+          <h2 className={styles.heading}>Image Pricing Endpoints</h2>
+          <p className={styles.text}>
+            Separate endpoints for image generation model pricing. Image models use per-image pricing instead of per-token.
+          </p>
+          <div className={styles.endpoints}>
+            <Endpoint
+              method="GET"
+              path="/api/v1/pricing/image"
+              description="Current pricing for all image models. Params: ?provider=openai&currency=EUR"
+            />
+            <Endpoint
+              method="GET"
+              path="/api/v1/pricing/image/:modelId"
+              description="Single image model pricing. Param: ?currency=EUR"
+            />
+            <Endpoint
+              method="GET"
+              path="/api/v1/pricing/image/history"
+              description="Historical image pricing. Params: ?days=30&modelId=x&provider=y"
+            />
+            <Endpoint
+              method="GET"
+              path="/api/v1/pricing/image/providers"
+              description="Image provider list with model counts and cheapest prices."
+            />
+            <Endpoint
+              method="GET"
+              path="/api/v1/pricing/image/compare"
+              description="Side-by-side image model comparison. Params: ?models=a,b,c (max 10)&currency=EUR"
+            />
+            <Endpoint
+              method="GET"
+              path="/api/v1/pricing/image/cheapest"
+              description="Cheapest image model overall or per provider. Params: ?provider=x&currency=EUR"
+            />
+          </div>
+        </section>
+
         <section className={styles.section}>
           <h2 className={styles.heading}>Rate Limits</h2>
           <div className={styles.table}>

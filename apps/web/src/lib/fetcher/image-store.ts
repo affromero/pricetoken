@@ -1,0 +1,176 @@
+import { Prisma } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
+import type { ImageModelPricing, ImageModelHistory, ImagePriceHistoryPoint } from 'pricetoken';
+
+export interface ExtractedImageModel {
+  modelId: string;
+  displayName: string;
+  pricePerImage: number;
+  pricePerMegapixel?: number;
+  defaultResolution?: string;
+  qualityTier?: string;
+  maxResolution?: string;
+  supportedFormats?: string[];
+  status?: string;
+}
+
+export async function saveImageSnapshots(
+  provider: string,
+  models: ExtractedImageModel[],
+  source: string = 'fetched',
+  confidence: 'high' | 'low' = 'high'
+): Promise<number> {
+  if (models.length === 0) return 0;
+  const data = models.map((m) => ({
+    modelId: m.modelId,
+    provider,
+    displayName: m.displayName,
+    pricePerImage: m.pricePerImage,
+    pricePerMegapixel: m.pricePerMegapixel ?? null,
+    defaultResolution: m.defaultResolution ?? '1024x1024',
+    qualityTier: m.qualityTier ?? 'standard',
+    maxResolution: m.maxResolution ?? null,
+    supportedFormats: m.supportedFormats ?? ['png'],
+    source,
+    status: m.status ?? null,
+    confidence,
+    launchDate: null,
+  }));
+  const result = await prisma.imagePricingSnapshot.createMany({ data });
+  return result.count;
+}
+
+export async function getLatestImagePricing(provider?: string): Promise<ImageModelPricing[]> {
+  const where = provider ? Prisma.sql`WHERE "provider" = ${provider}` : Prisma.empty;
+  const snapshots = await prisma.$queryRaw<
+    Array<{
+      modelId: string;
+      provider: string;
+      displayName: string;
+      pricePerImage: number;
+      pricePerMegapixel: number | null;
+      defaultResolution: string;
+      qualityTier: string;
+      maxResolution: string | null;
+      supportedFormats: string[];
+      source: string;
+      status: string | null;
+      confidence: string | null;
+      launchDate: Date | null;
+      createdAt: Date;
+    }>
+  >(Prisma.sql`
+    SELECT DISTINCT ON ("modelId")
+      "modelId", "provider", "displayName",
+      "pricePerImage", "pricePerMegapixel",
+      "defaultResolution", "qualityTier",
+      "maxResolution", "supportedFormats",
+      "source", "status", "confidence", "launchDate", "createdAt"
+    FROM "ImagePricingSnapshot"
+    ${where}
+    ORDER BY "modelId", "createdAt" DESC
+  `);
+
+  return snapshots.map((s) => ({
+    modelId: s.modelId,
+    provider: s.provider,
+    displayName: s.displayName,
+    pricePerImage: s.pricePerImage,
+    pricePerMegapixel: s.pricePerMegapixel,
+    defaultResolution: s.defaultResolution,
+    qualityTier: s.qualityTier as ImageModelPricing['qualityTier'],
+    maxResolution: s.maxResolution,
+    supportedFormats: s.supportedFormats,
+    source: s.source as ImageModelPricing['source'],
+    status: (s.status as ImageModelPricing['status']) ?? null,
+    confidence: (s.confidence ?? 'high') as ImageModelPricing['confidence'],
+    lastUpdated: s.createdAt.toISOString(),
+    launchDate: s.launchDate?.toISOString().split('T')[0] ?? null,
+  }));
+}
+
+export async function getImagePriceHistory(
+  days: number,
+  filters?: { modelId?: string; provider?: string }
+): Promise<ImageModelHistory[]> {
+  const since = new Date();
+  since.setDate(since.getDate() - days);
+
+  const where: Record<string, unknown> = { createdAt: { gte: since } };
+  if (filters?.modelId) where.modelId = filters.modelId;
+  if (filters?.provider) where.provider = filters.provider;
+
+  const snapshots = await prisma.imagePricingSnapshot.findMany({
+    where,
+    select: {
+      modelId: true,
+      provider: true,
+      displayName: true,
+      pricePerImage: true,
+      createdAt: true,
+    },
+    orderBy: { createdAt: 'asc' },
+  });
+
+  const grouped = new Map<
+    string,
+    { provider: string; displayName: string; history: ImagePriceHistoryPoint[] }
+  >();
+
+  for (const s of snapshots) {
+    const dateKey = s.createdAt.toISOString().split('T')[0]!;
+    if (!grouped.has(s.modelId)) {
+      grouped.set(s.modelId, { provider: s.provider, displayName: s.displayName, history: [] });
+    }
+    const group = grouped.get(s.modelId)!;
+    const existing = group.history.find((h) => h.date === dateKey);
+    if (!existing) {
+      group.history.push({ date: dateKey, pricePerImage: s.pricePerImage });
+    }
+  }
+
+  return Array.from(grouped.entries()).map(([modelId, data]) => ({
+    modelId,
+    provider: data.provider,
+    displayName: data.displayName,
+    history: data.history,
+  }));
+}
+
+export async function seedImageFromStatic(): Promise<number> {
+  const { STATIC_IMAGE_PRICING } = await import('pricetoken');
+
+  const existingIds = (
+    await prisma.imagePricingSnapshot.findMany({
+      select: { modelId: true },
+      distinct: ['modelId'],
+    })
+  ).map((r: { modelId: string }) => r.modelId);
+
+  const missing = STATIC_IMAGE_PRICING.filter((m) => !existingIds.includes(m.modelId));
+  let created = 0;
+
+  if (missing.length > 0) {
+    const data = missing.map((m) => ({
+      modelId: m.modelId,
+      provider: m.provider,
+      displayName: m.displayName,
+      pricePerImage: m.pricePerImage,
+      pricePerMegapixel: m.pricePerMegapixel,
+      defaultResolution: m.defaultResolution,
+      qualityTier: m.qualityTier,
+      maxResolution: m.maxResolution,
+      supportedFormats: m.supportedFormats,
+      source: 'seed',
+      status: m.status ?? 'active',
+      confidence: m.confidence ?? 'high',
+      launchDate: m.launchDate ? new Date(m.launchDate) : null,
+    }));
+
+    const result = await prisma.imagePricingSnapshot.createMany({ data });
+    created = result.count;
+    console.log(`Seeded ${created} new image models (${existingIds.length} already existed)`);
+  }
+
+  return created;
+}

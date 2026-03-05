@@ -34,4 +34,20 @@ export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
     displayName: 'Mistral',
     requiresBrowser: true,
   },
+  qwen: {
+    url: 'https://help.aliyun.com/zh/model-studio/getting-started/models',
+    displayName: 'Qwen',
+  },
+  cohere: {
+    url: 'https://cohere.com/pricing',
+    displayName: 'Cohere',
+  },
+  ai21: {
+    url: 'https://www.ai21.com/pricing',
+    displayName: 'AI21',
+  },
+  amazon: {
+    url: 'https://aws.amazon.com/bedrock/pricing/',
+    displayName: 'Amazon',
+  },
 };

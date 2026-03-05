@@ -60,3 +60,48 @@ export interface PriceTokenError {
   error: string;
   status: number;
 }
+
+export type ImageQualityTier = 'standard' | 'hd' | 'ultra';
+
+export interface ImageModelPricing {
+  modelId: string;
+  provider: string;
+  displayName: string;
+  pricePerImage: number;
+  pricePerMegapixel: number | null;
+  defaultResolution: string;
+  qualityTier: ImageQualityTier;
+  maxResolution: string | null;
+  supportedFormats: string[];
+  source: 'fetched' | 'seed' | 'admin';
+  status: ModelStatus | null;
+  confidence: DataConfidence;
+  lastUpdated: string | null;
+  launchDate: string | null;
+}
+
+export interface ImageCostEstimate {
+  modelId: string;
+  imageCount: number;
+  pricePerImage: number;
+  totalCost: number;
+}
+
+export interface ImagePriceHistoryPoint {
+  date: string;
+  pricePerImage: number;
+}
+
+export interface ImageModelHistory {
+  modelId: string;
+  provider: string;
+  displayName: string;
+  history: ImagePriceHistoryPoint[];
+}
+
+export interface ImageProviderSummary {
+  id: string;
+  displayName: string;
+  modelCount: number;
+  cheapestPerImage: number;
+}
