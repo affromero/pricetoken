@@ -41,6 +41,7 @@ RUN npm run build
 # ---- Stage 3: Production runner ----
 FROM node:22-alpine AS runner
 RUN apk add --no-cache libc6-compat openssl
+RUN npm install -g @anthropic-ai/claude-code
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -48,7 +49,8 @@ ENV PORT=3001
 ENV HOSTNAME="0.0.0.0"
 
 RUN addgroup --system --gid 1001 pricetoken
-RUN adduser --system --uid 1001 pricetoken
+RUN adduser --system --uid 1001 -h /home/pricetoken pricetoken
+RUN mkdir -p /home/pricetoken/.claude && chown pricetoken:pricetoken /home/pricetoken/.claude
 
 WORKDIR /app
 
