@@ -2,10 +2,22 @@
   width: 100%;
 }
 
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filters > :last-child {
+  margin-left: auto;
+}
+
 .tableWrapper {
   overflow-x: auto;
   border: 1px solid var(--pt-border);
   border-radius: var(--radius);
+  margin-top: 1rem;
 }
 
 .table {
@@ -27,6 +39,15 @@
   white-space: nowrap;
 }
 
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable:hover {
+  color: var(--pt-text);
+}
+
 .table td {
   padding: 0.625rem 1rem;
   border-bottom: 1px solid var(--pt-border);
@@ -41,6 +62,16 @@
   border-bottom: none;
 }
 
+.providerDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  background: var(--pt-accent);
+}
+
 .modelName {
   font-weight: 500;
 }
@@ -50,13 +81,22 @@
   font-size: 0.8125rem;
 }
 
-.resolution {
-  font-family: var(--font-mono);
+.toggleLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
   font-size: 0.8125rem;
   color: var(--pt-text-secondary);
+  cursor: pointer;
+  user-select: none;
 }
 
-.formats {
+.toggleCheckbox {
+  accent-color: var(--pt-accent);
+}
+
+.resolution {
+  font-family: var(--font-mono);
   font-size: 0.8125rem;
   color: var(--pt-text-secondary);
 }
@@ -70,9 +110,7 @@
   .table th:nth-child(5),
   .table td:nth-child(5),
   .table th:nth-child(6),
-  .table td:nth-child(6),
-  .table th:nth-child(7),
-  .table td:nth-child(7) {
+  .table td:nth-child(6) {
     display: none;
   }
 
@@ -84,6 +122,10 @@
 
   .price {
     font-size: 0.75rem;
+  }
+
+  .filters > :last-child {
+    margin-left: 0;
   }
 }
 
