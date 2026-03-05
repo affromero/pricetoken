@@ -13,7 +13,7 @@ Return a JSON array of objects with these fields:
   - Omit if status cannot be determined
 
 IMPORTANT — use these exact modelId values when extracting:
-- OpenAI: gpt-5.3-chat-latest, gpt-5.3-codex, gpt-5.2, gpt-5, gpt-5-mini, gpt-5-nano, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-4o, gpt-4o-mini, o3, o4-mini, gpt-5.1, o3-pro, o3-mini
+- OpenAI: gpt-5.4, gpt-5.4-pro, gpt-5.3-chat-latest, gpt-5.3-codex, gpt-5.2, gpt-5, gpt-5-mini, gpt-5-nano, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-4o, gpt-4o-mini, o3, o4-mini, gpt-5.1, o3-pro, o3-mini
 - Anthropic: claude-opus-4-6, claude-sonnet-4-6, claude-haiku-4-5-20251001
 - Google: gemini-2.5-pro, gemini-2.5-flash, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-2.5-flash-lite, gemini-3.1-pro-preview, gemini-3.1-flash-lite-preview, gemini-3-pro-preview, gemini-3-flash-preview
 - DeepSeek: deepseek-chat, deepseek-reasoner

@@ -27,6 +27,7 @@ Additional rules:
 - Each resolution tier and quality mode combination should be a separate entry.
 - Only include video generation models. Skip image generation, audio, and other non-video models.
 - For API aggregators (like FAL), prefix the modelId with the aggregator name (e.g. "fal-veo3-1080p").
+- For LTX (Lightricks), use modelIds like "ltx-2.3-fast-1080p", "ltx-2.3-pro-1080p", "ltx-2.3-fast-4k", "ltx-2.3-pro-4k".
 - If a model has audio generation capabilities at a different price, note it in the modelId suffix.
 - Double-check: video model prices typically range from $1–$50/min. If your result is outside this range, recheck the conversion.
 Return ONLY the JSON array, no markdown or explanation.`;
