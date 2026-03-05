@@ -15,7 +15,7 @@ export async function GET() {
 
     return apiSuccess(providers);
   } catch (err) {
-    console.error('GET /api/v1/pricing/text/providers error:', err);
+    console.error('GET /api/v1/text/providers error:', err);
     return apiError('Internal server error', 500);
   }
 }

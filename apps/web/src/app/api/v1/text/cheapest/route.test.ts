@@ -51,7 +51,7 @@ describe('GET /api/v1/pricing/cheapest', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetCheapestModel.mockResolvedValue(mockModel);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/cheapest');
+    const req = new NextRequest('http://localhost/api/v1/text/cheapest');
     const res = await GET(req);
     const body = await res.json();
 
@@ -64,7 +64,7 @@ describe('GET /api/v1/pricing/cheapest', () => {
   it('returns cached model on cache hit', async () => {
     mockGetCached.mockResolvedValue(mockModel);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/cheapest');
+    const req = new NextRequest('http://localhost/api/v1/text/cheapest');
     const res = await GET(req);
     const body = await res.json();
 
@@ -76,7 +76,7 @@ describe('GET /api/v1/pricing/cheapest', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetCheapestModel.mockResolvedValue(mockModel);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/cheapest?provider=openai');
+    const req = new NextRequest('http://localhost/api/v1/text/cheapest?provider=openai');
     await GET(req);
 
     expect(mockGetCached).toHaveBeenCalledWith('pt:cache:cheapest:openai::');
@@ -87,7 +87,7 @@ describe('GET /api/v1/pricing/cheapest', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetCheapestModel.mockResolvedValue(null);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/cheapest');
+    const req = new NextRequest('http://localhost/api/v1/text/cheapest');
     const res = await GET(req);
     const body = await res.json();
 
@@ -101,7 +101,7 @@ describe('GET /api/v1/pricing/cheapest', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetCheapestModel.mockResolvedValue(null);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/cheapest');
+    const req = new NextRequest('http://localhost/api/v1/text/cheapest');
     await GET(req);
 
     expect(mockSetCache).not.toHaveBeenCalled();
@@ -111,7 +111,7 @@ describe('GET /api/v1/pricing/cheapest', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetCheapestModel.mockResolvedValue(mockModel);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/cheapest?provider=anthropic');
+    const req = new NextRequest('http://localhost/api/v1/text/cheapest?provider=anthropic');
     await GET(req);
 
     expect(mockGetCached).toHaveBeenCalledWith('pt:cache:cheapest:anthropic::');
@@ -125,7 +125,7 @@ describe('GET /api/v1/pricing/cheapest', () => {
     mockResolveCurrency.mockResolvedValue({ currency: 'EUR', exchangeRate: 0.92 });
     mockConvertPricing.mockReturnValue(converted);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/cheapest?currency=EUR');
+    const req = new NextRequest('http://localhost/api/v1/text/cheapest?currency=EUR');
     const res = await GET(req);
     const body = await res.json();
 
@@ -137,7 +137,7 @@ describe('GET /api/v1/pricing/cheapest', () => {
   it('returns full CORS and Cache-Control headers on success', async () => {
     mockGetCached.mockResolvedValue(mockModel);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/cheapest');
+    const req = new NextRequest('http://localhost/api/v1/text/cheapest');
     const res = await GET(req);
 
     expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*');
@@ -149,7 +149,7 @@ describe('GET /api/v1/pricing/cheapest', () => {
   it('returns 500 with apiError shape on unexpected error', async () => {
     mockGetCached.mockRejectedValue(new Error('boom'));
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/cheapest');
+    const req = new NextRequest('http://localhost/api/v1/text/cheapest');
     const res = await GET(req);
     const body = await res.json();
 

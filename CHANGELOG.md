@@ -1,5 +1,45 @@
 # Changelog
 
+## [0.8.0] - 2026-03-05
+
+### Added
+- **Video AI pricing module** — 9 providers (Runway, Sora, Veo, Kling, Luma, Pika, MiniMax, Seedance, FAL) with 17 models tracked at cost-per-minute granularity
+  - `VideoPricingSnapshot` Prisma model, video SDK types, static seed data
+  - Video provider registry + LLM extraction pipeline with cross-verification
+  - `/api/v1/video/*` routes (all, single, cheapest, compare, history, providers)
+  - Video cost calculator, comparison, and price history pages
+  - SDK client methods: `getVideoPricing()`, `getVideoModel()`, `compareVideoModels()`, etc.
+  - Python SDK mirror with `calculate_video_cost()` and all video client methods
+- **Image generation pricing module** — 11 providers (OpenAI, Google, Stability, BFL, Amazon, Recraft, Mistral, Bytedance, fal, Ideogram, xAI) with image models tracked at cost-per-image
+  - `ImagePricingSnapshot` Prisma model, image SDK types, static seed data
+  - Image extraction pipeline with cross-verification, prior-consistency checks, and consensus (new in 0.8.0)
+  - `/api/v1/image/*` routes
+  - Image pricing table page with inline calculator
+  - SDK client methods and Python mirror
+- **Unified modality navigation** — sub-nav tabs for Text/Image/Video under each section (Pricing, Calculator, Compare, History)
+- **Launch Price vs Date** scatter chart on image and video history pages (text already had it)
+- **Sanity bounds** for all three modalities — rejects obviously wrong prices (negative, zero, out of range) before verification
+- Mobile responsive overhaul across all pages (hamburger nav, responsive tables, charts)
+- Configurable AI extraction providers (Claude Code CLI, Anthropic, OpenAI, Google)
+- systemd timer for daily automated pricing fetches
+- Admin "Fetch Now" button on fetch-status page
+- 80 new tests (268 total across JS, 44 Python)
+
+### Fixed
+- Full pricing audit across all modalities using official API documentation:
+  - Text: Gemini 2.0 Flash/Flash-Lite marked deprecated, Gemini 3 Pro date corrected, DeepSeek display names updated, Qwen launch dates fixed
+  - Video: Veo 3.1 prices corrected ($12→$24/min 1080p, $24→$36/min 4K), Kling 3.0 ($1.74→$5.04/min), all 15 launch dates verified, Sora 2 Pro duration fixed (20→25s)
+  - Image: BFL FLUX models rewritten (removed non-existent models, added missing ones, corrected all prices and launch dates)
+  - FAL aggregator prices corrected to FAL's actual rates (not upstream provider rates)
+- Improved LLM system prompts with explicit credit-to-USD and per-second-to-per-minute conversion examples
+- Recharts rendering fixes (NaN props, empty charts, SSR issues)
+- Robust JSON extraction from LLM responses with surrounding text
+
+### Changed
+- `/api/v1/pricing/*` base routes removed — `/api/v1/text/*` is now canonical (parallel with `/image/*` and `/video/*`)
+- Image fetch pipeline upgraded from extract-and-save to full 4-layer verification (extraction → sanity bounds → cross-verify → prior-consistency → consensus)
+- Video system prompt expanded with concrete conversion examples to prevent common extraction errors
+
 ## [0.6.0] - 2026-03-04
 
 ### Added
@@ -21,7 +61,7 @@
 
 ### Added
 - `launchDate` field across the full stack: SDK types, Prisma schema, static data for all 42 models
-- `after` and `before` date query params on `/api/v1/pricing` and `/api/v1/pricing/cheapest` endpoints for filtering models by launch date
+- `after` and `before` date query params on `/api/v1/text` and `/api/v1/text/cheapest` endpoints for filtering models by launch date
 - Sortable "Launched" column in the PricingTable (formats as "Mon YYYY", nulls sorted last)
 - Launch Price Timeline scatter plot on `/history` page showing price trends across providers over time
 - `after`/`before` params in both TS and Python SDK clients (`getPricing`, `getCheapest`, `get_pricing`, `get_cheapest`)

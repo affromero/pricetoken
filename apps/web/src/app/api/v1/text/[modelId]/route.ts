@@ -1,24 +1,24 @@
 import { type NextRequest } from 'next/server';
-import { getCheapestModel } from '@/lib/pricing-queries';
+import { getModelPricing } from '@/lib/pricing-queries';
 import { getCached, setCache } from '@/lib/redis';
 import { apiSuccess, apiError } from '@/lib/api-response';
 import { resolveCurrency, convertPricing } from '@/lib/currency-convert';
 import type { ModelPricing } from 'pricetoken';
 
-export async function GET(request: NextRequest) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ modelId: string }> }
+) {
   try {
-    const provider = request.nextUrl.searchParams.get('provider') ?? undefined;
+    const { modelId } = await params;
     const currencyParam = request.nextUrl.searchParams.get('currency');
-    const after = request.nextUrl.searchParams.get('after') ?? undefined;
-    const before = request.nextUrl.searchParams.get('before') ?? undefined;
-    const dateRange = (after || before) ? { after, before } : undefined;
-    const cacheKey = `pt:cache:cheapest:${provider ?? 'all'}:${after ?? ''}:${before ?? ''}`;
+    const cacheKey = `pt:cache:model:${modelId}`;
 
     const cached = await getCached<ModelPricing>(cacheKey);
-    let model = cached ?? await getCheapestModel(provider, dateRange);
+    let model = cached ?? await getModelPricing(modelId);
 
     if (!model) {
-      return apiError('No pricing data available', 404);
+      return apiError('Model not found', 404);
     }
 
     if (!cached) await setCache(cacheKey, model);
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 
     return apiSuccess(model, !!cached);
   } catch (err) {
-    console.error('GET /api/v1/pricing/text/cheapest error:', err);
+    console.error('GET /api/v1/text/[modelId] error:', err);
     return apiError('Internal server error', 500);
   }
 }

@@ -1,5 +1,5 @@
 import { type NextRequest } from 'next/server';
-import { getCurrentPricing } from '@/lib/pricing-queries';
+import { compareModels } from '@/lib/pricing-queries';
 import { getCached, setCache } from '@/lib/redis';
 import { apiSuccess, apiError } from '@/lib/api-response';
 import { resolveCurrency, convertPricing } from '@/lib/currency-convert';
@@ -7,15 +7,21 @@ import type { ModelPricing } from 'pricetoken';
 
 export async function GET(request: NextRequest) {
   try {
-    const provider = request.nextUrl.searchParams.get('provider') ?? undefined;
+    const modelsParam = request.nextUrl.searchParams.get('models');
+    if (!modelsParam) {
+      return apiError('Missing required parameter: models', 400);
+    }
+
+    const modelIds = modelsParam.split(',').slice(0, 10);
+    if (modelIds.length === 0) {
+      return apiError('At least one model ID is required', 400);
+    }
+
     const currencyParam = request.nextUrl.searchParams.get('currency');
-    const after = request.nextUrl.searchParams.get('after') ?? undefined;
-    const before = request.nextUrl.searchParams.get('before') ?? undefined;
-    const dateRange = (after || before) ? { after, before } : undefined;
-    const cacheKey = `pt:cache:pricing:${provider ?? 'all'}:${after ?? ''}:${before ?? ''}`;
+    const cacheKey = `pt:cache:compare:${modelIds.sort().join(',')}`;
 
     const cached = await getCached<ModelPricing[]>(cacheKey);
-    let data = cached ?? await getCurrentPricing(provider, dateRange);
+    let data = cached ?? await compareModels(modelIds);
 
     if (!cached) await setCache(cacheKey, data);
 
@@ -27,7 +33,7 @@ export async function GET(request: NextRequest) {
 
     return apiSuccess(data, !!cached);
   } catch (err) {
-    console.error('GET /api/v1/pricing/text error:', err);
+    console.error('GET /api/v1/text/compare error:', err);
     return apiError('Internal server error', 500);
   }
 }

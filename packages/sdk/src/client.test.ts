@@ -38,7 +38,7 @@ describe('PriceTokenClient', () => {
     await authedClient.getPricing();
 
     expect(fetchSpy).toHaveBeenCalledWith(
-      'https://test.api/api/v1/pricing/text',
+      'https://test.api/api/v1/text',
       expect.objectContaining({
         headers: expect.objectContaining({
           Authorization: 'Bearer pt_test123',
@@ -63,7 +63,7 @@ describe('PriceTokenClient', () => {
     await client.getPricing({ provider: 'anthropic' });
 
     expect(fetchSpy).toHaveBeenCalledWith(
-      'https://test.api/api/v1/pricing/text?provider=anthropic',
+      'https://test.api/api/v1/text?provider=anthropic',
       expect.anything()
     );
   });
@@ -76,7 +76,7 @@ describe('PriceTokenClient', () => {
     await client.getModel('gpt-4.1');
 
     expect(fetchSpy).toHaveBeenCalledWith(
-      'https://test.api/api/v1/pricing/text/gpt-4.1',
+      'https://test.api/api/v1/text/gpt-4.1',
       expect.anything()
     );
   });
@@ -168,7 +168,7 @@ describe('PriceTokenClient', () => {
 
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     expect(fetchSpy).toHaveBeenCalledWith(
-      expect.stringContaining('/api/v1/pricing/text'),
+      expect.stringContaining('/api/v1/text'),
       expect.anything()
     );
   });
@@ -328,7 +328,7 @@ describe('PriceTokenClient', () => {
     await client.getImagePricing({ provider: 'openai' });
 
     expect(fetchSpy).toHaveBeenCalledWith(
-      'https://test.api/api/v1/pricing/image?provider=openai',
+      'https://test.api/api/v1/image?provider=openai',
       expect.anything()
     );
   });
@@ -341,7 +341,7 @@ describe('PriceTokenClient', () => {
     await client.getImageModel('dall-e-3-standard-1024');
 
     expect(fetchSpy).toHaveBeenCalledWith(
-      'https://test.api/api/v1/pricing/image/dall-e-3-standard-1024',
+      'https://test.api/api/v1/image/dall-e-3-standard-1024',
       expect.anything()
     );
   });
@@ -371,7 +371,7 @@ describe('PriceTokenClient', () => {
     await client.getImageProviders();
 
     expect(fetchSpy).toHaveBeenCalledWith(
-      'https://test.api/api/v1/pricing/image/providers',
+      'https://test.api/api/v1/image/providers',
       expect.anything()
     );
   });

@@ -64,7 +64,7 @@ describe('GET /api/v1/pricing/compare', () => {
   });
 
   it('returns 400 when models param is missing', async () => {
-    const req = new NextRequest('http://localhost/api/v1/pricing/compare');
+    const req = new NextRequest('http://localhost/api/v1/text/compare');
     const res = await GET(req);
     const body = await res.json();
 
@@ -76,7 +76,7 @@ describe('GET /api/v1/pricing/compare', () => {
     mockGetCached.mockResolvedValue(null);
     mockCompareModels.mockResolvedValue(mockModels);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/compare?models=claude-sonnet-4-6,gpt-4o');
+    const req = new NextRequest('http://localhost/api/v1/text/compare?models=claude-sonnet-4-6,gpt-4o');
     const res = await GET(req);
     const body = await res.json();
 
@@ -88,7 +88,7 @@ describe('GET /api/v1/pricing/compare', () => {
   it('returns cached data on cache hit', async () => {
     mockGetCached.mockResolvedValue(mockModels);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/compare?models=claude-sonnet-4-6,gpt-4o');
+    const req = new NextRequest('http://localhost/api/v1/text/compare?models=claude-sonnet-4-6,gpt-4o');
     const res = await GET(req);
     const body = await res.json();
 
@@ -100,7 +100,7 @@ describe('GET /api/v1/pricing/compare', () => {
     mockGetCached.mockResolvedValue(null);
     mockCompareModels.mockResolvedValue(mockModels);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/compare?models=gpt-4o,claude-sonnet-4-6');
+    const req = new NextRequest('http://localhost/api/v1/text/compare?models=gpt-4o,claude-sonnet-4-6');
     await GET(req);
 
     expect(mockGetCached).toHaveBeenCalledWith('pt:cache:compare:claude-sonnet-4-6,gpt-4o');
@@ -111,7 +111,7 @@ describe('GET /api/v1/pricing/compare', () => {
     mockCompareModels.mockResolvedValue([]);
 
     const ids = Array.from({ length: 15 }, (_, i) => `model-${i}`).join(',');
-    const req = new NextRequest(`http://localhost/api/v1/pricing/compare?models=${ids}`);
+    const req = new NextRequest(`http://localhost/api/v1/text/compare?models=${ids}`);
     await GET(req);
 
     const calledIds = mockCompareModels.mock.calls[0]![0];
@@ -122,7 +122,7 @@ describe('GET /api/v1/pricing/compare', () => {
     mockGetCached.mockResolvedValue(null);
     mockCompareModels.mockResolvedValue([mockModels[0]!]);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/compare?models=claude-sonnet-4-6');
+    const req = new NextRequest('http://localhost/api/v1/text/compare?models=claude-sonnet-4-6');
     const res = await GET(req);
     const body = await res.json();
 
@@ -137,7 +137,7 @@ describe('GET /api/v1/pricing/compare', () => {
     mockResolveCurrency.mockResolvedValue({ currency: 'EUR', exchangeRate: 0.92 });
     mockConvertPricing.mockReturnValue(converted);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/compare?models=claude-sonnet-4-6,gpt-4o&currency=EUR');
+    const req = new NextRequest('http://localhost/api/v1/text/compare?models=claude-sonnet-4-6,gpt-4o&currency=EUR');
     const res = await GET(req);
     const body = await res.json();
 
@@ -148,7 +148,7 @@ describe('GET /api/v1/pricing/compare', () => {
   it('returns full CORS and Cache-Control headers on success', async () => {
     mockGetCached.mockResolvedValue(mockModels);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/compare?models=claude-sonnet-4-6,gpt-4o');
+    const req = new NextRequest('http://localhost/api/v1/text/compare?models=claude-sonnet-4-6,gpt-4o');
     const res = await GET(req);
 
     expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*');
@@ -160,7 +160,7 @@ describe('GET /api/v1/pricing/compare', () => {
   it('returns apiSuccess shape with default currency USD', async () => {
     mockGetCached.mockResolvedValue(mockModels);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/compare?models=claude-sonnet-4-6');
+    const req = new NextRequest('http://localhost/api/v1/text/compare?models=claude-sonnet-4-6');
     const res = await GET(req);
     const body = await res.json();
 
@@ -170,7 +170,7 @@ describe('GET /api/v1/pricing/compare', () => {
   });
 
   it('returns only Allow-Origin on 400 error, not full CORS', async () => {
-    const req = new NextRequest('http://localhost/api/v1/pricing/compare');
+    const req = new NextRequest('http://localhost/api/v1/text/compare');
     const res = await GET(req);
 
     expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*');
@@ -182,7 +182,7 @@ describe('GET /api/v1/pricing/compare', () => {
   it('returns 500 with apiError shape on unexpected error', async () => {
     mockGetCached.mockRejectedValue(new Error('boom'));
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/compare?models=a');
+    const req = new NextRequest('http://localhost/api/v1/text/compare?models=a');
     const res = await GET(req);
     const body = await res.json();
 

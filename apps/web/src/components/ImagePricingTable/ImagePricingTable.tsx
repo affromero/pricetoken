@@ -62,7 +62,7 @@ export function ImagePricingTable({ data: initialData }: ImagePricingTableProps)
       return;
     }
     try {
-      const res = await fetch(`/api/v1/pricing/image?currency=${code}`);
+      const res = await fetch(`/api/v1/image?currency=${code}`);
       if (res.ok) {
         const json = await res.json();
         setData(json.data);

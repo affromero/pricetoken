@@ -15,7 +15,7 @@ export async function GET() {
 
     return apiSuccess(providers);
   } catch (err) {
-    console.error('GET /api/v1/pricing/image/providers error:', err);
+    console.error('GET /api/v1/image/providers error:', err);
     return apiError('Internal server error', 500);
   }
 }

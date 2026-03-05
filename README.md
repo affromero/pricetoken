@@ -64,31 +64,31 @@ print(cost.total_cost)  # $4.50
 
 ```bash
 # All models
-curl https://pricetoken.ai/api/v1/pricing
+curl https://pricetoken.ai/api/v1/text
 
 # Single model
-curl https://pricetoken.ai/api/v1/pricing/claude-sonnet-4-6
+curl https://pricetoken.ai/api/v1/text/claude-sonnet-4-6
 
 # Price history
-curl https://pricetoken.ai/api/v1/pricing/history?days=30
+curl https://pricetoken.ai/api/v1/text/history?days=30
 
 # Compare models
-curl https://pricetoken.ai/api/v1/pricing/compare?models=claude-sonnet-4-6,gpt-4.1
+curl https://pricetoken.ai/api/v1/text/compare?models=claude-sonnet-4-6,gpt-4.1
 
 # Cheapest model
-curl https://pricetoken.ai/api/v1/pricing/cheapest
+curl https://pricetoken.ai/api/v1/text/cheapest
 ```
 
 ## API Reference
 
 | Endpoint | Description |
 |----------|-------------|
-| `GET /api/v1/pricing` | Current pricing. `?provider=anthropic` |
-| `GET /api/v1/pricing/:modelId` | Single model |
-| `GET /api/v1/pricing/history` | Historical data. `?days=30&modelId=x&provider=y` |
-| `GET /api/v1/pricing/providers` | Provider list with stats |
-| `GET /api/v1/pricing/compare` | Compare models. `?models=a,b,c` |
-| `GET /api/v1/pricing/cheapest` | Cheapest model. `?provider=x` |
+| `GET /api/v1/text` | Current pricing. `?provider=anthropic` |
+| `GET /api/v1/text/:modelId` | Single model |
+| `GET /api/v1/text/history` | Historical data. `?days=30&modelId=x&provider=y` |
+| `GET /api/v1/text/providers` | Provider list with stats |
+| `GET /api/v1/text/compare` | Compare models. `?models=a,b,c` |
+| `GET /api/v1/text/cheapest` | Cheapest model. `?provider=x` |
 
 ### Rate Limits
 

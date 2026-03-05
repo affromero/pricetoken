@@ -53,7 +53,7 @@ describe('GET /api/v1/pricing/[modelId]', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetModelPricing.mockResolvedValue(mockModel);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/claude-sonnet-4-6');
+    const req = new NextRequest('http://localhost/api/v1/text/claude-sonnet-4-6');
     const res = await GET(req, makeParams('claude-sonnet-4-6'));
     const body = await res.json();
 
@@ -66,7 +66,7 @@ describe('GET /api/v1/pricing/[modelId]', () => {
   it('returns cached model on cache hit', async () => {
     mockGetCached.mockResolvedValue(mockModel);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/claude-sonnet-4-6');
+    const req = new NextRequest('http://localhost/api/v1/text/claude-sonnet-4-6');
     const res = await GET(req, makeParams('claude-sonnet-4-6'));
     const body = await res.json();
 
@@ -78,7 +78,7 @@ describe('GET /api/v1/pricing/[modelId]', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetModelPricing.mockResolvedValue(null);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/nonexistent');
+    const req = new NextRequest('http://localhost/api/v1/text/nonexistent');
     const res = await GET(req, makeParams('nonexistent'));
     const body = await res.json();
 
@@ -92,7 +92,7 @@ describe('GET /api/v1/pricing/[modelId]', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetModelPricing.mockResolvedValue(mockModel);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/gpt-4o');
+    const req = new NextRequest('http://localhost/api/v1/text/gpt-4o');
     await GET(req, makeParams('gpt-4o'));
 
     expect(mockGetCached).toHaveBeenCalledWith('pt:cache:model:gpt-4o');
@@ -102,7 +102,7 @@ describe('GET /api/v1/pricing/[modelId]', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetModelPricing.mockResolvedValue(null);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/nonexistent');
+    const req = new NextRequest('http://localhost/api/v1/text/nonexistent');
     await GET(req, makeParams('nonexistent'));
 
     expect(mockSetCache).not.toHaveBeenCalled();
@@ -115,7 +115,7 @@ describe('GET /api/v1/pricing/[modelId]', () => {
     mockResolveCurrency.mockResolvedValue({ currency: 'EUR', exchangeRate: 0.92 });
     mockConvertPricing.mockReturnValue(converted);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/claude-sonnet-4-6?currency=EUR');
+    const req = new NextRequest('http://localhost/api/v1/text/claude-sonnet-4-6?currency=EUR');
     const res = await GET(req, makeParams('claude-sonnet-4-6'));
     const body = await res.json();
 
@@ -127,7 +127,7 @@ describe('GET /api/v1/pricing/[modelId]', () => {
   it('returns full CORS and Cache-Control headers on success', async () => {
     mockGetCached.mockResolvedValue(mockModel);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/claude-sonnet-4-6');
+    const req = new NextRequest('http://localhost/api/v1/text/claude-sonnet-4-6');
     const res = await GET(req, makeParams('claude-sonnet-4-6'));
 
     expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*');
@@ -139,7 +139,7 @@ describe('GET /api/v1/pricing/[modelId]', () => {
   it('returns apiSuccess shape with default currency USD', async () => {
     mockGetCached.mockResolvedValue(mockModel);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/claude-sonnet-4-6');
+    const req = new NextRequest('http://localhost/api/v1/text/claude-sonnet-4-6');
     const res = await GET(req, makeParams('claude-sonnet-4-6'));
     const body = await res.json();
 
@@ -151,7 +151,7 @@ describe('GET /api/v1/pricing/[modelId]', () => {
   it('returns 500 with apiError shape on unexpected error', async () => {
     mockGetCached.mockRejectedValue(new Error('boom'));
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/claude-sonnet-4-6');
+    const req = new NextRequest('http://localhost/api/v1/text/claude-sonnet-4-6');
     const res = await GET(req, makeParams('claude-sonnet-4-6'));
     const body = await res.json();
 

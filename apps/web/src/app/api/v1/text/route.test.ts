@@ -43,7 +43,7 @@ const mockModels = [
   },
 ];
 
-describe('GET /api/v1/pricing', () => {
+describe('GET /api/v1/text', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockResolveCurrency.mockResolvedValue(null);
@@ -53,7 +53,7 @@ describe('GET /api/v1/pricing', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetCurrentPricing.mockResolvedValue(mockModels);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing');
+    const req = new NextRequest('http://localhost/api/v1/text');
     const res = await GET(req);
     const body = await res.json();
 
@@ -67,7 +67,7 @@ describe('GET /api/v1/pricing', () => {
   it('returns cached data on cache hit', async () => {
     mockGetCached.mockResolvedValue(mockModels);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing');
+    const req = new NextRequest('http://localhost/api/v1/text');
     const res = await GET(req);
     const body = await res.json();
 
@@ -79,7 +79,7 @@ describe('GET /api/v1/pricing', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetCurrentPricing.mockResolvedValue(mockModels);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing?provider=anthropic');
+    const req = new NextRequest('http://localhost/api/v1/text?provider=anthropic');
     await GET(req);
 
     expect(mockGetCached).toHaveBeenCalledWith('pt:cache:pricing:anthropic::');
@@ -93,7 +93,7 @@ describe('GET /api/v1/pricing', () => {
     mockResolveCurrency.mockResolvedValue({ currency: 'EUR', exchangeRate: 0.92 });
     mockConvertPricing.mockReturnValue(converted);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing?currency=EUR');
+    const req = new NextRequest('http://localhost/api/v1/text?currency=EUR');
     const res = await GET(req);
     const body = await res.json();
 
@@ -105,7 +105,7 @@ describe('GET /api/v1/pricing', () => {
     mockGetCached.mockResolvedValue(mockModels);
     mockResolveCurrency.mockResolvedValue(null);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing?currency=XYZ');
+    const req = new NextRequest('http://localhost/api/v1/text?currency=XYZ');
     const res = await GET(req);
     const body = await res.json();
 
@@ -116,7 +116,7 @@ describe('GET /api/v1/pricing', () => {
   it('returns full CORS headers on success', async () => {
     mockGetCached.mockResolvedValue(mockModels);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing');
+    const req = new NextRequest('http://localhost/api/v1/text');
     const res = await GET(req);
 
     expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*');
@@ -127,7 +127,7 @@ describe('GET /api/v1/pricing', () => {
   it('returns Cache-Control header on success', async () => {
     mockGetCached.mockResolvedValue(mockModels);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing');
+    const req = new NextRequest('http://localhost/api/v1/text');
     const res = await GET(req);
 
     expect(res.headers.get('Cache-Control')).toBe('public, max-age=300');
@@ -137,7 +137,7 @@ describe('GET /api/v1/pricing', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetCurrentPricing.mockResolvedValue(mockModels);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing?after=2025-01-01&before=2025-12-31');
+    const req = new NextRequest('http://localhost/api/v1/text?after=2025-01-01&before=2025-12-31');
     await GET(req);
 
     expect(mockGetCurrentPricing).toHaveBeenCalledWith(undefined, { after: '2025-01-01', before: '2025-12-31' });
@@ -147,7 +147,7 @@ describe('GET /api/v1/pricing', () => {
   it('returns 500 with apiError shape on unexpected error', async () => {
     mockGetCached.mockRejectedValue(new Error('boom'));
 
-    const req = new NextRequest('http://localhost/api/v1/pricing');
+    const req = new NextRequest('http://localhost/api/v1/text');
     const res = await GET(req);
     const body = await res.json();
 

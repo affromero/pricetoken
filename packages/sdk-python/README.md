@@ -76,12 +76,12 @@ for model in STATIC_PRICING:
 
 | Method | API Path |
 |--------|----------|
-| `get_pricing(provider=, currency=)` | `GET /api/v1/pricing` |
-| `get_model(model_id, currency=)` | `GET /api/v1/pricing/{model_id}` |
-| `get_history(days=, model_id=, provider=)` | `GET /api/v1/pricing/history` |
-| `get_providers()` | `GET /api/v1/pricing/providers` |
-| `compare(model_ids, currency=)` | `GET /api/v1/pricing/compare` |
-| `get_cheapest(provider=, currency=)` | `GET /api/v1/pricing/cheapest` |
+| `get_pricing(provider=, currency=)` | `GET /api/v1/text` |
+| `get_model(model_id, currency=)` | `GET /api/v1/text/{model_id}` |
+| `get_history(days=, model_id=, provider=)` | `GET /api/v1/text/history` |
+| `get_providers()` | `GET /api/v1/text/providers` |
+| `compare(model_ids, currency=)` | `GET /api/v1/text/compare` |
+| `get_cheapest(provider=, currency=)` | `GET /api/v1/text/cheapest` |
 
 ## Types
 

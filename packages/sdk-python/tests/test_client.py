@@ -108,7 +108,7 @@ class TestPriceTokenClient:
         result = client.get_model("gpt-4.1")
 
         req = mock_urlopen.call_args[0][0]
-        assert "/api/v1/pricing/text/gpt-4.1" in req.full_url
+        assert "/api/v1/text/gpt-4.1" in req.full_url
         assert result.model_id == "gpt-4.1"
 
     @patch("pricetoken.client.urllib.request.urlopen")

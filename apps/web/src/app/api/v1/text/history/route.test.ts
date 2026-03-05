@@ -29,7 +29,7 @@ describe('GET /api/v1/pricing/history', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetPriceHistory.mockResolvedValue(mockHistory);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/history');
+    const req = new NextRequest('http://localhost/api/v1/text/history');
     const res = await GET(req);
     const body = await res.json();
 
@@ -41,7 +41,7 @@ describe('GET /api/v1/pricing/history', () => {
   it('returns cached data on cache hit', async () => {
     mockGetCached.mockResolvedValue(mockHistory);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/history');
+    const req = new NextRequest('http://localhost/api/v1/text/history');
     const res = await GET(req);
     const body = await res.json();
 
@@ -53,7 +53,7 @@ describe('GET /api/v1/pricing/history', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetPriceHistory.mockResolvedValue(mockHistory);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/history');
+    const req = new NextRequest('http://localhost/api/v1/text/history');
     await GET(req);
 
     expect(mockGetCached).toHaveBeenCalledWith('pt:cache:history:30::');
@@ -64,7 +64,7 @@ describe('GET /api/v1/pricing/history', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetPriceHistory.mockResolvedValue(mockHistory);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/history?days=90');
+    const req = new NextRequest('http://localhost/api/v1/text/history?days=90');
     await GET(req);
 
     expect(mockGetCached).toHaveBeenCalledWith('pt:cache:history:90::');
@@ -75,7 +75,7 @@ describe('GET /api/v1/pricing/history', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetPriceHistory.mockResolvedValue(mockHistory);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/history?days=1000');
+    const req = new NextRequest('http://localhost/api/v1/text/history?days=1000');
     await GET(req);
 
     expect(mockGetCached).toHaveBeenCalledWith('pt:cache:history:365::');
@@ -86,7 +86,7 @@ describe('GET /api/v1/pricing/history', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetPriceHistory.mockResolvedValue(mockHistory);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/history?modelId=gpt-4o');
+    const req = new NextRequest('http://localhost/api/v1/text/history?modelId=gpt-4o');
     await GET(req);
 
     expect(mockGetCached).toHaveBeenCalledWith('pt:cache:history:30:gpt-4o:');
@@ -97,7 +97,7 @@ describe('GET /api/v1/pricing/history', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetPriceHistory.mockResolvedValue(mockHistory);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/history?provider=anthropic');
+    const req = new NextRequest('http://localhost/api/v1/text/history?provider=anthropic');
     await GET(req);
 
     expect(mockGetCached).toHaveBeenCalledWith('pt:cache:history:30::anthropic');
@@ -108,7 +108,7 @@ describe('GET /api/v1/pricing/history', () => {
     mockGetCached.mockResolvedValue(null);
     mockGetPriceHistory.mockResolvedValue(mockHistory);
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/history?days=90&modelId=gpt-4o&provider=openai');
+    const req = new NextRequest('http://localhost/api/v1/text/history?days=90&modelId=gpt-4o&provider=openai');
     await GET(req);
 
     expect(mockGetCached).toHaveBeenCalledWith('pt:cache:history:90:gpt-4o:openai');
@@ -117,7 +117,7 @@ describe('GET /api/v1/pricing/history', () => {
   it('returns 500 with apiError shape on unexpected error', async () => {
     mockGetCached.mockRejectedValue(new Error('boom'));
 
-    const req = new NextRequest('http://localhost/api/v1/pricing/history');
+    const req = new NextRequest('http://localhost/api/v1/text/history');
     const res = await GET(req);
     const body = await res.json();
 
