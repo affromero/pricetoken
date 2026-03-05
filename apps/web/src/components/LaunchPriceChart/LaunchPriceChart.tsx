@@ -164,9 +164,11 @@ export function LaunchPriceChart({ pricing }: LaunchPriceChartProps) {
               );
             }}
           />
-          <Legend
-            wrapperStyle={mobile ? { fontSize: '0.6875rem' } : undefined}
-          />
+          {seriesByProvider.size <= 10 && (
+            <Legend
+              wrapperStyle={mobile ? { fontSize: '0.6875rem' } : undefined}
+            />
+          )}
           {[...seriesByProvider.entries()].map(([provider, data]) => (
             <Scatter
               key={provider}

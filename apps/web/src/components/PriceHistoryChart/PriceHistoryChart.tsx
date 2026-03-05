@@ -199,9 +199,11 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
             labelStyle={{ color: 'var(--pt-text)' }}
             formatter={(value: number, name: string) => [`${currencySymbol}${value.toFixed(2)}/MTok`, name]}
           />
-          <Legend
-            wrapperStyle={mobile ? { fontSize: '0.6875rem' } : undefined}
-          />
+          {filteredHistory.length <= 10 && (
+            <Legend
+              wrapperStyle={mobile ? { fontSize: '0.6875rem' } : undefined}
+            />
+          )}
           {filteredHistory.map((model, i) => (
             <Line
               key={model.modelId}
@@ -210,7 +212,7 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
               name={mobile ? truncateName(model.displayName, 15) : model.displayName}
               stroke={MODEL_COLORS[i % MODEL_COLORS.length]}
               strokeWidth={2}
-              dot={false}
+              dot={chartData.length <= 2 ? { r: 4 } : false}
               connectNulls
             />
           ))}
