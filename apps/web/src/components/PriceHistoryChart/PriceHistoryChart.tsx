@@ -14,6 +14,7 @@ import {
 import type { ModelHistory } from 'pricetoken';
 import { ProviderFilterChips } from '@/components/ProviderFilterChips/ProviderFilterChips';
 import { CurrencySelector } from '@/components/CurrencySelector/CurrencySelector';
+import { useIsMobile } from '@/lib/useIsMobile';
 import styles from './PriceHistoryChart.module.css';
 
 interface PriceHistoryChartProps {
@@ -55,12 +56,23 @@ function getDateCutoff(range: DateRange): Date {
   }
 }
 
+function formatShortDate(dateStr: string): string {
+  const d = new Date(dateStr + 'T00:00:00Z');
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${months[d.getUTCMonth()]} ${d.getUTCDate()}`;
+}
+
+function truncateName(name: string, max: number): string {
+  return name.length > max ? name.slice(0, max - 1) + '…' : name;
+}
+
 export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
   const [priceType, setPriceType] = useState<PriceType>('input');
   const [providerFilter, setProviderFilter] = useState('');
   const [dateRange, setDateRange] = useState<DateRange>('30d');
   const [currency, setCurrency] = useState('USD');
   const [exchangeRate, setExchangeRate] = useState(1);
+  const mobile = useIsMobile();
 
   const handleCurrencyChange = useCallback(async (code: string) => {
     setCurrency(code);
@@ -155,18 +167,26 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
         </div>
       </div>
 
-      <ResponsiveContainer width="100%" height={400}>
-        <LineChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 10 }}>
+      <ResponsiveContainer width="100%" height={mobile ? 280 : 400}>
+        <LineChart data={chartData} margin={mobile ? { top: 5, right: 10, bottom: 5, left: 0 } : { top: 5, right: 20, bottom: 5, left: 10 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--pt-border)" />
           <XAxis
             dataKey="date"
             stroke="var(--pt-text-secondary)"
-            tick={{ fontSize: 12 }}
+            tick={{ fontSize: mobile ? 10 : 12 }}
+            tickFormatter={mobile ? formatShortDate : undefined}
+            interval={mobile ? 'preserveStartEnd' : undefined}
           />
           <YAxis
             stroke="var(--pt-text-secondary)"
-            tick={{ fontSize: 12 }}
-            tickFormatter={(v: number) => `${currencySymbol}${v.toFixed(3)}`}
+            tick={{ fontSize: mobile ? 10 : 12 }}
+            width={mobile ? 40 : undefined}
+            tickCount={mobile ? 5 : undefined}
+            tickFormatter={(v: number) =>
+              mobile
+                ? `${currencySymbol}${v < 1 ? v.toFixed(1) : Math.round(v)}`
+                : `${currencySymbol}${v.toFixed(3)}`
+            }
           />
           <Tooltip
             shared={false}
@@ -179,13 +199,15 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
             labelStyle={{ color: 'var(--pt-text)' }}
             formatter={(value: number, name: string) => [`${currencySymbol}${value.toFixed(2)}/MTok`, name]}
           />
-          <Legend />
+          <Legend
+            wrapperStyle={mobile ? { fontSize: '0.6875rem' } : undefined}
+          />
           {filteredHistory.map((model, i) => (
             <Line
               key={model.modelId}
               type="monotone"
               dataKey={model.modelId}
-              name={model.displayName}
+              name={mobile ? truncateName(model.displayName, 15) : model.displayName}
               stroke={MODEL_COLORS[i % MODEL_COLORS.length]}
               strokeWidth={2}
               dot={false}

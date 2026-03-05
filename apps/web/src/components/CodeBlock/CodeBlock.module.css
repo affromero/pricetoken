@@ -64,3 +64,10 @@
   overflow-x: auto;
   color: var(--pt-text);
 }
+
+@media (max-width: 768px) {
+  .code {
+    padding: 0.75rem 1rem;
+    font-size: 0.75rem;
+  }
+}

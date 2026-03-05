@@ -111,8 +111,19 @@
   text-align: right;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .barRow {
-    grid-template-columns: 100px 1fr 70px;
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .barLabel {
+    white-space: normal;
+  }
+
+  .pickerHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 }

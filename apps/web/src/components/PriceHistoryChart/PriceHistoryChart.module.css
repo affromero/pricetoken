@@ -43,3 +43,19 @@
   border-color: var(--pt-accent);
   color: var(--pt-text);
 }
+
+@media (max-width: 768px) {
+  .controlsRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls {
+    flex-wrap: wrap;
+  }
+
+  .toggle {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
+  }
+}

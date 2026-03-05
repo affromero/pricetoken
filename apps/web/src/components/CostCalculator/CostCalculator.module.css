@@ -227,3 +227,22 @@
   line-height: 1.5;
   text-align: center;
 }
+
+@media (max-width: 480px) {
+  .textarea {
+    min-height: 100px;
+  }
+
+  .tab {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .costRow {
+    padding: 0.375rem 0.625rem;
+  }
+
+  .costTotal .costValue {
+    font-size: 1rem;
+  }
+}

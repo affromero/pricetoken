@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import type { ModelPricing } from 'pricetoken';
 import { ProviderFilterChips, PROVIDER_COLORS } from '@/components/ProviderFilterChips/ProviderFilterChips';
+import { useIsMobile } from '@/lib/useIsMobile';
 import styles from './LaunchPriceChart.module.css';
 
 interface LaunchPriceChartProps {
@@ -50,6 +51,7 @@ export function LaunchPriceChart({ pricing }: LaunchPriceChartProps) {
   const [priceType, setPriceType] = useState<PriceType>('input');
   const [providerFilter, setProviderFilter] = useState('');
   const [logScale, setLogScale] = useState(false);
+  const mobile = useIsMobile();
 
   const modelsWithDate = useMemo(
     () => pricing.filter((m) => m.launchDate !== null),
@@ -119,8 +121,8 @@ export function LaunchPriceChart({ pricing }: LaunchPriceChartProps) {
         </div>
       </div>
 
-      <ResponsiveContainer width="100%" height={400}>
-        <ScatterChart margin={{ top: 5, right: 20, bottom: 5, left: 10 }}>
+      <ResponsiveContainer width="100%" height={mobile ? 280 : 400}>
+        <ScatterChart margin={mobile ? { top: 5, right: 10, bottom: 5, left: 0 } : { top: 5, right: 20, bottom: 5, left: 10 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--pt-border)" />
           <XAxis
             dataKey="x"
@@ -128,7 +130,8 @@ export function LaunchPriceChart({ pricing }: LaunchPriceChartProps) {
             domain={['dataMin', 'dataMax']}
             tickFormatter={formatDateTick}
             stroke="var(--pt-text-secondary)"
-            tick={{ fontSize: 12 }}
+            tick={{ fontSize: mobile ? 10 : 12 }}
+            interval={mobile ? 'preserveStartEnd' : undefined}
             name="Launch Date"
           />
           <YAxis
@@ -137,8 +140,14 @@ export function LaunchPriceChart({ pricing }: LaunchPriceChartProps) {
             scale={logScale ? 'log' : 'auto'}
             domain={logScale ? ['auto', 'auto'] : [0, 'auto']}
             stroke="var(--pt-text-secondary)"
-            tick={{ fontSize: 12 }}
-            tickFormatter={(v: number) => `$${v}`}
+            tick={{ fontSize: mobile ? 10 : 12 }}
+            width={mobile ? 40 : undefined}
+            tickCount={mobile ? 5 : undefined}
+            tickFormatter={(v: number) =>
+              mobile
+                ? v >= 1 ? `$${Math.round(v)}` : `$${v.toFixed(1)}`
+                : `$${v}`
+            }
             name="Price/MTok"
           />
           <Tooltip
@@ -155,7 +164,9 @@ export function LaunchPriceChart({ pricing }: LaunchPriceChartProps) {
               );
             }}
           />
-          <Legend />
+          <Legend
+            wrapperStyle={mobile ? { fontSize: '0.6875rem' } : undefined}
+          />
           {[...seriesByProvider.entries()].map(([provider, data]) => (
             <Scatter
               key={provider}
