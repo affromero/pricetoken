@@ -18,6 +18,10 @@ const TEXT_PRICE_FIELDS = [
 export function HistoryCharts({ history, pricing }: HistoryChartsProps) {
   return (
     <>
+      <h2 className={styles.sectionTitle}>Price Over Time</h2>
+      <p className={styles.subtitle}>
+        Track how LLM input and output pricing changes over time.
+      </p>
       <div className={styles.chart}>
         <PriceHistoryChart history={history} />
       </div>

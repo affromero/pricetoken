@@ -33,14 +33,21 @@ export default async function VideoPage() {
         <ModalitySubNav modality="video" />
         <section className={styles.hero}>
           <h1 className={styles.title}>
-            Video AI Pricing
+            Video Generation Pricing.
+            <br />
+            <span className={styles.accent}>Every provider.</span>
           </h1>
           <p className={styles.subtitle}>
-            Real-time pricing for video generation APIs. Cost per minute of generated video, updated daily.
+            Compare per-minute pricing across Runway, Sora, Veo, Kling, and more.
+            Updated daily from official provider pages.
           </p>
         </section>
 
         <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Current Pricing</h2>
+          <p className={styles.sectionSubtitle}>
+            Sorted by cost per minute. Prices in USD.
+          </p>
           <VideoPricingTable pricing={pricing} />
         </section>
       </main>
