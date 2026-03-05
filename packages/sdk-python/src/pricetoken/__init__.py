@@ -26,9 +26,11 @@ from pricetoken.types import (
     VideoPriceHistoryPoint,
     VideoProviderSummary,
 )
+from pricetoken.video_static import STATIC_VIDEO_PRICING
 
 __all__ = [
     "STATIC_PRICING",
+    "STATIC_VIDEO_PRICING",
     "CostEstimate",
     "DataConfidence",
     "ModelHistory",
