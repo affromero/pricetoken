@@ -26,6 +26,7 @@ from pricetoken.types import (
     VideoPriceHistoryPoint,
     VideoProviderSummary,
 )
+from pricetoken.video_cost import calculate_video_cost, calculate_video_model_cost
 from pricetoken.video_static import STATIC_VIDEO_PRICING
 
 __all__ = [
@@ -49,4 +50,6 @@ __all__ = [
     "__version__",
     "calculate_cost",
     "calculate_model_cost",
+    "calculate_video_cost",
+    "calculate_video_model_cost",
 ]
