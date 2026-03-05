@@ -4,7 +4,7 @@ import { Footer } from '@/components/Footer/Footer';
 import { ModalitySubNav } from '@/components/ModalitySubNav/ModalitySubNav';
 import { VideoHistoryCharts } from './VideoHistoryCharts';
 import { STATIC_VIDEO_PRICING } from 'pricetoken';
-import type { VideoModelHistory } from 'pricetoken';
+import type { VideoModelHistory, VideoModelPricing } from 'pricetoken';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -24,6 +24,16 @@ async function getVideoHistory(): Promise<VideoModelHistory[]> {
   }
 }
 
+async function getVideoPricingData(): Promise<VideoModelPricing[]> {
+  try {
+    const { getCurrentVideoPricing } = await import('@/lib/video-pricing-queries');
+    const pricing = await getCurrentVideoPricing();
+    return pricing.length > 0 ? pricing : STATIC_VIDEO_PRICING;
+  } catch {
+    return STATIC_VIDEO_PRICING;
+  }
+}
+
 function getFallbackHistory(): VideoModelHistory[] {
   const today = new Date().toISOString().split('T')[0]!;
   return STATIC_VIDEO_PRICING.map((m) => ({
@@ -37,7 +47,7 @@ function getFallbackHistory(): VideoModelHistory[] {
 }
 
 export default async function VideoHistoryPage() {
-  const history = await getVideoHistory();
+  const [history, pricing] = await Promise.all([getVideoHistory(), getVideoPricingData()]);
 
   return (
     <>
@@ -49,7 +59,7 @@ export default async function VideoHistoryPage() {
           Track video AI pricing changes over time across all providers.
         </p>
 
-        <VideoHistoryCharts history={history} />
+        <VideoHistoryCharts history={history} pricing={pricing} />
       </main>
       <Footer />
     </>

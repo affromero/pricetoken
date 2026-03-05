@@ -20,6 +20,12 @@
   width: 100%;
 }
 
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 3rem 0 0.75rem;
+}
+
 @media (max-width: 768px) {
   .root {
     padding: 2rem 1rem;
@@ -27,6 +33,10 @@
 
   .title {
     font-size: 1.5rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.25rem;
   }
 
   .subtitle {

@@ -10,17 +10,22 @@ import {
   Tooltip,
   Legend,
 } from 'recharts';
-import type { ModelPricing } from 'pricetoken';
 import { ProviderFilterChips, PROVIDER_COLORS } from '@/components/ProviderFilterChips/ProviderFilterChips';
 import { ChartContainer } from '@/components/ChartContainer/ChartContainer';
 import { useIsMobile } from '@/lib/useIsMobile';
 import styles from './LaunchPriceChart.module.css';
 
-interface LaunchPriceChartProps {
-  pricing: ModelPricing[];
+export interface PriceFieldConfig {
+  key: string;
+  label: string;
+  unit: string;
 }
 
-type PriceType = 'input' | 'output';
+interface LaunchPriceChartProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  pricing: Array<Record<string, any>>;
+  priceFields: PriceFieldConfig[];
+}
 
 const PROVIDER_COLOR_VALUES: Record<string, string> = {
   anthropic: '#d4a574',
@@ -47,19 +52,21 @@ function formatDateTick(timestamp: number): string {
   return `${months[d.getUTCMonth()]} '${String(d.getUTCFullYear()).slice(2)}`;
 }
 
-export function LaunchPriceChart({ pricing }: LaunchPriceChartProps) {
-  const [priceType, setPriceType] = useState<PriceType>('input');
+export function LaunchPriceChart({ pricing, priceFields }: LaunchPriceChartProps) {
+  const [activeFieldIdx, setActiveFieldIdx] = useState(0);
   const [providerFilter, setProviderFilter] = useState('');
   const [logScale, setLogScale] = useState(false);
   const mobile = useIsMobile();
 
+  const activeField = priceFields[activeFieldIdx]!;
+
   const modelsWithDate = useMemo(
-    () => pricing.filter((m) => m.launchDate !== null),
+    () => pricing.filter((m) => m.launchDate !== null && m.launchDate !== undefined),
     [pricing]
   );
 
   const providers = useMemo(
-    () => [...new Set(modelsWithDate.map((m) => m.provider))],
+    () => [...new Set(modelsWithDate.map((m) => m.provider as string))],
     [modelsWithDate]
   );
 
@@ -71,22 +78,23 @@ export function LaunchPriceChart({ pricing }: LaunchPriceChartProps) {
   const seriesByProvider = useMemo(() => {
     const groups = new Map<string, ScatterPoint[]>();
     for (const m of filteredModels) {
-      const price = priceType === 'input' ? m.inputPerMTok : m.outputPerMTok;
-      const timestamp = new Date(m.launchDate!).getTime();
+      const price = m[activeField.key] as number;
+      if (price == null) continue;
+      const timestamp = new Date(m.launchDate as string).getTime();
       const point: ScatterPoint = {
         x: timestamp,
         y: price,
-        modelId: m.modelId,
-        displayName: m.displayName,
-        provider: m.provider,
-        launchDate: m.launchDate!,
+        modelId: m.modelId as string,
+        displayName: m.displayName as string,
+        provider: m.provider as string,
+        launchDate: m.launchDate as string,
         price,
       };
-      if (!groups.has(m.provider)) groups.set(m.provider, []);
-      groups.get(m.provider)!.push(point);
+      if (!groups.has(point.provider)) groups.set(point.provider, []);
+      groups.get(point.provider)!.push(point);
     }
     return groups;
-  }, [filteredModels, priceType]);
+  }, [filteredModels, activeField.key]);
 
   if (modelsWithDate.length === 0) return null;
 
@@ -96,20 +104,19 @@ export function LaunchPriceChart({ pricing }: LaunchPriceChartProps) {
         <ProviderFilterChips providers={providers} selected={providerFilter} onSelect={setProviderFilter} />
 
         <div className={styles.controlsRow}>
-          <div className={styles.controls}>
-            <button
-              className={`${styles.toggle} ${priceType === 'input' ? styles.toggleActive : ''}`}
-              onClick={() => setPriceType('input')}
-            >
-              Input Price
-            </button>
-            <button
-              className={`${styles.toggle} ${priceType === 'output' ? styles.toggleActive : ''}`}
-              onClick={() => setPriceType('output')}
-            >
-              Output Price
-            </button>
-          </div>
+          {priceFields.length > 1 && (
+            <div className={styles.controls}>
+              {priceFields.map((field, idx) => (
+                <button
+                  key={field.key}
+                  className={`${styles.toggle} ${activeFieldIdx === idx ? styles.toggleActive : ''}`}
+                  onClick={() => setActiveFieldIdx(idx)}
+                >
+                  {field.label}
+                </button>
+              ))}
+            </div>
+          )}
           <div className={styles.controls}>
             <button
               className={`${styles.toggle} ${logScale ? styles.toggleActive : ''}`}
@@ -146,10 +153,10 @@ export function LaunchPriceChart({ pricing }: LaunchPriceChartProps) {
               tickCount={mobile ? 5 : 5}
               tickFormatter={(v: number) =>
                 mobile
-                  ? v >= 1 ? `$${Math.round(v)}` : `$${v.toFixed(1)}`
+                  ? v >= 1 ? `$${Math.round(v)}` : `$${v.toFixed(2)}`
                   : `$${v}`
               }
-              name="Price/MTok"
+              name={activeField.unit}
             />
             <Tooltip
               content={({ payload }) => {
@@ -160,7 +167,7 @@ export function LaunchPriceChart({ pricing }: LaunchPriceChartProps) {
                     <strong>{p.displayName}</strong>
                     <div>{p.provider}</div>
                     <div>{p.launchDate}</div>
-                    <div>${p.price.toFixed(2)}/MTok</div>
+                    <div>${p.price.toFixed(2)} {activeField.unit}</div>
                   </div>
                 );
               }}

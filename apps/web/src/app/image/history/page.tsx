@@ -4,7 +4,7 @@ import { Footer } from '@/components/Footer/Footer';
 import { ModalitySubNav } from '@/components/ModalitySubNav/ModalitySubNav';
 import { ImageHistoryCharts } from './ImageHistoryCharts';
 import { STATIC_IMAGE_PRICING } from 'pricetoken';
-import type { ImageModelHistory } from 'pricetoken';
+import type { ImageModelHistory, ImageModelPricing } from 'pricetoken';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -24,6 +24,16 @@ async function getImageHistory(): Promise<ImageModelHistory[]> {
   }
 }
 
+async function getImagePricingData(): Promise<ImageModelPricing[]> {
+  try {
+    const { getCurrentImagePricing } = await import('@/lib/image-pricing-queries');
+    const pricing = await getCurrentImagePricing();
+    return pricing.length > 0 ? pricing : STATIC_IMAGE_PRICING;
+  } catch {
+    return STATIC_IMAGE_PRICING;
+  }
+}
+
 function getFallbackHistory(): ImageModelHistory[] {
   const today = new Date().toISOString().split('T')[0]!;
   return STATIC_IMAGE_PRICING.map((m) => ({
@@ -37,7 +47,7 @@ function getFallbackHistory(): ImageModelHistory[] {
 }
 
 export default async function ImageHistoryPage() {
-  const history = await getImageHistory();
+  const [history, pricing] = await Promise.all([getImageHistory(), getImagePricingData()]);
 
   return (
     <>
@@ -49,7 +59,7 @@ export default async function ImageHistoryPage() {
           Track image AI pricing changes over time across all providers.
         </p>
 
-        <ImageHistoryCharts history={history} />
+        <ImageHistoryCharts history={history} pricing={pricing} />
       </main>
       <Footer />
     </>

@@ -10,6 +10,11 @@ interface HistoryChartsProps {
   pricing: ModelPricing[];
 }
 
+const TEXT_PRICE_FIELDS = [
+  { key: 'inputPerMTok', label: 'Input Price', unit: '/MTok' },
+  { key: 'outputPerMTok', label: 'Output Price', unit: '/MTok' },
+];
+
 export function HistoryCharts({ history, pricing }: HistoryChartsProps) {
   return (
     <>
@@ -22,7 +27,7 @@ export function HistoryCharts({ history, pricing }: HistoryChartsProps) {
         See how model pricing compares at launch across providers and time.
       </p>
       <div className={styles.chart}>
-        <LaunchPriceChart pricing={pricing} />
+        <LaunchPriceChart pricing={pricing} priceFields={TEXT_PRICE_FIELDS} />
       </div>
     </>
   );
