@@ -309,7 +309,7 @@ STATIC_PRICING: list[ModelPricing] = [
         context_window=1_048_576,
         max_output_tokens=8_192,
         source="seed",
-        status="active",
+        status="deprecated",
         confidence="high",
         last_updated=None,
         launch_date="2025-02-05",
@@ -323,7 +323,7 @@ STATIC_PRICING: list[ModelPricing] = [
         context_window=1_048_576,
         max_output_tokens=8_192,
         source="seed",
-        status="active",
+        status="deprecated",
         confidence="high",
         last_updated=None,
         launch_date="2025-02-25",
@@ -379,10 +379,10 @@ STATIC_PRICING: list[ModelPricing] = [
         context_window=1_048_576,
         max_output_tokens=65_536,
         source="seed",
-        status="preview",
+        status="deprecated",
         confidence="high",
         last_updated=None,
-        launch_date="2025-11-20",
+        launch_date="2025-11-18",
     ),
     ModelPricing(
         model_id="gemini-3-flash-preview",
@@ -402,7 +402,7 @@ STATIC_PRICING: list[ModelPricing] = [
     ModelPricing(
         model_id="deepseek-chat",
         provider="deepseek",
-        display_name="DeepSeek V3",
+        display_name="DeepSeek V3.2",
         input_per_m_tok=0.28,
         output_per_m_tok=0.42,
         context_window=131_072,
@@ -416,7 +416,7 @@ STATIC_PRICING: list[ModelPricing] = [
     ModelPricing(
         model_id="deepseek-reasoner",
         provider="deepseek",
-        display_name="DeepSeek R1",
+        display_name="DeepSeek R1 (V3.2)",
         input_per_m_tok=0.28,
         output_per_m_tok=0.42,
         context_window=131_072,
@@ -554,7 +554,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2026-01-15",
+        launch_date="2025-09-05",
     ),
     ModelPricing(
         model_id="qwq-32b",
@@ -568,7 +568,7 @@ STATIC_PRICING: list[ModelPricing] = [
         status="active",
         confidence="high",
         last_updated=None,
-        launch_date="2025-12-01",
+        launch_date="2025-03-05",
     ),
     # Cohere
     ModelPricing(

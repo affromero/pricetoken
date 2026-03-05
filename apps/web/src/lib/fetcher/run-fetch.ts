@@ -14,6 +14,7 @@ import { fetchFallbackPricing } from './fallback';
 import { crossVerify } from './cross-verify';
 import { checkPriorConsistency } from './prior-check';
 import { buildConsensus } from './consensus';
+import { checkTextPriceSanity } from './sanity-bounds';
 import type { VerificationResult } from './verification-types';
 
 export interface FetchResult {
@@ -65,15 +66,36 @@ export async function runPricingFetch(): Promise<FetchResult> {
         continue;
       }
 
+      // Sanity check — reject obviously wrong prices before verification
+      const saneModels = knownModels.filter((m) => {
+        const check = checkTextPriceSanity(m.modelId, m.inputPerMTok, m.outputPerMTok);
+        if (!check.valid) {
+          console.warn(`Sanity check failed for ${m.modelId}: ${check.reason}`);
+          warnings.push({
+            type: 'sanity_check_failed',
+            provider: providerId,
+            modelIds: [m.modelId],
+            message: check.reason!,
+          });
+        }
+        return check.valid;
+      });
+
+      if (saneModels.length === 0) {
+        errors.push(`${config.displayName}: all models failed sanity checks`);
+        await saveFetchRun(providerId, [], [], [], 0, 'all models failed sanity checks');
+        continue;
+      }
+
       // Layer 2: Cross-verify with multiple AI agents
       console.log(`Verifying pricing for ${config.displayName}...`);
-      const agentResults = await crossVerify(pageText, knownModels);
+      const agentResults = await crossVerify(pageText, saneModels);
 
       // Layer 3: Check against prior snapshots
-      const priorFlags = await checkPriorConsistency(providerId, knownModels);
+      const priorFlags = await checkPriorConsistency(providerId, saneModels);
 
       // Layer 4: Build consensus
-      const consensus = buildConsensus(knownModels, agentResults, priorFlags);
+      const consensus = buildConsensus(saneModels, agentResults, priorFlags);
       verificationResults.set(providerId, consensus);
 
       // Save only approved models with 'verified' source

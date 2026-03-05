@@ -1,7 +1,8 @@
 import type { VideoModelPricing } from './types';
 
 export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
-  // Runway
+  // Runway — Gen-4 launched 2025-03-31, Gen-4.5 launched 2025-12-01
+  // Pricing: $0.01/credit, gen4.5=12 credits/sec, gen4_turbo=5 credits/sec
   {
     modelId: 'runway-gen4-720p',
     provider: 'runway',
@@ -14,7 +15,7 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-06-01',
+    launchDate: '2025-03-31',
   },
   {
     modelId: 'runway-gen4-turbo-720p',
@@ -28,23 +29,25 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-06-01',
+    launchDate: '2025-03-31',
   },
 
-  // Sora (OpenAI)
+  // Sora 2 (OpenAI) — launched 2025-09-30
+  // API: sora-2=$0.10/sec (720p), sora-2-pro=$0.30/sec (720p) or $0.50/sec (1080p)
+  // Max durations: 4, 8, or 12 seconds via API
   {
     modelId: 'sora2-720p',
     provider: 'sora',
     displayName: 'Sora 2 720p',
     costPerMinute: 6.0,
     resolution: '720p',
-    maxDuration: 20,
+    maxDuration: 12,
     qualityMode: 'standard',
     source: 'seed',
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-02-01',
+    launchDate: '2025-09-30',
   },
   {
     modelId: 'sora2-pro-720p',
@@ -52,13 +55,13 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
     displayName: 'Sora 2 Pro 720p',
     costPerMinute: 18.0,
     resolution: '720p',
-    maxDuration: 20,
+    maxDuration: 12,
     qualityMode: 'professional',
     source: 'seed',
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-02-01',
+    launchDate: '2025-09-30',
   },
   {
     modelId: 'sora2-pro-1080p',
@@ -66,21 +69,22 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
     displayName: 'Sora 2 Pro 1080p',
     costPerMinute: 30.0,
     resolution: '1080p',
-    maxDuration: 20,
+    maxDuration: 12,
     qualityMode: 'professional',
     source: 'seed',
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-02-01',
+    launchDate: '2025-09-30',
   },
 
-  // Google Veo
+  // Google Veo 3.1 — preview 2025-10-15, 4K update 2026-01-13
+  // Standard: $0.40/sec (1080p) = $24/min, $0.60/sec (4K) = $36/min
   {
     modelId: 'veo-3.1-1080p',
     provider: 'veo',
     displayName: 'Veo 3.1 1080p',
-    costPerMinute: 12.0,
+    costPerMinute: 24.0,
     resolution: '1080p',
     maxDuration: 8,
     qualityMode: 'standard',
@@ -88,13 +92,13 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-12-01',
+    launchDate: '2025-10-15',
   },
   {
     modelId: 'veo-3.1-4k',
     provider: 'veo',
     displayName: 'Veo 3.1 4K',
-    costPerMinute: 24.0,
+    costPerMinute: 36.0,
     resolution: '4k',
     maxDuration: 8,
     qualityMode: 'standard',
@@ -102,10 +106,11 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-12-01',
+    launchDate: '2025-10-15',
   },
 
-  // Kling
+  // Kling 3.0 — launched 2026-02-05
+  // $0.029/sec = $1.74/min, 4K native, up to 15s
   {
     modelId: 'kling-3.0-4k',
     provider: 'kling',
@@ -118,42 +123,45 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-09-01',
+    launchDate: '2026-02-05',
   },
 
-  // Luma
+  // Luma Ray 3.14 — launched 2026-01-26
+  // Native 1080p, up to 18s, "3x cheaper" than Ray 3
   {
-    modelId: 'luma-ray-3.14-720p',
+    modelId: 'luma-ray-3.14-1080p',
     provider: 'luma',
-    displayName: 'Luma Ray 3.14 720p',
+    displayName: 'Luma Ray 3.14 1080p',
     costPerMinute: 3.0,
-    resolution: '720p',
-    maxDuration: 10,
+    resolution: '1080p',
+    maxDuration: 18,
     qualityMode: 'standard',
     source: 'seed',
     status: 'active',
-    confidence: 'high',
+    confidence: 'low',
     lastUpdated: null,
-    launchDate: '2025-10-01',
+    launchDate: '2026-01-26',
   },
 
-  // Pika
+  // Pika 2.5 — launched ~mid 2025 (Pika 2.2 was 2025-02-27)
+  // Credit-based, no public API pricing, estimate from subscription tiers
   {
     modelId: 'pika-2.5-1080p',
     provider: 'pika',
     displayName: 'Pika 2.5 1080p',
     costPerMinute: 4.8,
     resolution: '1080p',
-    maxDuration: 5,
+    maxDuration: 10,
     qualityMode: 'standard',
     source: 'seed',
     status: 'active',
-    confidence: 'high',
+    confidence: 'low',
     lastUpdated: null,
     launchDate: '2025-08-01',
   },
 
-  // MiniMax (Hailuo)
+  // MiniMax Hailuo 02 — launched 2025-06-18
+  // Three configs: 768p-6s, 768p-10s, 1080p-6s
   {
     modelId: 'minimax-hailuo02-768p',
     provider: 'minimax',
@@ -166,7 +174,7 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-07-01',
+    launchDate: '2025-06-18',
   },
   {
     modelId: 'minimax-hailuo02-pro-1080p',
@@ -174,37 +182,39 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
     displayName: 'Hailuo 02 Pro 1080p',
     costPerMinute: 4.8,
     resolution: '1080p',
-    maxDuration: 10,
+    maxDuration: 6,
     qualityMode: 'professional',
     source: 'seed',
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-07-01',
+    launchDate: '2025-06-18',
   },
 
-  // Seedance (ByteDance)
+  // Seedance 2.0 (ByteDance) — launched 2026-02-10
+  // API via Volcengine/BytePlus, ~$0.08/sec for 1080p = $4.80/min
   {
     modelId: 'seedance-2.0-1080p',
     provider: 'seedance',
     displayName: 'Seedance 2.0 1080p',
-    costPerMinute: 7.2,
+    costPerMinute: 4.8,
     resolution: '1080p',
-    maxDuration: 10,
+    maxDuration: 15,
     qualityMode: 'standard',
     source: 'seed',
     status: 'active',
-    confidence: 'high',
+    confidence: 'low',
     lastUpdated: null,
-    launchDate: '2025-11-01',
+    launchDate: '2026-02-10',
   },
 
-  // FAL (aggregator)
+  // FAL (aggregator) — prices reflect FAL's rates, not original provider's
+  // Veo 3: $0.40/sec (with audio) = $24/min
   {
     modelId: 'fal-veo3-1080p',
     provider: 'fal',
     displayName: 'FAL Veo 3 1080p',
-    costPerMinute: 12.0,
+    costPerMinute: 24.0,
     resolution: '1080p',
     maxDuration: 8,
     qualityMode: 'standard',
@@ -212,13 +222,14 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-12-01',
+    launchDate: '2025-10-15',
   },
+  // Veo 3 Fast: $0.15/sec (with audio) = $9/min
   {
     modelId: 'fal-veo3-fast-1080p',
     provider: 'fal',
     displayName: 'FAL Veo 3 Fast 1080p',
-    costPerMinute: 6.0,
+    costPerMinute: 9.0,
     resolution: '1080p',
     maxDuration: 8,
     qualityMode: 'turbo',
@@ -226,33 +237,35 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-12-01',
+    launchDate: '2025-10-15',
   },
+  // Kling via FAL: $0.07/sec = $4.20/min
   {
     modelId: 'fal-kling3-1080p',
     provider: 'fal',
     displayName: 'FAL Kling 3.0 1080p',
-    costPerMinute: 6.0,
+    costPerMinute: 4.2,
     resolution: '1080p',
     maxDuration: 15,
     qualityMode: 'standard',
     source: 'seed',
     status: 'active',
-    confidence: 'high',
+    confidence: 'low',
     lastUpdated: null,
-    launchDate: '2025-09-01',
+    launchDate: '2026-02-05',
   },
+  // WAN 2.5 via FAL: $0.05/sec = $3.00/min
   {
-    modelId: 'fal-wan2.1-480p',
+    modelId: 'fal-wan2.5-480p',
     provider: 'fal',
-    displayName: 'FAL WAN 2.1 480p',
-    costPerMinute: 2.4,
+    displayName: 'FAL WAN 2.5 480p',
+    costPerMinute: 3.0,
     resolution: '480p',
     maxDuration: 5,
     qualityMode: 'standard',
     source: 'seed',
     status: 'active',
-    confidence: 'high',
+    confidence: 'low',
     lastUpdated: null,
     launchDate: '2025-06-01',
   },

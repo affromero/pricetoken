@@ -309,7 +309,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 1048576,
     maxOutputTokens: 8192,
     source: 'seed',
-    status: 'active',
+    status: 'deprecated',
     confidence: 'high',
     lastUpdated: null,
     launchDate: '2025-02-05',
@@ -323,7 +323,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 1048576,
     maxOutputTokens: 8192,
     source: 'seed',
-    status: 'active',
+    status: 'deprecated',
     confidence: 'high',
     lastUpdated: null,
     launchDate: '2025-02-25',
@@ -379,10 +379,10 @@ export const STATIC_PRICING: ModelPricing[] = [
     contextWindow: 1048576,
     maxOutputTokens: 65536,
     source: 'seed',
-    status: 'preview',
+    status: 'deprecated',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-11-20',
+    launchDate: '2025-11-18',
   },
   {
     modelId: 'gemini-3-flash-preview',
@@ -403,7 +403,7 @@ export const STATIC_PRICING: ModelPricing[] = [
   {
     modelId: 'deepseek-chat',
     provider: 'deepseek',
-    displayName: 'DeepSeek V3',
+    displayName: 'DeepSeek V3.2',
     inputPerMTok: 0.28,
     outputPerMTok: 0.42,
     contextWindow: 131072,
@@ -417,7 +417,7 @@ export const STATIC_PRICING: ModelPricing[] = [
   {
     modelId: 'deepseek-reasoner',
     provider: 'deepseek',
-    displayName: 'DeepSeek R1',
+    displayName: 'DeepSeek R1 (V3.2)',
     inputPerMTok: 0.28,
     outputPerMTok: 0.42,
     contextWindow: 131072,
@@ -558,7 +558,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2026-01-15',
+    launchDate: '2025-09-05',
   },
   {
     modelId: 'qwq-32b',
@@ -572,7 +572,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     status: 'active',
     confidence: 'high',
     lastUpdated: null,
-    launchDate: '2025-12-01',
+    launchDate: '2025-03-05',
   },
 
   // Cohere

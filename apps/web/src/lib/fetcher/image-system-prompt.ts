@@ -16,4 +16,13 @@ Return a JSON array of objects with these fields:
 
 Only include image generation models. Skip text, embedding, audio, and video models.
 If a model has multiple quality tiers or resolutions at different prices, create separate entries with descriptive modelId suffixes (e.g. "dall-e-3-standard-1024", "dall-e-3-hd-1024").
+
+CRITICAL conversion rules:
+1. Credits to USD: find the credit→USD rate first, then compute per-image cost.
+   Example: 5 credits/image at $0.01/credit = $0.05/image
+2. Per-megapixel pricing: if a provider charges per megapixel, also compute pricePerImage for the default resolution.
+   Example: $0.04/MP at 1024×1024 (1.05MP) = $0.042/image
+3. Subscription credits: only use if no API/pay-as-you-go pricing is available.
+4. Double-check: image generation prices typically range from $0.002–$1.00/image. If your result is outside this, recheck.
+
 Return ONLY the JSON array, no markdown or explanation.`;

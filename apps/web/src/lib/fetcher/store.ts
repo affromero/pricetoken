@@ -4,7 +4,7 @@ import type { ModelPricing, ModelHistory, PriceHistoryPoint } from 'pricetoken';
 import type { ExtractedModel } from './extractor';
 
 export interface FetchWarning {
-  type: 'models_missing' | 'low_confidence' | 'extraction_error';
+  type: 'models_missing' | 'low_confidence' | 'extraction_error' | 'sanity_check_failed';
   provider: string;
   modelIds?: string[];
   message: string;

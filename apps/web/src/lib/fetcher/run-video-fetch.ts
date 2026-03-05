@@ -11,6 +11,7 @@ import { getLastFetchRun, saveFetchRun, type FetchWarning } from './store';
 import { videoCrossVerify } from './video-cross-verify';
 import { checkVideoPriorConsistency } from './video-prior-check';
 import { buildVideoConsensus } from './video-consensus';
+import { checkVideoPriceSanity } from './sanity-bounds';
 import type { VideoVerificationResult } from './video-verification-types';
 
 export interface VideoFetchResult {
@@ -46,12 +47,33 @@ export async function runVideoFetch(): Promise<VideoFetchResult> {
         continue;
       }
 
+      // Sanity check — reject obviously wrong prices before verification
+      const saneModels = extraction.models.filter((m) => {
+        const check = checkVideoPriceSanity(m.modelId, m.costPerMinute);
+        if (!check.valid) {
+          console.warn(`Sanity check failed for ${m.modelId}: ${check.reason}`);
+          warnings.push({
+            type: 'sanity_check_failed',
+            provider: providerId,
+            modelIds: [m.modelId],
+            message: check.reason!,
+          });
+        }
+        return check.valid;
+      });
+
+      if (saneModels.length === 0) {
+        errors.push(`${config.displayName}: all models failed sanity checks`);
+        await saveFetchRun(providerId, [], [], [], 0, 'all models failed sanity checks');
+        continue;
+      }
+
       console.log(`Verifying video pricing for ${config.displayName}...`);
-      const agentResults = await videoCrossVerify(pageText, extraction.models);
+      const agentResults = await videoCrossVerify(pageText, saneModels);
 
-      const priorFlags = await checkVideoPriorConsistency(providerId, extraction.models);
+      const priorFlags = await checkVideoPriorConsistency(providerId, saneModels);
 
-      const consensus = buildVideoConsensus(extraction.models, agentResults, priorFlags);
+      const consensus = buildVideoConsensus(saneModels, agentResults, priorFlags);
       verificationResults.set(providerId, consensus);
 
       if (consensus.approved.length > 0) {
