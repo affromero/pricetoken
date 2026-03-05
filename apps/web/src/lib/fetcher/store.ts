@@ -252,6 +252,19 @@ export async function carryForwardMissing(): Promise<number> {
   return result.count;
 }
 
+
+export async function getKnownModelIds(): Promise<Set<string>> {
+  const { STATIC_PRICING } = await import('pricetoken');
+  const staticIds = STATIC_PRICING.map((m) => m.modelId);
+  const dbIds = (
+    await prisma.modelPricingSnapshot.findMany({
+      distinct: ['modelId'],
+      select: { modelId: true },
+    })
+  ).map((r: { modelId: string }) => r.modelId);
+  return new Set([...staticIds, ...dbIds]);
+}
+
 export async function getLastFetchRun(provider: string) {
   return prisma.fetchRunLog.findFirst({
     where: { provider },
