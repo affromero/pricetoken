@@ -15,6 +15,7 @@ export const VIDEO_PROVIDERS: Record<string, ProviderConfig> = {
   minimax: { url: 'https://platform.minimax.io/docs/guides/pricing', displayName: 'MiniMax (Hailuo)', requiresBrowser: true },
   seedance: { url: 'https://www.byteplus.com/en/product/seedance', displayName: 'Seedance (ByteDance)', requiresBrowser: true },
   fal: { url: 'https://fal.ai/pricing', displayName: 'FAL', requiresBrowser: true },
+  ltx: { url: 'https://docs.ltx.video/pricing', displayName: 'LTX (Lightricks)', requiresBrowser: true },
 };
 
 export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
