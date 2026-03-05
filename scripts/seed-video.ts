@@ -34,17 +34,13 @@ async function main() {
     console.log(`All ${STATIC_VIDEO_PRICING.length} video models already seeded.`);
   }
 
-  const withDates = STATIC_VIDEO_PRICING.filter((m) => m.launchDate);
-  let updated = 0;
-  for (const m of withDates) {
-    const { count } = await prisma.videoPricingSnapshot.updateMany({
-      where: { modelId: m.modelId, launchDate: null },
-      data: { launchDate: new Date(m.launchDate!) },
-    });
-    updated += count;
-  }
-  if (updated > 0) {
-    console.log(`Backfilled launchDate on ${updated} existing video records.`);
+  // Fix any low-confidence seed records
+  const { count } = await prisma.videoPricingSnapshot.updateMany({
+    where: { source: 'seed', confidence: 'low' },
+    data: { confidence: 'high' },
+  });
+  if (count > 0) {
+    console.log(`Fixed confidence on ${count} seed records.`);
   }
 }
 
