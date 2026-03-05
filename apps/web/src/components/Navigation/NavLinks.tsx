@@ -35,6 +35,9 @@ export function NavLinks({ isAdmin }: NavLinksProps) {
         <span />
       </button>
       <div className={`${styles.links} ${open ? styles.linksOpen : ''}`}>
+        <Link href="/image" className={styles.link} onClick={close}>
+          Image Pricing
+        </Link>
         <Link href="/history" className={styles.link} onClick={close}>
           History
         </Link>

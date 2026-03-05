@@ -2,11 +2,14 @@ import type {
   ModelPricing,
   ModelHistory,
   ProviderSummary,
+  ImageModelPricing,
+  ImageModelHistory,
+  ImageProviderSummary,
   PriceTokenResponse,
   PriceTokenError,
 } from './types';
 
-const SDK_VERSION = '0.6.0';
+const SDK_VERSION = '0.7.0';
 
 export interface ClientOptions {
   baseUrl?: string;
@@ -115,5 +118,57 @@ export class PriceTokenClient {
     if (opts?.before) params.set('before', opts.before);
     const qs = params.toString();
     return this.request<ModelPricing>(`/api/v1/pricing/cheapest${qs ? `?${qs}` : ''}`);
+  }
+
+  // Image pricing methods
+
+  async getImagePricing(opts?: { provider?: string; currency?: string; after?: string; before?: string }): Promise<ImageModelPricing[]> {
+    const params = new URLSearchParams();
+    if (opts?.provider) params.set('provider', opts.provider);
+    if (opts?.currency) params.set('currency', opts.currency);
+    if (opts?.after) params.set('after', opts.after);
+    if (opts?.before) params.set('before', opts.before);
+    const qs = params.toString();
+    return this.request<ImageModelPricing[]>(`/api/v1/pricing/image${qs ? `?${qs}` : ''}`);
+  }
+
+  async getImageModel(modelId: string, opts?: { currency?: string }): Promise<ImageModelPricing> {
+    const params = new URLSearchParams();
+    if (opts?.currency) params.set('currency', opts.currency);
+    const qs = params.toString();
+    return this.request<ImageModelPricing>(`/api/v1/pricing/image/${encodeURIComponent(modelId)}${qs ? `?${qs}` : ''}`);
+  }
+
+  async getImageHistory(opts?: {
+    days?: number;
+    modelId?: string;
+    provider?: string;
+  }): Promise<ImageModelHistory[]> {
+    const params = new URLSearchParams();
+    if (opts?.days) params.set('days', String(opts.days));
+    if (opts?.modelId) params.set('modelId', opts.modelId);
+    if (opts?.provider) params.set('provider', opts.provider);
+    const qs = params.toString();
+    return this.request<ImageModelHistory[]>(`/api/v1/pricing/image/history${qs ? `?${qs}` : ''}`);
+  }
+
+  async getImageProviders(): Promise<ImageProviderSummary[]> {
+    return this.request<ImageProviderSummary[]>('/api/v1/pricing/image/providers');
+  }
+
+  async compareImages(modelIds: string[], opts?: { currency?: string }): Promise<ImageModelPricing[]> {
+    const params = new URLSearchParams({ models: modelIds.join(',') });
+    if (opts?.currency) params.set('currency', opts.currency);
+    return this.request<ImageModelPricing[]>(`/api/v1/pricing/image/compare?${params}`);
+  }
+
+  async getCheapestImage(opts?: { provider?: string; currency?: string; after?: string; before?: string }): Promise<ImageModelPricing> {
+    const params = new URLSearchParams();
+    if (opts?.provider) params.set('provider', opts.provider);
+    if (opts?.currency) params.set('currency', opts.currency);
+    if (opts?.after) params.set('after', opts.after);
+    if (opts?.before) params.set('before', opts.before);
+    const qs = params.toString();
+    return this.request<ImageModelPricing>(`/api/v1/pricing/image/cheapest${qs ? `?${qs}` : ''}`);
   }
 }

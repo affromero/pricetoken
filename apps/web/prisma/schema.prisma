@@ -26,6 +26,27 @@ model ModelPricingSnapshot {
   @@index([createdAt])
 }
 
+model ImagePricingSnapshot {
+  id                String   @id @default(cuid())
+  modelId           String
+  provider          String
+  displayName       String   @default("")
+  pricePerImage     Float
+  pricePerMegapixel Float?
+  defaultResolution String   @default("1024x1024")
+  qualityTier       String   @default("standard")
+  maxResolution     String?
+  supportedFormats  String[] @default(["png"])
+  source            String   @default("fetched")
+  status            String?
+  confidence        String   @default("high")
+  launchDate        DateTime?
+  createdAt         DateTime @default(now())
+
+  @@index([modelId, createdAt])
+  @@index([createdAt])
+}
+
 model FetchRunLog {
   id             String   @id @default(cuid())
   provider       String

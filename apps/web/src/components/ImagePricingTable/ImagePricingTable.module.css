@@ -1,0 +1,101 @@
+.root {
+  width: 100%;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border: 1px solid var(--pt-border);
+  border-radius: var(--radius);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table thead {
+  background: var(--pt-surface);
+}
+
+.table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 500;
+  color: var(--pt-text-secondary);
+  border-bottom: 1px solid var(--pt-border);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid var(--pt-border);
+  white-space: nowrap;
+}
+
+.table tbody tr:hover {
+  background: var(--pt-surface-hover);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.modelName {
+  font-weight: 500;
+}
+
+.price {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.resolution {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--pt-text-secondary);
+}
+
+.formats {
+  font-size: 0.8125rem;
+  color: var(--pt-text-secondary);
+}
+
+.date {
+  color: var(--pt-text-secondary);
+  font-size: 0.8125rem;
+}
+
+@media (max-width: 768px) {
+  .table th:nth-child(5),
+  .table td:nth-child(5),
+  .table th:nth-child(6),
+  .table td:nth-child(6),
+  .table th:nth-child(7),
+  .table td:nth-child(7) {
+    display: none;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem 0.625rem;
+    font-size: 0.8125rem;
+  }
+
+  .price {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .table th:nth-child(1),
+  .table td:nth-child(1) {
+    display: none;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.75rem;
+  }
+}

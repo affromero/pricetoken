@@ -111,3 +111,99 @@ def _parse_provider_summary(data: dict[str, Any]) -> ProviderSummary:
         cheapest_input_per_m_tok=data["cheapestInputPerMTok"],
         cheapest_output_per_m_tok=data["cheapestOutputPerMTok"],
     )
+
+
+# ---------------------------------------------------------------------------
+# Image pricing types
+# ---------------------------------------------------------------------------
+
+ImageQualityTier = Literal["standard", "hd", "ultra"]
+
+
+@dataclass(slots=True)
+class ImageModelPricing:
+    model_id: str
+    provider: str
+    display_name: str
+    price_per_image: float
+    price_per_megapixel: float | None
+    default_resolution: str
+    quality_tier: ImageQualityTier
+    max_resolution: str | None
+    supported_formats: list[str]
+    source: Source
+    status: ModelStatus | None
+    confidence: DataConfidence
+    last_updated: str | None
+    launch_date: str | None
+
+
+@dataclass(slots=True)
+class ImageCostEstimate:
+    model_id: str
+    image_count: int
+    price_per_image: float
+    total_cost: float
+
+
+@dataclass(slots=True)
+class ImagePriceHistoryPoint:
+    date: str
+    price_per_image: float
+
+
+@dataclass(slots=True)
+class ImageModelHistory:
+    model_id: str
+    provider: str
+    display_name: str
+    history: list[ImagePriceHistoryPoint]
+
+
+@dataclass(slots=True)
+class ImageProviderSummary:
+    id: str
+    display_name: str
+    model_count: int
+    cheapest_per_image: float
+
+
+def _parse_image_model_pricing(data: dict[str, Any]) -> ImageModelPricing:
+    return ImageModelPricing(
+        model_id=data["modelId"],
+        provider=data["provider"],
+        display_name=data["displayName"],
+        price_per_image=data["pricePerImage"],
+        price_per_megapixel=data.get("pricePerMegapixel"),
+        default_resolution=data["defaultResolution"],
+        quality_tier=data["qualityTier"],
+        max_resolution=data.get("maxResolution"),
+        supported_formats=data.get("supportedFormats", ["png"]),
+        source=data["source"],
+        status=data.get("status"),
+        confidence=data["confidence"],
+        last_updated=data.get("lastUpdated"),
+        launch_date=data.get("launchDate"),
+    )
+
+
+def _parse_image_history_point(data: dict[str, Any]) -> ImagePriceHistoryPoint:
+    return ImagePriceHistoryPoint(date=data["date"], price_per_image=data["pricePerImage"])
+
+
+def _parse_image_model_history(data: dict[str, Any]) -> ImageModelHistory:
+    return ImageModelHistory(
+        model_id=data["modelId"],
+        provider=data["provider"],
+        display_name=data["displayName"],
+        history=[_parse_image_history_point(p) for p in data["history"]],
+    )
+
+
+def _parse_image_provider_summary(data: dict[str, Any]) -> ImageProviderSummary:
+    return ImageProviderSummary(
+        id=data["id"],
+        display_name=data["displayName"],
+        model_count=data["modelCount"],
+        cheapest_per_image=data["cheapestPerImage"],
+    )
