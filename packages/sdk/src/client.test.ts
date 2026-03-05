@@ -38,7 +38,7 @@ describe('PriceTokenClient', () => {
     await authedClient.getPricing();
 
     expect(fetchSpy).toHaveBeenCalledWith(
-      'https://test.api/api/v1/pricing',
+      'https://test.api/api/v1/pricing/text',
       expect.objectContaining({
         headers: expect.objectContaining({
           Authorization: 'Bearer pt_test123',
@@ -63,7 +63,7 @@ describe('PriceTokenClient', () => {
     await client.getPricing({ provider: 'anthropic' });
 
     expect(fetchSpy).toHaveBeenCalledWith(
-      'https://test.api/api/v1/pricing?provider=anthropic',
+      'https://test.api/api/v1/pricing/text?provider=anthropic',
       expect.anything()
     );
   });
@@ -76,7 +76,7 @@ describe('PriceTokenClient', () => {
     await client.getModel('gpt-4.1');
 
     expect(fetchSpy).toHaveBeenCalledWith(
-      'https://test.api/api/v1/pricing/gpt-4.1',
+      'https://test.api/api/v1/pricing/text/gpt-4.1',
       expect.anything()
     );
   });
@@ -168,7 +168,7 @@ describe('PriceTokenClient', () => {
 
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     expect(fetchSpy).toHaveBeenCalledWith(
-      expect.stringContaining('/api/v1/pricing'),
+      expect.stringContaining('/api/v1/pricing/text'),
       expect.anything()
     );
   });

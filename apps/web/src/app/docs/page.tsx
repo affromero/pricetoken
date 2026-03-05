@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://pricetoken.ai/docs' },
 };
 
-const curlExample = `curl https://pricetoken.ai/api/v1/pricing`;
+const curlExample = `curl https://pricetoken.ai/api/v1/pricing/text`;
 
 const jsExample = `import { PriceTokenClient } from 'pricetoken';
 
@@ -22,21 +22,21 @@ console.log(pricing);`;
 
 const pythonExample = `import requests
 
-r = requests.get("https://pricetoken.ai/api/v1/pricing")
+r = requests.get("https://pricetoken.ai/api/v1/pricing/text")
 pricing = r.json()["data"]
 print(pricing)`;
 
 const launchDateCurlExample = `# Models launched in 2025 or later
-curl "https://pricetoken.ai/api/v1/pricing?after=2025-01-01"
+curl "https://pricetoken.ai/api/v1/pricing/text?after=2025-01-01"
 
 # Models launched before 2025
-curl "https://pricetoken.ai/api/v1/pricing?before=2025-01-01"
+curl "https://pricetoken.ai/api/v1/pricing/text?before=2025-01-01"
 
 # Models launched in H1 2025
-curl "https://pricetoken.ai/api/v1/pricing?after=2025-01-01&before=2025-07-01"
+curl "https://pricetoken.ai/api/v1/pricing/text?after=2025-01-01&before=2025-07-01"
 
 # Cheapest model launched since October 2025
-curl "https://pricetoken.ai/api/v1/pricing/cheapest?after=2025-10-01"`;
+curl "https://pricetoken.ai/api/v1/pricing/text/cheapest?after=2025-10-01"`;
 
 const launchDateJsExample = `import { PriceTokenClient } from 'pricetoken';
 
@@ -97,10 +97,10 @@ const cost = calculateModelCost(
 
 console.log(cost.totalCost); // $4.50`;
 
-const curlAuthExample = `curl https://pricetoken.ai/api/v1/pricing \\
+const curlAuthExample = `curl https://pricetoken.ai/api/v1/pricing/text \\
   -H "Authorization: Bearer pt_live_YOUR_KEY"`;
 
-const jsAuthExample = `const res = await fetch("https://pricetoken.ai/api/v1/pricing", {
+const jsAuthExample = `const res = await fetch("https://pricetoken.ai/api/v1/pricing/text", {
   headers: {
     "Authorization": "Bearer pt_live_YOUR_KEY",
   },
@@ -110,7 +110,7 @@ const data = await res.json();`;
 const pythonAuthExample = `import requests
 
 r = requests.get(
-    "https://pricetoken.ai/api/v1/pricing",
+    "https://pricetoken.ai/api/v1/pricing/text",
     headers={"Authorization": "Bearer pt_live_YOUR_KEY"},
 )
 pricing = r.json()["data"]`;
@@ -149,7 +149,7 @@ export default function DocsPage() {
           <p className={styles.text}>
             Every model includes a <code>launchDate</code> field (API GA date). Use the{' '}
             <code>after</code> and <code>before</code> query params on{' '}
-            <code>/pricing</code> and <code>/cheapest</code> to filter by date range.
+            <code>/pricing/text</code> and <code>/pricing/text/cheapest</code> to filter by date range.
           </p>
           <CodeBlock
             tabs={[
@@ -172,32 +172,32 @@ export default function DocsPage() {
                 <div className={styles.endpoints}>
                   <Endpoint
                     method="GET"
-                    path="/api/v1/pricing"
+                    path="/api/v1/pricing/text"
                     description="Current pricing for all models. Params: ?provider=anthropic&currency=EUR&after=2025-01-01&before=2025-12-31"
                   />
                   <Endpoint
                     method="GET"
-                    path="/api/v1/pricing/:modelId"
+                    path="/api/v1/pricing/text/:modelId"
                     description="Single model pricing and metadata. Param: ?currency=EUR"
                   />
                   <Endpoint
                     method="GET"
-                    path="/api/v1/pricing/history"
+                    path="/api/v1/pricing/text/history"
                     description="Historical pricing data. Params: ?days=30&modelId=x&provider=y"
                   />
                   <Endpoint
                     method="GET"
-                    path="/api/v1/pricing/providers"
+                    path="/api/v1/pricing/text/providers"
                     description="Provider list with model counts and cheapest prices."
                   />
                   <Endpoint
                     method="GET"
-                    path="/api/v1/pricing/compare"
+                    path="/api/v1/pricing/text/compare"
                     description="Side-by-side comparison. Params: ?models=a,b,c (max 10)&currency=EUR"
                   />
                   <Endpoint
                     method="GET"
-                    path="/api/v1/pricing/cheapest"
+                    path="/api/v1/pricing/text/cheapest"
                     description="Cheapest model overall or per provider. Params: ?provider=x&currency=EUR&after=2025-01-01&before=2025-12-31"
                   />
                   <Endpoint
@@ -206,9 +206,6 @@ export default function DocsPage() {
                     description="Supported currencies with exchange rates."
                   />
                 </div>
-                <p className={styles.textNote}>
-                  Also available at <code>/api/v1/pricing/text/...</code> — identical to the base <code>/api/v1/pricing/...</code> endpoints.
-                </p>
               </>
             }
             imageContent={

@@ -114,7 +114,7 @@ class PriceTokenClient:
         """Get current pricing for all models."""
         params = {"provider": provider, "currency": currency, "after": after, "before": before}
         qs = self._build_qs(params)
-        data: list[dict[str, Any]] = self._request(f"/api/v1/pricing{qs}")
+        data: list[dict[str, Any]] = self._request(f"/api/v1/pricing/text{qs}")
         return [_parse_model_pricing(m) for m in data]
 
     def get_model(
@@ -126,7 +126,7 @@ class PriceTokenClient:
         """Get pricing for a single model."""
         encoded = urllib.parse.quote(model_id, safe="")
         qs = self._build_qs({"currency": currency})
-        data: dict[str, Any] = self._request(f"/api/v1/pricing/{encoded}{qs}")
+        data: dict[str, Any] = self._request(f"/api/v1/pricing/text/{encoded}{qs}")
         return _parse_model_pricing(data)
 
     def get_history(
@@ -138,12 +138,12 @@ class PriceTokenClient:
     ) -> list[ModelHistory]:
         """Get price history."""
         qs = self._build_qs({"days": days, "modelId": model_id, "provider": provider})
-        data: list[dict[str, Any]] = self._request(f"/api/v1/pricing/history{qs}")
+        data: list[dict[str, Any]] = self._request(f"/api/v1/pricing/text/history{qs}")
         return [_parse_model_history(m) for m in data]
 
     def get_providers(self) -> list[ProviderSummary]:
         """Get provider list with stats."""
-        data: list[dict[str, Any]] = self._request("/api/v1/pricing/providers")
+        data: list[dict[str, Any]] = self._request("/api/v1/pricing/text/providers")
         return [_parse_provider_summary(p) for p in data]
 
     def compare(
@@ -154,7 +154,7 @@ class PriceTokenClient:
     ) -> list[ModelPricing]:
         """Compare models side by side."""
         qs = self._build_qs({"models": ",".join(model_ids), "currency": currency})
-        data: list[dict[str, Any]] = self._request(f"/api/v1/pricing/compare{qs}")
+        data: list[dict[str, Any]] = self._request(f"/api/v1/pricing/text/compare{qs}")
         return [_parse_model_pricing(m) for m in data]
 
     def get_cheapest(
@@ -168,7 +168,7 @@ class PriceTokenClient:
         """Get the cheapest model."""
         params = {"provider": provider, "currency": currency, "after": after, "before": before}
         qs = self._build_qs(params)
-        data: dict[str, Any] = self._request(f"/api/v1/pricing/cheapest{qs}")
+        data: dict[str, Any] = self._request(f"/api/v1/pricing/text/cheapest{qs}")
         return _parse_model_pricing(data)
 
     # Image pricing methods

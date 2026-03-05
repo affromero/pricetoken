@@ -30,7 +30,7 @@ export function PricingTable({ pricing: initialPricing }: PricingTableProps) {
       return;
     }
     try {
-      const res = await fetch(`/api/v1/pricing?currency=${code}`);
+      const res = await fetch(`/api/v1/pricing/text?currency=${code}`);
       if (res.ok) {
         const json = await res.json();
         setPricing(json.data);
