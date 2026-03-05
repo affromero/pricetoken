@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
-import { PriceHistoryChart } from '@/components/PriceHistoryChart/PriceHistoryChart';
-import { LaunchPriceChart } from '@/components/LaunchPriceChart/LaunchPriceChart';
+import { HistoryCharts } from './HistoryCharts';
 import { STATIC_PRICING } from 'pricetoken';
 import type { ModelHistory, ModelPricing } from 'pricetoken';
 import styles from './page.module.css';
@@ -57,17 +56,8 @@ export default async function HistoryPage() {
         <p className={styles.subtitle}>
           Track LLM pricing changes over time across all providers.
         </p>
-        <div className={styles.chart}>
-          <PriceHistoryChart history={history} />
-        </div>
 
-        <h2 className={styles.sectionTitle}>Launch Price Timeline</h2>
-        <p className={styles.subtitle}>
-          See how model pricing compares at launch across providers and time.
-        </p>
-        <div className={styles.chart}>
-          <LaunchPriceChart pricing={pricing} />
-        </div>
+        <HistoryCharts history={history} pricing={pricing} />
       </main>
       <Footer />
     </>
