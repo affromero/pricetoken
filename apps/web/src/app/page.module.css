@@ -106,16 +106,60 @@
   line-height: 1.5;
 }
 
-.videoLink {
-  display: inline-block;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: var(--pt-accent);
-  transition: color 0.15s;
+.modalities {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
 }
 
-.videoLink:hover {
-  color: var(--pt-accent-hover);
+.modalityCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 1.25rem 2rem;
+  border: 1px solid var(--pt-border);
+  border-radius: var(--radius);
+  background: var(--pt-surface);
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+  min-width: 120px;
+}
+
+.modalityCard:hover {
+  border-color: var(--pt-accent);
+  background: var(--pt-surface-hover);
+}
+
+.modalityActive {
+  border-color: var(--pt-accent);
+}
+
+.modalityIcon {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--pt-accent);
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--pt-accent) 12%, transparent);
+}
+
+.modalityLabel {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--pt-text);
+}
+
+.modalityMeta {
+  font-size: 0.75rem;
+  color: var(--pt-text-secondary);
+  font-family: var(--font-mono);
 }
 
 .features {

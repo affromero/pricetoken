@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
+import { ModalitySubNav } from '@/components/ModalitySubNav/ModalitySubNav';
 import { ImagePricingTable } from '@/components/ImagePricingTable/ImagePricingTable';
-import { ImageCostCalculator } from '@/components/ImageCostCalculator/ImageCostCalculator';
 import { STATIC_IMAGE_PRICING } from 'pricetoken';
 import styles from './page.module.css';
 
@@ -30,6 +30,7 @@ export default async function ImagePricingPage() {
     <>
       <Navigation />
       <main className={styles.root}>
+        <ModalitySubNav modality="image" />
         <section className={styles.hero}>
           <h1 className={styles.title}>
             Image Generation Pricing.
@@ -50,13 +51,6 @@ export default async function ImagePricingPage() {
           <ImagePricingTable data={pricing} />
         </section>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Cost Calculator</h2>
-          <p className={styles.sectionSubtitle}>
-            Estimate your image generation costs across providers.
-          </p>
-          <ImageCostCalculator models={pricing} />
-        </section>
       </main>
       <Footer />
     </>

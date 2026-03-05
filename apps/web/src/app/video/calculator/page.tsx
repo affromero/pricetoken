@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
+import { ModalitySubNav } from '@/components/ModalitySubNav/ModalitySubNav';
 import { VideoCostCalculator } from '@/components/VideoCostCalculator/VideoCostCalculator';
 import { STATIC_VIDEO_PRICING } from 'pricetoken';
 import styles from './page.module.css';
@@ -29,6 +30,7 @@ export default async function VideoCalculatorPage() {
     <>
       <Navigation />
       <main className={styles.root}>
+        <ModalitySubNav modality="video" />
         <h1 className={styles.title}>Video Cost Calculator</h1>
         <p className={styles.subtitle}>
           Estimate the cost of AI-generated video across providers.

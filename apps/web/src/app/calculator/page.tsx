@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
+import { ModalitySubNav } from '@/components/ModalitySubNav/ModalitySubNav';
 import { CostCalculator } from '@/components/CostCalculator/CostCalculator';
 import { STATIC_PRICING } from 'pricetoken';
 import styles from './page.module.css';
@@ -29,6 +30,7 @@ export default async function CalculatorPage() {
     <>
       <Navigation />
       <main className={styles.root}>
+        <ModalitySubNav modality="text" />
         <h1 className={styles.title}>Cost Calculator</h1>
         <p className={styles.subtitle}>
           Estimate the cost of your LLM API calls across providers.

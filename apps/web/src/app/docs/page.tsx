@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
 import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
+import { DocsModeSwitcher } from '@/components/DocsModeSwitcher/DocsModeSwitcher';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -161,133 +162,143 @@ export default function DocsPage() {
 
         <section className={styles.section}>
           <h2 className={styles.heading}>Endpoints</h2>
-          <div className={styles.endpoints}>
-            <Endpoint
-              method="GET"
-              path="/api/v1/pricing"
-              description="Current pricing for all models. Params: ?provider=anthropic&currency=EUR&after=2025-01-01&before=2025-12-31"
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/pricing/:modelId"
-              description="Single model pricing and metadata. Param: ?currency=EUR"
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/pricing/history"
-              description="Historical pricing data. Params: ?days=30&modelId=x&provider=y"
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/pricing/providers"
-              description="Provider list with model counts and cheapest prices."
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/pricing/compare"
-              description="Side-by-side comparison. Params: ?models=a,b,c (max 10)&currency=EUR"
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/pricing/cheapest"
-              description="Cheapest model overall or per provider. Params: ?provider=x&currency=EUR&after=2025-01-01&before=2025-12-31"
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/pricing/currencies"
-              description="Supported currencies with exchange rates."
-            />
-          </div>
-        </section>
-
-        <p className={styles.textNote}>
-          Text pricing is also available at <code>/api/v1/pricing/text/...</code> — identical to the base <code>/api/v1/pricing/...</code> endpoints.
-        </p>
-
-        <section className={styles.section}>
-          <h2 className={styles.heading}>Image Pricing Endpoints</h2>
-          <p className={styles.text}>
-            Separate endpoints for image generation model pricing. Image models use per-image pricing instead of per-token.
-          </p>
-          <div className={styles.endpoints}>
-            <Endpoint
-              method="GET"
-              path="/api/v1/pricing/image"
-              description="Current pricing for all image models. Params: ?provider=openai&currency=EUR"
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/pricing/image/:modelId"
-              description="Single image model pricing. Param: ?currency=EUR"
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/pricing/image/history"
-              description="Historical image pricing. Params: ?days=30&modelId=x&provider=y"
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/pricing/image/providers"
-              description="Image provider list with model counts and cheapest prices."
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/pricing/image/compare"
-              description="Side-by-side image model comparison. Params: ?models=a,b,c (max 10)&currency=EUR"
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/pricing/image/cheapest"
-              description="Cheapest image model overall or per provider. Params: ?provider=x&currency=EUR"
-            />
-          </div>
-        </section>
-
-        <section className={styles.section}>
-          <h2 className={styles.heading}>Video Pricing Endpoints</h2>
-          <p className={styles.text}>
-            Track video AI generation pricing (cost per minute) across Runway, Sora, Veo, Kling, and more.
-            Same response format as LLM endpoints, with <code>costPerMinute</code> instead of token pricing.
-          </p>
-          <CodeBlock
-            tabs={[
-              { label: 'curl', code: videoCurlExample },
-              { label: 'JavaScript', code: videoJsExample },
-              { label: 'Python', code: videoPyExample },
-            ]}
+          <DocsModeSwitcher
+            textContent={
+              <>
+                <p className={styles.text}>
+                  Token-based pricing for LLMs. Uses <code>inputPerMTok</code> and{' '}
+                  <code>outputPerMTok</code> (cost per million tokens).
+                </p>
+                <div className={styles.endpoints}>
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/pricing"
+                    description="Current pricing for all models. Params: ?provider=anthropic&currency=EUR&after=2025-01-01&before=2025-12-31"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/pricing/:modelId"
+                    description="Single model pricing and metadata. Param: ?currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/pricing/history"
+                    description="Historical pricing data. Params: ?days=30&modelId=x&provider=y"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/pricing/providers"
+                    description="Provider list with model counts and cheapest prices."
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/pricing/compare"
+                    description="Side-by-side comparison. Params: ?models=a,b,c (max 10)&currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/pricing/cheapest"
+                    description="Cheapest model overall or per provider. Params: ?provider=x&currency=EUR&after=2025-01-01&before=2025-12-31"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/pricing/currencies"
+                    description="Supported currencies with exchange rates."
+                  />
+                </div>
+                <p className={styles.textNote}>
+                  Also available at <code>/api/v1/pricing/text/...</code> — identical to the base <code>/api/v1/pricing/...</code> endpoints.
+                </p>
+              </>
+            }
+            imageContent={
+              <>
+                <p className={styles.text}>
+                  Per-image pricing for generation models. Uses <code>costPerImage</code> instead of
+                  per-token pricing.
+                </p>
+                <div className={styles.endpoints}>
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/pricing/image"
+                    description="Current pricing for all image models. Params: ?provider=openai&currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/pricing/image/:modelId"
+                    description="Single image model pricing. Param: ?currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/pricing/image/history"
+                    description="Historical image pricing. Params: ?days=30&modelId=x&provider=y"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/pricing/image/providers"
+                    description="Image provider list with model counts and cheapest prices."
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/pricing/image/compare"
+                    description="Side-by-side image model comparison. Params: ?models=a,b,c (max 10)&currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/pricing/image/cheapest"
+                    description="Cheapest image model overall or per provider. Params: ?provider=x&currency=EUR"
+                  />
+                </div>
+              </>
+            }
+            videoContent={
+              <>
+                <p className={styles.text}>
+                  Per-minute pricing for video generation across Runway, Sora, Veo, Kling, and more.
+                  Uses <code>costPerMinute</code> instead of token pricing.
+                </p>
+                <CodeBlock
+                  tabs={[
+                    { label: 'curl', code: videoCurlExample },
+                    { label: 'JavaScript', code: videoJsExample },
+                    { label: 'Python', code: videoPyExample },
+                  ]}
+                />
+                <div className={styles.endpoints}>
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/video"
+                    description="Current pricing for all video models. Params: ?provider=runway&currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/video/:modelId"
+                    description="Single video model pricing. Param: ?currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/video/history"
+                    description="Historical video pricing data. Params: ?days=30&modelId=x&provider=y"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/video/providers"
+                    description="Video provider list with model counts and cheapest prices."
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/video/compare"
+                    description="Side-by-side video model comparison. Params: ?models=a,b,c (max 10)&currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/video/cheapest"
+                    description="Cheapest video model overall or per provider. Params: ?provider=x&currency=EUR"
+                  />
+                </div>
+              </>
+            }
           />
-          <div className={styles.endpoints}>
-            <Endpoint
-              method="GET"
-              path="/api/v1/video"
-              description="Current pricing for all video models. Params: ?provider=runway&currency=EUR"
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/video/:modelId"
-              description="Single video model pricing. Param: ?currency=EUR"
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/video/history"
-              description="Historical video pricing data. Params: ?days=30&modelId=x&provider=y"
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/video/providers"
-              description="Video provider list with model counts and cheapest prices."
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/video/compare"
-              description="Side-by-side video model comparison. Params: ?models=a,b,c (max 10)&currency=EUR"
-            />
-            <Endpoint
-              method="GET"
-              path="/api/v1/video/cheapest"
-              description="Cheapest video model overall or per provider. Params: ?provider=x&currency=EUR"
-            />
-          </div>
         </section>
 
         <section className={styles.section}>
