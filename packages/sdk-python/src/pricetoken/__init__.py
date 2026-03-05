@@ -5,7 +5,7 @@ from importlib.metadata import PackageNotFoundError, version
 try:
     __version__ = version("pricetoken")
 except PackageNotFoundError:
-    __version__ = "0.3.0"
+    __version__ = "0.7.0"
 
 from pricetoken.client import PriceTokenClient
 from pricetoken.cost import calculate_cost, calculate_model_cost
