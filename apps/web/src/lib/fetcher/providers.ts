@@ -5,6 +5,18 @@ export interface ProviderConfig {
   requiresBrowser?: boolean;
 }
 
+export const VIDEO_PROVIDERS: Record<string, ProviderConfig> = {
+  runway: { url: 'https://runwayml.com/pricing', displayName: 'Runway', requiresBrowser: true },
+  sora: { url: 'https://openai.com/api/pricing/', displayName: 'Sora (OpenAI)', requiresBrowser: true },
+  veo: { url: 'https://ai.google.dev/gemini-api/docs/pricing', displayName: 'Google Veo' },
+  pika: { url: 'https://pika.art/pricing', displayName: 'Pika', requiresBrowser: true },
+  kling: { url: 'https://klingai.com/pricing', displayName: 'Kling', requiresBrowser: true },
+  luma: { url: 'https://lumalabs.ai/pricing', displayName: 'Luma', requiresBrowser: true },
+  minimax: { url: 'https://platform.minimax.io/docs/guides/pricing', displayName: 'MiniMax (Hailuo)', requiresBrowser: true },
+  seedance: { url: 'https://www.byteplus.com/en/product/seedance', displayName: 'Seedance (ByteDance)', requiresBrowser: true },
+  fal: { url: 'https://fal.ai/pricing', displayName: 'FAL', requiresBrowser: true },
+};
+
 export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
   openai: {
     url: 'https://developers.openai.com/api/docs/pricing',

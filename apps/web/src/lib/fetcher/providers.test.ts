@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { PRICING_PROVIDERS } from './providers';
+import { PRICING_PROVIDERS, VIDEO_PROVIDERS } from './providers';
 
 describe('PRICING_PROVIDERS', () => {
   it('exports configs for all 6 providers', () => {
@@ -81,5 +81,37 @@ describe('PRICING_PROVIDERS', () => {
 
   it('xai does not require browser scraping', () => {
     expect(PRICING_PROVIDERS.xai!.requiresBrowser).toBeUndefined();
+  });
+});
+
+describe('VIDEO_PROVIDERS', () => {
+  it('exports configs for all 9 video providers', () => {
+    expect(Object.keys(VIDEO_PROVIDERS)).toEqual(
+      expect.arrayContaining(['runway', 'sora', 'veo', 'pika', 'kling', 'luma', 'minimax', 'seedance', 'fal'])
+    );
+    expect(Object.keys(VIDEO_PROVIDERS)).toHaveLength(9);
+  });
+
+  it('all URLs are valid HTTPS URLs', () => {
+    for (const config of Object.values(VIDEO_PROVIDERS)) {
+      expect(config.url).toMatch(/^https:\/\//);
+    }
+  });
+
+  it('all providers have display names', () => {
+    for (const config of Object.values(VIDEO_PROVIDERS)) {
+      expect(config.displayName.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('veo does not require browser scraping', () => {
+    expect(VIDEO_PROVIDERS.veo!.requiresBrowser).toBeUndefined();
+  });
+
+  it('most video providers require browser scraping', () => {
+    const browserProviders = ['runway', 'sora', 'pika', 'kling', 'luma', 'minimax', 'seedance', 'fal'];
+    for (const id of browserProviders) {
+      expect(VIDEO_PROVIDERS[id]!.requiresBrowser).toBe(true);
+    }
   });
 });
