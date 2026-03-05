@@ -79,8 +79,8 @@ describe('PRICING_PROVIDERS', () => {
     expect(PRICING_PROVIDERS.mistral!.requiresBrowser).toBe(true);
   });
 
-  it('xai does not require browser scraping', () => {
-    expect(PRICING_PROVIDERS.xai!.requiresBrowser).toBeUndefined();
+  it('xai requires browser scraping', () => {
+    expect(PRICING_PROVIDERS.xai!.requiresBrowser).toBe(true);
   });
 });
 

@@ -1,4 +1,4 @@
-const MAX_TEXT_LENGTH = 8_000;
+const MAX_TEXT_LENGTH = 15_000;
 
 export async function fetchPricingPage(url: string): Promise<string> {
   const res = await fetch(url, {
@@ -24,7 +24,7 @@ export async function fetchPricingPageWithBrowser(url: string): Promise<string> 
   try {
     const page = await browser.newPage();
     await page.setUserAgent('PriceToken/1.0 (https://pricetoken.ai)');
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: 30_000 });
+    await page.goto(url, { waitUntil: 'networkidle2', timeout: 60_000 });
     await new Promise((r) => setTimeout(r, 2_000));
     const html = await page.content();
     return stripHtml(html);
