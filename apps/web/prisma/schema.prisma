@@ -114,6 +114,25 @@ model ApiUsageLog {
   @@index([provider, createdAt])
 }
 
+model VideoPricingSnapshot {
+  id            String   @id @default(cuid())
+  modelId       String
+  provider      String
+  displayName   String   @default("")
+  costPerMinute Float
+  resolution    String?
+  maxDuration   Int?
+  qualityMode   String?
+  source        String   @default("fetched")
+  status        String?
+  confidence    String   @default("high")
+  launchDate    DateTime?
+  createdAt     DateTime @default(now())
+
+  @@index([modelId, createdAt])
+  @@index([createdAt])
+}
+
 model SdkTelemetryPing {
   id        String   @id @default(cuid())
   sdk       String   // "js" | "python"

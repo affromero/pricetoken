@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
 import { PricingTable } from '@/components/PricingTable/PricingTable';
@@ -78,6 +79,17 @@ export default async function HomePage() {
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>How We Get Our Data</h2>
           <DataSources />
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Video AI Pricing</h2>
+          <p className={styles.sectionSubtitle}>
+            Now tracking video generation APIs too — Runway, Sora, Veo, Kling, and more.
+            Cost per minute, updated daily.
+          </p>
+          <Link href="/video" className={styles.videoLink}>
+            Browse video pricing →
+          </Link>
         </section>
 
         <section className={styles.features}>

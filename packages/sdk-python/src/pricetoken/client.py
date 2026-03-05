@@ -21,12 +21,18 @@ from pricetoken.types import (
     ModelPricing,
     PriceTokenError,
     ProviderSummary,
+    VideoModelHistory,
+    VideoModelPricing,
+    VideoProviderSummary,
     _parse_image_model_history,
     _parse_image_model_pricing,
     _parse_image_provider_summary,
     _parse_model_history,
     _parse_model_pricing,
     _parse_provider_summary,
+    _parse_video_model_history,
+    _parse_video_model_pricing,
+    _parse_video_provider_summary,
 )
 
 
@@ -234,3 +240,73 @@ class PriceTokenClient:
         qs = self._build_qs(params)
         data: dict[str, Any] = self._request(f"/api/v1/pricing/image/cheapest{qs}")
         return _parse_image_model_pricing(data)
+
+    # Video pricing methods
+
+    def get_video_pricing(
+        self,
+        *,
+        provider: str | None = None,
+        currency: str | None = None,
+        after: str | None = None,
+        before: str | None = None,
+    ) -> list[VideoModelPricing]:
+        """Get current pricing for all video models."""
+        params = {"provider": provider, "currency": currency, "after": after, "before": before}
+        qs = self._build_qs(params)
+        data: list[dict[str, Any]] = self._request(f"/api/v1/video{qs}")
+        return [_parse_video_model_pricing(m) for m in data]
+
+    def get_video_model(
+        self,
+        model_id: str,
+        *,
+        currency: str | None = None,
+    ) -> VideoModelPricing:
+        """Get pricing for a single video model."""
+        encoded = urllib.parse.quote(model_id, safe="")
+        qs = self._build_qs({"currency": currency})
+        data: dict[str, Any] = self._request(f"/api/v1/video/{encoded}{qs}")
+        return _parse_video_model_pricing(data)
+
+    def get_video_history(
+        self,
+        *,
+        days: int | None = None,
+        model_id: str | None = None,
+        provider: str | None = None,
+    ) -> list[VideoModelHistory]:
+        """Get video price history."""
+        qs = self._build_qs({"days": days, "modelId": model_id, "provider": provider})
+        data: list[dict[str, Any]] = self._request(f"/api/v1/video/history{qs}")
+        return [_parse_video_model_history(m) for m in data]
+
+    def get_video_providers(self) -> list[VideoProviderSummary]:
+        """Get video provider list with stats."""
+        data: list[dict[str, Any]] = self._request("/api/v1/video/providers")
+        return [_parse_video_provider_summary(p) for p in data]
+
+    def compare_video_models(
+        self,
+        model_ids: list[str],
+        *,
+        currency: str | None = None,
+    ) -> list[VideoModelPricing]:
+        """Compare video models side by side."""
+        qs = self._build_qs({"models": ",".join(model_ids), "currency": currency})
+        data: list[dict[str, Any]] = self._request(f"/api/v1/video/compare{qs}")
+        return [_parse_video_model_pricing(m) for m in data]
+
+    def get_cheapest_video_model(
+        self,
+        *,
+        provider: str | None = None,
+        currency: str | None = None,
+        after: str | None = None,
+        before: str | None = None,
+    ) -> VideoModelPricing:
+        """Get the cheapest video model."""
+        params = {"provider": provider, "currency": currency, "after": after, "before": before}
+        qs = self._build_qs(params)
+        data: dict[str, Any] = self._request(f"/api/v1/video/cheapest{qs}")
+        return _parse_video_model_pricing(data)

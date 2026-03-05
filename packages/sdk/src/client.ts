@@ -7,9 +7,12 @@ import type {
   ImageProviderSummary,
   PriceTokenResponse,
   PriceTokenError,
+  VideoModelPricing,
+  VideoModelHistory,
+  VideoProviderSummary,
 } from './types';
 
-const SDK_VERSION = '0.7.0';
+const SDK_VERSION = '0.8.0';
 
 export interface ClientOptions {
   baseUrl?: string;
@@ -170,5 +173,53 @@ export class PriceTokenClient {
     if (opts?.before) params.set('before', opts.before);
     const qs = params.toString();
     return this.request<ImageModelPricing>(`/api/v1/pricing/image/cheapest${qs ? `?${qs}` : ''}`);
+  }
+
+  // Video pricing methods
+
+  async getVideoPricing(opts?: { provider?: string; currency?: string; after?: string; before?: string }): Promise<VideoModelPricing[]> {
+    const params = new URLSearchParams();
+    if (opts?.provider) params.set('provider', opts.provider);
+    if (opts?.currency) params.set('currency', opts.currency);
+    if (opts?.after) params.set('after', opts.after);
+    if (opts?.before) params.set('before', opts.before);
+    const qs = params.toString();
+    return this.request<VideoModelPricing[]>(`/api/v1/video${qs ? `?${qs}` : ''}`);
+  }
+
+  async getVideoModel(modelId: string, opts?: { currency?: string }): Promise<VideoModelPricing> {
+    const params = new URLSearchParams();
+    if (opts?.currency) params.set('currency', opts.currency);
+    const qs = params.toString();
+    return this.request<VideoModelPricing>(`/api/v1/video/${encodeURIComponent(modelId)}${qs ? `?${qs}` : ''}`);
+  }
+
+  async getVideoHistory(opts?: { days?: number; modelId?: string; provider?: string }): Promise<VideoModelHistory[]> {
+    const params = new URLSearchParams();
+    if (opts?.days) params.set('days', String(opts.days));
+    if (opts?.modelId) params.set('modelId', opts.modelId);
+    if (opts?.provider) params.set('provider', opts.provider);
+    const qs = params.toString();
+    return this.request<VideoModelHistory[]>(`/api/v1/video/history${qs ? `?${qs}` : ''}`);
+  }
+
+  async getVideoProviders(): Promise<VideoProviderSummary[]> {
+    return this.request<VideoProviderSummary[]>('/api/v1/video/providers');
+  }
+
+  async compareVideoModels(modelIds: string[], opts?: { currency?: string }): Promise<VideoModelPricing[]> {
+    const params = new URLSearchParams({ models: modelIds.join(',') });
+    if (opts?.currency) params.set('currency', opts.currency);
+    return this.request<VideoModelPricing[]>(`/api/v1/video/compare?${params}`);
+  }
+
+  async getCheapestVideoModel(opts?: { provider?: string; currency?: string; after?: string; before?: string }): Promise<VideoModelPricing> {
+    const params = new URLSearchParams();
+    if (opts?.provider) params.set('provider', opts.provider);
+    if (opts?.currency) params.set('currency', opts.currency);
+    if (opts?.after) params.set('after', opts.after);
+    if (opts?.before) params.set('before', opts.before);
+    const qs = params.toString();
+    return this.request<VideoModelPricing>(`/api/v1/video/cheapest${qs ? `?${qs}` : ''}`);
   }
 }

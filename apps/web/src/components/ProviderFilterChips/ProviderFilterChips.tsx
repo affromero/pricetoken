@@ -27,6 +27,14 @@ export const PROVIDER_COLORS: Record<string, string> = {
   bytedance: 'var(--pt-provider-bytedance)',
   fal: 'var(--pt-provider-fal)',
   ideogram: 'var(--pt-provider-ideogram)',
+  runway: 'var(--pt-provider-runway)',
+  sora: 'var(--pt-provider-sora)',
+  veo: 'var(--pt-provider-veo)',
+  pika: 'var(--pt-provider-pika)',
+  kling: 'var(--pt-provider-kling)',
+  luma: 'var(--pt-provider-luma)',
+  minimax: 'var(--pt-provider-minimax)',
+  seedance: 'var(--pt-provider-seedance)',
 };
 
 export function ProviderFilterChips({ providers, selected, onSelect, displayNames }: ProviderFilterChipsProps) {

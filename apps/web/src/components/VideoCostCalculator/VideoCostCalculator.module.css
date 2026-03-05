@@ -1,0 +1,211 @@
+.root {
+  width: 100%;
+  max-width: 720px;
+}
+
+/* ── Hero slider ── */
+.hero {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.heroLabel {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.heroAccent {
+  color: var(--pt-accent);
+}
+
+.slider {
+  width: 100%;
+  height: 6px;
+  accent-color: var(--pt-accent);
+  cursor: pointer;
+}
+
+.sliderLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  color: var(--pt-text-secondary);
+  margin-top: 0.25rem;
+}
+
+/* ── Controls ── */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.controlsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.resolutionFilter {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.toggle {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.625rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--pt-border);
+  background: transparent;
+  color: var(--pt-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.toggle:hover {
+  border-color: var(--pt-text-secondary);
+}
+
+.toggleActive {
+  background: var(--pt-surface);
+  border-color: var(--pt-accent);
+  color: var(--pt-text);
+}
+
+/* ── Model list ── */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modelRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 100px;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--pt-border);
+  border-radius: var(--radius);
+  background: var(--pt-surface);
+}
+
+.modelInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.rank {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--pt-text-secondary);
+  min-width: 1.5rem;
+}
+
+.providerDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.modelName {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modelMeta {
+  font-size: 0.6875rem;
+  color: var(--pt-text-secondary);
+  flex-shrink: 0;
+}
+
+.modelBar {
+  height: 20px;
+  background: rgba(var(--pt-bg-rgb), 0.5);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: var(--pt-accent);
+  border-radius: 4px;
+  min-width: 2px;
+  transition: width 0.2s ease;
+}
+
+.modelCost {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.costValue {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--pt-accent);
+}
+
+.costMultiplier {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--pt-text-secondary);
+}
+
+/* ── Disclaimer ── */
+.disclaimer {
+  margin-top: 1.25rem;
+  font-size: 0.6875rem;
+  color: var(--pt-text-secondary);
+  opacity: 0.6;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .modelRow {
+    grid-template-columns: 1fr 60px;
+    gap: 0.375rem;
+  }
+
+  .modelBar {
+    display: none;
+  }
+
+  .heroLabel {
+    font-size: 1.125rem;
+  }
+
+  .controlsRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .modelRow {
+    padding: 0.375rem 0.5rem;
+  }
+
+  .modelName {
+    font-size: 0.75rem;
+  }
+
+  .costValue {
+    font-size: 0.75rem;
+  }
+}

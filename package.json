@@ -14,8 +14,10 @@
     "ci:python": "cd packages/sdk-python && uv run ruff check && uv run ruff format --check && uv run mypy src && uv run pytest",
     "ci": "npm run lint && npm run typecheck && npm run test && npm run build && npm run ci:python",
     "seed": "doppler run -- npx tsx scripts/seed.ts",
+    "seed-video": "doppler run -- npx tsx scripts/seed-video.ts",
     "fetch-pricing": "doppler run -- npx tsx scripts/fetch-pricing.ts",
     "fetch-image-pricing": "doppler run -- npx tsx scripts/fetch-image-pricing.ts",
+    "fetch-video-pricing": "doppler run -- npx tsx scripts/fetch-video-pricing.ts",
     "setup-dns": "doppler run -- npx tsx scripts/setup-dns.ts"
   },
   "devDependencies": {

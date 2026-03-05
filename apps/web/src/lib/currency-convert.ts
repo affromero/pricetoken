@@ -1,4 +1,4 @@
-import type { ModelPricing, ImageModelPricing } from 'pricetoken';
+import type { ModelPricing, ImageModelPricing, VideoModelPricing } from 'pricetoken';
 import { getExchangeRates, isSupportedCurrency } from '@/lib/currency';
 
 export interface CurrencyInfo {
@@ -58,5 +58,23 @@ export function convertImagePricing<T extends ImageModelPricing | ImageModelPric
     ...model,
     pricePerImage: model.pricePerImage * rate,
     pricePerMegapixel: model.pricePerMegapixel ? model.pricePerMegapixel * rate : null,
+  } as T;
+}
+
+export function convertVideoPricing<T extends VideoModelPricing | VideoModelPricing[]>(
+  data: T,
+  rate: number
+): T {
+  if (Array.isArray(data)) {
+    return data.map((m) => ({
+      ...m,
+      costPerMinute: m.costPerMinute * rate,
+    })) as T;
+  }
+
+  const model = data as VideoModelPricing;
+  return {
+    ...model,
+    costPerMinute: model.costPerMinute * rate,
   } as T;
 }

@@ -209,6 +209,87 @@ describe('PriceTokenClient', () => {
     expect(telemetryCalls).toHaveLength(1);
   });
 
+  it('getVideoPricing returns video model array', async () => {
+    const mockData = [{ modelId: 'runway-gen4-720p', provider: 'runway', costPerMinute: 7.2 }];
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(mockResponse(mockData) as Response);
+
+    const result = await client.getVideoPricing();
+    expect(result).toEqual(mockData);
+  });
+
+  it('getVideoModel fetches single video model', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse({ modelId: 'runway-gen4-720p' }) as Response
+    );
+
+    await client.getVideoModel('runway-gen4-720p');
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/video/runway-gen4-720p',
+      expect.anything()
+    );
+  });
+
+  it('getVideoHistory passes query params', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getVideoHistory({ days: 30, provider: 'runway' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('days=30'),
+      expect.anything()
+    );
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('provider=runway'),
+      expect.anything()
+    );
+  });
+
+  it('getVideoProviders fetches video provider list', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getVideoProviders();
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/video/providers',
+      expect.anything()
+    );
+  });
+
+  it('compareVideoModels sends model IDs', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.compareVideoModels(['runway-gen4-720p', 'kling-3.0-4k']);
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('models=runway-gen4-720p%2Ckling-3.0-4k'),
+      expect.anything()
+    );
+  });
+
+  it('getCheapestVideoModel fetches cheapest video model', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse({}) as Response
+    );
+
+    await client.getCheapestVideoModel({ provider: 'runway' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('/api/v1/video/cheapest'),
+      expect.anything()
+    );
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('provider=runway'),
+      expect.anything()
+    );
+  });
+
   it('does not throw when telemetry fetch fails', async () => {
     const telemetryClient = new PriceTokenClient({
       baseUrl: 'https://test.api',

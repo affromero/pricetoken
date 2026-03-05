@@ -57,6 +57,35 @@ recent = client.get_pricing(after="2025-01-01")
 # Cheapest model launched since October 2025
 cheapest = client.get_cheapest(after="2025-10-01")`;
 
+const videoCurlExample = `# All video models
+curl https://pricetoken.ai/api/v1/video
+
+# Single video model
+curl https://pricetoken.ai/api/v1/video/runway-gen4-720p
+
+# Cheapest video model
+curl https://pricetoken.ai/api/v1/video/cheapest?provider=runway`;
+
+const videoJsExample = `import { PriceTokenClient, calculateVideoCost } from 'pricetoken';
+
+const client = new PriceTokenClient();
+const models = await client.getVideoPricing();
+const cheapest = await client.getCheapestVideoModel();
+
+// Offline cost calculation
+const cost = calculateVideoCost('runway-gen4-720p', 7.2, 30);
+console.log(cost.totalCost); // $3.60 for 30 seconds`;
+
+const videoPyExample = `from pricetoken import PriceTokenClient, calculate_video_cost
+
+client = PriceTokenClient()
+models = client.get_video_pricing()
+cheapest = client.get_cheapest_video_model()
+
+# Offline cost calculation
+cost = calculate_video_cost("runway-gen4-720p", 7.2, 30)
+print(cost.total_cost)  # 3.6 for 30 seconds`;
+
 const costExample = `import { calculateModelCost } from 'pricetoken';
 
 const cost = calculateModelCost(
@@ -210,6 +239,53 @@ export default function DocsPage() {
               method="GET"
               path="/api/v1/pricing/image/cheapest"
               description="Cheapest image model overall or per provider. Params: ?provider=x&currency=EUR"
+            />
+          </div>
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.heading}>Video Pricing Endpoints</h2>
+          <p className={styles.text}>
+            Track video AI generation pricing (cost per minute) across Runway, Sora, Veo, Kling, and more.
+            Same response format as LLM endpoints, with <code>costPerMinute</code> instead of token pricing.
+          </p>
+          <CodeBlock
+            tabs={[
+              { label: 'curl', code: videoCurlExample },
+              { label: 'JavaScript', code: videoJsExample },
+              { label: 'Python', code: videoPyExample },
+            ]}
+          />
+          <div className={styles.endpoints}>
+            <Endpoint
+              method="GET"
+              path="/api/v1/video"
+              description="Current pricing for all video models. Params: ?provider=runway&currency=EUR"
+            />
+            <Endpoint
+              method="GET"
+              path="/api/v1/video/:modelId"
+              description="Single video model pricing. Param: ?currency=EUR"
+            />
+            <Endpoint
+              method="GET"
+              path="/api/v1/video/history"
+              description="Historical video pricing data. Params: ?days=30&modelId=x&provider=y"
+            />
+            <Endpoint
+              method="GET"
+              path="/api/v1/video/providers"
+              description="Video provider list with model counts and cheapest prices."
+            />
+            <Endpoint
+              method="GET"
+              path="/api/v1/video/compare"
+              description="Side-by-side video model comparison. Params: ?models=a,b,c (max 10)&currency=EUR"
+            />
+            <Endpoint
+              method="GET"
+              path="/api/v1/video/cheapest"
+              description="Cheapest video model overall or per provider. Params: ?provider=x&currency=EUR"
             />
           </div>
         </section>
