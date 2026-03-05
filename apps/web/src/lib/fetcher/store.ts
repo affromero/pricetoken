@@ -189,6 +189,69 @@ export async function seedFromStatic(): Promise<number> {
   return created;
 }
 
+export async function carryForwardMissing(): Promise<number> {
+  const today = new Date().toISOString().split('T')[0]!;
+  const startOfDay = new Date(today + 'T00:00:00Z');
+
+  // All distinct models ever recorded
+  const allModels = await prisma.modelPricingSnapshot.findMany({
+    distinct: ['modelId'],
+    select: { modelId: true },
+  });
+
+  // Models that already have a snapshot today
+  const todayModels = await prisma.modelPricingSnapshot.findMany({
+    where: { createdAt: { gte: startOfDay } },
+    distinct: ['modelId'],
+    select: { modelId: true },
+  });
+  const todayIds = new Set(todayModels.map((m) => m.modelId));
+
+  const missing = allModels.map((m) => m.modelId).filter((id) => !todayIds.has(id));
+  if (missing.length === 0) return 0;
+
+  // For each missing model, copy its latest snapshot
+  const data: Array<{
+    modelId: string;
+    provider: string;
+    displayName: string;
+    inputPerMTok: number;
+    outputPerMTok: number;
+    contextWindow: number | null;
+    maxOutputTokens: number | null;
+    source: string;
+    status: string | null;
+    confidence: string;
+    launchDate: Date | null;
+  }> = [];
+
+  for (const modelId of missing) {
+    const latest = await prisma.modelPricingSnapshot.findFirst({
+      where: { modelId },
+      orderBy: { createdAt: 'desc' },
+    });
+    if (latest) {
+      data.push({
+        modelId: latest.modelId,
+        provider: latest.provider,
+        displayName: latest.displayName,
+        inputPerMTok: latest.inputPerMTok,
+        outputPerMTok: latest.outputPerMTok,
+        contextWindow: latest.contextWindow,
+        maxOutputTokens: latest.maxOutputTokens,
+        source: 'carried',
+        status: latest.status,
+        confidence: latest.confidence,
+        launchDate: latest.launchDate,
+      });
+    }
+  }
+
+  if (data.length === 0) return 0;
+  const result = await prisma.modelPricingSnapshot.createMany({ data });
+  return result.count;
+}
+
 export async function getLastFetchRun(provider: string) {
   return prisma.fetchRunLog.findFirst({
     where: { provider },

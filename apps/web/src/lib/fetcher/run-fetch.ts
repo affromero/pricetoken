@@ -6,6 +6,7 @@ import {
   seedFromStatic,
   getLastFetchRun,
   saveFetchRun,
+  carryForwardMissing,
   type FetchWarning,
 } from './store';
 import { fetchFallbackPricing } from './fallback';
@@ -117,8 +118,14 @@ export async function runPricingFetch(): Promise<FetchResult> {
     }
   }
 
+  // Carry forward last known price for any model missing today's snapshot
+  const carried = await carryForwardMissing();
+  if (carried > 0) {
+    console.log(`Carried forward ${carried} models with no new data today`);
+  }
+
   console.log(
-    `Pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${errors.length} errors, ${warnings.length} warnings`
+    `Pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried, ${errors.length} errors, ${warnings.length} warnings`
   );
   return { totalModels, totalFlagged, errors, warnings, verificationResults };
 }
