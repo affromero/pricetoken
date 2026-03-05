@@ -140,7 +140,7 @@ export const EXTRACTION_PROVIDERS: Record<string, ProviderConfig> = {
       const fullPrompt = `${systemPrompt}\n\n${userPrompt}`;
 
       const result = await new Promise<string>((resolve, reject) => {
-        const proc = spawn('claude', ['--print', '--model', model, '--max-tokens', '4096'], {
+        const proc = spawn('claude', ['--print', '--model', model], {
           timeout: 120_000,
         });
 
