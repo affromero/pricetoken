@@ -9,11 +9,11 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
 } from 'recharts';
 import type { ModelHistory } from 'pricetoken';
 import { ProviderFilterChips } from '@/components/ProviderFilterChips/ProviderFilterChips';
 import { CurrencySelector } from '@/components/CurrencySelector/CurrencySelector';
+import { ChartContainer } from '@/components/ChartContainer/ChartContainer';
 import { useIsMobile } from '@/lib/useIsMobile';
 import styles from './PriceHistoryChart.module.css';
 
@@ -167,57 +167,59 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
         </div>
       </div>
 
-      <ResponsiveContainer width="100%" height={mobile ? 280 : 400}>
-        <LineChart data={chartData} margin={mobile ? { top: 5, right: 10, bottom: 5, left: 0 } : { top: 5, right: 20, bottom: 5, left: 10 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--pt-border)" />
-          <XAxis
-            dataKey="date"
-            stroke="var(--pt-text-secondary)"
-            tick={{ fontSize: mobile ? 10 : 12 }}
-            tickFormatter={mobile ? formatShortDate : undefined}
-            interval={mobile ? 'preserveStartEnd' : undefined}
-          />
-          <YAxis
-            stroke="var(--pt-text-secondary)"
-            tick={{ fontSize: mobile ? 10 : 12 }}
-            width={mobile ? 40 : undefined}
-            tickCount={mobile ? 5 : undefined}
-            tickFormatter={(v: number) =>
-              mobile
-                ? `${currencySymbol}${v < 1 ? v.toFixed(1) : Math.round(v)}`
-                : `${currencySymbol}${v.toFixed(3)}`
-            }
-          />
-          <Tooltip
-            shared={false}
-            contentStyle={{
-              background: 'var(--pt-surface)',
-              border: '1px solid var(--pt-border)',
-              borderRadius: 'var(--radius)',
-              fontSize: '0.8125rem',
-            }}
-            labelStyle={{ color: 'var(--pt-text)' }}
-            formatter={(value: number, name: string) => [`${currencySymbol}${value.toFixed(2)}/MTok`, name]}
-          />
-          {filteredHistory.length <= 10 && (
-            <Legend
-              wrapperStyle={mobile ? { fontSize: '0.6875rem' } : undefined}
+      <ChartContainer mobile={mobile}>
+        {(width) => (
+          <LineChart width={width} height={mobile ? 280 : 400} data={chartData} margin={mobile ? { top: 5, right: 10, bottom: 5, left: 0 } : { top: 5, right: 20, bottom: 5, left: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--pt-border)" />
+            <XAxis
+              dataKey="date"
+              stroke="var(--pt-text-secondary)"
+              tick={{ fontSize: mobile ? 10 : 12 }}
+              tickFormatter={mobile ? formatShortDate : undefined}
+              interval={mobile ? 'preserveStartEnd' : undefined}
             />
-          )}
-          {filteredHistory.map((model, i) => (
-            <Line
-              key={model.modelId}
-              type="monotone"
-              dataKey={model.modelId}
-              name={mobile ? truncateName(model.displayName, 15) : model.displayName}
-              stroke={MODEL_COLORS[i % MODEL_COLORS.length]}
-              strokeWidth={2}
-              dot={chartData.length <= 2 ? { r: 4 } : false}
-              connectNulls
+            <YAxis
+              stroke="var(--pt-text-secondary)"
+              tick={{ fontSize: mobile ? 10 : 12 }}
+              width={mobile ? 40 : undefined}
+              tickCount={mobile ? 5 : undefined}
+              tickFormatter={(v: number) =>
+                mobile
+                  ? `${currencySymbol}${v < 1 ? v.toFixed(1) : Math.round(v)}`
+                  : `${currencySymbol}${v.toFixed(3)}`
+              }
             />
-          ))}
-        </LineChart>
-      </ResponsiveContainer>
+            <Tooltip
+              shared={false}
+              contentStyle={{
+                background: 'var(--pt-surface)',
+                border: '1px solid var(--pt-border)',
+                borderRadius: 'var(--radius)',
+                fontSize: '0.8125rem',
+              }}
+              labelStyle={{ color: 'var(--pt-text)' }}
+              formatter={(value: number, name: string) => [`${currencySymbol}${value.toFixed(2)}/MTok`, name]}
+            />
+            {filteredHistory.length <= 10 && (
+              <Legend
+                wrapperStyle={mobile ? { fontSize: '0.6875rem' } : undefined}
+              />
+            )}
+            {filteredHistory.map((model, i) => (
+              <Line
+                key={model.modelId}
+                type="monotone"
+                dataKey={model.modelId}
+                name={mobile ? truncateName(model.displayName, 15) : model.displayName}
+                stroke={MODEL_COLORS[i % MODEL_COLORS.length]}
+                strokeWidth={2}
+                dot={chartData.length <= 2 ? { r: 4 } : false}
+                connectNulls
+              />
+            ))}
+          </LineChart>
+        )}
+      </ChartContainer>
     </div>
   );
 }

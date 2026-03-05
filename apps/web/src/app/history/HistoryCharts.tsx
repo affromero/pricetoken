@@ -1,17 +1,9 @@
 'use client';
 
-import dynamic from 'next/dynamic';
+import { PriceHistoryChart } from '@/components/PriceHistoryChart/PriceHistoryChart';
+import { LaunchPriceChart } from '@/components/LaunchPriceChart/LaunchPriceChart';
 import type { ModelHistory, ModelPricing } from 'pricetoken';
 import styles from './page.module.css';
-
-const PriceHistoryChart = dynamic(
-  () => import('@/components/PriceHistoryChart/PriceHistoryChart').then((m) => m.PriceHistoryChart),
-  { ssr: false }
-);
-const LaunchPriceChart = dynamic(
-  () => import('@/components/LaunchPriceChart/LaunchPriceChart').then((m) => m.LaunchPriceChart),
-  { ssr: false }
-);
 
 interface HistoryChartsProps {
   history: ModelHistory[];

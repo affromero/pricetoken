@@ -8,11 +8,11 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
 } from 'recharts';
 import type { ModelPricing } from 'pricetoken';
 import { ProviderFilterChips, PROVIDER_COLORS } from '@/components/ProviderFilterChips/ProviderFilterChips';
+import { ChartContainer } from '@/components/ChartContainer/ChartContainer';
 import { useIsMobile } from '@/lib/useIsMobile';
 import styles from './LaunchPriceChart.module.css';
 
@@ -121,64 +121,66 @@ export function LaunchPriceChart({ pricing }: LaunchPriceChartProps) {
         </div>
       </div>
 
-      <ResponsiveContainer width="100%" height={mobile ? 280 : 400}>
-        <ScatterChart margin={mobile ? { top: 5, right: 10, bottom: 5, left: 0 } : { top: 5, right: 20, bottom: 5, left: 10 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--pt-border)" />
-          <XAxis
-            dataKey="x"
-            type="number"
-            domain={['dataMin', 'dataMax']}
-            tickFormatter={formatDateTick}
-            stroke="var(--pt-text-secondary)"
-            tick={{ fontSize: mobile ? 10 : 12 }}
-            interval={mobile ? 'preserveStartEnd' : undefined}
-            name="Launch Date"
-          />
-          <YAxis
-            dataKey="y"
-            type="number"
-            scale={logScale ? 'log' : 'auto'}
-            domain={logScale ? ['auto', 'auto'] : [0, 'auto']}
-            stroke="var(--pt-text-secondary)"
-            tick={{ fontSize: mobile ? 10 : 12 }}
-            width={mobile ? 40 : undefined}
-            tickCount={mobile ? 5 : undefined}
-            tickFormatter={(v: number) =>
-              mobile
-                ? v >= 1 ? `$${Math.round(v)}` : `$${v.toFixed(1)}`
-                : `$${v}`
-            }
-            name="Price/MTok"
-          />
-          <Tooltip
-            content={({ payload }) => {
-              if (!payload?.[0]) return null;
-              const p = payload[0].payload as ScatterPoint;
-              return (
-                <div className={styles.tooltip}>
-                  <strong>{p.displayName}</strong>
-                  <div>{p.provider}</div>
-                  <div>{p.launchDate}</div>
-                  <div>${p.price.toFixed(2)}/MTok</div>
-                </div>
-              );
-            }}
-          />
-          {seriesByProvider.size <= 10 && (
-            <Legend
-              wrapperStyle={mobile ? { fontSize: '0.6875rem' } : undefined}
+      <ChartContainer mobile={mobile}>
+        {(width) => (
+          <ScatterChart width={width} height={mobile ? 280 : 400} margin={mobile ? { top: 5, right: 10, bottom: 5, left: 0 } : { top: 5, right: 20, bottom: 5, left: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--pt-border)" />
+            <XAxis
+              dataKey="x"
+              type="number"
+              domain={['dataMin', 'dataMax']}
+              tickFormatter={formatDateTick}
+              stroke="var(--pt-text-secondary)"
+              tick={{ fontSize: mobile ? 10 : 12 }}
+              interval={mobile ? 'preserveStartEnd' : undefined}
+              name="Launch Date"
             />
-          )}
-          {[...seriesByProvider.entries()].map(([provider, data]) => (
-            <Scatter
-              key={provider}
-              name={provider}
-              data={data}
-              fill={PROVIDER_COLOR_VALUES[provider] ?? PROVIDER_COLORS[provider] ?? '#22c55e'}
+            <YAxis
+              dataKey="y"
+              type="number"
+              scale={logScale ? 'log' : 'auto'}
+              domain={logScale ? ['auto', 'auto'] : [0, 'auto']}
+              stroke="var(--pt-text-secondary)"
+              tick={{ fontSize: mobile ? 10 : 12 }}
+              width={mobile ? 40 : undefined}
+              tickCount={mobile ? 5 : undefined}
+              tickFormatter={(v: number) =>
+                mobile
+                  ? v >= 1 ? `$${Math.round(v)}` : `$${v.toFixed(1)}`
+                  : `$${v}`
+              }
+              name="Price/MTok"
             />
-          ))}
-        </ScatterChart>
-      </ResponsiveContainer>
+            <Tooltip
+              content={({ payload }) => {
+                if (!payload?.[0]) return null;
+                const p = payload[0].payload as ScatterPoint;
+                return (
+                  <div className={styles.tooltip}>
+                    <strong>{p.displayName}</strong>
+                    <div>{p.provider}</div>
+                    <div>{p.launchDate}</div>
+                    <div>${p.price.toFixed(2)}/MTok</div>
+                  </div>
+                );
+              }}
+            />
+            {seriesByProvider.size <= 10 && (
+              <Legend
+                wrapperStyle={mobile ? { fontSize: '0.6875rem' } : undefined}
+              />
+            )}
+            {[...seriesByProvider.entries()].map(([provider, data]) => (
+              <Scatter
+                key={provider}
+                name={provider}
+                data={data}
+                fill={PROVIDER_COLOR_VALUES[provider] ?? PROVIDER_COLORS[provider] ?? '#22c55e'}
+              />
+            ))}
+          </ScatterChart>
+        )}
+      </ChartContainer>
     </div>
   );
 }
