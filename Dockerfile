@@ -67,10 +67,13 @@ COPY --from=builder /app/apps/web/public ./public
 COPY --from=builder /app/apps/web/public ./apps/web/public
 COPY --from=builder --chown=pricetoken:pricetoken /app/apps/web/prisma ./apps/web/prisma
 
-# Seed script + SDK source (for STATIC_PRICING import)
+# Seed scripts + SDK source (for STATIC_*_PRICING imports via tsx)
 COPY --from=builder --chown=pricetoken:pricetoken /app/packages/sdk/src/static.ts ./packages/sdk/src/static.ts
+COPY --from=builder --chown=pricetoken:pricetoken /app/packages/sdk/src/static-image.ts ./packages/sdk/src/static-image.ts
+COPY --from=builder --chown=pricetoken:pricetoken /app/packages/sdk/src/video-static.ts ./packages/sdk/src/video-static.ts
 COPY --from=builder --chown=pricetoken:pricetoken /app/packages/sdk/src/types.ts ./packages/sdk/src/types.ts
 COPY --chown=pricetoken:pricetoken scripts/seed.ts ./scripts/seed.ts
+COPY --chown=pricetoken:pricetoken scripts/seed-video.ts ./scripts/seed-video.ts
 COPY --chown=pricetoken:pricetoken tsconfig.base.json ./tsconfig.base.json
 COPY --chown=pricetoken:pricetoken packages/sdk/tsconfig.json ./packages/sdk/tsconfig.json
 
