@@ -18,19 +18,39 @@ export async function saveSnapshots(
 ): Promise<number> {
   if (models.length === 0) return 0;
 
-  const data = models.map((m) => ({
-    modelId: m.modelId,
-    provider,
-    displayName: m.displayName,
-    inputPerMTok: m.inputPerMTok,
-    outputPerMTok: m.outputPerMTok,
-    contextWindow: m.contextWindow ?? null,
-    maxOutputTokens: m.maxOutputTokens ?? null,
-    source,
-    status: m.status ?? null,
-    confidence,
-    launchDate: null,
-  }));
+  // Look up prior snapshots to backfill contextWindow/maxOutputTokens when missing
+  const priorSnapshots = await prisma.$queryRaw<
+    Array<{
+      modelId: string;
+      contextWindow: number | null;
+      maxOutputTokens: number | null;
+      launchDate: Date | null;
+    }>
+  >`
+    SELECT DISTINCT ON ("modelId")
+      "modelId", "contextWindow", "maxOutputTokens", "launchDate"
+    FROM "ModelPricingSnapshot"
+    WHERE "provider" = ${provider}
+    ORDER BY "modelId", "createdAt" DESC
+  `;
+  const priorByModel = new Map(priorSnapshots.map((s) => [s.modelId, s]));
+
+  const data = models.map((m) => {
+    const prior = priorByModel.get(m.modelId);
+    return {
+      modelId: m.modelId,
+      provider,
+      displayName: m.displayName,
+      inputPerMTok: m.inputPerMTok,
+      outputPerMTok: m.outputPerMTok,
+      contextWindow: m.contextWindow ?? prior?.contextWindow ?? null,
+      maxOutputTokens: m.maxOutputTokens ?? prior?.maxOutputTokens ?? null,
+      source,
+      status: m.status ?? null,
+      confidence,
+      launchDate: prior?.launchDate ?? null,
+    };
+  });
 
   const result = await prisma.modelPricingSnapshot.createMany({ data });
   return result.count;
@@ -250,6 +270,19 @@ export async function carryForwardMissing(): Promise<number> {
   if (data.length === 0) return 0;
   const result = await prisma.modelPricingSnapshot.createMany({ data });
   return result.count;
+}
+
+
+export async function getKnownModelIds(): Promise<Set<string>> {
+  const { STATIC_PRICING } = await import('pricetoken');
+  const staticIds = STATIC_PRICING.map((m) => m.modelId);
+  const dbIds = (
+    await prisma.modelPricingSnapshot.findMany({
+      distinct: ['modelId'],
+      select: { modelId: true },
+    })
+  ).map((r: { modelId: string }) => r.modelId);
+  return new Set([...staticIds, ...dbIds]);
 }
 
 export async function getLastFetchRun(provider: string) {

@@ -14,6 +14,9 @@ if TYPE_CHECKING:
     from collections.abc import Mapping
 
 from pricetoken.types import (
+    ImageModelHistory,
+    ImageModelPricing,
+    ImageProviderSummary,
     ModelHistory,
     ModelPricing,
     PriceTokenError,
@@ -21,6 +24,9 @@ from pricetoken.types import (
     VideoModelHistory,
     VideoModelPricing,
     VideoProviderSummary,
+    _parse_image_model_history,
+    _parse_image_model_pricing,
+    _parse_image_provider_summary,
     _parse_model_history,
     _parse_model_pricing,
     _parse_provider_summary,
@@ -164,6 +170,78 @@ class PriceTokenClient:
         qs = self._build_qs(params)
         data: dict[str, Any] = self._request(f"/api/v1/pricing/cheapest{qs}")
         return _parse_model_pricing(data)
+
+    # Image pricing methods
+
+    def get_image_pricing(
+        self,
+        *,
+        provider: str | None = None,
+        currency: str | None = None,
+        after: str | None = None,
+        before: str | None = None,
+    ) -> list[ImageModelPricing]:
+        """Get current pricing for all image models."""
+        params = {"provider": provider, "currency": currency, "after": after, "before": before}
+        qs = self._build_qs(params)
+        data: list[dict[str, Any]] = self._request(f"/api/v1/pricing/image{qs}")
+        return [_parse_image_model_pricing(m) for m in data]
+
+    def get_image_model(
+        self,
+        model_id: str,
+        *,
+        currency: str | None = None,
+    ) -> ImageModelPricing:
+        """Get pricing for a single image model."""
+        encoded = urllib.parse.quote(model_id, safe="")
+        qs = self._build_qs({"currency": currency})
+        data: dict[str, Any] = self._request(f"/api/v1/pricing/image/{encoded}{qs}")
+        return _parse_image_model_pricing(data)
+
+    def get_image_history(
+        self,
+        *,
+        days: int | None = None,
+        model_id: str | None = None,
+        provider: str | None = None,
+    ) -> list[ImageModelHistory]:
+        """Get image price history."""
+        qs = self._build_qs({"days": days, "modelId": model_id, "provider": provider})
+        data: list[dict[str, Any]] = self._request(f"/api/v1/pricing/image/history{qs}")
+        return [_parse_image_model_history(m) for m in data]
+
+    def get_image_providers(self) -> list[ImageProviderSummary]:
+        """Get image provider list with stats."""
+        data: list[dict[str, Any]] = self._request("/api/v1/pricing/image/providers")
+        return [_parse_image_provider_summary(p) for p in data]
+
+    def compare_images(
+        self,
+        model_ids: list[str],
+        *,
+        currency: str | None = None,
+    ) -> list[ImageModelPricing]:
+        """Compare image models side by side."""
+        qs = self._build_qs({"models": ",".join(model_ids), "currency": currency})
+        data: list[dict[str, Any]] = self._request(f"/api/v1/pricing/image/compare{qs}")
+        return [_parse_image_model_pricing(m) for m in data]
+
+    def get_cheapest_image(
+        self,
+        *,
+        provider: str | None = None,
+        currency: str | None = None,
+        after: str | None = None,
+        before: str | None = None,
+    ) -> ImageModelPricing:
+        """Get the cheapest image model."""
+        params = {"provider": provider, "currency": currency, "after": after, "before": before}
+        qs = self._build_qs(params)
+        data: dict[str, Any] = self._request(f"/api/v1/pricing/image/cheapest{qs}")
+        return _parse_image_model_pricing(data)
+
+    # Video pricing methods
 
     def get_video_pricing(
         self,

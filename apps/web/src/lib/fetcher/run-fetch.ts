@@ -7,6 +7,7 @@ import {
   getLastFetchRun,
   saveFetchRun,
   carryForwardMissing,
+  getKnownModelIds,
   type FetchWarning,
 } from './store';
 import { fetchFallbackPricing } from './fallback';
@@ -27,6 +28,9 @@ export async function runPricingFetch(): Promise<FetchResult> {
   // Seed DB from static data if empty (first run)
   await seedFromStatic();
 
+  // Only accept models we already track (prevents AI hallucinating new modelIds)
+  const knownIds = await getKnownModelIds();
+
   let totalModels = 0;
   let totalFlagged = 0;
   const errors: string[] = [];
@@ -43,21 +47,33 @@ export async function runPricingFetch(): Promise<FetchResult> {
       console.log(`Extracting pricing for ${config.displayName}...`);
       const extraction = await extractPricing(providerId, pageText);
 
-      if (extraction.models.length === 0) {
-        errors.push(`${config.displayName}: no models extracted`);
-        await saveFetchRun(providerId, [], [], [], 0, 'no models extracted');
+      // Filter out unknown modelIds (AI hallucinations)
+      const knownModels = extraction.models.filter((m) => knownIds.has(m.modelId));
+      const unknownCount = extraction.models.length - knownModels.length;
+      if (unknownCount > 0) {
+        const unknownIds = extraction.models
+          .filter((m) => !knownIds.has(m.modelId))
+          .map((m) => m.modelId);
+        console.warn(
+          `${config.displayName}: filtered out ${unknownCount} unknown model(s): ${unknownIds.join(', ')}`
+        );
+      }
+
+      if (knownModels.length === 0) {
+        errors.push(`${config.displayName}: no known models extracted`);
+        await saveFetchRun(providerId, [], [], [], 0, 'no known models extracted');
         continue;
       }
 
       // Layer 2: Cross-verify with multiple AI agents
       console.log(`Verifying pricing for ${config.displayName}...`);
-      const agentResults = await crossVerify(pageText, extraction.models);
+      const agentResults = await crossVerify(pageText, knownModels);
 
       // Layer 3: Check against prior snapshots
-      const priorFlags = await checkPriorConsistency(providerId, extraction.models);
+      const priorFlags = await checkPriorConsistency(providerId, knownModels);
 
       // Layer 4: Build consensus
-      const consensus = buildConsensus(extraction.models, agentResults, priorFlags);
+      const consensus = buildConsensus(knownModels, agentResults, priorFlags);
       verificationResults.set(providerId, consensus);
 
       // Save only approved models with 'verified' source

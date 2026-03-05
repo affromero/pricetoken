@@ -35,6 +35,9 @@ export function NavLinks({ isAdmin }: NavLinksProps) {
         <span />
       </button>
       <div className={`${styles.links} ${open ? styles.linksOpen : ''}`}>
+        <Link href="/image" className={styles.link} onClick={close}>
+          Image
+        </Link>
         <Link href="/video" className={styles.link} onClick={close}>
           Video
         </Link>

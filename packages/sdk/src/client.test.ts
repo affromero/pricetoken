@@ -309,4 +309,96 @@ describe('PriceTokenClient', () => {
     expect(result).toEqual([]);
     expect(callCount).toBe(2);
   });
+
+  // Image pricing methods
+
+  it('getImagePricing returns image model array', async () => {
+    const mockData = [{ modelId: 'dall-e-3', provider: 'openai', pricePerImage: 0.04 }];
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(mockResponse(mockData) as Response);
+
+    const result = await client.getImagePricing();
+    expect(result).toEqual(mockData);
+  });
+
+  it('getImagePricing filters by provider', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getImagePricing({ provider: 'openai' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/pricing/image?provider=openai',
+      expect.anything()
+    );
+  });
+
+  it('getImageModel fetches single image model', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse({ modelId: 'dall-e-3-standard-1024' }) as Response
+    );
+
+    await client.getImageModel('dall-e-3-standard-1024');
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/pricing/image/dall-e-3-standard-1024',
+      expect.anything()
+    );
+  });
+
+  it('getImageHistory passes query params', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getImageHistory({ days: 30, provider: 'openai' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('days=30'),
+      expect.anything()
+    );
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('provider=openai'),
+      expect.anything()
+    );
+  });
+
+  it('getImageProviders fetches image providers', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getImageProviders();
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/pricing/image/providers',
+      expect.anything()
+    );
+  });
+
+  it('compareImages sends model IDs as comma-separated list', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.compareImages(['dall-e-3-standard-1024', 'imagen-4-fast']);
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('models=dall-e-3-standard-1024%2Cimagen-4-fast'),
+      expect.anything()
+    );
+  });
+
+  it('getCheapestImage forwards provider param', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse({}) as Response
+    );
+
+    await client.getCheapestImage({ provider: 'openai' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('provider=openai'),
+      expect.anything()
+    );
+  });
 });

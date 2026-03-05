@@ -2,11 +2,11 @@ import { describe, it, expect } from 'vitest';
 import { PRICING_PROVIDERS, VIDEO_PROVIDERS } from './providers';
 
 describe('PRICING_PROVIDERS', () => {
-  it('exports configs for all 6 providers', () => {
+  it('exports configs for all 10 providers', () => {
     expect(Object.keys(PRICING_PROVIDERS)).toEqual(
-      expect.arrayContaining(['openai', 'anthropic', 'google', 'deepseek', 'xai', 'mistral'])
+      expect.arrayContaining(['openai', 'anthropic', 'google', 'deepseek', 'xai', 'mistral', 'qwen', 'cohere', 'ai21', 'amazon'])
     );
-    expect(Object.keys(PRICING_PROVIDERS)).toHaveLength(6);
+    expect(Object.keys(PRICING_PROVIDERS)).toHaveLength(10);
   });
 
   it('all URLs are valid HTTPS URLs', () => {
