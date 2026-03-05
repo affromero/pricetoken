@@ -41,14 +41,14 @@ describe('GET /api/v1/video/compare', () => {
     mockGetCached.mockResolvedValue(null);
     mockCompareVideoModels.mockResolvedValue([]);
 
-    const req = new NextRequest('http://localhost/api/v1/video/compare?models=runway-gen4-720p,kling-3.0-4k');
+    const req = new NextRequest('http://localhost/api/v1/video/compare?models=runway-gen4-720p,kling-3.0-1080p');
     const res = await GET(req);
     const body = await res.json();
 
     expect(res.status).toBe(200);
     expect(body.data).toEqual([]);
     expect(mockCompareVideoModels).toHaveBeenCalledWith(
-      expect.arrayContaining(['runway-gen4-720p', 'kling-3.0-4k'])
+      expect.arrayContaining(['runway-gen4-720p', 'kling-3.0-1080p'])
     );
   });
 });

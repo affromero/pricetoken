@@ -17,11 +17,11 @@ const mockVideoPricing: VideoModelPricing[] = [
     launchDate: '2025-06-01',
   },
   {
-    modelId: 'kling-3.0-4k',
+    modelId: 'kling-3.0-1080p',
     provider: 'kling',
-    displayName: 'Kling 3.0 4K',
-    costPerMinute: 1.74,
-    resolution: '4k',
+    displayName: 'Kling 3.0 1080p',
+    costPerMinute: 5.04,
+    resolution: '1080p',
     maxDuration: 15,
     qualityMode: 'standard',
     source: 'seed',
@@ -36,7 +36,7 @@ const mockVideoPricing: VideoModelPricing[] = [
     displayName: 'Sora 2 Pro 1080p',
     costPerMinute: 30.0,
     resolution: '1080p',
-    maxDuration: 20,
+    maxDuration: 25,
     qualityMode: 'professional',
     source: 'seed',
     status: 'active',
@@ -97,9 +97,9 @@ describe('getCurrentVideoPricing', () => {
 
 describe('getVideoModelPricing', () => {
   it('returns matching video model', async () => {
-    const result = await getVideoModelPricing('kling-3.0-4k');
+    const result = await getVideoModelPricing('kling-3.0-1080p');
     expect(result).not.toBeNull();
-    expect(result!.modelId).toBe('kling-3.0-4k');
+    expect(result!.modelId).toBe('kling-3.0-1080p');
   });
 
   it('returns null for unknown model', async () => {
@@ -133,7 +133,7 @@ describe('getVideoProviderSummaries', () => {
 
 describe('compareVideoModels', () => {
   it('returns only requested models', async () => {
-    const result = await compareVideoModels(['runway-gen4-720p', 'kling-3.0-4k']);
+    const result = await compareVideoModels(['runway-gen4-720p', 'kling-3.0-1080p']);
     expect(result).toHaveLength(2);
   });
 
@@ -152,7 +152,7 @@ describe('getCheapestVideoModel', () => {
   it('returns cheapest across all providers', async () => {
     const result = await getCheapestVideoModel();
     expect(result).not.toBeNull();
-    expect(result!.modelId).toBe('kling-3.0-4k');
+    expect(result!.modelId).toBe('kling-3.0-1080p');
   });
 
   it('returns cheapest within a provider', async () => {

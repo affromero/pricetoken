@@ -56,7 +56,7 @@ STATIC_VIDEO_PRICING: list[VideoModelPricing] = [
         display_name="Sora 2 Pro 720p",
         cost_per_minute=18.0,
         resolution="720p",
-        max_duration=12,
+        max_duration=25,
         quality_mode="professional",
         source="seed",
         status="active",
@@ -70,7 +70,7 @@ STATIC_VIDEO_PRICING: list[VideoModelPricing] = [
         display_name="Sora 2 Pro 1080p",
         cost_per_minute=30.0,
         resolution="1080p",
-        max_duration=12,
+        max_duration=25,
         quality_mode="professional",
         source="seed",
         status="active",
@@ -109,13 +109,13 @@ STATIC_VIDEO_PRICING: list[VideoModelPricing] = [
         launch_date="2025-10-15",
     ),
     # Kling 3.0 — launched 2026-02-05
-    # $0.029/sec = $1.74/min, 4K native, up to 15s
+    # Official API: $0.084/sec standard (audio off) = $5.04/min, up to 15s
     VideoModelPricing(
-        model_id="kling-3.0-4k",
+        model_id="kling-3.0-1080p",
         provider="kling",
-        display_name="Kling 3.0 4K",
-        cost_per_minute=1.74,
-        resolution="4k",
+        display_name="Kling 3.0 1080p",
+        cost_per_minute=5.04,
+        resolution="1080p",
         max_duration=15,
         quality_mode="standard",
         source="seed",
@@ -140,13 +140,13 @@ STATIC_VIDEO_PRICING: list[VideoModelPricing] = [
         last_updated=None,
         launch_date="2026-01-26",
     ),
-    # Pika 2.5 — launched ~mid 2025 (Pika 2.2 was 2025-02-27)
-    # Credit-based, no public API pricing, estimate from subscription tiers
+    # Pika 2.5 — launched ~late Nov 2025 (Pika 2.2 was 2025-02-27)
+    # Credit-based, no public API pricing; fal.ai offers Pika v2.2 at $0.06/sec (1080p)
     VideoModelPricing(
         model_id="pika-2.5-1080p",
         provider="pika",
         display_name="Pika 2.5 1080p",
-        cost_per_minute=4.8,
+        cost_per_minute=3.6,
         resolution="1080p",
         max_duration=10,
         quality_mode="standard",
@@ -154,7 +154,7 @@ STATIC_VIDEO_PRICING: list[VideoModelPricing] = [
         status="active",
         confidence="low",
         last_updated=None,
-        launch_date="2025-08-01",
+        launch_date="2025-11-24",
     ),
     # MiniMax Hailuo 02 — launched 2025-06-18
     # Three configs: 768p-6s, 768p-10s, 1080p-6s
@@ -202,13 +202,13 @@ STATIC_VIDEO_PRICING: list[VideoModelPricing] = [
         last_updated=None,
         launch_date="2026-02-10",
     ),
-    # FAL (aggregator) — prices reflect FAL's rates, not original provider's
-    # Veo 3: $0.40/sec (with audio) = $24/min
+    # FAL (aggregator) — prices reflect FAL's rates with aggregator markup
+    # Veo 3: $0.50/sec (audio off) = $30/min on FAL
     VideoModelPricing(
         model_id="fal-veo3-1080p",
         provider="fal",
         display_name="FAL Veo 3 1080p",
-        cost_per_minute=24.0,
+        cost_per_minute=30.0,
         resolution="1080p",
         max_duration=8,
         quality_mode="standard",
@@ -218,12 +218,12 @@ STATIC_VIDEO_PRICING: list[VideoModelPricing] = [
         last_updated=None,
         launch_date="2025-10-15",
     ),
-    # Veo 3 Fast: $0.15/sec (with audio) = $9/min
+    # Veo 3 Fast: $0.10/sec (audio off) = $6/min on FAL
     VideoModelPricing(
         model_id="fal-veo3-fast-1080p",
         provider="fal",
         display_name="FAL Veo 3 Fast 1080p",
-        cost_per_minute=9.0,
+        cost_per_minute=6.0,
         resolution="1080p",
         max_duration=8,
         quality_mode="turbo",
@@ -233,12 +233,12 @@ STATIC_VIDEO_PRICING: list[VideoModelPricing] = [
         last_updated=None,
         launch_date="2025-10-15",
     ),
-    # Kling via FAL: $0.07/sec = $4.20/min
+    # Kling via FAL: $0.168/sec (audio off) = $10.08/min
     VideoModelPricing(
         model_id="fal-kling3-1080p",
         provider="fal",
         display_name="FAL Kling 3.0 1080p",
-        cost_per_minute=4.2,
+        cost_per_minute=10.08,
         resolution="1080p",
         max_duration=15,
         quality_mode="standard",

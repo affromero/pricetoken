@@ -25,11 +25,11 @@ const mockGetCheapestVideoModel = vi.mocked(getCheapestVideoModel);
 const mockResolveCurrency = vi.mocked(resolveCurrency);
 
 const mockModel = {
-  modelId: 'kling-3.0-4k',
+  modelId: 'kling-3.0-1080p',
   provider: 'kling',
-  displayName: 'Kling 3.0 4K',
-  costPerMinute: 1.74,
-  resolution: '4k',
+  displayName: 'Kling 3.0 1080p',
+  costPerMinute: 5.04,
+  resolution: '1080p',
   maxDuration: 15,
   qualityMode: 'standard',
   source: 'seed' as const,
@@ -54,7 +54,7 @@ describe('GET /api/v1/video/cheapest', () => {
     const body = await res.json();
 
     expect(res.status).toBe(200);
-    expect(body.data.modelId).toBe('kling-3.0-4k');
+    expect(body.data.modelId).toBe('kling-3.0-1080p');
   });
 
   it('returns 404 when no data available', async () => {

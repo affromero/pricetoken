@@ -274,20 +274,20 @@ class TestPriceTokenClient:
         mock_urlopen.return_value = _mock_response([])
         client = PriceTokenClient(base_url="https://test.api")
 
-        client.compare_video_models(["runway-gen4-720p", "kling-3.0-4k"])
+        client.compare_video_models(["runway-gen4-720p", "kling-3.0-1080p"])
 
         req = mock_urlopen.call_args[0][0]
-        assert "models=runway-gen4-720p%2Ckling-3.0-4k" in req.full_url
+        assert "models=runway-gen4-720p%2Ckling-3.0-1080p" in req.full_url
 
     @patch("pricetoken.client.urllib.request.urlopen")
     def test_get_cheapest_video_model_fetches_cheapest(self, mock_urlopen: MagicMock) -> None:
         mock_urlopen.return_value = _mock_response(
             {
-                "modelId": "kling-3.0-4k",
+                "modelId": "kling-3.0-1080p",
                 "provider": "kling",
-                "displayName": "Kling 3.0",
-                "costPerMinute": 1.74,
-                "resolution": "4k",
+                "displayName": "Kling 3.0 1080p",
+                "costPerMinute": 5.04,
+                "resolution": "1080p",
                 "maxDuration": 15,
                 "qualityMode": None,
                 "source": "seed",
@@ -304,4 +304,4 @@ class TestPriceTokenClient:
         req = mock_urlopen.call_args[0][0]
         assert "/api/v1/video/cheapest" in req.full_url
         assert "provider=kling" in req.full_url
-        assert result.model_id == "kling-3.0-4k"
+        assert result.model_id == "kling-3.0-1080p"

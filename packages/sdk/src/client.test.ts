@@ -265,10 +265,10 @@ describe('PriceTokenClient', () => {
       mockResponse([]) as Response
     );
 
-    await client.compareVideoModels(['runway-gen4-720p', 'kling-3.0-4k']);
+    await client.compareVideoModels(['runway-gen4-720p', 'kling-3.0-1080p']);
 
     expect(fetchSpy).toHaveBeenCalledWith(
-      expect.stringContaining('models=runway-gen4-720p%2Ckling-3.0-4k'),
+      expect.stringContaining('models=runway-gen4-720p%2Ckling-3.0-1080p'),
       expect.anything()
     );
   });
