@@ -78,9 +78,15 @@ export async function extractPricing(
   };
 }
 
+function stripMarkdownFences(text: string): string {
+  const trimmed = text.trim();
+  const match = trimmed.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?\s*```$/);
+  return match ? match[1]!.trim() : trimmed;
+}
+
 function parseModels(text: string, pricingProvider: string): ExtractedModel[] {
   try {
-    const parsed: unknown = JSON.parse(text);
+    const parsed: unknown = JSON.parse(stripMarkdownFences(text));
     if (!Array.isArray(parsed)) return [];
     const VALID_STATUSES = ['active', 'deprecated', 'preview'];
     return parsed

@@ -87,9 +87,15 @@ async function runVerificationAgent(
   };
 }
 
+function stripMarkdownFences(text: string): string {
+  const trimmed = text.trim();
+  const match = trimmed.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?\s*```$/);
+  return match ? match[1]!.trim() : trimmed;
+}
+
 function parseVerdicts(text: string): ModelVerdict[] {
   try {
-    const parsed: unknown = JSON.parse(text);
+    const parsed: unknown = JSON.parse(stripMarkdownFences(text));
     if (!Array.isArray(parsed)) return [];
     return parsed.filter(
       (v): v is ModelVerdict =>
