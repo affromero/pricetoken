@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   const checks: Record<string, string> = {
     status: 'ok',
-    version: process.env.npm_package_version ?? '0.1.0',
+    version: process.env.APP_VERSION ?? '0.0.0',
     timestamp: new Date().toISOString(),
   };
 

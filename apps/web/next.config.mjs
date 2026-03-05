@@ -1,3 +1,8 @@
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const pkg = require('./package.json');
+
 /** @type {import('next').NextConfig} */
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -30,6 +35,9 @@ const securityHeaders = [
 const nextConfig = {
   output: 'standalone',
   transpilePackages: ['pricetoken'],
+  env: {
+    APP_VERSION: pkg.version,
+  },
   async headers() {
     return [
       {
