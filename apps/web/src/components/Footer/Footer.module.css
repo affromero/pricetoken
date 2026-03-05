@@ -54,3 +54,23 @@
 .disclaimerLink:hover {
   color: var(--pt-text);
 }
+
+@media (max-width: 768px) {
+  .inner {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .links {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
