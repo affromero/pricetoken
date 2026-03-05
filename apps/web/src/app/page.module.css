@@ -106,6 +106,18 @@
   line-height: 1.5;
 }
 
+.videoLink {
+  display: inline-block;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--pt-accent);
+  transition: color 0.15s;
+}
+
+.videoLink:hover {
+  color: var(--pt-accent-hover);
+}
+
 .features {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

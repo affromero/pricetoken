@@ -15,6 +15,15 @@ export const PROVIDER_COLORS: Record<string, string> = {
   deepseek: 'var(--pt-provider-deepseek)',
   xai: 'var(--pt-provider-xai)',
   mistral: 'var(--pt-provider-mistral)',
+  runway: 'var(--pt-provider-runway)',
+  sora: 'var(--pt-provider-sora)',
+  veo: 'var(--pt-provider-veo)',
+  pika: 'var(--pt-provider-pika)',
+  kling: 'var(--pt-provider-kling)',
+  luma: 'var(--pt-provider-luma)',
+  minimax: 'var(--pt-provider-minimax)',
+  seedance: 'var(--pt-provider-seedance)',
+  fal: 'var(--pt-provider-fal)',
 };
 
 export function ProviderFilterChips({ providers, selected, onSelect }: ProviderFilterChipsProps) {
