@@ -47,6 +47,10 @@
   color: var(--pt-text);
 }
 
+.linkActive {
+  color: var(--pt-accent);
+}
+
 .adminLink {
   display: flex;
   align-items: center;

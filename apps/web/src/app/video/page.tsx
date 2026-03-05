@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
+import { ModalitySubNav } from '@/components/ModalitySubNav/ModalitySubNav';
 import { VideoPricingTable } from '@/components/VideoPricingTable/VideoPricingTable';
 import { STATIC_VIDEO_PRICING } from 'pricetoken';
 import styles from './page.module.css';
@@ -29,6 +30,7 @@ export default async function VideoPage() {
     <>
       <Navigation />
       <main className={styles.root}>
+        <ModalitySubNav modality="video" />
         <section className={styles.hero}>
           <h1 className={styles.title}>
             Video AI Pricing

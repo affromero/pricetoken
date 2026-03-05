@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
+import { ModalitySubNav } from '@/components/ModalitySubNav/ModalitySubNav';
 import { VideoHistoryCharts } from './VideoHistoryCharts';
 import { STATIC_VIDEO_PRICING } from 'pricetoken';
 import type { VideoModelHistory } from 'pricetoken';
@@ -42,6 +43,7 @@ export default async function VideoHistoryPage() {
     <>
       <Navigation />
       <main className={styles.root}>
+        <ModalitySubNav modality="video" />
         <h1 className={styles.title}>Video Price History</h1>
         <p className={styles.subtitle}>
           Track video AI pricing changes over time across all providers.

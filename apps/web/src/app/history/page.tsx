@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
+import { ModalitySubNav } from '@/components/ModalitySubNav/ModalitySubNav';
 import { HistoryCharts } from './HistoryCharts';
 import { STATIC_PRICING } from 'pricetoken';
 import type { ModelHistory, ModelPricing } from 'pricetoken';
@@ -52,6 +53,7 @@ export default async function HistoryPage() {
     <>
       <Navigation />
       <main className={styles.root}>
+        <ModalitySubNav modality="text" />
         <h1 className={styles.title}>Price History</h1>
         <p className={styles.subtitle}>
           Track LLM pricing changes over time across all providers.

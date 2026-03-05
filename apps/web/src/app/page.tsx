@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { Footer } from '@/components/Footer/Footer';
+import { ModalitySubNav } from '@/components/ModalitySubNav/ModalitySubNav';
 import { PricingTable } from '@/components/PricingTable/PricingTable';
 import { DataSources } from '@/components/DataSources/DataSources';
 import { TrustedBy } from '@/components/TrustedBy/TrustedBy';
@@ -39,7 +40,7 @@ export default async function HomePage() {
             operatingSystem: 'Any',
             offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
             description:
-              'Free REST API, npm package, and Python SDK for real-time LLM pricing data across OpenAI, Anthropic, Google, and more.',
+              'Free REST API, npm package, and Python SDK for real-time AI pricing data across text, image, and video generation providers.',
           }),
         }}
       />
@@ -47,49 +48,47 @@ export default async function HomePage() {
       <main className={styles.root}>
         <section className={styles.hero}>
           <h1 className={styles.title}>
-            Real-time LLM pricing.
+            Real-time AI pricing.
             <br />
             <span className={styles.accent}>One API.</span>
           </h1>
           <p className={styles.subtitle}>
-            Free REST API for real-time pricing data across OpenAI, Anthropic, Google, and more.
+            Free REST API for real-time pricing across text, image, and video AI providers.
             Open source. Self-hostable.
           </p>
           <div className={styles.cta}>
             <code className={styles.install}>npm install pricetoken</code>
             <code className={styles.install}>pip install pricetoken</code>
           </div>
-          <div className={styles.curlExample}>
-            <code className={styles.curlCommand}>
-              <span className={styles.curlPrompt}>$</span>{' '}
-              curl https://pricetoken.ai/api/v1/pricing
-            </code>
-            <pre className={styles.curlResponse}>{`{ "data": [{ "modelId": "claude-sonnet-4-6", "inputPerMTok": 3, ... }], "meta": { "currency": "USD" } }`}</pre>
+
+          <div className={styles.modalities}>
+            <Link href="/" className={`${styles.modalityCard} ${styles.modalityActive}`}>
+              <span className={styles.modalityIcon}>T</span>
+              <span className={styles.modalityLabel}>Text</span>
+              <span className={styles.modalityMeta}>$/M tokens</span>
+            </Link>
+            <Link href="/image" className={styles.modalityCard}>
+              <span className={styles.modalityIcon}>I</span>
+              <span className={styles.modalityLabel}>Image</span>
+              <span className={styles.modalityMeta}>$/image</span>
+            </Link>
+            <Link href="/video" className={styles.modalityCard}>
+              <span className={styles.modalityIcon}>V</span>
+              <span className={styles.modalityLabel}>Video</span>
+              <span className={styles.modalityMeta}>$/minute</span>
+            </Link>
           </div>
         </section>
 
+        <ModalitySubNav modality="text" />
+
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Current Pricing</h2>
-          <p className={styles.sectionSubtitle}>
-            Updated daily from official provider pricing pages. Prices in USD per million tokens.
-          </p>
           <PricingTable pricing={pricing} />
         </section>
 
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>How We Get Our Data</h2>
           <DataSources />
-        </section>
-
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Video AI Pricing</h2>
-          <p className={styles.sectionSubtitle}>
-            Now tracking video generation APIs too — Runway, Sora, Veo, Kling, and more.
-            Cost per minute, updated daily.
-          </p>
-          <Link href="/video" className={styles.videoLink}>
-            Browse video pricing →
-          </Link>
         </section>
 
         <section className={styles.features}>
