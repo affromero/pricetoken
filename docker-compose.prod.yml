@@ -35,6 +35,8 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-pricetoken}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-pricetoken}
       REDIS_URL: redis://redis:6379
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:?ANTHROPIC_API_KEY required}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?ADMIN_PASSWORD required}
+      ADMIN_SESSION_SECRET: ${ADMIN_SESSION_SECRET:?ADMIN_SESSION_SECRET required}
       PORT: '3001'
 volumes:
   pgdata:
