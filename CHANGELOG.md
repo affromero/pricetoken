@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.8.0] - 2026-03-05
+
+### Added
+- **Bayesian confidence scoring** — every model gets a numeric `confidenceScore` (0–100), a three-tier `confidenceLevel` ("high" | "medium" | "low"), and a `freshness` object with `lastVerified`, `ageHours`, and `stale` fields. Scores are computed at query time using log-odds Bayesian updating with priors based on data source, agent consensus, data age, and price stability. (Suggested by [@maxrodrigo](https://github.com/maxrodrigo))
+- `agentApprovals` and `agentTotal` columns on all three snapshot tables — verification metadata is now persisted to the database instead of being discarded after scraping
+- `FreshnessIndicator` component — colored dot (green/yellow/red) with relative time ("2h ago", "3d ago") and tooltip showing confidence score, added as a new sortable column in all three pricing tables (Text, Image, Video)
+- "Score" step (5th) in the data pipeline explainer on the landing page, explaining the Bayesian methodology
+- "Confidence Scoring" section in API docs with formula, prior table, and field descriptions
+- Confidence scoring section in README with field reference table
+- 15 new tests for confidence scoring library (boundary conditions, signal independence, level mapping, freshness)
+
+### Changed
+- `DataConfidence` type expanded from `"high" | "low"` to `"high" | "medium" | "low"`
+- `ModelPricing.source`, `ImageModelPricing.source`, `VideoModelPricing.source` unions expanded to include `"carried"` and `"verified"` where missing
+- `StatusBadge` component now shows "unverified" badge for both `"medium"` and `"low"` confidence
+- Response format updated: `confidence` field now reflects the computed level instead of the raw DB value
+- Python SDK types updated with `FreshnessInfo` dataclass, `ConfidenceLevel` type, and expanded `Source`/`DataConfidence` literals
+- All static pricing entries (JS + Python) include default `confidenceScore`, `confidenceLevel`, and `freshness` fields
+
 ## [0.7.0] - 2026-03-05
 
 ### Added

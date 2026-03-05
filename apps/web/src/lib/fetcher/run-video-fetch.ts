@@ -77,7 +77,7 @@ export async function runVideoFetch(): Promise<VideoFetchResult> {
       verificationResults.set(providerId, consensus);
 
       if (consensus.approved.length > 0) {
-        const saved = await saveVideoSnapshots(providerId, consensus.approved, 'verified');
+        const saved = await saveVideoSnapshots(providerId, consensus.approved, 'verified', 'high', agentResults.length);
         totalModels += saved;
         console.log(`${config.displayName}: saved ${saved} verified video models`);
       }

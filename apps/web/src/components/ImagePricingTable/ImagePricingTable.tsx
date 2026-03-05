@@ -5,6 +5,7 @@ import type { ImageModelPricing } from 'pricetoken';
 import { ProviderFilterChips, PROVIDER_COLORS } from '@/components/ProviderFilterChips/ProviderFilterChips';
 import { CurrencySelector } from '@/components/CurrencySelector/CurrencySelector';
 import { StatusBadge } from '@/components/StatusBadge/StatusBadge';
+import { FreshnessIndicator } from '@/components/FreshnessIndicator/FreshnessIndicator';
 import styles from './ImagePricingTable.module.css';
 
 interface ImagePricingTableProps {
@@ -32,7 +33,7 @@ const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
   xai: 'xAI',
 };
 
-type SortKey = 'provider' | 'displayName' | 'pricePerImage' | 'qualityTier' | 'launchDate';
+type SortKey = 'provider' | 'displayName' | 'pricePerImage' | 'qualityTier' | 'confidenceScore' | 'launchDate';
 
 function formatPrice(price: number): string {
   if (price < 0.001) return `${price.toFixed(4)}`;
@@ -140,6 +141,9 @@ export function ImagePricingTable({ data: initialData }: ImagePricingTableProps)
                 Quality {sortKey === 'qualityTier' ? (sortAsc ? '\u2191' : '\u2193') : ''}
               </th>
               <th>Resolution</th>
+              <th onClick={() => handleSort('confidenceScore')} className={styles.sortable}>
+                Freshness {sortKey === 'confidenceScore' ? (sortAsc ? '\u2191' : '\u2193') : ''}
+              </th>
               <th onClick={() => handleSort('launchDate')} className={styles.sortable}>
                 Launched {sortKey === 'launchDate' ? (sortAsc ? '\u2191' : '\u2193') : ''}
               </th>
@@ -162,6 +166,13 @@ export function ImagePricingTable({ data: initialData }: ImagePricingTableProps)
                 <td className={styles.price}>{currencySymbol}{formatPrice(model.pricePerImage)}</td>
                 <td>{QUALITY_LABELS[model.qualityTier] ?? model.qualityTier}</td>
                 <td className={styles.resolution}>{model.defaultResolution}</td>
+                <td className={styles.freshness}>
+                  <FreshnessIndicator
+                    freshness={model.freshness}
+                    confidenceScore={model.confidenceScore}
+                    confidenceLevel={model.confidenceLevel}
+                  />
+                </td>
                 <td className={styles.date}>
                   {model.launchDate ? formatLaunchDate(model.launchDate) : '\u2014'}
                 </td>

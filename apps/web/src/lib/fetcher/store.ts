@@ -2,6 +2,8 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import type { ModelPricing, ModelHistory, PriceHistoryPoint } from 'pricetoken';
 import type { ExtractedModel } from './extractor';
+import type { VerifiedModel } from './verification-types';
+import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
 
 export interface FetchWarning {
   type: 'models_missing' | 'low_confidence' | 'extraction_error' | 'sanity_check_failed';
@@ -14,7 +16,8 @@ export async function saveSnapshots(
   provider: string,
   models: ExtractedModel[],
   source: string = 'fetched',
-  confidence: 'high' | 'low' = 'high'
+  confidence: 'high' | 'low' = 'high',
+  agentTotal?: number
 ): Promise<number> {
   if (models.length === 0) return 0;
 
@@ -48,6 +51,8 @@ export async function saveSnapshots(
       source,
       status: m.status ?? null,
       confidence,
+      agentApprovals: 'agentApprovals' in m ? (m as unknown as VerifiedModel).agentApprovals : null,
+      agentTotal: agentTotal ?? null,
       launchDate: prior?.launchDate ?? null,
     };
   });
@@ -71,6 +76,8 @@ export async function getLatestPricing(provider?: string): Promise<ModelPricing[
       source: string;
       status: string | null;
       confidence: string | null;
+      agentApprovals: number | null;
+      agentTotal: number | null;
       launchDate: Date | null;
       createdAt: Date;
     }>
@@ -79,26 +86,42 @@ export async function getLatestPricing(provider?: string): Promise<ModelPricing[
       "modelId", "provider", "displayName",
       "inputPerMTok", "outputPerMTok",
       "contextWindow", "maxOutputTokens",
-      "source", "status", "confidence", "launchDate", "createdAt"
+      "source", "status", "confidence",
+      "agentApprovals", "agentTotal",
+      "launchDate", "createdAt"
     FROM "ModelPricingSnapshot"
     ${where}
     ORDER BY "modelId", "createdAt" DESC
   `);
 
-  return snapshots.map((s) => ({
-    modelId: s.modelId,
-    provider: s.provider,
-    displayName: s.displayName,
-    inputPerMTok: s.inputPerMTok,
-    outputPerMTok: s.outputPerMTok,
-    contextWindow: s.contextWindow,
-    maxOutputTokens: s.maxOutputTokens,
-    source: s.source as ModelPricing['source'],
-    status: (s.status as ModelPricing['status']) ?? null,
-    confidence: (s.confidence ?? 'high') as ModelPricing['confidence'],
-    lastUpdated: s.createdAt.toISOString(),
-    launchDate: s.launchDate?.toISOString().split('T')[0] ?? null,
-  }));
+  return snapshots.map((s) => {
+    const score = computeConfidenceScore({
+      source: s.source,
+      createdAt: s.createdAt,
+      agentApprovals: s.agentApprovals,
+      agentTotal: s.agentTotal,
+      priceUnchanged: true,
+    });
+    const level = confidenceLevelFromScore(score);
+    const freshness = computeFreshness(s.createdAt);
+    return {
+      modelId: s.modelId,
+      provider: s.provider,
+      displayName: s.displayName,
+      inputPerMTok: s.inputPerMTok,
+      outputPerMTok: s.outputPerMTok,
+      contextWindow: s.contextWindow,
+      maxOutputTokens: s.maxOutputTokens,
+      source: s.source as ModelPricing['source'],
+      status: (s.status as ModelPricing['status']) ?? null,
+      confidence: level,
+      confidenceScore: score,
+      confidenceLevel: level,
+      freshness,
+      lastUpdated: s.createdAt.toISOString(),
+      launchDate: s.launchDate?.toISOString().split('T')[0] ?? null,
+    };
+  });
 }
 
 export async function getPriceHistory(

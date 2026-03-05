@@ -55,6 +55,21 @@
   font-weight: 500;
 }
 
+.formula {
+  font-size: 0.875rem;
+  color: var(--pt-text);
+  margin: 0.75rem 0;
+  padding: 0.75rem 1rem;
+  background: var(--pt-surface);
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+.formula code {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
 .keyExample {
   font-family: var(--font-mono);
   font-size: 0.9375rem;

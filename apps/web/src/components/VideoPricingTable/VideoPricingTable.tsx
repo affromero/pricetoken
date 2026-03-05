@@ -5,13 +5,14 @@ import type { VideoModelPricing } from 'pricetoken';
 import { ProviderFilterChips, PROVIDER_COLORS } from '@/components/ProviderFilterChips/ProviderFilterChips';
 import { CurrencySelector } from '@/components/CurrencySelector/CurrencySelector';
 import { StatusBadge } from '@/components/StatusBadge/StatusBadge';
+import { FreshnessIndicator } from '@/components/FreshnessIndicator/FreshnessIndicator';
 import styles from './VideoPricingTable.module.css';
 
 interface VideoPricingTableProps {
   pricing: VideoModelPricing[];
 }
 
-type SortKey = 'provider' | 'displayName' | 'costPerMinute' | 'resolution' | 'launchDate';
+type SortKey = 'provider' | 'displayName' | 'costPerMinute' | 'resolution' | 'confidenceScore' | 'launchDate';
 
 export function VideoPricingTable({ pricing: initialPricing }: VideoPricingTableProps) {
   const [pricing, setPricing] = useState(initialPricing);
@@ -119,6 +120,9 @@ export function VideoPricingTable({ pricing: initialPricing }: VideoPricingTable
                 Resolution {sortKey === 'resolution' ? (sortAsc ? '↑' : '↓') : ''}
               </th>
               <th>Max Duration</th>
+              <th onClick={() => handleSort('confidenceScore')} className={styles.sortable}>
+                Freshness {sortKey === 'confidenceScore' ? (sortAsc ? '↑' : '↓') : ''}
+              </th>
               <th onClick={() => handleSort('launchDate')} className={styles.sortable}>
                 Launched {sortKey === 'launchDate' ? (sortAsc ? '↑' : '↓') : ''}
               </th>
@@ -141,6 +145,13 @@ export function VideoPricingTable({ pricing: initialPricing }: VideoPricingTable
                 <td className={styles.price}>{currencySymbol}{formatPrice(model.costPerMinute)}</td>
                 <td className={styles.meta}>{model.resolution ?? '—'}</td>
                 <td className={styles.meta}>{formatDuration(model.maxDuration)}</td>
+                <td className={styles.freshness}>
+                  <FreshnessIndicator
+                    freshness={model.freshness}
+                    confidenceScore={model.confidenceScore}
+                    confidenceLevel={model.confidenceLevel}
+                  />
+                </td>
                 <td className={styles.date}>
                   {model.launchDate ? formatLaunchDate(model.launchDate) : '—'}
                 </td>

@@ -10,6 +10,8 @@ export type {
   ModelPricing,
   ModelStatus,
   DataConfidence,
+  ConfidenceLevel,
+  FreshnessInfo,
   PriceHistoryPoint,
   ModelHistory,
   ProviderSummary,

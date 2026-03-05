@@ -6,8 +6,16 @@ from dataclasses import dataclass
 from typing import Any, Literal
 
 ModelStatus = Literal["active", "deprecated", "preview"]
-DataConfidence = Literal["high", "low"]
-Source = Literal["fetched", "seed", "admin", "verified"]
+DataConfidence = Literal["high", "medium", "low"]
+ConfidenceLevel = Literal["high", "medium", "low"]
+Source = Literal["fetched", "seed", "admin", "verified", "carried"]
+
+
+@dataclass(slots=True)
+class FreshnessInfo:
+    last_verified: str
+    age_hours: int
+    stale: bool
 
 
 @dataclass(slots=True)
@@ -22,6 +30,9 @@ class ModelPricing:
     source: Source
     status: ModelStatus | None
     confidence: DataConfidence
+    confidence_score: int
+    confidence_level: ConfidenceLevel
+    freshness: FreshnessInfo
     last_updated: str | None
     launch_date: str | None
 
@@ -69,6 +80,16 @@ class PriceTokenError(Exception):
         self.status = status
 
 
+def _parse_freshness(data: dict[str, Any] | None) -> FreshnessInfo:
+    if data is None:
+        return FreshnessInfo(last_verified="", age_hours=0, stale=True)
+    return FreshnessInfo(
+        last_verified=data.get("lastVerified", ""),
+        age_hours=data.get("ageHours", 0),
+        stale=data.get("stale", True),
+    )
+
+
 def _parse_model_pricing(data: dict[str, Any]) -> ModelPricing:
     return ModelPricing(
         model_id=data["modelId"],
@@ -80,7 +101,10 @@ def _parse_model_pricing(data: dict[str, Any]) -> ModelPricing:
         max_output_tokens=data.get("maxOutputTokens"),
         source=data["source"],
         status=data.get("status"),
-        confidence=data["confidence"],
+        confidence=data.get("confidence", "low"),
+        confidence_score=data.get("confidenceScore", 0),
+        confidence_level=data.get("confidenceLevel", "low"),
+        freshness=_parse_freshness(data.get("freshness")),
         last_updated=data.get("lastUpdated"),
         launch_date=data.get("launchDate"),
     )
@@ -134,6 +158,9 @@ class ImageModelPricing:
     source: Source
     status: ModelStatus | None
     confidence: DataConfidence
+    confidence_score: int
+    confidence_level: ConfidenceLevel
+    freshness: FreshnessInfo
     last_updated: str | None
     launch_date: str | None
 
@@ -181,7 +208,10 @@ def _parse_image_model_pricing(data: dict[str, Any]) -> ImageModelPricing:
         supported_formats=data.get("supportedFormats", ["png"]),
         source=data["source"],
         status=data.get("status"),
-        confidence=data["confidence"],
+        confidence=data.get("confidence", "low"),
+        confidence_score=data.get("confidenceScore", 0),
+        confidence_level=data.get("confidenceLevel", "low"),
+        freshness=_parse_freshness(data.get("freshness")),
         last_updated=data.get("lastUpdated"),
         launch_date=data.get("launchDate"),
     )
@@ -226,6 +256,9 @@ class VideoModelPricing:
     source: Source
     status: ModelStatus | None
     confidence: DataConfidence
+    confidence_score: int
+    confidence_level: ConfidenceLevel
+    freshness: FreshnessInfo
     last_updated: str | None
     launch_date: str | None
 
@@ -271,7 +304,10 @@ def _parse_video_model_pricing(data: dict[str, Any]) -> VideoModelPricing:
         quality_mode=data.get("qualityMode"),
         source=data["source"],
         status=data.get("status"),
-        confidence=data["confidence"],
+        confidence=data.get("confidence", "low"),
+        confidence_score=data.get("confidenceScore", 0),
+        confidence_level=data.get("confidenceLevel", "low"),
+        freshness=_parse_freshness(data.get("freshness")),
         last_updated=data.get("lastUpdated"),
         launch_date=data.get("launchDate"),
     )

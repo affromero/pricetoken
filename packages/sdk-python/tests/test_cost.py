@@ -3,6 +3,7 @@
 import pytest
 
 from pricetoken import STATIC_PRICING, calculate_cost, calculate_model_cost
+from pricetoken.types import FreshnessInfo
 
 
 class TestCalculateCost:
@@ -59,6 +60,9 @@ class TestCalculateModelCost:
                 source="seed",
                 status="active",
                 confidence="high",
+                confidence_score=65,
+                confidence_level="medium",
+                freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
                 last_updated=None,
                 launch_date=None,
             ),
