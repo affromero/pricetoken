@@ -41,8 +41,18 @@ export async function runPricingFetch(): Promise<FetchResult> {
   const warnings: FetchWarning[] = [];
   const verificationResults = new Map<string, VerificationResult>();
 
+  const startOfDay = new Date(new Date().toISOString().split('T')[0] + 'T00:00:00Z');
+
   for (const [providerId, config] of Object.entries(PRICING_PROVIDERS)) {
     try {
+      // Skip providers that already have a successful run today
+      const todayRun = await getLastFetchRun(providerId);
+      if (todayRun && todayRun.createdAt >= startOfDay && !todayRun.error && todayRun.totalExtracted > 0) {
+        console.log(`${config.displayName}: already verified today (${todayRun.totalExtracted} models), skipping`);
+        totalModels += todayRun.totalExtracted;
+        continue;
+      }
+
       console.log(`Fetching pricing for ${config.displayName}...`);
       const pageText = config.requiresBrowser
         ? await fetchPricingPageWithBrowser(config.url)

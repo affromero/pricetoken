@@ -36,9 +36,19 @@ export async function runImagePricingFetch(): Promise<ImageFetchResult> {
   const warnings: FetchWarning[] = [];
   const verificationResults = new Map<string, ImageVerificationResult>();
 
+  const startOfDay = new Date(new Date().toISOString().split('T')[0] + 'T00:00:00Z');
+
   for (const [providerId, config] of Object.entries(IMAGE_PRICING_PROVIDERS)) {
     const logProvider = `image:${providerId}`;
     try {
+      // Skip providers that already have a successful run today
+      const todayRun = await getLastFetchRun(logProvider);
+      if (todayRun && todayRun.createdAt >= startOfDay && !todayRun.error && todayRun.totalExtracted > 0) {
+        console.log(`${config.displayName}: already verified today (${todayRun.totalExtracted} image models), skipping`);
+        totalModels += todayRun.totalExtracted;
+        continue;
+      }
+
       console.log(`Fetching image pricing for ${config.displayName}...`);
       const pageText = config.requiresBrowser
         ? await fetchPricingPageWithBrowser(config.url)
