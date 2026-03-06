@@ -50,12 +50,12 @@ ${disagreementContext}
 Now verify these extracted prices against the raw page text. Quote the exact prices you find.
 
 Raw text:
-${pageText.slice(0, 12_000)}
+${pageText.slice(0, 25_000)}
 
 Extracted data:
 ${modelsJson}`;
   } else {
-    userPrompt = `Verify these extracted prices against the raw page text.\n\nRaw text:\n${pageText.slice(0, 12_000)}\n\nExtracted data:\n${modelsJson}`;
+    userPrompt = `Verify these extracted prices against the raw page text.\n\nRaw text:\n${pageText.slice(0, 25_000)}\n\nExtracted data:\n${modelsJson}`;
   }
 
   // Initial run: all agents in parallel
@@ -92,7 +92,7 @@ ${modelsJson}`;
     await Promise.all(
       needsRetry.map(async ({ idx, missingIds }) => {
         const state = agentStates[idx]!;
-        const retryPrompt = `You previously verified some models but MISSED the following. Verify ONLY these model IDs against the raw page text. Return a JSON array of verdicts.\n\nMissing model IDs: ${JSON.stringify(missingIds)}\n\nRaw text:\n${pageText.slice(0, 12_000)}\n\nExtracted data:\n${modelsJson}`;
+        const retryPrompt = `You previously verified some models but MISSED the following. Verify ONLY these model IDs against the raw page text. Return a JSON array of verdicts.\n\nMissing model IDs: ${JSON.stringify(missingIds)}\n\nRaw text:\n${pageText.slice(0, 25_000)}\n\nExtracted data:\n${modelsJson}`;
 
         try {
           const result = await runAgent(state.agent, systemPrompt, retryPrompt, operation);
@@ -176,7 +176,7 @@ ALL PREVIOUS REVIEWER VERDICTS:
 ${disagreementContext}
 
 Raw text:
-${pageText.slice(0, 12_000)}
+${pageText.slice(0, 25_000)}
 
 Extracted data:
 ${modelsJson}

@@ -2,7 +2,10 @@ const MAX_TEXT_LENGTH = 30_000;
 
 export async function fetchPricingPage(url: string): Promise<string> {
   const res = await fetch(url, {
-    headers: { 'User-Agent': 'PriceToken/1.0 (https://pricetoken.ai)' },
+    headers: {
+      'User-Agent': 'PriceToken/1.0 (https://pricetoken.ai)',
+      'Accept-Language': 'en-US,en;q=0.9',
+    },
     signal: AbortSignal.timeout(15_000),
   });
 
@@ -24,6 +27,7 @@ export async function fetchPricingPageWithBrowser(url: string): Promise<string> 
   try {
     const page = await browser.newPage();
     await page.setUserAgent('PriceToken/1.0 (https://pricetoken.ai)');
+    await page.setExtraHTTPHeaders({ 'Accept-Language': 'en-US,en;q=0.9' });
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 90_000 });
     await new Promise((r) => setTimeout(r, 2_000));
     const html = await page.content();

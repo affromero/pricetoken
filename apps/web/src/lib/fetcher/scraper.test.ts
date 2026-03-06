@@ -4,6 +4,7 @@ import { fetchPricingPage, fetchPricingPageWithBrowser, stripHtml } from './scra
 vi.mock('puppeteer-core', () => {
   const mockPage = {
     setUserAgent: vi.fn(),
+    setExtraHTTPHeaders: vi.fn(),
     goto: vi.fn(),
     content: vi.fn().mockResolvedValue('<html><body><p>Model pricing $5.00</p></body></html>'),
   };
@@ -54,6 +55,7 @@ describe('fetchPricingPageWithBrowser', () => {
     const puppeteer = await import('puppeteer-core');
     const mockPage = {
       setUserAgent: vi.fn(),
+      setExtraHTTPHeaders: vi.fn(),
       goto: vi.fn().mockRejectedValue(new Error('timeout')),
       content: vi.fn(),
     };
