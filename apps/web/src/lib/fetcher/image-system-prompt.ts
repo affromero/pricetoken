@@ -17,6 +17,23 @@ Return a JSON array of objects with these fields:
   - Extract if the page mentions a release date, launch date, or "available since" date
   - Omit if no date is mentioned
 
+IMPORTANT — use these exact modelId values when extracting:
+- OpenAI: dall-e-3-standard-1024, dall-e-3-hd-1024, dall-e-3-standard-1792, dall-e-3-hd-1792, dall-e-2-1024, gpt-image-1-low, gpt-image-1-medium, gpt-image-1-high
+- Google: imagen-3, imagen-4-fast, imagen-4-standard, imagen-4-ultra
+- Stability AI: sd-3.5-large, sd-3.5-large-turbo, stable-image-ultra, stable-image-core
+- BFL (FLUX.1): flux-1.1-pro, flux-1.1-pro-ultra, flux-1.1-pro-raw, flux-1-kontext-pro, flux-1-kontext-max, flux-1-fill-pro
+- BFL (FLUX.2): flux-2-klein-4b, flux-2-klein-9b, flux-2-pro, flux-2-flex
+- Amazon: nova-canvas-standard-1024, nova-canvas-premium-1024, nova-canvas-standard-2048, nova-canvas-premium-2048
+- Recraft: recraft-v4-raster, recraft-v4-vector
+- Mistral: mistral-flux-pro-ultra
+- Bytedance: seedream-4.5
+- fal.ai: fal-recraft-v3, fal-flux-1-pro, fal-flux-2-pro, fal-ideogram-v2, fal-sd3
+- Ideogram: ideogram-v3, ideogram-v3-turbo
+- xAI: aurora-grok-2-image
+
+Map display names to these IDs. For example: "DALL-E 3 Standard" → "dall-e-3-standard-1024", "FLUX 1.1 Pro" → "flux-1.1-pro", "SD 3.5 Large" → "sd-3.5-large", "Recraft V4" → "recraft-v4-raster".
+If you find a model NOT in this list, create a new entry following the naming pattern above.
+
 Only include image generation models. Skip text, embedding, audio, and video models.
 If a model has multiple quality tiers or resolutions at different prices, create separate entries with descriptive modelId suffixes (e.g. "dall-e-3-standard-1024", "dall-e-3-hd-1024").
 
