@@ -20,6 +20,10 @@ const IMAGE_MAX_PRICE = 5.0; // No image model exceeds $5/image
 const VIDEO_MIN_PRICE = 0.10; // Cheapest ~$1/min
 const VIDEO_MAX_PRICE = 100; // Most expensive ~$30/min, leave headroom
 
+/** Avatar model pricing bounds (USD per minute) */
+const AVATAR_MIN_PRICE = 0.10; // Cheapest ~$0.99/min
+const AVATAR_MAX_PRICE = 50; // Most expensive ~$6/min, leave headroom
+
 export function checkTextPriceSanity(
   modelId: string,
   inputPerMTok: number,
@@ -71,6 +75,22 @@ export function checkVideoPriceSanity(
   }
   if (costPerMinute < VIDEO_MIN_PRICE) {
     return { valid: false, reason: `${modelId}: cost $${costPerMinute}/min below min $${VIDEO_MIN_PRICE}` };
+  }
+  return { valid: true };
+}
+
+export function checkAvatarPriceSanity(
+  modelId: string,
+  costPerMinute: number
+): SanityCheckResult {
+  if (costPerMinute <= 0) {
+    return { valid: false, reason: `${modelId}: cost must be positive ($${costPerMinute}/min)` };
+  }
+  if (costPerMinute > AVATAR_MAX_PRICE) {
+    return { valid: false, reason: `${modelId}: cost $${costPerMinute}/min exceeds max $${AVATAR_MAX_PRICE}` };
+  }
+  if (costPerMinute < AVATAR_MIN_PRICE) {
+    return { valid: false, reason: `${modelId}: cost $${costPerMinute}/min below min $${AVATAR_MIN_PRICE}` };
   }
   return { valid: true };
 }

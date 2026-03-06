@@ -3,6 +3,7 @@ import {
   checkTextPriceSanity,
   checkImagePriceSanity,
   checkVideoPriceSanity,
+  checkAvatarPriceSanity,
 } from './sanity-bounds';
 
 describe('checkTextPriceSanity', () => {
@@ -73,5 +74,23 @@ describe('checkVideoPriceSanity', () => {
 
   it('rejects cost below min', () => {
     expect(checkVideoPriceSanity('test', 0.01).valid).toBe(false);
+  });
+});
+
+describe('checkAvatarPriceSanity', () => {
+  it('accepts valid avatar pricing', () => {
+    expect(checkAvatarPriceSanity('heygen-avatar-standard', 0.99).valid).toBe(true);
+  });
+
+  it('rejects zero cost', () => {
+    expect(checkAvatarPriceSanity('test', 0).valid).toBe(false);
+  });
+
+  it('rejects cost above max', () => {
+    expect(checkAvatarPriceSanity('test', 60).valid).toBe(false);
+  });
+
+  it('rejects cost below min', () => {
+    expect(checkAvatarPriceSanity('test', 0.01).valid).toBe(false);
   });
 });
