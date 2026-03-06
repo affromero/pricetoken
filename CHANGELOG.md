@@ -1,5 +1,43 @@
 # Changelog
 
+## [0.9.0] - 2026-03-06
+
+### Added
+- **Avatar AI pricing module** — HeyGen API pricing with 3 models (Standard Avatar, Interactive Avatar IV, Video Translation) tracked at cost-per-minute granularity
+  - `AvatarPricingSnapshot` Prisma model, avatar SDK types, static seed data, and cost functions
+  - Avatar provider registry + LLM extraction pipeline with 3-tier verification
+  - `/api/v1/avatar/*` routes (all, single, cheapest, compare, history, providers)
+  - Avatar cost calculator, comparison, price history pages, and non-API provider directory cards
+  - SDK client methods: `getAvatarPricing()`, `getAvatarModel()`, `compareAvatarModels()`, etc.
+  - Navigation entries, docs, homepage card, and sitemap entries
+  - Avatar seed and cron scripts added to sequential runner
+- Avatar test coverage for both npm and Python SDKs (cost calculation + client methods)
+- Sequential cron runner script for orchestrating text, image, video, and avatar fetch pipelines
+- Conference-style 3-tier verification (reviewers, area chair, general chair) for pricing extraction
+- `launchDate` extraction from provider pricing pages
+- Re-verification for flagged models before giving up
+- GPT-5.4 text models and LTX video provider
+- Disabled 3D/World modality card with "coming soon" provider section
+- Image pricing cron endpoint
+- GitHub Release creation on version tags
+
+### Fixed
+- `maxDuration` required and verified for all video models
+- Provider URLs and extraction prompts updated for reliable extraction
+- Model ID constraints added to video and image extraction prompts
+- Extraction-layer failures fixed with re-verification and `launchDate` extraction
+- Scraper text limit increased to 30k, browser timeout to 90s, AI max tokens to 8192
+- Verification consensus and verdict parsing improved
+- Image/video carry-forward preserves `launchDate` in snapshots
+- Docker deploy: wait for Postgres, retry Prisma migrations on DNS failures, OAuth for Claude CLI
+- Providers already verified today skipped on re-run
+- Amazon and Mistral providers removed
+- Unknown model IDs filtered in image/video pipelines
+
+### Changed
+- Verification text bumped to 25k with `Accept-Language` header for consistent extraction
+- Health endpoint reads version from `package.json` at build time
+
 ## [0.8.0] - 2026-03-05
 
 ### Added
