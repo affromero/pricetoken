@@ -27,6 +27,7 @@ export function NavLinks({ isAdmin }: NavLinksProps) {
   const isText = pathname === '/' || pathname === '/calculator' || pathname === '/compare' || pathname === '/history';
   const isImage = pathname.startsWith('/image');
   const isVideo = pathname.startsWith('/video');
+  const isAvatar = pathname.startsWith('/avatar');
   const isDocs = pathname === '/docs';
 
   return (
@@ -50,6 +51,9 @@ export function NavLinks({ isAdmin }: NavLinksProps) {
         </Link>
         <Link href="/video" className={`${styles.link} ${isVideo ? styles.linkActive : ''}`} onClick={close}>
           Video
+        </Link>
+        <Link href="/avatar" className={`${styles.link} ${isAvatar ? styles.linkActive : ''}`} onClick={close}>
+          Avatar
         </Link>
         <Link href="/docs" className={`${styles.link} ${isDocs ? styles.linkActive : ''}`} onClick={close}>
           Docs

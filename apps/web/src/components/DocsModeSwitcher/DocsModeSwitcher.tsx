@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import styles from './DocsModeSwitcher.module.css';
 
-type Modality = 'text' | 'image' | 'video';
+type Modality = 'text' | 'image' | 'video' | 'avatar';
 
 interface Tab {
   id: Modality;
@@ -46,21 +46,33 @@ const TABS: Tab[] = [
       </svg>
     ),
   },
+  {
+    id: 'avatar',
+    label: 'Avatar',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+    ),
+  },
 ];
 
 interface DocsModeSwitcherProps {
   textContent: React.ReactNode;
   imageContent: React.ReactNode;
   videoContent: React.ReactNode;
+  avatarContent: React.ReactNode;
 }
 
-export function DocsModeSwitcher({ textContent, imageContent, videoContent }: DocsModeSwitcherProps) {
+export function DocsModeSwitcher({ textContent, imageContent, videoContent, avatarContent }: DocsModeSwitcherProps) {
   const [active, setActive] = useState<Modality>('text');
 
   const contentMap: Record<Modality, React.ReactNode> = {
     text: textContent,
     image: imageContent,
     video: videoContent,
+    avatar: avatarContent,
   };
 
   return (

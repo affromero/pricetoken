@@ -87,6 +87,35 @@ cheapest = client.get_cheapest_video_model()
 cost = calculate_video_cost("runway-gen4-720p", 7.2, 30)
 print(cost.total_cost)  # 3.6 for 30 seconds`;
 
+const avatarCurlExample = `# All avatar models
+curl https://pricetoken.ai/api/v1/avatar
+
+# Single avatar model
+curl https://pricetoken.ai/api/v1/avatar/heygen-avatar-standard
+
+# Cheapest avatar model
+curl https://pricetoken.ai/api/v1/avatar/cheapest`;
+
+const avatarJsExample = `import { PriceTokenClient, calculateAvatarCost } from 'pricetoken';
+
+const client = new PriceTokenClient();
+const models = await client.getAvatarPricing();
+const cheapest = await client.getCheapestAvatarModel();
+
+// Offline cost calculation
+const cost = calculateAvatarCost('heygen-avatar-standard', 0.99, 60);
+console.log(cost.totalCost); // $0.99 for 1 minute`;
+
+const avatarPyExample = `from pricetoken import PriceTokenClient, calculate_avatar_cost
+
+client = PriceTokenClient()
+models = client.get_avatar_pricing()
+cheapest = client.get_cheapest_avatar_model()
+
+# Offline cost calculation
+cost = calculate_avatar_cost("heygen-avatar-standard", 0.99, 60)
+print(cost.total_cost)  # 0.99 for 1 minute`;
+
 const costExample = `import { calculateModelCost } from 'pricetoken';
 
 const cost = calculateModelCost(
@@ -291,6 +320,54 @@ export default function DocsPage() {
                     method="GET"
                     path="/api/v1/video/cheapest"
                     description="Cheapest video model overall or per provider. Params: ?provider=x&currency=EUR"
+                  />
+                </div>
+              </>
+            }
+            avatarContent={
+              <>
+                <p className={styles.text}>
+                  Per-minute pricing for AI avatar and talking-head APIs. Uses{' '}
+                  <code>costPerMinute</code> with an additional <code>avatarType</code> field
+                  (standard, premium, translation, streaming).
+                </p>
+                <CodeBlock
+                  tabs={[
+                    { label: 'curl', code: avatarCurlExample },
+                    { label: 'JavaScript', code: avatarJsExample },
+                    { label: 'Python', code: avatarPyExample },
+                  ]}
+                />
+                <div className={styles.endpoints}>
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/avatar"
+                    description="Current pricing for all avatar models. Params: ?provider=heygen&currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/avatar/:modelId"
+                    description="Single avatar model pricing. Param: ?currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/avatar/history"
+                    description="Historical avatar pricing data. Params: ?days=30&modelId=x&provider=y"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/avatar/providers"
+                    description="Avatar provider list with model counts and cheapest prices."
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/avatar/compare"
+                    description="Side-by-side avatar model comparison. Params: ?models=a,b,c (max 10)&currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/avatar/cheapest"
+                    description="Cheapest avatar model overall or per provider. Params: ?provider=x&currency=EUR"
                   />
                 </div>
               </>
