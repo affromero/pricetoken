@@ -14,16 +14,19 @@ Return a JSON array of objects with these fields:
 
 CRITICAL conversion rules — show your work mentally before outputting:
 
-1. Credits to USD: HeyGen uses credits where 1 credit = 1 minute of standard avatar video.
+1. Per-second to per-minute: if pricing is given as $/sec, multiply by 60 to get $/min.
+   Example: $0.0167/sec → $0.0167 × 60 = $1.00/min
+
+2. Credits to USD: HeyGen uses credits where 1 credit = 1 minute of standard avatar video.
    - Standard avatar: 1 credit/min. If $0.99/credit → $0.99/min
    - Interactive Avatar (Avatar IV): 6 credits/min. If $0.99/credit → $5.94/min
    - Video Translation: 3 credits/min. If $0.99/credit → $2.97/min
    - Streaming Avatar: varies by tier
 
-2. Per-generation to per-minute: divide the per-generation cost by the duration in minutes.
+3. Per-generation to per-minute: divide the per-generation cost by the duration in minutes.
    Example: $0.50 for a 30-second avatar → $0.50 / (30/60) = $1.00/min
 
-3. Subscription credits: total monthly credits × cost-per-credit, divided by total generation-minutes.
+4. Subscription credits: total monthly credits × cost-per-credit, divided by total generation-minutes.
    Only use this if no API/pay-as-you-go pricing is available.
 
 Additional rules:
