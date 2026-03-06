@@ -109,7 +109,7 @@ function parseVideoModels(text: string, pricingProvider: string): ExtractedVideo
         return m;
       });
   } catch {
-    console.warn(`Failed to parse video pricing extraction for ${pricingProvider}:`, text.slice(0, 200));
+    console.warn(`Failed to parse video pricing extraction for ${pricingProvider}:`, text.slice(0, 500));
     return [];
   }
 }

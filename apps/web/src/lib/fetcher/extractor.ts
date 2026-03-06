@@ -111,7 +111,7 @@ function parseModels(text: string, pricingProvider: string): ExtractedModel[] {
         return m;
       });
   } catch {
-    console.warn(`Failed to parse pricing extraction for ${pricingProvider}:`, text.slice(0, 200));
+    console.warn(`Failed to parse pricing extraction for ${pricingProvider}:`, text.slice(0, 500));
     return [];
   }
 }

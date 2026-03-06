@@ -99,7 +99,7 @@ export function parseImageModels(text: string, pricingProvider: string): Extract
         return m;
       });
   } catch {
-    console.warn(`Failed to parse image pricing extraction for ${pricingProvider}:`, text.slice(0, 200));
+    console.warn(`Failed to parse image pricing extraction for ${pricingProvider}:`, text.slice(0, 500));
     return [];
   }
 }
