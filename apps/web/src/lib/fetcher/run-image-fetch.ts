@@ -5,6 +5,7 @@ import {
   saveImageSnapshots,
   seedImageFromStatic,
   carryForwardMissingImages,
+  getKnownImageModelIds,
 } from './image-store';
 import { saveFetchRun, getLastFetchRun, type FetchWarning } from './store';
 import { imageCrossVerify } from './image-cross-verify';
@@ -26,6 +27,8 @@ export interface ImageFetchResult {
 
 export async function runImagePricingFetch(): Promise<ImageFetchResult> {
   await seedImageFromStatic();
+
+  const knownIds = await getKnownImageModelIds();
 
   let totalModels = 0;
   let totalFlagged = 0;
@@ -54,8 +57,26 @@ export async function runImagePricingFetch(): Promise<ImageFetchResult> {
         continue;
       }
 
+      // Filter out unknown modelIds (AI hallucinations)
+      const knownModels = extraction.models.filter((m) => knownIds.has(m.modelId));
+      const unknownCount = extraction.models.length - knownModels.length;
+      if (unknownCount > 0) {
+        const unknownIds = extraction.models
+          .filter((m) => !knownIds.has(m.modelId))
+          .map((m) => m.modelId);
+        console.warn(
+          `${config.displayName}: filtered out ${unknownCount} unknown image model(s): ${unknownIds.join(', ')}`
+        );
+      }
+
+      if (knownModels.length === 0) {
+        errors.push(`${config.displayName}: no known image models extracted`);
+        await saveFetchRun(logProvider, [], [], [], 0, 'no known image models extracted');
+        continue;
+      }
+
       // Sanity check — reject obviously wrong prices before verification
-      const saneModels = extraction.models.filter((m) => {
+      const saneModels = knownModels.filter((m) => {
         const check = checkImagePriceSanity(m.modelId, m.pricePerImage);
         if (!check.valid) {
           console.warn(`Sanity check failed for ${m.modelId}: ${check.reason}`);

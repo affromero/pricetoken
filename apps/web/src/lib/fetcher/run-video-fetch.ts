@@ -6,6 +6,7 @@ import {
   saveVideoSnapshots,
   seedVideoFromStatic,
   carryForwardMissingVideo,
+  getKnownVideoModelIds,
 } from './video-store';
 import { getLastFetchRun, saveFetchRun, type FetchWarning } from './store';
 import { videoCrossVerify } from './video-cross-verify';
@@ -27,6 +28,8 @@ export interface VideoFetchResult {
 
 export async function runVideoFetch(): Promise<VideoFetchResult> {
   await seedVideoFromStatic(STATIC_VIDEO_PRICING);
+
+  const knownIds = await getKnownVideoModelIds();
 
   let totalModels = 0;
   let totalFlagged = 0;
@@ -54,8 +57,26 @@ export async function runVideoFetch(): Promise<VideoFetchResult> {
         continue;
       }
 
+      // Filter out unknown modelIds (AI hallucinations)
+      const knownModels = extraction.models.filter((m) => knownIds.has(m.modelId));
+      const unknownCount = extraction.models.length - knownModels.length;
+      if (unknownCount > 0) {
+        const unknownIds = extraction.models
+          .filter((m) => !knownIds.has(m.modelId))
+          .map((m) => m.modelId);
+        console.warn(
+          `${config.displayName}: filtered out ${unknownCount} unknown video model(s): ${unknownIds.join(', ')}`
+        );
+      }
+
+      if (knownModels.length === 0) {
+        errors.push(`${config.displayName}: no known video models extracted`);
+        await saveFetchRun(providerId, [], [], [], 0, 'no known video models extracted');
+        continue;
+      }
+
       // Sanity check — reject obviously wrong prices before verification
-      const saneModels = extraction.models.filter((m) => {
+      const saneModels = knownModels.filter((m) => {
         const check = checkVideoPriceSanity(m.modelId, m.costPerMinute);
         if (!check.valid) {
           console.warn(`Sanity check failed for ${m.modelId}: ${check.reason}`);

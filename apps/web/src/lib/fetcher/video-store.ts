@@ -268,3 +268,15 @@ export async function carryForwardMissingVideo(): Promise<number> {
   const result = await prisma.videoPricingSnapshot.createMany({ data });
   return result.count;
 }
+
+export async function getKnownVideoModelIds(): Promise<Set<string>> {
+  const { STATIC_VIDEO_PRICING } = await import('pricetoken');
+  const staticIds = STATIC_VIDEO_PRICING.map((m) => m.modelId);
+  const dbIds = (
+    await prisma.videoPricingSnapshot.findMany({
+      distinct: ['modelId'],
+      select: { modelId: true },
+    })
+  ).map((r: { modelId: string }) => r.modelId);
+  return new Set([...staticIds, ...dbIds]);
+}

@@ -287,3 +287,15 @@ export async function carryForwardMissingImages(): Promise<number> {
   const result = await prisma.imagePricingSnapshot.createMany({ data });
   return result.count;
 }
+
+export async function getKnownImageModelIds(): Promise<Set<string>> {
+  const { STATIC_IMAGE_PRICING } = await import('pricetoken');
+  const staticIds = STATIC_IMAGE_PRICING.map((m) => m.modelId);
+  const dbIds = (
+    await prisma.imagePricingSnapshot.findMany({
+      distinct: ['modelId'],
+      select: { modelId: true },
+    })
+  ).map((r: { modelId: string }) => r.modelId);
+  return new Set([...staticIds, ...dbIds]);
+}
