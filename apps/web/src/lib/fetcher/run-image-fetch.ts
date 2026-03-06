@@ -101,8 +101,10 @@ export async function runImagePricingFetch(): Promise<ImageFetchResult> {
 
         if (retryConsensus.flagged.length > 0) {
           totalFlagged += retryConsensus.flagged.length;
+          const stillFlagged = retryConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+          await saveImageSnapshots(providerId, stillFlagged, 'flagged', 'low', retryAgentResults.length);
           console.warn(
-            `${config.displayName}: ${retryConsensus.flagged.length} image model(s) still flagged after re-verification:`,
+            `${config.displayName}: ${retryConsensus.flagged.length} image model(s) still flagged after re-verification (saved to DB):`,
             retryConsensus.flagged.map((m) => m.modelId)
           );
         }
