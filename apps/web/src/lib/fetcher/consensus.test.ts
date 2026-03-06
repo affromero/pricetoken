@@ -177,16 +177,52 @@ describe('buildConsensus', () => {
     expect(result.flagged).toHaveLength(1);
   });
 
-  it('handles agent that did not vote on a model', () => {
+  it('handles agent that did not vote on a model (counts only voting agents)', () => {
     const models = [makeModel('gpt-4.1')];
     const agents = [
       makeAgent('anthropic', [{ modelId: 'gpt-4.1', approved: true }]),
       makeAgent('openai', [{ modelId: 'gpt-4.1', approved: true }]),
-      makeAgent('google', []), // no verdict for this model
+      makeAgent('google', []), // no verdict — abstention, not rejection
     ];
 
     const result = buildConsensus(models, agents, []);
     expect(result.approved).toHaveLength(1);
     expect(result.approved[0]!.agentApprovals).toBe(2);
+  });
+
+  it('approves when only 1 of 3 agents returns a verdict and approves', () => {
+    const models = [makeModel('gpt-4.1')];
+    const agents = [
+      makeAgent('anthropic', [{ modelId: 'gpt-4.1', approved: true }]),
+      makeAgent('openai', []), // truncated output
+      makeAgent('google', []), // truncated output
+    ];
+
+    const result = buildConsensus(models, agents, []);
+    expect(result.approved).toHaveLength(1);
+  });
+
+  it('flags when only 1 of 3 agents returns a verdict and rejects', () => {
+    const models = [makeModel('gpt-4.1')];
+    const agents = [
+      makeAgent('anthropic', [{ modelId: 'gpt-4.1', approved: false }]),
+      makeAgent('openai', []),
+      makeAgent('google', []),
+    ];
+
+    const result = buildConsensus(models, agents, []);
+    expect(result.flagged).toHaveLength(1);
+  });
+
+  it('flags when no agent returns a verdict for a model', () => {
+    const models = [makeModel('gpt-4.1')];
+    const agents = [
+      makeAgent('anthropic', []),
+      makeAgent('openai', []),
+      makeAgent('google', []),
+    ];
+
+    const result = buildConsensus(models, agents, []);
+    expect(result.flagged).toHaveLength(1);
   });
 });
