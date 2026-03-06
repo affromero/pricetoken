@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.10.0] - 2026-03-06
+
+### Added
+- **Text-to-Speech (TTS) pricing module** — 13 models from 7 providers (OpenAI, Google Cloud, Amazon Polly, Azure, ElevenLabs, Deepgram, PlayHT) tracked at cost per million characters
+  - `TtsPricingSnapshot` Prisma model, SDK types (`TtsModelPricing`, `TtsCostEstimate`, etc.), static seed data, and cost functions
+  - TTS provider registry + LLM extraction pipeline with 3-tier verification
+  - `/api/v1/tts/*` routes (all, single, cheapest, compare, history, providers) with `after`/`before` date filtering
+  - TTS pricing table, cost calculator, model comparison, and price history pages
+  - SDK client methods: `getTtsPricing()`, `getTtsModel()`, `compareTtsModels()`, `getCheapestTtsModel()`, etc.
+- **Speech-to-Text (STT) pricing module** — 10 models from 5 providers (OpenAI, Deepgram, AssemblyAI, Google Cloud, Azure) tracked at cost per minute
+  - `SttPricingSnapshot` Prisma model, SDK types (`SttModelPricing`, `SttCostEstimate`, etc.), static seed data, and cost functions
+  - STT provider registry + LLM extraction pipeline with 3-tier verification
+  - `/api/v1/stt/*` routes (all, single, cheapest, compare, history, providers) with `after`/`before` date filtering
+  - STT pricing table, cost calculator, model comparison, and price history pages
+  - SDK client methods: `getSttPricing()`, `getSttModel()`, `compareSttModels()`, `getCheapestSttModel()`, etc.
+- TTS and STT support in both npm and Python SDKs (types, static data, cost functions, client methods, tests)
+- Navigation links, docs tab switcher (6 tabs), homepage modality cards, and sitemap entries for TTS and STT
+- TTS and STT seed scripts, fetch scripts, and cron endpoints added to sequential runner
+- Sanity bounds: TTS $0.50–$500/M chars, STT $0.0005–$1.00/min
+- Launch date filter tests for TTS and STT route endpoints
+
+### Fixed
+- HeyGen avatar scraper switched to docs.heygen.com reference page
+- Launch date fallback to static data for all store layers
+
 ## [0.9.0] - 2026-03-06
 
 ### Added
