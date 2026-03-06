@@ -7,14 +7,12 @@ export interface ImageProviderConfig {
 
 export const IMAGE_PRICING_PROVIDERS: Record<string, ImageProviderConfig> = {
   openai: {
-    url: 'https://platform.openai.com/docs/guides/images',
+    url: 'https://developers.openai.com/api/docs/pricing',
     displayName: 'OpenAI',
-    requiresBrowser: true,
   },
   google: {
-    url: 'https://cloud.google.com/vertex-ai/generative-ai/docs/image/generate-images',
+    url: 'https://ai.google.dev/gemini-api/docs/pricing',
     displayName: 'Google',
-    requiresBrowser: true,
   },
   stability: {
     url: 'https://platform.stability.ai/pricing',
@@ -31,14 +29,8 @@ export const IMAGE_PRICING_PROVIDERS: Record<string, ImageProviderConfig> = {
     requiresBrowser: true,
   },
   recraft: {
-    url: 'https://www.recraft.ai/pricing',
+    url: 'https://www.recraft.ai/docs/api-reference/pricing',
     displayName: 'Recraft',
-    requiresBrowser: true,
-  },
-  mistral: {
-    url: 'https://mistral.ai/pricing',
-    displayName: 'Mistral',
-    requiresBrowser: true,
   },
   bytedance: {
     url: 'https://www.volcengine.com/product/doubao',
@@ -51,9 +43,8 @@ export const IMAGE_PRICING_PROVIDERS: Record<string, ImageProviderConfig> = {
     requiresBrowser: true,
   },
   ideogram: {
-    url: 'https://ideogram.ai/pricing',
+    url: 'https://docs.ideogram.ai/plans-and-pricing/available-plans',
     displayName: 'Ideogram',
-    requiresBrowser: true,
   },
   xai: {
     url: 'https://docs.x.ai/docs/models',

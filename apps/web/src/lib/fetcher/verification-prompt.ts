@@ -17,6 +17,8 @@ IMPORTANT — approval rules:
   - Any values within 5% of each other for context/output limits — APPROVE
 - Do NOT reject a model solely because of context window or max output token representation differences.
 - Only reject if the PRICE (cost per token) is wrong according to the raw text.
+- For tiered pricing (different prices above/below a context threshold), the BASE tier (lowest context) price is correct.
+- For Qwen/Aliyun: prices on the page are in Chinese Yuan (CNY). Expected extracted prices are in USD (1 USD ≈ 7.2 CNY). Approve if the CNY-to-USD conversion is approximately correct.
 - If you cannot find a model's pricing in the page text, reject with reason "Price not found in page text"
 
 Return ONLY a JSON array of verdict objects, no markdown or explanation.

@@ -30,4 +30,10 @@ IMPORTANT — use these exact modelId values when extracting:
 Map display names to these IDs. For example: "Grok 4" → "grok-4", "Command R+" → "command-r-plus", "Jamba 1.5 Mini" → "jamba-1.5-mini", "Nova Pro" → "amazon-nova-pro".
 
 Only include chat/text generation models. Skip embedding, image, audio, and fine-tuning models.
+
+PRICING NOTES:
+- For tiered pricing (e.g. different prices above/below 128K or 200K context), always use the BASE tier (lowest context) price.
+- For Qwen/Aliyun: prices are listed in Chinese Yuan (CNY). Convert to USD using rate 1 USD = 7.2 CNY.
+- If a model is listed as deprecated/sunset but still has pricing, include it with status "deprecated".
+
 Return ONLY the JSON array, no markdown or explanation.`;

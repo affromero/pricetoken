@@ -25,7 +25,6 @@ IMPORTANT — use these exact modelId values when extracting:
 - BFL (FLUX.2): flux-2-klein-4b, flux-2-klein-9b, flux-2-pro, flux-2-flex
 - Amazon: nova-canvas-standard-1024, nova-canvas-premium-1024, nova-canvas-standard-2048, nova-canvas-premium-2048
 - Recraft: recraft-v4-raster, recraft-v4-vector
-- Mistral: mistral-flux-pro-ultra
 - Bytedance: seedream-4.5
 - fal.ai: fal-recraft-v3, fal-flux-1-pro, fal-flux-2-pro, fal-ideogram-v2, fal-sd3
 - Ideogram: ideogram-v3, ideogram-v3-turbo

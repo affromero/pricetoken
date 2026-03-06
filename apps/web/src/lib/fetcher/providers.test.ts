@@ -104,14 +104,16 @@ describe('VIDEO_PROVIDERS', () => {
     }
   });
 
-  it('veo does not require browser scraping', () => {
-    expect(VIDEO_PROVIDERS.veo!.requiresBrowser).toBeUndefined();
-  });
-
   it('most video providers require browser scraping', () => {
-    const browserProviders = ['runway', 'sora', 'pika', 'kling', 'luma', 'minimax', 'seedance', 'fal'];
+    const browserProviders = ['runway', 'pika', 'kling', 'minimax', 'seedance', 'fal'];
     for (const id of browserProviders) {
       expect(VIDEO_PROVIDERS[id]!.requiresBrowser).toBe(true);
     }
+  });
+
+  it('sora, veo, luma do not require browser scraping', () => {
+    expect(VIDEO_PROVIDERS.sora!.requiresBrowser).toBeUndefined();
+    expect(VIDEO_PROVIDERS.veo!.requiresBrowser).toBeUndefined();
+    expect(VIDEO_PROVIDERS.luma!.requiresBrowser).toBeUndefined();
   });
 });
