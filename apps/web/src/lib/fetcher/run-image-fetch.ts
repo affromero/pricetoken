@@ -11,6 +11,9 @@ import { imageCrossVerify } from './image-cross-verify';
 import { checkImagePriorConsistency } from './image-prior-check';
 import { buildImageConsensus } from './image-consensus';
 import { checkImagePriceSanity } from './sanity-bounds';
+import { IMAGE_VERIFICATION_SYSTEM_PROMPT } from './image-verification-prompt';
+import { arbitrate } from './verify-with-retry';
+import { getFetcherConfig, parseArbitratorAgent } from '@/lib/fetcher-config';
 import type { ImageVerificationResult } from './image-verification-types';
 
 export interface ImageFetchResult {
@@ -86,27 +89,74 @@ export async function runImagePricingFetch(): Promise<ImageFetchResult> {
         console.log(`${config.displayName}: saved ${saved} verified image models`);
       }
 
-      // Re-verify flagged models with a second round of cross-verification
+      // Tier 2 — Area Chair: re-verify flagged models with reviewer disagreement context
       if (consensus.flagged.length > 0) {
-        console.log(`${config.displayName}: re-verifying ${consensus.flagged.length} flagged image model(s)...`);
+        console.log(`${config.displayName}: area chair re-verifying ${consensus.flagged.length} flagged image model(s)...`);
         const flaggedModels = consensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
-        const retryAgentResults = await imageCrossVerify(pageText, flaggedModels);
+        const retryAgentResults = await imageCrossVerify(pageText, flaggedModels, agentResults);
         const retryConsensus = buildImageConsensus(flaggedModels, retryAgentResults, []);
 
         if (retryConsensus.approved.length > 0) {
           const saved = await saveImageSnapshots(providerId, retryConsensus.approved, 'verified', 'low', retryAgentResults.length);
           totalModels += saved;
-          console.log(`${config.displayName}: ${saved} flagged image model(s) passed re-verification (low confidence)`);
+          console.log(`${config.displayName}: ${saved} flagged image model(s) passed area chair review (low confidence)`);
         }
 
+        // Tier 3 — General Chair: arbitrate still-flagged models
         if (retryConsensus.flagged.length > 0) {
-          totalFlagged += retryConsensus.flagged.length;
-          const stillFlagged = retryConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
-          await saveImageSnapshots(providerId, stillFlagged, 'flagged', 'low', retryAgentResults.length);
-          console.warn(
-            `${config.displayName}: ${retryConsensus.flagged.length} image model(s) still flagged after re-verification (saved to DB):`,
-            retryConsensus.flagged.map((m) => m.modelId)
-          );
+          const fetcherConfig = await getFetcherConfig();
+          const arbitrator = parseArbitratorAgent(fetcherConfig);
+
+          if (arbitrator) {
+            const stillFlaggedModels = retryConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+            const allPriorVerdicts = [...agentResults, ...retryAgentResults];
+            const arbResult = await arbitrate({
+              arbitrator,
+              systemPrompt: IMAGE_VERIFICATION_SYSTEM_PROMPT,
+              modelIds: stillFlaggedModels.map((m) => m.modelId),
+              operation: 'image_verification',
+              label: `Image/${config.displayName}`,
+              pageText,
+              modelsJson: JSON.stringify(stillFlaggedModels, null, 2),
+              allPriorVerdicts,
+            });
+
+            if (arbResult) {
+              const arbConsensus = buildImageConsensus(stillFlaggedModels, [arbResult], []);
+
+              if (arbConsensus.approved.length > 0) {
+                const saved = await saveImageSnapshots(providerId, arbConsensus.approved, 'verified', 'low', 1);
+                totalModels += saved;
+                console.log(`${config.displayName}: ${saved} image model(s) approved by general chair`);
+              }
+
+              if (arbConsensus.flagged.length > 0) {
+                totalFlagged += arbConsensus.flagged.length;
+                const finalFlagged = arbConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+                await saveImageSnapshots(providerId, finalFlagged, 'flagged', 'low', 1);
+                console.warn(
+                  `${config.displayName}: ${arbConsensus.flagged.length} image model(s) rejected by general chair (saved as flagged):`,
+                  arbConsensus.flagged.map((m) => m.modelId)
+                );
+              }
+            } else {
+              totalFlagged += retryConsensus.flagged.length;
+              const stillFlagged = retryConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+              await saveImageSnapshots(providerId, stillFlagged, 'flagged', 'low', retryAgentResults.length);
+              console.warn(
+                `${config.displayName}: ${retryConsensus.flagged.length} image model(s) still flagged (no arbitrator configured):`,
+                retryConsensus.flagged.map((m) => m.modelId)
+              );
+            }
+          } else {
+            totalFlagged += retryConsensus.flagged.length;
+            const stillFlagged = retryConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+            await saveImageSnapshots(providerId, stillFlagged, 'flagged', 'low', retryAgentResults.length);
+            console.warn(
+              `${config.displayName}: ${retryConsensus.flagged.length} image model(s) still flagged after area chair (no arbitrator configured):`,
+              retryConsensus.flagged.map((m) => m.modelId)
+            );
+          }
         }
       }
 

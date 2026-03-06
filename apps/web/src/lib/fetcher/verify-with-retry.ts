@@ -19,10 +19,12 @@ interface VerifyOptions {
   label: string;
   pageText: string;
   modelsJson: string;
+  /** Prior agent verdicts for area-chair context (re-verification sees reviewer disagreements) */
+  priorVerdicts?: AgentVerification[];
 }
 
 export async function verifyWithRetry(opts: VerifyOptions): Promise<AgentVerification[]> {
-  const { agents, systemPrompt, modelIds, operation, label, pageText, modelsJson } = opts;
+  const { agents, systemPrompt, modelIds, operation, label, pageText, modelsJson, priorVerdicts } = opts;
 
   const availableAgents = agents.filter((agent) => {
     const providerConfig = EXTRACTION_PROVIDERS[agent.provider];
@@ -36,7 +38,25 @@ export async function verifyWithRetry(opts: VerifyOptions): Promise<AgentVerific
     return [];
   }
 
-  const userPrompt = `Verify these extracted prices against the raw page text.\n\nRaw text:\n${pageText.slice(0, 12_000)}\n\nExtracted data:\n${modelsJson}`;
+  let userPrompt: string;
+  if (priorVerdicts && priorVerdicts.length > 0) {
+    // Area-chair mode: include reviewer disagreements so agents can arbitrate
+    const disagreementContext = formatDisagreements(priorVerdicts, modelIds);
+    userPrompt = `You are acting as an AREA CHAIR in a review process. Previous reviewers disagreed on some model prices. Review their arguments, check the raw page text yourself, and make your own independent judgment.
+
+PREVIOUS REVIEWER VERDICTS:
+${disagreementContext}
+
+Now verify these extracted prices against the raw page text. Quote the exact prices you find.
+
+Raw text:
+${pageText.slice(0, 12_000)}
+
+Extracted data:
+${modelsJson}`;
+  } else {
+    userPrompt = `Verify these extracted prices against the raw page text.\n\nRaw text:\n${pageText.slice(0, 12_000)}\n\nExtracted data:\n${modelsJson}`;
+  }
 
   // Initial run: all agents in parallel
   const agentStates = await Promise.all(
@@ -117,6 +137,84 @@ export async function verifyWithRetry(opts: VerifyOptions): Promise<AgentVerific
       verdicts: s.verdicts,
       usage: s.usage,
     }));
+}
+
+/**
+ * General Chair arbitration — a single strong agent makes the final call
+ * on models that reviewers and area chairs couldn't agree on.
+ */
+export async function arbitrate(opts: {
+  arbitrator: VerificationAgent;
+  systemPrompt: string;
+  modelIds: string[];
+  operation: string;
+  label: string;
+  pageText: string;
+  modelsJson: string;
+  allPriorVerdicts: AgentVerification[];
+}): Promise<AgentVerification | null> {
+  const { arbitrator, systemPrompt, modelIds, operation, label, pageText, modelsJson, allPriorVerdicts } = opts;
+
+  const providerConfig = EXTRACTION_PROVIDERS[arbitrator.provider];
+  if (!providerConfig) {
+    console.warn(`Arbitrator provider ${arbitrator.provider} not configured`);
+    return null;
+  }
+  const apiKey = process.env[providerConfig.envKey];
+  if (!apiKey) {
+    console.warn(`Arbitrator API key not available for ${arbitrator.provider}`);
+    return null;
+  }
+
+  const disagreementContext = formatDisagreements(allPriorVerdicts, modelIds);
+
+  const userPrompt = `You are the GENERAL CHAIR making the final decision. Multiple rounds of reviewers could not reach consensus on these models. Read their arguments carefully, verify the prices against the raw page text, and make your final ruling.
+
+Your verdict is FINAL. Be thorough — quote exact prices from the page text.
+
+ALL PREVIOUS REVIEWER VERDICTS:
+${disagreementContext}
+
+Raw text:
+${pageText.slice(0, 12_000)}
+
+Extracted data:
+${modelsJson}
+
+Verify ONLY these model IDs: ${JSON.stringify(modelIds)}`;
+
+  try {
+    console.log(`${label}: General Chair arbitrating ${modelIds.length} model(s) via ${arbitrator.provider}/${arbitrator.model}...`);
+    const result = await runAgent(arbitrator, systemPrompt, userPrompt, `${operation}_arbitration`);
+    return {
+      agentProvider: arbitrator.provider,
+      agentModel: arbitrator.model,
+      verdicts: result.verdicts,
+      usage: result.usage,
+    };
+  } catch (err) {
+    console.error(`${label} arbitrator ${arbitrator.provider}/${arbitrator.model} failed:`, err);
+    return null;
+  }
+}
+
+function formatDisagreements(priorVerdicts: AgentVerification[], modelIds: string[]): string {
+  const modelIdSet = new Set(modelIds);
+  const lines: string[] = [];
+
+  for (const agent of priorVerdicts) {
+    const relevant = agent.verdicts.filter((v) => modelIdSet.has(v.modelId));
+    if (relevant.length === 0) continue;
+
+    lines.push(`Agent ${agent.agentProvider}/${agent.agentModel}:`);
+    for (const v of relevant) {
+      const status = v.approved ? 'APPROVED' : 'REJECTED';
+      const reason = v.reason ? ` — ${v.reason}` : '';
+      lines.push(`  ${v.modelId}: ${status}${reason}`);
+    }
+  }
+
+  return lines.length > 0 ? lines.join('\n') : 'No prior verdicts available.';
 }
 
 async function runAgent(

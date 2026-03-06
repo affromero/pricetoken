@@ -6,7 +6,8 @@ import { verifyWithRetry } from './verify-with-retry';
 
 export async function crossVerify(
   pageText: string,
-  models: ExtractedModel[]
+  models: ExtractedModel[],
+  priorVerdicts?: AgentVerification[]
 ): Promise<AgentVerification[]> {
   const config = await getFetcherConfig();
   const agents = parseVerificationAgents(config);
@@ -21,5 +22,6 @@ export async function crossVerify(
     label: 'Text',
     pageText,
     modelsJson,
+    priorVerdicts,
   });
 }

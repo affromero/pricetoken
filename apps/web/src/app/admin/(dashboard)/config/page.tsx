@@ -13,6 +13,7 @@ interface ConfigData {
   extractionProvider: string;
   extractionModel: string;
   verificationAgents: VerificationAgent[];
+  arbitratorAgent: VerificationAgent | null;
   maxTextLength: number;
   enabled: boolean;
 }
@@ -23,6 +24,8 @@ export default function AdminConfigPage() {
   const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [newAgentProvider, setNewAgentProvider] = useState('');
   const [newAgentModel, setNewAgentModel] = useState('');
+  const [arbProvider, setArbProvider] = useState('');
+  const [arbModel, setArbModel] = useState('');
 
   const loadConfig = useCallback(async () => {
     const res = await fetch('/api/admin/config');
@@ -171,6 +174,62 @@ export default function AdminConfigPage() {
               Add
             </button>
           </div>
+        </div>
+
+        <div className={styles.field}>
+          <label className={styles.label}>General Chair (Arbitrator)</label>
+          <p className={styles.hint}>Optional. Resolves models that reviewers and area chairs cannot agree on.</p>
+          {config.arbitratorAgent ? (
+            <div className={styles.agentRow}>
+              <span className={styles.agentLabel}>
+                {EXTRACTION_PROVIDERS[config.arbitratorAgent.provider]?.displayName ?? config.arbitratorAgent.provider} / {config.arbitratorAgent.model}
+              </span>
+              <button
+                className={styles.removeButton}
+                onClick={() => setConfig({ ...config, arbitratorAgent: null })}
+              >
+                Remove
+              </button>
+            </div>
+          ) : (
+            <div className={styles.addAgentRow}>
+              <select
+                className={styles.select}
+                value={arbProvider}
+                onChange={(e) => {
+                  setArbProvider(e.target.value);
+                  setArbModel(EXTRACTION_PROVIDERS[e.target.value]?.models[0]?.id ?? '');
+                }}
+              >
+                <option value="">Provider...</option>
+                {Object.entries(EXTRACTION_PROVIDERS).map(([key, p]) => (
+                  <option key={key} value={key}>{p.displayName}</option>
+                ))}
+              </select>
+              <select
+                className={styles.select}
+                value={arbModel}
+                onChange={(e) => setArbModel(e.target.value)}
+                disabled={!arbProvider}
+              >
+                <option value="">Model...</option>
+                {(EXTRACTION_PROVIDERS[arbProvider]?.models ?? []).map((m) => (
+                  <option key={m.id} value={m.id}>{m.name}</option>
+                ))}
+              </select>
+              <button
+                className={styles.button}
+                disabled={!arbProvider || !arbModel}
+                onClick={() => {
+                  setConfig({ ...config, arbitratorAgent: { provider: arbProvider, model: arbModel } });
+                  setArbProvider('');
+                  setArbModel('');
+                }}
+              >
+                Set
+              </button>
+            </div>
+          )}
         </div>
 
         <div className={styles.toggle}>

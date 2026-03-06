@@ -12,6 +12,9 @@ import { videoCrossVerify } from './video-cross-verify';
 import { checkVideoPriorConsistency } from './video-prior-check';
 import { buildVideoConsensus } from './video-consensus';
 import { checkVideoPriceSanity } from './sanity-bounds';
+import { VIDEO_VERIFICATION_SYSTEM_PROMPT } from './video-verification-prompt';
+import { arbitrate } from './verify-with-retry';
+import { getFetcherConfig, parseArbitratorAgent } from '@/lib/fetcher-config';
 import type { VideoVerificationResult } from './video-verification-types';
 
 export interface VideoFetchResult {
@@ -86,27 +89,74 @@ export async function runVideoFetch(): Promise<VideoFetchResult> {
         console.log(`${config.displayName}: saved ${saved} verified video models`);
       }
 
-      // Re-verify flagged models with a second round of cross-verification
+      // Tier 2 — Area Chair: re-verify flagged models with reviewer disagreement context
       if (consensus.flagged.length > 0) {
-        console.log(`${config.displayName}: re-verifying ${consensus.flagged.length} flagged video model(s)...`);
+        console.log(`${config.displayName}: area chair re-verifying ${consensus.flagged.length} flagged video model(s)...`);
         const flaggedModels = consensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
-        const retryAgentResults = await videoCrossVerify(pageText, flaggedModels);
+        const retryAgentResults = await videoCrossVerify(pageText, flaggedModels, agentResults);
         const retryConsensus = buildVideoConsensus(flaggedModels, retryAgentResults, []);
 
         if (retryConsensus.approved.length > 0) {
           const saved = await saveVideoSnapshots(providerId, retryConsensus.approved, 'verified', 'low', retryAgentResults.length);
           totalModels += saved;
-          console.log(`${config.displayName}: ${saved} flagged video model(s) passed re-verification (low confidence)`);
+          console.log(`${config.displayName}: ${saved} flagged video model(s) passed area chair review (low confidence)`);
         }
 
+        // Tier 3 — General Chair: arbitrate still-flagged models
         if (retryConsensus.flagged.length > 0) {
-          totalFlagged += retryConsensus.flagged.length;
-          const stillFlagged = retryConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
-          await saveVideoSnapshots(providerId, stillFlagged, 'flagged', 'low', retryAgentResults.length);
-          console.warn(
-            `${config.displayName}: ${retryConsensus.flagged.length} video model(s) still flagged after re-verification (saved to DB):`,
-            retryConsensus.flagged.map((m) => m.modelId)
-          );
+          const fetcherConfig = await getFetcherConfig();
+          const arbitrator = parseArbitratorAgent(fetcherConfig);
+
+          if (arbitrator) {
+            const stillFlaggedModels = retryConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+            const allPriorVerdicts = [...agentResults, ...retryAgentResults];
+            const arbResult = await arbitrate({
+              arbitrator,
+              systemPrompt: VIDEO_VERIFICATION_SYSTEM_PROMPT,
+              modelIds: stillFlaggedModels.map((m) => m.modelId),
+              operation: 'video_verification',
+              label: `Video/${config.displayName}`,
+              pageText,
+              modelsJson: JSON.stringify(stillFlaggedModels, null, 2),
+              allPriorVerdicts,
+            });
+
+            if (arbResult) {
+              const arbConsensus = buildVideoConsensus(stillFlaggedModels, [arbResult], []);
+
+              if (arbConsensus.approved.length > 0) {
+                const saved = await saveVideoSnapshots(providerId, arbConsensus.approved, 'verified', 'low', 1);
+                totalModels += saved;
+                console.log(`${config.displayName}: ${saved} video model(s) approved by general chair`);
+              }
+
+              if (arbConsensus.flagged.length > 0) {
+                totalFlagged += arbConsensus.flagged.length;
+                const finalFlagged = arbConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+                await saveVideoSnapshots(providerId, finalFlagged, 'flagged', 'low', 1);
+                console.warn(
+                  `${config.displayName}: ${arbConsensus.flagged.length} video model(s) rejected by general chair (saved as flagged):`,
+                  arbConsensus.flagged.map((m) => m.modelId)
+                );
+              }
+            } else {
+              totalFlagged += retryConsensus.flagged.length;
+              const stillFlagged = retryConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+              await saveVideoSnapshots(providerId, stillFlagged, 'flagged', 'low', retryAgentResults.length);
+              console.warn(
+                `${config.displayName}: ${retryConsensus.flagged.length} video model(s) still flagged (no arbitrator configured):`,
+                retryConsensus.flagged.map((m) => m.modelId)
+              );
+            }
+          } else {
+            totalFlagged += retryConsensus.flagged.length;
+            const stillFlagged = retryConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+            await saveVideoSnapshots(providerId, stillFlagged, 'flagged', 'low', retryAgentResults.length);
+            console.warn(
+              `${config.displayName}: ${retryConsensus.flagged.length} video model(s) still flagged after area chair (no arbitrator configured):`,
+              retryConsensus.flagged.map((m) => m.modelId)
+            );
+          }
         }
       }
 

@@ -15,6 +15,9 @@ import { crossVerify } from './cross-verify';
 import { checkPriorConsistency } from './prior-check';
 import { buildConsensus } from './consensus';
 import { checkTextPriceSanity } from './sanity-bounds';
+import { VERIFICATION_SYSTEM_PROMPT } from './verification-prompt';
+import { arbitrate } from './verify-with-retry';
+import { getFetcherConfig, parseArbitratorAgent } from '@/lib/fetcher-config';
 import type { VerificationResult } from './verification-types';
 
 export interface FetchResult {
@@ -109,27 +112,75 @@ export async function runPricingFetch(): Promise<FetchResult> {
         console.log(`${config.displayName}: saved ${saved} verified models`);
       }
 
-      // Re-verify flagged models with a second round of cross-verification
+      // Tier 2 — Area Chair: re-verify flagged models with reviewer disagreement context
       if (consensus.flagged.length > 0) {
-        console.log(`${config.displayName}: re-verifying ${consensus.flagged.length} flagged model(s)...`);
+        console.log(`${config.displayName}: area chair re-verifying ${consensus.flagged.length} flagged model(s)...`);
         const flaggedModels = consensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
-        const retryAgentResults = await crossVerify(pageText, flaggedModels);
+        const retryAgentResults = await crossVerify(pageText, flaggedModels, agentResults);
         const retryConsensus = buildConsensus(flaggedModels, retryAgentResults, []);
 
         if (retryConsensus.approved.length > 0) {
           const saved = await saveSnapshots(providerId, retryConsensus.approved, 'verified', 'low', retryAgentResults.length);
           totalModels += saved;
-          console.log(`${config.displayName}: ${saved} flagged model(s) passed re-verification (low confidence)`);
+          console.log(`${config.displayName}: ${saved} flagged model(s) passed area chair review (low confidence)`);
         }
 
+        // Tier 3 — General Chair: arbitrate still-flagged models
         if (retryConsensus.flagged.length > 0) {
-          totalFlagged += retryConsensus.flagged.length;
-          const stillFlagged = retryConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
-          await saveSnapshots(providerId, stillFlagged, 'flagged', 'low', retryAgentResults.length);
-          console.warn(
-            `${config.displayName}: ${retryConsensus.flagged.length} model(s) still flagged after re-verification (saved to DB):`,
-            retryConsensus.flagged.map((m) => m.modelId)
-          );
+          const fetcherConfig = await getFetcherConfig();
+          const arbitrator = parseArbitratorAgent(fetcherConfig);
+
+          if (arbitrator) {
+            const stillFlaggedModels = retryConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+            const allPriorVerdicts = [...agentResults, ...retryAgentResults];
+            const arbResult = await arbitrate({
+              arbitrator,
+              systemPrompt: VERIFICATION_SYSTEM_PROMPT,
+              modelIds: stillFlaggedModels.map((m) => m.modelId),
+              operation: 'pricing_verification',
+              label: `Text/${config.displayName}`,
+              pageText,
+              modelsJson: JSON.stringify(stillFlaggedModels, null, 2),
+              allPriorVerdicts,
+            });
+
+            if (arbResult) {
+              const arbConsensus = buildConsensus(stillFlaggedModels, [arbResult], []);
+
+              if (arbConsensus.approved.length > 0) {
+                const saved = await saveSnapshots(providerId, arbConsensus.approved, 'verified', 'low', 1);
+                totalModels += saved;
+                console.log(`${config.displayName}: ${saved} model(s) approved by general chair`);
+              }
+
+              if (arbConsensus.flagged.length > 0) {
+                totalFlagged += arbConsensus.flagged.length;
+                const finalFlagged = arbConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+                await saveSnapshots(providerId, finalFlagged, 'flagged', 'low', 1);
+                console.warn(
+                  `${config.displayName}: ${arbConsensus.flagged.length} model(s) rejected by general chair (saved as flagged):`,
+                  arbConsensus.flagged.map((m) => m.modelId)
+                );
+              }
+            } else {
+              // Arbitrator unavailable — save as flagged
+              totalFlagged += retryConsensus.flagged.length;
+              const stillFlagged = retryConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+              await saveSnapshots(providerId, stillFlagged, 'flagged', 'low', retryAgentResults.length);
+              console.warn(
+                `${config.displayName}: ${retryConsensus.flagged.length} model(s) still flagged (no arbitrator configured):`,
+                retryConsensus.flagged.map((m) => m.modelId)
+              );
+            }
+          } else {
+            totalFlagged += retryConsensus.flagged.length;
+            const stillFlagged = retryConsensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+            await saveSnapshots(providerId, stillFlagged, 'flagged', 'low', retryAgentResults.length);
+            console.warn(
+              `${config.displayName}: ${retryConsensus.flagged.length} model(s) still flagged after area chair (no arbitrator configured):`,
+              retryConsensus.flagged.map((m) => m.modelId)
+            );
+          }
         }
       }
 

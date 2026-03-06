@@ -77,6 +77,29 @@ export async function PATCH(request: NextRequest) {
       update.verificationAgents = body.verificationAgents;
     }
 
+    if ('arbitratorAgent' in body) {
+      if (body.arbitratorAgent === null) {
+        update.arbitratorAgent = null;
+      } else if (
+        typeof body.arbitratorAgent === 'object' &&
+        typeof body.arbitratorAgent.provider === 'string' &&
+        typeof body.arbitratorAgent.model === 'string'
+      ) {
+        if (!(body.arbitratorAgent.provider in EXTRACTION_PROVIDERS)) {
+          return NextResponse.json(
+            { error: `Invalid arbitrator provider: ${body.arbitratorAgent.provider}` },
+            { status: 400 }
+          );
+        }
+        update.arbitratorAgent = body.arbitratorAgent;
+      } else {
+        return NextResponse.json(
+          { error: 'arbitratorAgent must be null or {provider, model}' },
+          { status: 400 }
+        );
+      }
+    }
+
     if (Object.keys(update).length === 0) {
       return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 });
     }

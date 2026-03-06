@@ -128,3 +128,10 @@
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--pt-text-secondary);
+  margin: 0;
+  opacity: 0.7;
+}

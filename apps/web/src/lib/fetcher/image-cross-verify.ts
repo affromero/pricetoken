@@ -6,7 +6,8 @@ import { verifyWithRetry } from './verify-with-retry';
 
 export async function imageCrossVerify(
   pageText: string,
-  models: ExtractedImageModel[]
+  models: ExtractedImageModel[],
+  priorVerdicts?: AgentVerification[]
 ): Promise<AgentVerification[]> {
   const config = await getFetcherConfig();
   const agents = parseVerificationAgents(config);
@@ -21,5 +22,6 @@ export async function imageCrossVerify(
     label: 'Image',
     pageText,
     modelsJson,
+    priorVerdicts,
   });
 }

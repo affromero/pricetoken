@@ -83,6 +83,7 @@ model FetcherConfig {
   extractionProvider String   @default("anthropic")
   extractionModel    String   @default("claude-haiku-4-5-20251001")
   verificationAgents Json     @default("[{\"provider\":\"anthropic\",\"model\":\"claude-haiku-4-5-20251001\"},{\"provider\":\"openai\",\"model\":\"gpt-4.1-mini\"},{\"provider\":\"google\",\"model\":\"gemini-2.5-flash\"}]")
+  arbitratorAgent    Json?    // Optional "general chair" agent: {"provider":"anthropic","model":"claude-sonnet-4-5-20250514"}
   maxTextLength      Int      @default(15000)
   enabled            Boolean  @default(true)
   updatedAt          DateTime @updatedAt

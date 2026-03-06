@@ -6,7 +6,8 @@ import { verifyWithRetry } from './verify-with-retry';
 
 export async function videoCrossVerify(
   pageText: string,
-  models: ExtractedVideoModel[]
+  models: ExtractedVideoModel[],
+  priorVerdicts?: AgentVerification[]
 ): Promise<AgentVerification[]> {
   const config = await getFetcherConfig();
   const agents = parseVerificationAgents(config);
@@ -21,5 +22,6 @@ export async function videoCrossVerify(
     label: 'Video',
     pageText,
     modelsJson,
+    priorVerdicts,
   });
 }

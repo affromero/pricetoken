@@ -99,14 +99,16 @@ Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-R
 
 ## How Data is Verified
 
-PriceToken uses a multi-agent verification pipeline to ensure pricing accuracy:
+PriceToken uses a conference-style multi-agent verification pipeline — modeled after academic peer review — to ensure pricing accuracy:
 
 1. **Scrape** — Puppeteer fetches each provider's official pricing page daily
 2. **Extract** — An AI agent extracts structured pricing data from the raw page text
-3. **Verify** — Three independent AI agents from different providers cross-check every data point against the raw text. A model is only accepted when at least two agents agree.
-4. **Prior check** — Extracted prices are compared against the last known snapshot. Price changes exceeding 50% are flagged for manual review, even if all agents agree.
+3. **Reviewers** — Independent AI agents from different providers cross-check every extracted price against the raw page text. Each agent must quote the exact price it found. A model is accepted when at least two out of three reviewers agree.
+4. **Prior check** — Extracted prices are compared against the last known snapshot. Price changes exceeding 50% require unanimous reviewer approval.
+5. **Area Chair** — Models that reviewers couldn't agree on get a second round of review. Area chair agents see the previous reviewers' arguments and disagreements, then make their own independent judgment.
+6. **General Chair** — If the area chair round still can't reach consensus, an optional arbitrator agent (configurable in the admin panel) makes the final ruling. It sees all prior verdicts and has final authority.
 
-Models that fail verification are logged but never saved to the database. If a daily run fails entirely, pricing updates freeze until an admin reviews and resolves the issue.
+Models rejected at every tier are saved to the database as "flagged" for admin review. If a daily run fails entirely, pricing updates freeze until an admin resolves the issue.
 
 ### Confidence Scoring
 
@@ -127,10 +129,16 @@ See the [docs](https://pricetoken.ai/docs) for the full Bayesian model and prior
 ```
 Provider pricing pages → Daily cron (AI extraction)
                               ↓
-                     Multi-agent verification
-                    (3 independent AI agents)
+                     Tier 1: Reviewers
+                    (N independent AI agents)
                               ↓
                      Prior consistency check
+                              ↓
+                  Disagreements? → Tier 2: Area Chair
+                                   (re-review with context)
+                              ↓
+                  Still flagged? → Tier 3: General Chair
+                                   (arbitrator, final ruling)
                               ↓
               Approved models → PostgreSQL snapshots
                               ↓
