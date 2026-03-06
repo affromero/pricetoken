@@ -41,8 +41,16 @@ describe('shouldApprove', () => {
     expect(shouldApprove(0, 3, 3, false)).toBe(false);
   });
 
-  it('rejects when price_change flag is present even with full approval', () => {
-    expect(shouldApprove(3, 0, 3, true)).toBe(false);
+  it('approves when price_change flag is present with unanimous approval', () => {
+    expect(shouldApprove(3, 0, 3, true)).toBe(true);
+  });
+
+  it('rejects when price_change flag is present without unanimous approval', () => {
+    expect(shouldApprove(2, 1, 3, true)).toBe(false);
+  });
+
+  it('rejects when price_change flag is present with no agents', () => {
+    expect(shouldApprove(0, 0, 0, true)).toBe(false);
   });
 
   it('requires all agents when fewer than 3 (2/2)', () => {
@@ -89,7 +97,7 @@ describe('buildConsensus', () => {
     expect(result.flagged).toHaveLength(1);
   });
 
-  it('flags models with price_change prior flag even if agents approve', () => {
+  it('approves models with price_change flag when all agents unanimously approve', () => {
     const models = [makeModel('gpt-4.1')];
     const agents = [
       makeAgent('anthropic', [{ modelId: 'gpt-4.1', approved: true }]),
@@ -101,9 +109,25 @@ describe('buildConsensus', () => {
     ];
 
     const result = buildConsensus(models, agents, flags);
+    expect(result.approved).toHaveLength(1);
+    expect(result.flagged).toHaveLength(0);
+    expect(result.approved[0]!.priorFlags).toHaveLength(1);
+  });
+
+  it('flags models with price_change flag when agents disagree', () => {
+    const models = [makeModel('gpt-4.1')];
+    const agents = [
+      makeAgent('anthropic', [{ modelId: 'gpt-4.1', approved: true }]),
+      makeAgent('openai', [{ modelId: 'gpt-4.1', approved: true }]),
+      makeAgent('google', [{ modelId: 'gpt-4.1', approved: false }]),
+    ];
+    const flags: PriorConsistencyFlag[] = [
+      { modelId: 'gpt-4.1', type: 'price_change', detail: 'Price changed >50%' },
+    ];
+
+    const result = buildConsensus(models, agents, flags);
     expect(result.approved).toHaveLength(0);
     expect(result.flagged).toHaveLength(1);
-    expect(result.flagged[0]!.priorFlags).toHaveLength(1);
   });
 
   it('does NOT block new_model flags', () => {
