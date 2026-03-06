@@ -26,6 +26,21 @@ CRITICAL conversion rules — show your work mentally before outputting:
 4. Subscription credits: total monthly credits × cost-per-credit, divided by total generation-minutes.
    Only use this if no API/pay-as-you-go pricing is available.
 
+IMPORTANT — use these exact modelId values when extracting:
+- Runway: runway-gen4-720p, runway-gen4-turbo-720p
+- Sora: sora2-720p, sora2-pro-720p, sora2-pro-1080p
+- Veo: veo-3.1-1080p, veo-3.1-4k
+- Kling: kling-3.0-1080p
+- Luma: luma-ray-3.14-1080p
+- Pika: pika-2.5-1080p
+- MiniMax: minimax-hailuo02-768p, minimax-hailuo02-pro-1080p
+- Seedance: seedance-2.0-1080p
+- LTX: ltx-2.3-fast-1080p, ltx-2.3-pro-1080p, ltx-2.3-fast-4k, ltx-2.3-pro-4k
+- FAL: fal-veo3-1080p, fal-veo3-fast-1080p, fal-kling3-1080p, fal-wan2.5-480p
+
+Map display names to these IDs. For example: "Gen-4" → "runway-gen4-720p", "Hailuo 02" → "minimax-hailuo02-768p", "Ray 3.14" → "luma-ray-3.14-1080p".
+If you find a model with a resolution or tier NOT in this list, create a new entry following the pattern: {provider}-{model}-{resolution} (e.g. "runway-gen4-1080p").
+
 Additional rules:
 - Each resolution tier and quality mode combination should be a separate entry.
 - Only include video generation models. Skip image generation, audio, and other non-video models.
