@@ -17,6 +17,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/video/calculator`, lastModified: buildDate, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${baseUrl}/video/compare`, lastModified: buildDate, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${baseUrl}/video/history`, lastModified: buildDate, changeFrequency: 'daily', priority: 0.7 },
+    { url: `${baseUrl}/avatar`, lastModified: buildDate, changeFrequency: 'daily', priority: 0.8 },
+    { url: `${baseUrl}/avatar/calculator`, lastModified: buildDate, changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${baseUrl}/avatar/compare`, lastModified: buildDate, changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${baseUrl}/avatar/history`, lastModified: buildDate, changeFrequency: 'daily', priority: 0.7 },
     { url: `${baseUrl}/docs`, lastModified: buildDate, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${baseUrl}/legal`, lastModified: buildDate, changeFrequency: 'yearly', priority: 0.3 },
   ];

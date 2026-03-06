@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './ModalitySubNav.module.css';
 
-type Modality = 'text' | 'image' | 'video';
+type Modality = 'text' | 'image' | 'video' | 'avatar';
 
 const TABS: { label: string; suffix: string }[] = [
   { label: 'Pricing', suffix: '' },
@@ -17,6 +17,7 @@ const BASE_PATHS: Record<Modality, string> = {
   text: '',
   image: '/image',
   video: '/video',
+  avatar: '/avatar',
 };
 
 interface ModalitySubNavProps {

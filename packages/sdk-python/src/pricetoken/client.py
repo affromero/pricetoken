@@ -14,6 +14,9 @@ if TYPE_CHECKING:
     from collections.abc import Mapping
 
 from pricetoken.types import (
+    AvatarModelHistory,
+    AvatarModelPricing,
+    AvatarProviderSummary,
     ImageModelHistory,
     ImageModelPricing,
     ImageProviderSummary,
@@ -24,6 +27,9 @@ from pricetoken.types import (
     VideoModelHistory,
     VideoModelPricing,
     VideoProviderSummary,
+    _parse_avatar_model_history,
+    _parse_avatar_model_pricing,
+    _parse_avatar_provider_summary,
     _parse_image_model_history,
     _parse_image_model_pricing,
     _parse_image_provider_summary,
@@ -310,3 +316,73 @@ class PriceTokenClient:
         qs = self._build_qs(params)
         data: dict[str, Any] = self._request(f"/api/v1/video/cheapest{qs}")
         return _parse_video_model_pricing(data)
+
+    # Avatar pricing methods
+
+    def get_avatar_pricing(
+        self,
+        *,
+        provider: str | None = None,
+        currency: str | None = None,
+        after: str | None = None,
+        before: str | None = None,
+    ) -> list[AvatarModelPricing]:
+        """Get current pricing for all avatar models."""
+        params = {"provider": provider, "currency": currency, "after": after, "before": before}
+        qs = self._build_qs(params)
+        data: list[dict[str, Any]] = self._request(f"/api/v1/avatar{qs}")
+        return [_parse_avatar_model_pricing(m) for m in data]
+
+    def get_avatar_model(
+        self,
+        model_id: str,
+        *,
+        currency: str | None = None,
+    ) -> AvatarModelPricing:
+        """Get pricing for a single avatar model."""
+        encoded = urllib.parse.quote(model_id, safe="")
+        qs = self._build_qs({"currency": currency})
+        data: dict[str, Any] = self._request(f"/api/v1/avatar/{encoded}{qs}")
+        return _parse_avatar_model_pricing(data)
+
+    def get_avatar_history(
+        self,
+        *,
+        days: int | None = None,
+        model_id: str | None = None,
+        provider: str | None = None,
+    ) -> list[AvatarModelHistory]:
+        """Get avatar price history."""
+        qs = self._build_qs({"days": days, "modelId": model_id, "provider": provider})
+        data: list[dict[str, Any]] = self._request(f"/api/v1/avatar/history{qs}")
+        return [_parse_avatar_model_history(m) for m in data]
+
+    def get_avatar_providers(self) -> list[AvatarProviderSummary]:
+        """Get avatar provider list with stats."""
+        data: list[dict[str, Any]] = self._request("/api/v1/avatar/providers")
+        return [_parse_avatar_provider_summary(p) for p in data]
+
+    def compare_avatar_models(
+        self,
+        model_ids: list[str],
+        *,
+        currency: str | None = None,
+    ) -> list[AvatarModelPricing]:
+        """Compare avatar models side by side."""
+        qs = self._build_qs({"models": ",".join(model_ids), "currency": currency})
+        data: list[dict[str, Any]] = self._request(f"/api/v1/avatar/compare{qs}")
+        return [_parse_avatar_model_pricing(m) for m in data]
+
+    def get_cheapest_avatar_model(
+        self,
+        *,
+        provider: str | None = None,
+        currency: str | None = None,
+        after: str | None = None,
+        before: str | None = None,
+    ) -> AvatarModelPricing:
+        """Get the cheapest avatar model."""
+        params = {"provider": provider, "currency": currency, "after": after, "before": before}
+        qs = self._build_qs(params)
+        data: dict[str, Any] = self._request(f"/api/v1/avatar/cheapest{qs}")
+        return _parse_avatar_model_pricing(data)

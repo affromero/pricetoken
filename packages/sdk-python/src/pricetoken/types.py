@@ -336,3 +336,104 @@ def _parse_video_provider_summary(data: dict[str, Any]) -> VideoProviderSummary:
         model_count=data["modelCount"],
         cheapest_cost_per_minute=data["cheapestCostPerMinute"],
     )
+
+
+# ---------------------------------------------------------------------------
+# Avatar pricing types
+# ---------------------------------------------------------------------------
+
+
+@dataclass(slots=True)
+class AvatarModelPricing:
+    model_id: str
+    provider: str
+    display_name: str
+    cost_per_minute: float
+    avatar_type: str | None
+    resolution: str | None
+    max_duration: int | None
+    quality_mode: str | None
+    source: Source
+    status: ModelStatus | None
+    confidence: DataConfidence
+    confidence_score: int
+    confidence_level: ConfidenceLevel
+    freshness: FreshnessInfo
+    last_updated: str | None
+    launch_date: str | None
+
+
+@dataclass(slots=True)
+class AvatarCostEstimate:
+    model_id: str
+    duration_seconds: float
+    cost_per_minute: float
+    total_cost: float
+
+
+@dataclass(slots=True)
+class AvatarPriceHistoryPoint:
+    date: str
+    cost_per_minute: float
+
+
+@dataclass(slots=True)
+class AvatarModelHistory:
+    model_id: str
+    provider: str
+    display_name: str
+    history: list[AvatarPriceHistoryPoint]
+
+
+@dataclass(slots=True)
+class AvatarProviderSummary:
+    id: str
+    display_name: str
+    model_count: int
+    cheapest_cost_per_minute: float
+
+
+def _parse_avatar_model_pricing(data: dict[str, Any]) -> AvatarModelPricing:
+    return AvatarModelPricing(
+        model_id=data["modelId"],
+        provider=data["provider"],
+        display_name=data["displayName"],
+        cost_per_minute=data["costPerMinute"],
+        avatar_type=data.get("avatarType"),
+        resolution=data.get("resolution"),
+        max_duration=data.get("maxDuration"),
+        quality_mode=data.get("qualityMode"),
+        source=data["source"],
+        status=data.get("status"),
+        confidence=data.get("confidence", "low"),
+        confidence_score=data.get("confidenceScore", 0),
+        confidence_level=data.get("confidenceLevel", "low"),
+        freshness=_parse_freshness(data.get("freshness")),
+        last_updated=data.get("lastUpdated"),
+        launch_date=data.get("launchDate"),
+    )
+
+
+def _parse_avatar_history_point(data: dict[str, Any]) -> AvatarPriceHistoryPoint:
+    return AvatarPriceHistoryPoint(
+        date=data["date"],
+        cost_per_minute=data["costPerMinute"],
+    )
+
+
+def _parse_avatar_model_history(data: dict[str, Any]) -> AvatarModelHistory:
+    return AvatarModelHistory(
+        model_id=data["modelId"],
+        provider=data["provider"],
+        display_name=data["displayName"],
+        history=[_parse_avatar_history_point(p) for p in data["history"]],
+    )
+
+
+def _parse_avatar_provider_summary(data: dict[str, Any]) -> AvatarProviderSummary:
+    return AvatarProviderSummary(
+        id=data["id"],
+        display_name=data["displayName"],
+        model_count=data["modelCount"],
+        cheapest_cost_per_minute=data["cheapestCostPerMinute"],
+    )

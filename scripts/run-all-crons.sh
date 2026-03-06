@@ -53,6 +53,7 @@ log "=== Starting sequential pricing fetch ==="
 
 run_cron "Text pricing"  "/api/cron/fetch-pricing"       600
 run_cron "Image pricing" "/api/cron/fetch-image-pricing"  600
-run_cron "Video pricing" "/api/cron/fetch-video-pricing"  600
+run_cron "Video pricing"  "/api/cron/fetch-video-pricing"  600
+run_cron "Avatar pricing" "/api/cron/fetch-avatar-pricing" 600
 
 log "=== All crons complete ==="

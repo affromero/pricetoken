@@ -40,7 +40,7 @@ export default async function HomePage() {
             operatingSystem: 'Any',
             offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
             description:
-              'Free REST API, npm package, and Python SDK for real-time AI pricing data across text, image, and video generation providers.',
+              'Free REST API, npm package, and Python SDK for real-time AI pricing data across text, image, video, and avatar generation providers.',
           }),
         }}
       />
@@ -53,7 +53,7 @@ export default async function HomePage() {
             <span className={styles.accent}>One API.</span>
           </h1>
           <p className={styles.subtitle}>
-            Free REST API for real-time pricing across text, image, and video AI providers.
+            Free REST API for real-time pricing across text, image, video, and avatar AI providers.
             Open source. Self-hostable.
           </p>
           <div className={styles.cta}>
@@ -75,6 +75,11 @@ export default async function HomePage() {
             <Link href="/video" className={styles.modalityCard}>
               <span className={styles.modalityIcon}>V</span>
               <span className={styles.modalityLabel}>Video</span>
+              <span className={styles.modalityMeta}>$/minute</span>
+            </Link>
+            <Link href="/avatar" className={styles.modalityCard}>
+              <span className={styles.modalityIcon}>A</span>
+              <span className={styles.modalityLabel}>Avatar</span>
               <span className={styles.modalityMeta}>$/minute</span>
             </Link>
             <div className={styles.modalityCardDisabled}>
