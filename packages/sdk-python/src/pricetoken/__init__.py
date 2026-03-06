@@ -5,7 +5,7 @@ from importlib.metadata import PackageNotFoundError, version
 try:
     __version__ = version("pricetoken")
 except PackageNotFoundError:
-    __version__ = "0.8.0"
+    __version__ = "0.9.0"
 
 from pricetoken.avatar_cost import calculate_avatar_cost, calculate_avatar_model_cost
 from pricetoken.avatar_static import STATIC_AVATAR_PRICING

@@ -15,7 +15,7 @@ import type {
   AvatarProviderSummary,
 } from './types';
 
-const SDK_VERSION = '0.7.0';
+const SDK_VERSION = '0.9.0';
 
 export interface ClientOptions {
   baseUrl?: string;
