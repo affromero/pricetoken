@@ -81,9 +81,10 @@ describe('extractVideoPricing', () => {
 
   it('filters out entries missing required fields', async () => {
     const mockData = [
-      { modelId: 'valid', displayName: 'Valid', costPerMinute: 7.2 },
-      { modelId: 'missing-price', displayName: 'Bad' },
-      { displayName: 'No ID', costPerMinute: 5 },
+      { modelId: 'valid', displayName: 'Valid', costPerMinute: 7.2, maxDuration: 10 },
+      { modelId: 'missing-price', displayName: 'Bad', maxDuration: 10 },
+      { displayName: 'No ID', costPerMinute: 5, maxDuration: 10 },
+      { modelId: 'missing-duration', displayName: 'No Duration', costPerMinute: 5 },
     ];
 
     mockExtract.mockResolvedValue({
@@ -127,7 +128,7 @@ describe('extractVideoPricing', () => {
 
   it('extracts launchDate when present', async () => {
     const mockModels = [
-      { modelId: 'runway-gen4-720p', displayName: 'Gen-4', costPerMinute: 7.2, launchDate: '2025-03-31' },
+      { modelId: 'runway-gen4-720p', displayName: 'Gen-4', costPerMinute: 7.2, maxDuration: 10, launchDate: '2025-03-31' },
     ];
 
     mockExtract.mockResolvedValue({
@@ -141,7 +142,7 @@ describe('extractVideoPricing', () => {
 
   it('strips invalid launchDate format', async () => {
     const mockModels = [
-      { modelId: 'runway-gen4-720p', displayName: 'Gen-4', costPerMinute: 7.2, launchDate: 'March 2025' },
+      { modelId: 'runway-gen4-720p', displayName: 'Gen-4', costPerMinute: 7.2, maxDuration: 10, launchDate: 'March 2025' },
     ];
 
     mockExtract.mockResolvedValue({
@@ -155,7 +156,7 @@ describe('extractVideoPricing', () => {
 
   it('strips invalid status values', async () => {
     const mockModels = [
-      { modelId: 'runway-gen4-720p', displayName: 'Gen-4', costPerMinute: 7.2, status: 'unknown' },
+      { modelId: 'runway-gen4-720p', displayName: 'Gen-4', costPerMinute: 7.2, maxDuration: 10, status: 'unknown' },
     ];
 
     mockExtract.mockResolvedValue({

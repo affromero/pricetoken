@@ -101,7 +101,8 @@ function parseVideoModels(text: string, pricingProvider: string): ExtractedVideo
           typeof m === 'object' &&
           m !== null &&
           typeof (m as Record<string, unknown>).modelId === 'string' &&
-          typeof (m as Record<string, unknown>).costPerMinute === 'number'
+          typeof (m as Record<string, unknown>).costPerMinute === 'number' &&
+          typeof (m as Record<string, unknown>).maxDuration === 'number'
       )
       .map((m) => {
         if (m.status && !VALID_STATUSES.includes(m.status)) {
