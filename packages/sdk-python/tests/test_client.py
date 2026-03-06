@@ -305,3 +305,137 @@ class TestPriceTokenClient:
         assert "/api/v1/video/cheapest" in req.full_url
         assert "provider=kling" in req.full_url
         assert result.model_id == "kling-3.0-1080p"
+
+    # Avatar pricing methods
+
+    @patch("pricetoken.client.urllib.request.urlopen")
+    def test_get_avatar_pricing_returns_avatar_model_list(self, mock_urlopen: MagicMock) -> None:
+        mock_data = [
+            {
+                "modelId": "heygen-avatar-standard",
+                "provider": "heygen",
+                "displayName": "HeyGen Standard Avatar",
+                "costPerMinute": 0.99,
+                "avatarType": "standard",
+                "resolution": "1080p",
+                "maxDuration": 600,
+                "qualityMode": "standard",
+                "source": "seed",
+                "status": "active",
+                "confidence": "high",
+                "confidenceScore": 65,
+                "confidenceLevel": "medium",
+                "freshness": {"lastVerified": "", "ageHours": 0, "stale": False},
+                "lastUpdated": None,
+                "launchDate": "2024-01-15",
+            }
+        ]
+        mock_urlopen.return_value = _mock_response(mock_data)
+        client = PriceTokenClient(base_url="https://test.api")
+
+        result = client.get_avatar_pricing()
+        assert len(result) == 1
+        assert result[0].model_id == "heygen-avatar-standard"
+        assert result[0].cost_per_minute == 0.99
+
+    @patch("pricetoken.client.urllib.request.urlopen")
+    def test_get_avatar_pricing_filters_by_provider(self, mock_urlopen: MagicMock) -> None:
+        mock_urlopen.return_value = _mock_response([])
+        client = PriceTokenClient(base_url="https://test.api")
+
+        client.get_avatar_pricing(provider="heygen")
+
+        req = mock_urlopen.call_args[0][0]
+        assert "provider=heygen" in req.full_url
+
+    @patch("pricetoken.client.urllib.request.urlopen")
+    def test_get_avatar_model_fetches_single_avatar_model(self, mock_urlopen: MagicMock) -> None:
+        mock_urlopen.return_value = _mock_response(
+            {
+                "modelId": "heygen-avatar-standard",
+                "provider": "heygen",
+                "displayName": "HeyGen Standard Avatar",
+                "costPerMinute": 0.99,
+                "avatarType": "standard",
+                "resolution": "1080p",
+                "maxDuration": 600,
+                "qualityMode": "standard",
+                "source": "seed",
+                "status": "active",
+                "confidence": "high",
+                "confidenceScore": 65,
+                "confidenceLevel": "medium",
+                "freshness": {"lastVerified": "", "ageHours": 0, "stale": False},
+                "lastUpdated": None,
+                "launchDate": "2024-01-15",
+            }
+        )
+        client = PriceTokenClient(base_url="https://test.api")
+
+        result = client.get_avatar_model("heygen-avatar-standard")
+
+        req = mock_urlopen.call_args[0][0]
+        assert "/api/v1/avatar/heygen-avatar-standard" in req.full_url
+        assert result.model_id == "heygen-avatar-standard"
+
+    @patch("pricetoken.client.urllib.request.urlopen")
+    def test_get_avatar_history_passes_query_params(self, mock_urlopen: MagicMock) -> None:
+        mock_urlopen.return_value = _mock_response([])
+        client = PriceTokenClient(base_url="https://test.api")
+
+        client.get_avatar_history(days=30, provider="heygen")
+
+        req = mock_urlopen.call_args[0][0]
+        assert "days=30" in req.full_url
+        assert "provider=heygen" in req.full_url
+
+    @patch("pricetoken.client.urllib.request.urlopen")
+    def test_get_avatar_providers_fetches_provider_list(self, mock_urlopen: MagicMock) -> None:
+        mock_urlopen.return_value = _mock_response([])
+        client = PriceTokenClient(base_url="https://test.api")
+
+        client.get_avatar_providers()
+
+        req = mock_urlopen.call_args[0][0]
+        assert "/api/v1/avatar/providers" in req.full_url
+
+    @patch("pricetoken.client.urllib.request.urlopen")
+    def test_compare_avatar_models_sends_model_ids(self, mock_urlopen: MagicMock) -> None:
+        mock_urlopen.return_value = _mock_response([])
+        client = PriceTokenClient(base_url="https://test.api")
+
+        client.compare_avatar_models(["heygen-avatar-standard", "heygen-avatar-iv"])
+
+        req = mock_urlopen.call_args[0][0]
+        assert "models=heygen-avatar-standard%2Cheygen-avatar-iv" in req.full_url
+
+    @patch("pricetoken.client.urllib.request.urlopen")
+    def test_get_cheapest_avatar_model_fetches_cheapest(self, mock_urlopen: MagicMock) -> None:
+        mock_urlopen.return_value = _mock_response(
+            {
+                "modelId": "heygen-avatar-standard",
+                "provider": "heygen",
+                "displayName": "HeyGen Standard Avatar",
+                "costPerMinute": 0.99,
+                "avatarType": "standard",
+                "resolution": "1080p",
+                "maxDuration": 600,
+                "qualityMode": "standard",
+                "source": "seed",
+                "status": "active",
+                "confidence": "high",
+                "confidenceScore": 65,
+                "confidenceLevel": "medium",
+                "freshness": {"lastVerified": "", "ageHours": 0, "stale": False},
+                "lastUpdated": None,
+                "launchDate": "2024-01-15",
+            }
+        )
+        client = PriceTokenClient(base_url="https://test.api")
+
+        result = client.get_cheapest_avatar_model(provider="heygen")
+
+        req = mock_urlopen.call_args[0][0]
+        assert "/api/v1/avatar/cheapest" in req.full_url
+        assert "provider=heygen" in req.full_url
+        assert result.model_id == "heygen-avatar-standard"

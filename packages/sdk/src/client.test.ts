@@ -401,4 +401,100 @@ describe('PriceTokenClient', () => {
       expect.anything()
     );
   });
+
+  // Avatar pricing methods
+
+  it('getAvatarPricing returns avatar model array', async () => {
+    const mockData = [{ modelId: 'heygen-avatar-standard', provider: 'heygen', costPerMinute: 0.99 }];
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(mockResponse(mockData) as Response);
+
+    const result = await client.getAvatarPricing();
+    expect(result).toEqual(mockData);
+  });
+
+  it('getAvatarPricing filters by provider', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getAvatarPricing({ provider: 'heygen' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/avatar?provider=heygen',
+      expect.anything()
+    );
+  });
+
+  it('getAvatarModel fetches single avatar model', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse({ modelId: 'heygen-avatar-standard' }) as Response
+    );
+
+    await client.getAvatarModel('heygen-avatar-standard');
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/avatar/heygen-avatar-standard',
+      expect.anything()
+    );
+  });
+
+  it('getAvatarHistory passes query params', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getAvatarHistory({ days: 30, provider: 'heygen' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('days=30'),
+      expect.anything()
+    );
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('provider=heygen'),
+      expect.anything()
+    );
+  });
+
+  it('getAvatarProviders fetches avatar provider list', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getAvatarProviders();
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/avatar/providers',
+      expect.anything()
+    );
+  });
+
+  it('compareAvatarModels sends model IDs', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.compareAvatarModels(['heygen-avatar-standard', 'heygen-avatar-iv']);
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('models=heygen-avatar-standard%2Cheygen-avatar-iv'),
+      expect.anything()
+    );
+  });
+
+  it('getCheapestAvatarModel fetches cheapest avatar model', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse({}) as Response
+    );
+
+    await client.getCheapestAvatarModel({ provider: 'heygen' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('/api/v1/avatar/cheapest'),
+      expect.anything()
+    );
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('provider=heygen'),
+      expect.anything()
+    );
+  });
 });
