@@ -39,7 +39,11 @@ export async function runImagePricingFetch(): Promise<ImageFetchResult> {
         : await fetchPricingPage(config.url);
 
       console.log(`Extracting image pricing for ${config.displayName}...`);
-      const extraction = await extractImagePricing(providerId, pageText);
+      let extraction = await extractImagePricing(providerId, pageText);
+      if (extraction.models.length === 0) {
+        console.warn(`${config.displayName}: image extraction returned 0 models, retrying once...`);
+        extraction = await extractImagePricing(providerId, pageText);
+      }
 
       if (extraction.models.length === 0) {
         errors.push(`${config.displayName}: no image models extracted`);

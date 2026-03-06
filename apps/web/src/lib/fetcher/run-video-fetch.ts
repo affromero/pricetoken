@@ -39,7 +39,11 @@ export async function runVideoFetch(): Promise<VideoFetchResult> {
         : await fetchPricingPage(config.url);
 
       console.log(`Extracting video pricing for ${config.displayName}...`);
-      const extraction = await extractVideoPricing(providerId, pageText);
+      let extraction = await extractVideoPricing(providerId, pageText);
+      if (extraction.models.length === 0) {
+        console.warn(`${config.displayName}: video extraction returned 0 models, retrying once...`);
+        extraction = await extractVideoPricing(providerId, pageText);
+      }
 
       if (extraction.models.length === 0) {
         errors.push(`${config.displayName}: no video models extracted`);

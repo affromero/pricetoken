@@ -46,7 +46,11 @@ export async function runPricingFetch(): Promise<FetchResult> {
         : await fetchPricingPage(config.url);
 
       console.log(`Extracting pricing for ${config.displayName}...`);
-      const extraction = await extractPricing(providerId, pageText);
+      let extraction = await extractPricing(providerId, pageText);
+      if (extraction.models.length === 0) {
+        console.warn(`${config.displayName}: extraction returned 0 models, retrying once...`);
+        extraction = await extractPricing(providerId, pageText);
+      }
 
       // Filter out unknown modelIds (AI hallucinations)
       const knownModels = extraction.models.filter((m) => knownIds.has(m.modelId));
