@@ -13,13 +13,14 @@ export function buildVideoConsensus(
 ): VideoVerificationResult {
   const approved: VerifiedVideoModel[] = [];
   const flagged: VerifiedVideoModel[] = [];
+  const totalAgents = agentResults.length;
   const priorFlagsByModel = groupFlagsByModel(priorFlags);
 
   for (const model of models) {
-    const { approvals, rejections, votingAgents } = countVotes(model.modelId, agentResults);
+    const { approvals, rejections } = countVotes(model.modelId, agentResults);
     const modelPriorFlags = priorFlagsByModel.get(model.modelId) ?? [];
     const hasPriceChangeFlag = modelPriorFlags.some((f) => f.type === 'price_change');
-    const isApproved = shouldApprove(approvals, rejections, votingAgents, hasPriceChangeFlag);
+    const isApproved = shouldApprove(approvals, rejections, totalAgents, hasPriceChangeFlag);
 
     const verified: VerifiedVideoModel = {
       ...model,
@@ -42,15 +43,13 @@ export function buildVideoConsensus(
 function countVotes(
   modelId: string,
   agentResults: AgentVerification[]
-): { approvals: number; rejections: number; votingAgents: number } {
+): { approvals: number; rejections: number } {
   let approvals = 0;
   let rejections = 0;
-  let votingAgents = 0;
 
   for (const agent of agentResults) {
     const verdict = agent.verdicts.find((v) => v.modelId === modelId);
     if (verdict) {
-      votingAgents++;
       if (verdict.approved) {
         approvals++;
       } else {
@@ -59,7 +58,7 @@ function countVotes(
     }
   }
 
-  return { approvals, rejections, votingAgents };
+  return { approvals, rejections };
 }
 
 function groupFlagsByModel(
