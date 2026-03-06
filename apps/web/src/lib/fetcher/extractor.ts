@@ -12,6 +12,7 @@ export interface ExtractedModel {
   contextWindow?: number;
   maxOutputTokens?: number;
   status?: 'active' | 'deprecated' | 'preview';
+  launchDate?: string;
 }
 
 export interface ExtractionOutput {
@@ -108,10 +109,13 @@ function parseModels(text: string, pricingProvider: string): ExtractedModel[] {
         if (m.status && !VALID_STATUSES.includes(m.status)) {
           m.status = undefined;
         }
+        if (m.launchDate && !/^\d{4}-\d{2}-\d{2}$/.test(m.launchDate)) {
+          m.launchDate = undefined;
+        }
         return m;
       });
   } catch {
-    console.warn(`Failed to parse pricing extraction for ${pricingProvider}:`, text.slice(0, 200));
+    console.warn(`Failed to parse pricing extraction for ${pricingProvider}:`, text.slice(0, 500));
     return [];
   }
 }

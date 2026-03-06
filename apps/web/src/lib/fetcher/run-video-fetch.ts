@@ -39,7 +39,11 @@ export async function runVideoFetch(): Promise<VideoFetchResult> {
         : await fetchPricingPage(config.url);
 
       console.log(`Extracting video pricing for ${config.displayName}...`);
-      const extraction = await extractVideoPricing(providerId, pageText);
+      let extraction = await extractVideoPricing(providerId, pageText);
+      if (extraction.models.length === 0) {
+        console.warn(`${config.displayName}: video extraction returned 0 models, retrying once...`);
+        extraction = await extractVideoPricing(providerId, pageText);
+      }
 
       if (extraction.models.length === 0) {
         errors.push(`${config.displayName}: no video models extracted`);
@@ -82,12 +86,26 @@ export async function runVideoFetch(): Promise<VideoFetchResult> {
         console.log(`${config.displayName}: saved ${saved} verified video models`);
       }
 
+      // Re-verify flagged models with a second round of cross-verification
       if (consensus.flagged.length > 0) {
-        totalFlagged += consensus.flagged.length;
-        console.warn(
-          `${config.displayName}: ${consensus.flagged.length} video models flagged for review:`,
-          consensus.flagged.map((m) => m.modelId)
-        );
+        console.log(`${config.displayName}: re-verifying ${consensus.flagged.length} flagged video model(s)...`);
+        const flaggedModels = consensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+        const retryAgentResults = await videoCrossVerify(pageText, flaggedModels);
+        const retryConsensus = buildVideoConsensus(flaggedModels, retryAgentResults, []);
+
+        if (retryConsensus.approved.length > 0) {
+          const saved = await saveVideoSnapshots(providerId, retryConsensus.approved, 'verified', 'low', retryAgentResults.length);
+          totalModels += saved;
+          console.log(`${config.displayName}: ${saved} flagged video model(s) passed re-verification (low confidence)`);
+        }
+
+        if (retryConsensus.flagged.length > 0) {
+          totalFlagged += retryConsensus.flagged.length;
+          console.warn(
+            `${config.displayName}: ${retryConsensus.flagged.length} video model(s) still flagged after re-verification:`,
+            retryConsensus.flagged.map((m) => m.modelId)
+          );
+        }
       }
 
       const currentModelIds = consensus.approved.map((m) => m.modelId);

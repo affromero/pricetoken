@@ -6,6 +6,9 @@ Return a JSON array of objects with these fields:
 - resolution: video resolution, one of "720p", "1080p", "4k", or other (string, optional)
 - maxDuration: maximum video duration in seconds (number, optional)
 - qualityMode: one of "standard", "turbo", "professional", or other (string, optional)
+- launchDate: the model's release/launch date in "YYYY-MM-DD" format (string, optional)
+  - Extract if the page mentions a release date, launch date, or "available since" date
+  - Omit if no date is mentioned
 - status: one of "active", "deprecated", or "preview" (string, optional)
 
 CRITICAL conversion rules — show your work mentally before outputting:

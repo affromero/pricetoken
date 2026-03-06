@@ -12,6 +12,7 @@ export interface ExtractedVideoModel {
   maxDuration?: number;
   qualityMode?: string;
   status?: 'active' | 'deprecated' | 'preview';
+  launchDate?: string;
 }
 
 export interface VideoExtractionOutput {
@@ -106,10 +107,13 @@ function parseVideoModels(text: string, pricingProvider: string): ExtractedVideo
         if (m.status && !VALID_STATUSES.includes(m.status)) {
           m.status = undefined;
         }
+        if (m.launchDate && !/^\d{4}-\d{2}-\d{2}$/.test(m.launchDate)) {
+          m.launchDate = undefined;
+        }
         return m;
       });
   } catch {
-    console.warn(`Failed to parse video pricing extraction for ${pricingProvider}:`, text.slice(0, 200));
+    console.warn(`Failed to parse video pricing extraction for ${pricingProvider}:`, text.slice(0, 500));
     return [];
   }
 }

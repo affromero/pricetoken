@@ -13,6 +13,7 @@ export interface ExtractedImageModel {
   maxResolution?: string;
   supportedFormats?: string[];
   status?: string;
+  launchDate?: string;
 }
 
 export async function saveImageSnapshots(
@@ -50,7 +51,7 @@ export async function saveImageSnapshots(
     confidence,
     agentApprovals: 'agentApprovals' in m ? (m as unknown as { agentApprovals: number }).agentApprovals : null,
     agentTotal: agentTotal ?? null,
-    launchDate: priorByModel.get(m.modelId)?.launchDate ?? null,
+    launchDate: m.launchDate ? new Date(m.launchDate) : priorByModel.get(m.modelId)?.launchDate ?? null,
   }));
   const result = await prisma.imagePricingSnapshot.createMany({ data });
   return result.count;

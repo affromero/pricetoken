@@ -45,7 +45,7 @@ export const EXTRACTION_PROVIDERS: Record<string, ProviderConfig> = {
       const client = new Anthropic({ apiKey });
       const response = await client.messages.create({
         model,
-        max_tokens: 2048,
+        max_tokens: 8192,
         system: systemPrompt,
         messages: [{ role: 'user', content: userPrompt }],
       });
@@ -84,7 +84,7 @@ export const EXTRACTION_PROVIDERS: Record<string, ProviderConfig> = {
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt },
         ],
-        max_tokens: 2048,
+        max_tokens: 8192,
       });
 
       return {
@@ -144,7 +144,7 @@ export const EXTRACTION_PROVIDERS: Record<string, ProviderConfig> = {
         const env = { ...process.env };
         delete env.ANTHROPIC_API_KEY;
         const proc = spawn('claude', ['--print', '--model', model], {
-          timeout: 120_000,
+          timeout: 240_000,
           env,
         });
 

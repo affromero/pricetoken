@@ -22,9 +22,9 @@ describe('stripHtml', () => {
     expect(stripHtml(html)).toBe('hello world');
   });
 
-  it('truncates to 15000 characters', () => {
-    const html = '<p>' + 'a'.repeat(20_000) + '</p>';
-    expect(stripHtml(html).length).toBeLessThanOrEqual(15_000);
+  it('truncates to 30000 characters', () => {
+    const html = '<p>' + 'a'.repeat(40_000) + '</p>';
+    expect(stripHtml(html).length).toBeLessThanOrEqual(30_000);
   });
 });
 

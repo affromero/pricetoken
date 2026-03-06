@@ -36,7 +36,7 @@ export async function verifyWithRetry(opts: VerifyOptions): Promise<AgentVerific
     return [];
   }
 
-  const userPrompt = `Verify these extracted prices against the raw page text.\n\nRaw text:\n${pageText.slice(0, 6000)}\n\nExtracted data:\n${modelsJson}`;
+  const userPrompt = `Verify these extracted prices against the raw page text.\n\nRaw text:\n${pageText.slice(0, 12_000)}\n\nExtracted data:\n${modelsJson}`;
 
   // Initial run: all agents in parallel
   const agentStates = await Promise.all(
@@ -72,7 +72,7 @@ export async function verifyWithRetry(opts: VerifyOptions): Promise<AgentVerific
     await Promise.all(
       needsRetry.map(async ({ idx, missingIds }) => {
         const state = agentStates[idx]!;
-        const retryPrompt = `You previously verified some models but MISSED the following. Verify ONLY these model IDs against the raw page text. Return a JSON array of verdicts.\n\nMissing model IDs: ${JSON.stringify(missingIds)}\n\nRaw text:\n${pageText.slice(0, 6000)}\n\nExtracted data:\n${modelsJson}`;
+        const retryPrompt = `You previously verified some models but MISSED the following. Verify ONLY these model IDs against the raw page text. Return a JSON array of verdicts.\n\nMissing model IDs: ${JSON.stringify(missingIds)}\n\nRaw text:\n${pageText.slice(0, 12_000)}\n\nExtracted data:\n${modelsJson}`;
 
         try {
           const result = await runAgent(state.agent, systemPrompt, retryPrompt, operation);
