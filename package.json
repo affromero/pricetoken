@@ -18,8 +18,12 @@
     "fetch-pricing": "doppler run -- npx tsx scripts/fetch-pricing.ts",
     "fetch-image-pricing": "doppler run -- npx tsx scripts/fetch-image-pricing.ts",
     "seed-avatar": "doppler run -- npx tsx scripts/seed-avatar.ts",
+    "seed-tts": "doppler run -- npx tsx scripts/seed-tts.ts",
+    "seed-stt": "doppler run -- npx tsx scripts/seed-stt.ts",
     "fetch-avatar-pricing": "doppler run -- npx tsx scripts/fetch-avatar-pricing.ts",
     "fetch-video-pricing": "doppler run -- npx tsx scripts/fetch-video-pricing.ts",
+    "fetch-tts-pricing": "doppler run -- npx tsx scripts/fetch-tts-pricing.ts",
+    "fetch-stt-pricing": "doppler run -- npx tsx scripts/fetch-stt-pricing.ts",
     "setup-dns": "doppler run -- npx tsx scripts/setup-dns.ts"
   },
   "devDependencies": {

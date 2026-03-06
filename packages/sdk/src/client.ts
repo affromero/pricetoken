@@ -13,9 +13,15 @@ import type {
   AvatarModelPricing,
   AvatarModelHistory,
   AvatarProviderSummary,
+  TtsModelPricing,
+  TtsModelHistory,
+  TtsProviderSummary,
+  SttModelPricing,
+  SttModelHistory,
+  SttProviderSummary,
 } from './types';
 
-const SDK_VERSION = '0.9.0';
+const SDK_VERSION = '0.10.0';
 
 export interface ClientOptions {
   baseUrl?: string;
@@ -272,5 +278,101 @@ export class PriceTokenClient {
     if (opts?.before) params.set('before', opts.before);
     const qs = params.toString();
     return this.request<AvatarModelPricing>(`/api/v1/avatar/cheapest${qs ? `?${qs}` : ''}`);
+  }
+
+  // TTS pricing methods
+
+  async getTtsPricing(opts?: { provider?: string; currency?: string; after?: string; before?: string }): Promise<TtsModelPricing[]> {
+    const params = new URLSearchParams();
+    if (opts?.provider) params.set('provider', opts.provider);
+    if (opts?.currency) params.set('currency', opts.currency);
+    if (opts?.after) params.set('after', opts.after);
+    if (opts?.before) params.set('before', opts.before);
+    const qs = params.toString();
+    return this.request<TtsModelPricing[]>(`/api/v1/tts${qs ? `?${qs}` : ''}`);
+  }
+
+  async getTtsModel(modelId: string, opts?: { currency?: string }): Promise<TtsModelPricing> {
+    const params = new URLSearchParams();
+    if (opts?.currency) params.set('currency', opts.currency);
+    const qs = params.toString();
+    return this.request<TtsModelPricing>(`/api/v1/tts/${encodeURIComponent(modelId)}${qs ? `?${qs}` : ''}`);
+  }
+
+  async getTtsHistory(opts?: { days?: number; modelId?: string; provider?: string }): Promise<TtsModelHistory[]> {
+    const params = new URLSearchParams();
+    if (opts?.days) params.set('days', String(opts.days));
+    if (opts?.modelId) params.set('modelId', opts.modelId);
+    if (opts?.provider) params.set('provider', opts.provider);
+    const qs = params.toString();
+    return this.request<TtsModelHistory[]>(`/api/v1/tts/history${qs ? `?${qs}` : ''}`);
+  }
+
+  async getTtsProviders(): Promise<TtsProviderSummary[]> {
+    return this.request<TtsProviderSummary[]>('/api/v1/tts/providers');
+  }
+
+  async compareTtsModels(modelIds: string[], opts?: { currency?: string }): Promise<TtsModelPricing[]> {
+    const params = new URLSearchParams({ models: modelIds.join(',') });
+    if (opts?.currency) params.set('currency', opts.currency);
+    return this.request<TtsModelPricing[]>(`/api/v1/tts/compare?${params}`);
+  }
+
+  async getCheapestTtsModel(opts?: { provider?: string; currency?: string; after?: string; before?: string }): Promise<TtsModelPricing> {
+    const params = new URLSearchParams();
+    if (opts?.provider) params.set('provider', opts.provider);
+    if (opts?.currency) params.set('currency', opts.currency);
+    if (opts?.after) params.set('after', opts.after);
+    if (opts?.before) params.set('before', opts.before);
+    const qs = params.toString();
+    return this.request<TtsModelPricing>(`/api/v1/tts/cheapest${qs ? `?${qs}` : ''}`);
+  }
+
+  // STT pricing methods
+
+  async getSttPricing(opts?: { provider?: string; currency?: string; after?: string; before?: string }): Promise<SttModelPricing[]> {
+    const params = new URLSearchParams();
+    if (opts?.provider) params.set('provider', opts.provider);
+    if (opts?.currency) params.set('currency', opts.currency);
+    if (opts?.after) params.set('after', opts.after);
+    if (opts?.before) params.set('before', opts.before);
+    const qs = params.toString();
+    return this.request<SttModelPricing[]>(`/api/v1/stt${qs ? `?${qs}` : ''}`);
+  }
+
+  async getSttModel(modelId: string, opts?: { currency?: string }): Promise<SttModelPricing> {
+    const params = new URLSearchParams();
+    if (opts?.currency) params.set('currency', opts.currency);
+    const qs = params.toString();
+    return this.request<SttModelPricing>(`/api/v1/stt/${encodeURIComponent(modelId)}${qs ? `?${qs}` : ''}`);
+  }
+
+  async getSttHistory(opts?: { days?: number; modelId?: string; provider?: string }): Promise<SttModelHistory[]> {
+    const params = new URLSearchParams();
+    if (opts?.days) params.set('days', String(opts.days));
+    if (opts?.modelId) params.set('modelId', opts.modelId);
+    if (opts?.provider) params.set('provider', opts.provider);
+    const qs = params.toString();
+    return this.request<SttModelHistory[]>(`/api/v1/stt/history${qs ? `?${qs}` : ''}`);
+  }
+
+  async getSttProviders(): Promise<SttProviderSummary[]> {
+    return this.request<SttProviderSummary[]>('/api/v1/stt/providers');
+  }
+
+  async compareSttModels(modelIds: string[], opts?: { currency?: string }): Promise<SttModelPricing[]> {
+    const params = new URLSearchParams({ models: modelIds.join(',') });
+    if (opts?.currency) params.set('currency', opts.currency);
+    return this.request<SttModelPricing[]>(`/api/v1/stt/compare?${params}`);
+  }
+
+  async getCheapestSttModel(opts?: { provider?: string; currency?: string; after?: string; before?: string }): Promise<SttModelPricing> {
+    const params = new URLSearchParams();
+    if (opts?.provider) params.set('provider', opts.provider);
+    if (opts?.currency) params.set('currency', opts.currency);
+    if (opts?.after) params.set('after', opts.after);
+    if (opts?.before) params.set('before', opts.before);
+    const qs = params.toString();
+    return this.request<SttModelPricing>(`/api/v1/stt/cheapest${qs ? `?${qs}` : ''}`);
   }
 }

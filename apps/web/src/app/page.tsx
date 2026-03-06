@@ -40,7 +40,7 @@ export default async function HomePage() {
             operatingSystem: 'Any',
             offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
             description:
-              'Free REST API, npm package, and Python SDK for real-time AI pricing data across text, image, video, and avatar generation providers.',
+              'Free REST API, npm package, and Python SDK for real-time AI pricing data across text, image, video, avatar, tts, and stt generation providers.',
           }),
         }}
       />
@@ -53,7 +53,7 @@ export default async function HomePage() {
             <span className={styles.accent}>One API.</span>
           </h1>
           <p className={styles.subtitle}>
-            Free REST API for real-time pricing across text, image, video, and avatar AI providers.
+            Free REST API for real-time pricing across text, image, video, avatar, TTS, and STT AI providers.
             Open source. Self-hostable.
           </p>
           <div className={styles.cta}>
@@ -80,6 +80,29 @@ export default async function HomePage() {
             <Link href="/avatar" className={styles.modalityCard}>
               <span className={styles.modalityIcon}>A</span>
               <span className={styles.modalityLabel}>Avatar</span>
+              <span className={styles.modalityMeta}>$/minute</span>
+            </Link>
+            <Link href="/tts" className={styles.modalityCard}>
+              <span className={styles.modalityIcon}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                </svg>
+              </span>
+              <span className={styles.modalityLabel}>TTS</span>
+              <span className={styles.modalityMeta}>$/M chars</span>
+            </Link>
+            <Link href="/stt" className={styles.modalityCard}>
+              <span className={styles.modalityIcon}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                  <line x1="12" y1="19" x2="12" y2="23" />
+                  <line x1="8" y1="23" x2="16" y2="23" />
+                </svg>
+              </span>
+              <span className={styles.modalityLabel}>STT</span>
               <span className={styles.modalityMeta}>$/minute</span>
             </Link>
             <div className={styles.modalityCardDisabled}>

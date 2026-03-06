@@ -437,3 +437,201 @@ def _parse_avatar_provider_summary(data: dict[str, Any]) -> AvatarProviderSummar
         model_count=data["modelCount"],
         cheapest_cost_per_minute=data["cheapestCostPerMinute"],
     )
+
+
+# ---------------------------------------------------------------------------
+# TTS pricing types
+# ---------------------------------------------------------------------------
+
+
+@dataclass(slots=True)
+class TtsModelPricing:
+    model_id: str
+    provider: str
+    display_name: str
+    cost_per_m_chars: float
+    voice_type: str | None
+    max_characters: int | None
+    supported_languages: int | None
+    source: Source
+    status: ModelStatus | None
+    confidence: DataConfidence
+    confidence_score: int
+    confidence_level: ConfidenceLevel
+    freshness: FreshnessInfo
+    last_updated: str | None
+    launch_date: str | None
+
+
+@dataclass(slots=True)
+class TtsCostEstimate:
+    model_id: str
+    characters: int
+    cost_per_m_chars: float
+    total_cost: float
+
+
+@dataclass(slots=True)
+class TtsPriceHistoryPoint:
+    date: str
+    cost_per_m_chars: float
+
+
+@dataclass(slots=True)
+class TtsModelHistory:
+    model_id: str
+    provider: str
+    display_name: str
+    history: list[TtsPriceHistoryPoint]
+
+
+@dataclass(slots=True)
+class TtsProviderSummary:
+    id: str
+    display_name: str
+    model_count: int
+    cheapest_cost_per_m_chars: float
+
+
+def _parse_tts_model_pricing(data: dict[str, Any]) -> TtsModelPricing:
+    return TtsModelPricing(
+        model_id=data["modelId"],
+        provider=data["provider"],
+        display_name=data["displayName"],
+        cost_per_m_chars=data["costPerMChars"],
+        voice_type=data.get("voiceType"),
+        max_characters=data.get("maxCharacters"),
+        supported_languages=data.get("supportedLanguages"),
+        source=data["source"],
+        status=data.get("status"),
+        confidence=data.get("confidence", "low"),
+        confidence_score=data.get("confidenceScore", 0),
+        confidence_level=data.get("confidenceLevel", "low"),
+        freshness=_parse_freshness(data.get("freshness")),
+        last_updated=data.get("lastUpdated"),
+        launch_date=data.get("launchDate"),
+    )
+
+
+def _parse_tts_history_point(data: dict[str, Any]) -> TtsPriceHistoryPoint:
+    return TtsPriceHistoryPoint(
+        date=data["date"],
+        cost_per_m_chars=data["costPerMChars"],
+    )
+
+
+def _parse_tts_model_history(data: dict[str, Any]) -> TtsModelHistory:
+    return TtsModelHistory(
+        model_id=data["modelId"],
+        provider=data["provider"],
+        display_name=data["displayName"],
+        history=[_parse_tts_history_point(p) for p in data["history"]],
+    )
+
+
+def _parse_tts_provider_summary(data: dict[str, Any]) -> TtsProviderSummary:
+    return TtsProviderSummary(
+        id=data["id"],
+        display_name=data["displayName"],
+        model_count=data["modelCount"],
+        cheapest_cost_per_m_chars=data["cheapestCostPerMChars"],
+    )
+
+
+# ---------------------------------------------------------------------------
+# STT pricing types
+# ---------------------------------------------------------------------------
+
+
+@dataclass(slots=True)
+class SttModelPricing:
+    model_id: str
+    provider: str
+    display_name: str
+    cost_per_minute: float
+    stt_type: str | None
+    max_duration: int | None
+    supported_languages: int | None
+    source: Source
+    status: ModelStatus | None
+    confidence: DataConfidence
+    confidence_score: int
+    confidence_level: ConfidenceLevel
+    freshness: FreshnessInfo
+    last_updated: str | None
+    launch_date: str | None
+
+
+@dataclass(slots=True)
+class SttCostEstimate:
+    model_id: str
+    duration_seconds: float
+    cost_per_minute: float
+    total_cost: float
+
+
+@dataclass(slots=True)
+class SttPriceHistoryPoint:
+    date: str
+    cost_per_minute: float
+
+
+@dataclass(slots=True)
+class SttModelHistory:
+    model_id: str
+    provider: str
+    display_name: str
+    history: list[SttPriceHistoryPoint]
+
+
+@dataclass(slots=True)
+class SttProviderSummary:
+    id: str
+    display_name: str
+    model_count: int
+    cheapest_cost_per_minute: float
+
+
+def _parse_stt_model_pricing(data: dict[str, Any]) -> SttModelPricing:
+    return SttModelPricing(
+        model_id=data["modelId"],
+        provider=data["provider"],
+        display_name=data["displayName"],
+        cost_per_minute=data["costPerMinute"],
+        stt_type=data.get("sttType"),
+        max_duration=data.get("maxDuration"),
+        supported_languages=data.get("supportedLanguages"),
+        source=data["source"],
+        status=data.get("status"),
+        confidence=data.get("confidence", "low"),
+        confidence_score=data.get("confidenceScore", 0),
+        confidence_level=data.get("confidenceLevel", "low"),
+        freshness=_parse_freshness(data.get("freshness")),
+        last_updated=data.get("lastUpdated"),
+        launch_date=data.get("launchDate"),
+    )
+
+
+def _parse_stt_history_point(data: dict[str, Any]) -> SttPriceHistoryPoint:
+    return SttPriceHistoryPoint(
+        date=data["date"],
+        cost_per_minute=data["costPerMinute"],
+    )
+
+
+def _parse_stt_model_history(data: dict[str, Any]) -> SttModelHistory:
+    return SttModelHistory(
+        model_id=data["modelId"],
+        provider=data["provider"],
+        display_name=data["displayName"],
+        history=[_parse_stt_history_point(p) for p in data["history"]],
+    )
+
+
+def _parse_stt_provider_summary(data: dict[str, Any]) -> SttProviderSummary:
+    return SttProviderSummary(
+        id=data["id"],
+        display_name=data["displayName"],
+        model_count=data["modelCount"],
+        cheapest_cost_per_minute=data["cheapestCostPerMinute"],
+    )

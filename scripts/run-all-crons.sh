@@ -55,5 +55,7 @@ run_cron "Text pricing"  "/api/cron/fetch-pricing"       600
 run_cron "Image pricing" "/api/cron/fetch-image-pricing"  600
 run_cron "Video pricing"  "/api/cron/fetch-video-pricing"  600
 run_cron "Avatar pricing" "/api/cron/fetch-avatar-pricing" 600
+run_cron "TTS pricing"    "/api/cron/fetch-tts-pricing"    600
+run_cron "STT pricing"    "/api/cron/fetch-stt-pricing"    600
 
 log "=== All crons complete ==="

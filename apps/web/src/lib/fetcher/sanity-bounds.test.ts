@@ -4,6 +4,8 @@ import {
   checkImagePriceSanity,
   checkVideoPriceSanity,
   checkAvatarPriceSanity,
+  checkTtsPriceSanity,
+  checkSttPriceSanity,
 } from './sanity-bounds';
 
 describe('checkTextPriceSanity', () => {
@@ -92,5 +94,69 @@ describe('checkAvatarPriceSanity', () => {
 
   it('rejects cost below min', () => {
     expect(checkAvatarPriceSanity('test', 0.01).valid).toBe(false);
+  });
+});
+
+describe('checkTtsPriceSanity', () => {
+  it('accepts valid TTS pricing', () => {
+    expect(checkTtsPriceSanity('openai-tts-1', 15.0).valid).toBe(true);
+  });
+
+  it('accepts boundary min price', () => {
+    expect(checkTtsPriceSanity('test', 0.50).valid).toBe(true);
+  });
+
+  it('accepts boundary max price', () => {
+    expect(checkTtsPriceSanity('test', 500).valid).toBe(true);
+  });
+
+  it('rejects zero cost', () => {
+    const result = checkTtsPriceSanity('test', 0);
+    expect(result.valid).toBe(false);
+    expect(result.reason).toContain('positive');
+  });
+
+  it('rejects cost above max', () => {
+    const result = checkTtsPriceSanity('test', 600);
+    expect(result.valid).toBe(false);
+    expect(result.reason).toContain('exceeds max');
+  });
+
+  it('rejects cost below min', () => {
+    const result = checkTtsPriceSanity('test', 0.1);
+    expect(result.valid).toBe(false);
+    expect(result.reason).toContain('below min');
+  });
+});
+
+describe('checkSttPriceSanity', () => {
+  it('accepts valid STT pricing', () => {
+    expect(checkSttPriceSanity('openai-whisper-1', 0.006).valid).toBe(true);
+  });
+
+  it('accepts boundary min price', () => {
+    expect(checkSttPriceSanity('test', 0.0005).valid).toBe(true);
+  });
+
+  it('accepts boundary max price', () => {
+    expect(checkSttPriceSanity('test', 1.0).valid).toBe(true);
+  });
+
+  it('rejects zero cost', () => {
+    const result = checkSttPriceSanity('test', 0);
+    expect(result.valid).toBe(false);
+    expect(result.reason).toContain('positive');
+  });
+
+  it('rejects cost above max', () => {
+    const result = checkSttPriceSanity('test', 2.0);
+    expect(result.valid).toBe(false);
+    expect(result.reason).toContain('exceeds max');
+  });
+
+  it('rejects cost below min', () => {
+    const result = checkSttPriceSanity('test', 0.0001);
+    expect(result.valid).toBe(false);
+    expect(result.reason).toContain('below min');
   });
 });

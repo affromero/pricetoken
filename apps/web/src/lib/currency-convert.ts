@@ -1,4 +1,4 @@
-import type { ModelPricing, ImageModelPricing, VideoModelPricing, AvatarModelPricing } from 'pricetoken';
+import type { ModelPricing, ImageModelPricing, VideoModelPricing, AvatarModelPricing, TtsModelPricing, SttModelPricing } from 'pricetoken';
 import { getExchangeRates, isSupportedCurrency } from '@/lib/currency';
 
 export interface CurrencyInfo {
@@ -95,4 +95,20 @@ export function convertAvatarPricing<T extends AvatarModelPricing | AvatarModelP
     ...model,
     costPerMinute: model.costPerMinute * rate,
   } as T;
+}
+
+export function convertTtsPricing<T extends TtsModelPricing | TtsModelPricing[]>(data: T, rate: number): T {
+  if (Array.isArray(data)) {
+    return data.map((m) => ({ ...m, costPerMChars: m.costPerMChars * rate })) as T;
+  }
+  const model = data as TtsModelPricing;
+  return { ...model, costPerMChars: model.costPerMChars * rate } as T;
+}
+
+export function convertSttPricing<T extends SttModelPricing | SttModelPricing[]>(data: T, rate: number): T {
+  if (Array.isArray(data)) {
+    return data.map((m) => ({ ...m, costPerMinute: m.costPerMinute * rate })) as T;
+  }
+  const model = data as SttModelPricing;
+  return { ...model, costPerMinute: model.costPerMinute * rate } as T;
 }

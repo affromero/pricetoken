@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import styles from './DocsModeSwitcher.module.css';
 
-type Modality = 'text' | 'image' | 'video' | 'avatar';
+type Modality = 'text' | 'image' | 'video' | 'avatar' | 'tts' | 'stt';
 
 interface Tab {
   id: Modality;
@@ -56,6 +56,29 @@ const TABS: Tab[] = [
       </svg>
     ),
   },
+  {
+    id: 'tts',
+    label: 'TTS',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+      </svg>
+    ),
+  },
+  {
+    id: 'stt',
+    label: 'STT',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+        <line x1="12" y1="19" x2="12" y2="23" />
+        <line x1="8" y1="23" x2="16" y2="23" />
+      </svg>
+    ),
+  },
 ];
 
 interface DocsModeSwitcherProps {
@@ -63,9 +86,11 @@ interface DocsModeSwitcherProps {
   imageContent: React.ReactNode;
   videoContent: React.ReactNode;
   avatarContent: React.ReactNode;
+  ttsContent: React.ReactNode;
+  sttContent: React.ReactNode;
 }
 
-export function DocsModeSwitcher({ textContent, imageContent, videoContent, avatarContent }: DocsModeSwitcherProps) {
+export function DocsModeSwitcher({ textContent, imageContent, videoContent, avatarContent, ttsContent, sttContent }: DocsModeSwitcherProps) {
   const [active, setActive] = useState<Modality>('text');
 
   const contentMap: Record<Modality, React.ReactNode> = {
@@ -73,6 +98,8 @@ export function DocsModeSwitcher({ textContent, imageContent, videoContent, avat
     image: imageContent,
     video: videoContent,
     avatar: avatarContent,
+    tts: ttsContent,
+    stt: sttContent,
   };
 
   return (
