@@ -36,4 +36,14 @@ export const TTS_PROVIDERS: Record<string, ProviderConfig> = {
     displayName: 'Deepgram',
     requiresBrowser: true,
   },
+  fal: {
+    url: 'https://fal.ai/models?category=text-to-speech',
+    displayName: 'FAL',
+    requiresBrowser: true,
+  },
+  cartesia: {
+    url: 'https://cartesia.ai/pricing',
+    displayName: 'Cartesia',
+    requiresBrowser: true,
+  },
 };
