@@ -103,7 +103,7 @@ PriceToken uses a multi-agent verification pipeline to ensure pricing accuracy:
 
 1. **Scrape** — Puppeteer fetches each provider's official pricing page daily
 2. **Extract** — An AI agent extracts structured pricing data from the raw page text
-3. **Verify** — Three independent AI agents from different providers (Claude Haiku, GPT-4.1 Mini, Gemini Flash) cross-check every data point against the raw text. A model is only accepted when at least two agents agree.
+3. **Verify** — Three independent AI agents from different providers cross-check every data point against the raw text. A model is only accepted when at least two agents agree.
 4. **Prior check** — Extracted prices are compared against the last known snapshot. Price changes exceeding 50% are flagged for manual review, even if all agents agree.
 
 Models that fail verification are logged but never saved to the database. If a daily run fails entirely, pricing updates freeze until an admin reviews and resolves the issue.
