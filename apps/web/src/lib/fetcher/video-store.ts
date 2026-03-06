@@ -13,6 +13,17 @@ export async function saveVideoSnapshots(
 ): Promise<number> {
   if (models.length === 0) return 0;
 
+  // Look up prior snapshots to preserve launchDate
+  const priorSnapshots = await prisma.$queryRaw<
+    Array<{ modelId: string; launchDate: Date | null }>
+  >`
+    SELECT DISTINCT ON ("modelId") "modelId", "launchDate"
+    FROM "VideoPricingSnapshot"
+    WHERE "provider" = ${provider}
+    ORDER BY "modelId", "createdAt" DESC
+  `;
+  const priorByModel = new Map(priorSnapshots.map((s) => [s.modelId, s]));
+
   const data = models.map((m) => ({
     modelId: m.modelId,
     provider,
@@ -26,7 +37,7 @@ export async function saveVideoSnapshots(
     confidence,
     agentApprovals: 'agentApprovals' in m ? (m as unknown as { agentApprovals: number }).agentApprovals : null,
     agentTotal: agentTotal ?? null,
-    launchDate: null,
+    launchDate: priorByModel.get(m.modelId)?.launchDate ?? null,
   }));
 
   const result = await prisma.videoPricingSnapshot.createMany({ data });

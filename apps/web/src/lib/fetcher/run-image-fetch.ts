@@ -4,6 +4,7 @@ import { extractImagePricing } from './image-extractor';
 import {
   saveImageSnapshots,
   seedImageFromStatic,
+  carryForwardMissingImages,
 } from './image-store';
 import { saveFetchRun, getLastFetchRun, type FetchWarning } from './store';
 import { imageCrossVerify } from './image-cross-verify';
@@ -114,8 +115,13 @@ export async function runImagePricingFetch(): Promise<ImageFetchResult> {
     }
   }
 
+  const carried = await carryForwardMissingImages();
+  if (carried > 0) {
+    console.log(`Carried forward ${carried} image models not seen in this run`);
+  }
+
   console.log(
-    `Image pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${errors.length} errors, ${warnings.length} warnings`
+    `Image pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried, ${errors.length} errors, ${warnings.length} warnings`
   );
   return { totalModels, totalFlagged, errors, warnings, verificationResults };
 }

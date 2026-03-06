@@ -3,7 +3,8 @@ import { logUsage } from '@/lib/usage-logger';
 import { IMAGE_VERIFICATION_SYSTEM_PROMPT } from './image-verification-prompt';
 import { getFetcherConfig, parseVerificationAgents } from '@/lib/fetcher-config';
 import type { ExtractedImageModel } from './image-store';
-import type { AgentVerification, ModelVerdict } from './verification-types';
+import type { AgentVerification } from './verification-types';
+import { parseVerdicts } from './parse-verdicts';
 
 interface VerificationAgent {
   provider: string;
@@ -85,31 +86,4 @@ async function runImageVerificationAgent(
     verdicts,
     usage: result.usage,
   };
-}
-
-function extractJson(text: string): string {
-  const trimmed = text.trim();
-  const fenced = trimmed.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?\s*```$/);
-  if (fenced) return fenced[1]!.trim();
-  const first = trimmed.indexOf('[');
-  const last = trimmed.lastIndexOf(']');
-  if (first !== -1 && last > first) return trimmed.slice(first, last + 1);
-  return trimmed;
-}
-
-function parseVerdicts(text: string): ModelVerdict[] {
-  try {
-    const parsed: unknown = JSON.parse(extractJson(text));
-    if (!Array.isArray(parsed)) return [];
-    return parsed.filter(
-      (v): v is ModelVerdict =>
-        typeof v === 'object' &&
-        v !== null &&
-        typeof (v as Record<string, unknown>).modelId === 'string' &&
-        typeof (v as Record<string, unknown>).approved === 'boolean'
-    );
-  } catch {
-    console.warn('Failed to parse image verification verdicts:', text.slice(0, 200));
-    return [];
-  }
 }
