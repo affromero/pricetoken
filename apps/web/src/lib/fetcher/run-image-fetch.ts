@@ -86,12 +86,26 @@ export async function runImagePricingFetch(): Promise<ImageFetchResult> {
         console.log(`${config.displayName}: saved ${saved} verified image models`);
       }
 
+      // Re-verify flagged models with a second round of cross-verification
       if (consensus.flagged.length > 0) {
-        totalFlagged += consensus.flagged.length;
-        console.warn(
-          `${config.displayName}: ${consensus.flagged.length} image models flagged for review:`,
-          consensus.flagged.map((m) => m.modelId)
-        );
+        console.log(`${config.displayName}: re-verifying ${consensus.flagged.length} flagged image model(s)...`);
+        const flaggedModels = consensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+        const retryAgentResults = await imageCrossVerify(pageText, flaggedModels);
+        const retryConsensus = buildImageConsensus(flaggedModels, retryAgentResults, []);
+
+        if (retryConsensus.approved.length > 0) {
+          const saved = await saveImageSnapshots(providerId, retryConsensus.approved, 'verified', 'low', retryAgentResults.length);
+          totalModels += saved;
+          console.log(`${config.displayName}: ${saved} flagged image model(s) passed re-verification (low confidence)`);
+        }
+
+        if (retryConsensus.flagged.length > 0) {
+          totalFlagged += retryConsensus.flagged.length;
+          console.warn(
+            `${config.displayName}: ${retryConsensus.flagged.length} image model(s) still flagged after re-verification:`,
+            retryConsensus.flagged.map((m) => m.modelId)
+          );
+        }
       }
 
       const currentModelIds = consensus.approved.map((m) => m.modelId);

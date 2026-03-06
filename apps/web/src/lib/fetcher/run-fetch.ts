@@ -109,13 +109,26 @@ export async function runPricingFetch(): Promise<FetchResult> {
         console.log(`${config.displayName}: saved ${saved} verified models`);
       }
 
-      // Log flagged models
+      // Re-verify flagged models with a second round of cross-verification
       if (consensus.flagged.length > 0) {
-        totalFlagged += consensus.flagged.length;
-        console.warn(
-          `${config.displayName}: ${consensus.flagged.length} models flagged for review:`,
-          consensus.flagged.map((m) => m.modelId)
-        );
+        console.log(`${config.displayName}: re-verifying ${consensus.flagged.length} flagged model(s)...`);
+        const flaggedModels = consensus.flagged.map(({ verificationStatus: _vs, agentApprovals: _aa, agentRejections: _ar, priorFlags: _pf, ...m }) => m);
+        const retryAgentResults = await crossVerify(pageText, flaggedModels);
+        const retryConsensus = buildConsensus(flaggedModels, retryAgentResults, []);
+
+        if (retryConsensus.approved.length > 0) {
+          const saved = await saveSnapshots(providerId, retryConsensus.approved, 'verified', 'low', retryAgentResults.length);
+          totalModels += saved;
+          console.log(`${config.displayName}: ${saved} flagged model(s) passed re-verification (low confidence)`);
+        }
+
+        if (retryConsensus.flagged.length > 0) {
+          totalFlagged += retryConsensus.flagged.length;
+          console.warn(
+            `${config.displayName}: ${retryConsensus.flagged.length} model(s) still flagged after re-verification:`,
+            retryConsensus.flagged.map((m) => m.modelId)
+          );
+        }
       }
 
       // Detect missing and new models by comparing with previous run
