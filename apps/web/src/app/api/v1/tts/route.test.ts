@@ -109,6 +109,16 @@ describe('GET /api/v1/tts', () => {
     expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*');
   });
 
+  it('passes after and before date params to getCurrentTtsPricing', async () => {
+    mockGetCached.mockResolvedValue(null);
+    mockGetCurrentTtsPricing.mockResolvedValue(mockModels);
+
+    const req = new NextRequest('http://localhost/api/v1/tts?after=2024-01-01&before=2025-12-31');
+    await GET(req);
+
+    expect(mockGetCurrentTtsPricing).toHaveBeenCalledWith(undefined, { after: '2024-01-01', before: '2025-12-31' });
+  });
+
   it('returns 500 on unexpected error', async () => {
     mockGetCached.mockRejectedValue(new Error('boom'));
 

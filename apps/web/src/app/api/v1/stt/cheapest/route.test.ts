@@ -80,6 +80,16 @@ describe('GET /api/v1/stt/cheapest', () => {
     expect(mockGetCheapestSttModel).toHaveBeenCalledWith('openai', undefined);
   });
 
+  it('passes after and before date params to getCheapestSttModel', async () => {
+    mockGetCached.mockResolvedValue(null);
+    mockGetCheapestSttModel.mockResolvedValue(mockModel);
+
+    const req = new NextRequest('http://localhost/api/v1/stt/cheapest?after=2024-01-01&before=2025-12-31');
+    await GET(req);
+
+    expect(mockGetCheapestSttModel).toHaveBeenCalledWith(undefined, { after: '2024-01-01', before: '2025-12-31' });
+  });
+
   it('returns 500 on unexpected error', async () => {
     mockGetCached.mockRejectedValue(new Error('boom'));
 
