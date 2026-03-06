@@ -26,4 +26,14 @@ export const STT_PROVIDERS: Record<string, ProviderConfig> = {
     displayName: 'Microsoft Azure',
     requiresBrowser: false,
   },
+  elevenlabs: {
+    url: 'https://elevenlabs.io/pricing/api',
+    displayName: 'ElevenLabs',
+    requiresBrowser: true,
+  },
+  cartesia: {
+    url: 'https://cartesia.ai/pricing',
+    displayName: 'Cartesia',
+    requiresBrowser: true,
+  },
 };
