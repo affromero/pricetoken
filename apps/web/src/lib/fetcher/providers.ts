@@ -43,11 +43,6 @@ export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
     displayName: 'xAI',
     requiresBrowser: true,
   },
-  mistral: {
-    url: 'https://mistral.ai/pricing',
-    displayName: 'Mistral',
-    requiresBrowser: true,
-  },
   qwen: {
     url: 'https://help.aliyun.com/zh/model-studio/getting-started/models',
     displayName: 'Qwen',
@@ -60,11 +55,6 @@ export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
   ai21: {
     url: 'https://www.ai21.com/pricing',
     displayName: 'AI21',
-    requiresBrowser: true,
-  },
-  amazon: {
-    url: 'https://aws.amazon.com/bedrock/pricing/',
-    displayName: 'Amazon',
     requiresBrowser: true,
   },
 };

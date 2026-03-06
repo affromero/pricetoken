@@ -33,7 +33,6 @@ const PROVIDER_COLOR_VALUES: Record<string, string> = {
   google: '#4285f4',
   deepseek: '#22c55e',
   xai: '#ef4444',
-  mistral: '#d97706',
 };
 
 interface ScatterPoint {

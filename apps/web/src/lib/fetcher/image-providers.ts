@@ -23,11 +23,6 @@ export const IMAGE_PRICING_PROVIDERS: Record<string, ImageProviderConfig> = {
     url: 'https://docs.bfl.ml/quick_start/pricing',
     displayName: 'Black Forest Labs',
   },
-  amazon: {
-    url: 'https://aws.amazon.com/bedrock/pricing/',
-    displayName: 'Amazon',
-    requiresBrowser: true,
-  },
   recraft: {
     url: 'https://www.recraft.ai/docs/api-reference/pricing',
     displayName: 'Recraft',

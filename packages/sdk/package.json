@@ -12,7 +12,6 @@
     "anthropic",
     "google",
     "xai",
-    "mistral",
     "grok"
   ],
   "homepage": "https://pricetoken.ai",

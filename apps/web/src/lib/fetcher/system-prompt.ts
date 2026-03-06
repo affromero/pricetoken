@@ -21,13 +21,11 @@ IMPORTANT — use these exact modelId values when extracting:
 - Google: gemini-2.5-pro, gemini-2.5-flash, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-2.5-flash-lite, gemini-3.1-pro-preview, gemini-3.1-flash-lite-preview, gemini-3-pro-preview, gemini-3-flash-preview
 - DeepSeek: deepseek-chat, deepseek-reasoner
 - xAI: grok-4, grok-4.1-fast, grok-3, grok-3-mini
-- Mistral: mistral-large-3, mistral-medium-3, codestral, mistral-small-3.1
 - Qwen: qwen3-max, qwq-32b
 - Cohere: command-r-plus, command-r
 - AI21: jamba-large-1.7, jamba-1.5-mini
-- Amazon: amazon-nova-pro, amazon-nova-lite, amazon-nova-micro
 
-Map display names to these IDs. For example: "Grok 4" → "grok-4", "Command R+" → "command-r-plus", "Jamba 1.5 Mini" → "jamba-1.5-mini", "Nova Pro" → "amazon-nova-pro".
+Map display names to these IDs. For example: "Grok 4" → "grok-4", "Command R+" → "command-r-plus", "Jamba 1.5 Mini" → "jamba-1.5-mini".
 
 Only include chat/text generation models. Skip embedding, image, audio, and fine-tuning models.
 
