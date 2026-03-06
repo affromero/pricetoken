@@ -250,13 +250,14 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
   // LTX (Lightricks) — LTX-2.3 launched 2026-03-05
   // Per-second pricing: fast=$0.04/sec (1080p), pro=$0.06/sec (1080p)
   // 4K: fast=$0.16/sec, pro=$0.24/sec
+  // Max durations: Fast 1080p=20s, Pro 1080p=10s, Fast 4K=10s, Pro 4K=10s
   {
     modelId: 'ltx-2.3-fast-1080p',
     provider: 'ltx',
     displayName: 'LTX-2.3 Fast 1080p',
     costPerMinute: 2.4,
     resolution: '1080p',
-    maxDuration: null,
+    maxDuration: 20,
     qualityMode: 'standard',
     source: 'seed',
     status: 'active',
@@ -273,7 +274,7 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
     displayName: 'LTX-2.3 Pro 1080p',
     costPerMinute: 3.6,
     resolution: '1080p',
-    maxDuration: null,
+    maxDuration: 10,
     qualityMode: 'professional',
     source: 'seed',
     status: 'active',
@@ -290,7 +291,7 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
     displayName: 'LTX-2.3 Fast 4K',
     costPerMinute: 9.6,
     resolution: '4k',
-    maxDuration: null,
+    maxDuration: 10,
     qualityMode: 'standard',
     source: 'seed',
     status: 'active',
@@ -307,7 +308,7 @@ export const STATIC_VIDEO_PRICING: VideoModelPricing[] = [
     displayName: 'LTX-2.3 Pro 4K',
     costPerMinute: 14.4,
     resolution: '4k',
-    maxDuration: null,
+    maxDuration: 10,
     qualityMode: 'professional',
     source: 'seed',
     status: 'active',

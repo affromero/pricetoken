@@ -4,7 +4,10 @@ Return a JSON array of objects with these fields:
 - displayName: human-readable name (e.g. "Runway Gen-4 720p", "Sora 2 Pro 1080p")
 - costPerMinute: price per minute of generated video in USD (number)
 - resolution: video resolution, one of "720p", "1080p", "4k", or other (string, optional)
-- maxDuration: maximum video duration in seconds (number, optional)
+- maxDuration: maximum video duration in seconds (number, REQUIRED)
+  - Extract the maximum clip length from the page (e.g. "up to 10 seconds" → 10)
+  - If multiple durations are listed for different tiers/resolutions, use the max for that specific resolution tier
+  - You MUST always provide this field — do not omit it
 - qualityMode: one of "standard", "turbo", "professional", or other (string, optional)
 - launchDate: the model's release/launch date in "YYYY-MM-DD" format (string, optional)
   - Extract if the page mentions a release date, launch date, or "available since" date
