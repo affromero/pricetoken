@@ -72,6 +72,8 @@ for model in STATIC_PRICING:
     print(f"{model.model_id}: ${model.input_per_m_tok}/MTok")
 ```
 
+> **Note:** Static data reflects prices at the time the package was published and does not auto-update. For the latest prices, use `PriceTokenClient` to fetch live data from the API.
+
 ## API Reference
 
 | Method | API Path |

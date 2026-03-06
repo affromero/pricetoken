@@ -77,6 +77,8 @@ import { STATIC_PRICING } from 'pricetoken';
 console.log(STATIC_PRICING.length); // 21 models
 ```
 
+> **Note:** Static data reflects prices at the time the package was published and does not auto-update. For the latest prices, use `PriceTokenClient` to fetch live data from the API.
+
 ## API
 
 ### `PriceTokenClient`
