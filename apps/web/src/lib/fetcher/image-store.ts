@@ -23,6 +23,18 @@ export async function saveImageSnapshots(
   agentTotal?: number
 ): Promise<number> {
   if (models.length === 0) return 0;
+
+  // Look up prior snapshots to preserve launchDate
+  const priorSnapshots = await prisma.$queryRaw<
+    Array<{ modelId: string; launchDate: Date | null }>
+  >`
+    SELECT DISTINCT ON ("modelId") "modelId", "launchDate"
+    FROM "ImagePricingSnapshot"
+    WHERE "provider" = ${provider}
+    ORDER BY "modelId", "createdAt" DESC
+  `;
+  const priorByModel = new Map(priorSnapshots.map((s) => [s.modelId, s]));
+
   const data = models.map((m) => ({
     modelId: m.modelId,
     provider,
@@ -38,7 +50,7 @@ export async function saveImageSnapshots(
     confidence,
     agentApprovals: 'agentApprovals' in m ? (m as unknown as { agentApprovals: number }).agentApprovals : null,
     agentTotal: agentTotal ?? null,
-    launchDate: null,
+    launchDate: priorByModel.get(m.modelId)?.launchDate ?? null,
   }));
   const result = await prisma.imagePricingSnapshot.createMany({ data });
   return result.count;
@@ -194,5 +206,83 @@ export async function seedImageFromStatic(): Promise<number> {
     console.log(`Seeded ${created} new image models (${existingIds.length} already existed)`);
   }
 
+  const { STATIC_IMAGE_PRICING: allStatic } = await import('pricetoken');
+  const withDates = allStatic.filter((m) => m.launchDate);
+  let updated = 0;
+  for (const m of withDates) {
+    const { count } = await prisma.imagePricingSnapshot.updateMany({
+      where: { modelId: m.modelId, launchDate: null },
+      data: { launchDate: new Date(m.launchDate!) },
+    });
+    updated += count;
+  }
+  if (updated > 0) {
+    console.log(`Backfilled launchDate on ${updated} existing image records`);
+  }
+
   return created;
+}
+
+export async function carryForwardMissingImages(): Promise<number> {
+  const today = new Date().toISOString().split('T')[0]!;
+  const startOfDay = new Date(today + 'T00:00:00Z');
+
+  const allModels = await prisma.imagePricingSnapshot.findMany({
+    distinct: ['modelId'],
+    select: { modelId: true },
+  });
+
+  const todayModels = await prisma.imagePricingSnapshot.findMany({
+    where: { createdAt: { gte: startOfDay } },
+    distinct: ['modelId'],
+    select: { modelId: true },
+  });
+  const todayIds = new Set(todayModels.map((m) => m.modelId));
+
+  const missing = allModels.map((m) => m.modelId).filter((id) => !todayIds.has(id));
+  if (missing.length === 0) return 0;
+
+  const data: Array<{
+    modelId: string;
+    provider: string;
+    displayName: string;
+    pricePerImage: number;
+    pricePerMegapixel: number | null;
+    defaultResolution: string;
+    qualityTier: string;
+    maxResolution: string | null;
+    supportedFormats: string[];
+    source: string;
+    status: string | null;
+    confidence: string;
+    launchDate: Date | null;
+  }> = [];
+
+  for (const modelId of missing) {
+    const latest = await prisma.imagePricingSnapshot.findFirst({
+      where: { modelId },
+      orderBy: { createdAt: 'desc' },
+    });
+    if (latest) {
+      data.push({
+        modelId: latest.modelId,
+        provider: latest.provider,
+        displayName: latest.displayName,
+        pricePerImage: latest.pricePerImage,
+        pricePerMegapixel: latest.pricePerMegapixel,
+        defaultResolution: latest.defaultResolution,
+        qualityTier: latest.qualityTier,
+        maxResolution: latest.maxResolution,
+        supportedFormats: latest.supportedFormats,
+        source: 'carried',
+        status: latest.status,
+        confidence: latest.confidence,
+        launchDate: latest.launchDate,
+      });
+    }
+  }
+
+  if (data.length === 0) return 0;
+  const result = await prisma.imagePricingSnapshot.createMany({ data });
+  return result.count;
 }
