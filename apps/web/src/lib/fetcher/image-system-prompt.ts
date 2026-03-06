@@ -25,7 +25,7 @@ IMPORTANT — use these exact modelId values when extracting:
 - BFL (FLUX.2): flux-2-klein-4b, flux-2-klein-9b, flux-2-pro, flux-2-flex
 - Recraft: recraft-v4-raster, recraft-v4-vector
 - Bytedance: seedream-4.5
-- fal.ai: fal-recraft-v3, fal-flux-1-pro, fal-flux-2-pro, fal-ideogram-v2, fal-sd3
+- fal.ai: fal-flux-1-schnell, fal-flux-1-dev, fal-flux-1-pro, fal-flux-2-pro, fal-flux-2-flex, fal-flux-1-kontext-pro, fal-recraft-v3, fal-recraft-v4-pro, fal-ideogram-v3, fal-nano-banana-2, fal-nano-banana-pro, fal-qwen-image-2-pro
 - Ideogram: ideogram-v3, ideogram-v3-turbo
 - xAI: aurora-grok-2-image
 
