@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from pricetoken.types import AvatarCostEstimate, AvatarModelPricing
 from pricetoken.avatar_static import STATIC_AVATAR_PRICING
+from pricetoken.types import AvatarCostEstimate, AvatarModelPricing
 
 
 def calculate_avatar_cost(
@@ -36,7 +36,8 @@ def calculate_avatar_model_cost(
 
     if model is None:
         raise ValueError(
-            f"Unknown avatar model: {model_id}. Provide pricing data or use calculate_avatar_cost()."
+            f"Unknown avatar model: {model_id}. "
+            "Provide pricing data or use calculate_avatar_cost()."
         )
 
     return calculate_avatar_cost(model_id, model.cost_per_minute, duration_seconds)

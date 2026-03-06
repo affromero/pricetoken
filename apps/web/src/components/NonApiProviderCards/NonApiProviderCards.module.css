@@ -1,0 +1,72 @@
+.root {
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--pt-border);
+  border-radius: var(--radius);
+  background: var(--pt-surface);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.card:hover {
+  border-color: var(--pt-accent);
+  background: var(--pt-surface-hover);
+}
+
+.cardName {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--pt-text);
+}
+
+.cardDescription {
+  font-size: 0.8125rem;
+  color: var(--pt-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.cardMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: auto;
+}
+
+.pricingModel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--pt-accent);
+}
+
+.reason {
+  font-size: 0.6875rem;
+  color: var(--pt-text-secondary);
+  opacity: 0.8;
+}
+
+.link {
+  font-size: 0.75rem;
+  color: var(--pt-accent);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

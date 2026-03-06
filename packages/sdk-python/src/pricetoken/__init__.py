@@ -7,6 +7,8 @@ try:
 except PackageNotFoundError:
     __version__ = "0.8.0"
 
+from pricetoken.avatar_cost import calculate_avatar_cost, calculate_avatar_model_cost
+from pricetoken.avatar_static import STATIC_AVATAR_PRICING
 from pricetoken.client import PriceTokenClient
 from pricetoken.cost import calculate_cost, calculate_model_cost
 from pricetoken.image_cost import calculate_image_cost, calculate_image_model_cost
@@ -41,8 +43,6 @@ from pricetoken.types import (
     VideoPriceHistoryPoint,
     VideoProviderSummary,
 )
-from pricetoken.avatar_cost import calculate_avatar_cost, calculate_avatar_model_cost
-from pricetoken.avatar_static import STATIC_AVATAR_PRICING
 from pricetoken.video_cost import calculate_video_cost, calculate_video_model_cost
 from pricetoken.video_static import STATIC_VIDEO_PRICING
 
