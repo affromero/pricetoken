@@ -140,6 +140,28 @@ model VideoPricingSnapshot {
   @@index([createdAt])
 }
 
+model AvatarPricingSnapshot {
+  id             String   @id @default(cuid())
+  modelId        String
+  provider       String
+  displayName    String   @default("")
+  costPerMinute  Float
+  avatarType     String?  // "standard" | "premium" | "translation" | "streaming"
+  resolution     String?
+  maxDuration    Int?
+  qualityMode    String?
+  source         String   @default("fetched")
+  status         String?
+  confidence     String   @default("high")
+  agentApprovals Int?
+  agentTotal     Int?
+  launchDate     DateTime?
+  createdAt      DateTime @default(now())
+
+  @@index([modelId, createdAt])
+  @@index([createdAt])
+}
+
 model SdkTelemetryPing {
   id        String   @id @default(cuid())
   sdk       String   // "js" | "python"
