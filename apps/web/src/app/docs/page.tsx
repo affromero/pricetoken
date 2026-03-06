@@ -116,6 +116,64 @@ cheapest = client.get_cheapest_avatar_model()
 cost = calculate_avatar_cost("heygen-avatar-standard", 0.99, 60)
 print(cost.total_cost)  # 0.99 for 1 minute`;
 
+const ttsCurlExample = `# All TTS models
+curl https://pricetoken.ai/api/v1/tts
+
+# Single TTS model
+curl https://pricetoken.ai/api/v1/tts/openai-tts-1
+
+# Cheapest TTS model
+curl https://pricetoken.ai/api/v1/tts/cheapest`;
+
+const ttsJsExample = `import { PriceTokenClient, calculateTtsCost } from 'pricetoken';
+
+const client = new PriceTokenClient();
+const models = await client.getTtsPricing();
+const cheapest = await client.getCheapestTtsModel();
+
+// Offline cost calculation
+const cost = calculateTtsCost('openai-tts-1', 15.0, 1_000_000);
+console.log(cost.totalCost); // $15.00 for 1M characters`;
+
+const ttsPyExample = `from pricetoken import PriceTokenClient, calculate_tts_cost
+
+client = PriceTokenClient()
+models = client.get_tts_pricing()
+cheapest = client.get_cheapest_tts_model()
+
+# Offline cost calculation
+cost = calculate_tts_cost("openai-tts-1", 15.0, 1_000_000)
+print(cost.total_cost)  # 15.0 for 1M characters`;
+
+const sttCurlExample = `# All STT models
+curl https://pricetoken.ai/api/v1/stt
+
+# Single STT model
+curl https://pricetoken.ai/api/v1/stt/openai-whisper-1
+
+# Cheapest STT model
+curl https://pricetoken.ai/api/v1/stt/cheapest`;
+
+const sttJsExample = `import { PriceTokenClient, calculateSttCost } from 'pricetoken';
+
+const client = new PriceTokenClient();
+const models = await client.getSttPricing();
+const cheapest = await client.getCheapestSttModel();
+
+// Offline cost calculation
+const cost = calculateSttCost('openai-whisper-1', 0.006, 60);
+console.log(cost.totalCost); // $0.006 for 1 minute`;
+
+const sttPyExample = `from pricetoken import PriceTokenClient, calculate_stt_cost
+
+client = PriceTokenClient()
+models = client.get_stt_pricing()
+cheapest = client.get_cheapest_stt_model()
+
+# Offline cost calculation
+cost = calculate_stt_cost("openai-whisper-1", 0.006, 60)
+print(cost.total_cost)  # 0.006 for 1 minute`;
+
 const costExample = `import { calculateModelCost } from 'pricetoken';
 
 const cost = calculateModelCost(
@@ -368,6 +426,102 @@ export default function DocsPage() {
                     method="GET"
                     path="/api/v1/avatar/cheapest"
                     description="Cheapest avatar model overall or per provider. Params: ?provider=x&currency=EUR"
+                  />
+                </div>
+              </>
+            }
+            ttsContent={
+              <>
+                <p className={styles.text}>
+                  Per-character pricing for text-to-speech APIs. Uses{' '}
+                  <code>costPerMChars</code> (cost per million characters) with an additional{' '}
+                  <code>voiceType</code> field (standard, neural, wavenet, hd).
+                </p>
+                <CodeBlock
+                  tabs={[
+                    { label: 'curl', code: ttsCurlExample },
+                    { label: 'JavaScript', code: ttsJsExample },
+                    { label: 'Python', code: ttsPyExample },
+                  ]}
+                />
+                <div className={styles.endpoints}>
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/tts"
+                    description="Current pricing for all TTS models. Params: ?provider=openai&currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/tts/:modelId"
+                    description="Single TTS model pricing. Param: ?currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/tts/history"
+                    description="Historical TTS pricing data. Params: ?days=30&modelId=x&provider=y"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/tts/providers"
+                    description="TTS provider list with model counts and cheapest prices."
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/tts/compare"
+                    description="Side-by-side TTS model comparison. Params: ?models=a,b,c (max 10)&currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/tts/cheapest"
+                    description="Cheapest TTS model overall or per provider. Params: ?provider=x&currency=EUR"
+                  />
+                </div>
+              </>
+            }
+            sttContent={
+              <>
+                <p className={styles.text}>
+                  Per-minute pricing for speech-to-text APIs. Uses{' '}
+                  <code>costPerMinute</code> with an additional <code>sttType</code> field
+                  (batch, streaming, real-time).
+                </p>
+                <CodeBlock
+                  tabs={[
+                    { label: 'curl', code: sttCurlExample },
+                    { label: 'JavaScript', code: sttJsExample },
+                    { label: 'Python', code: sttPyExample },
+                  ]}
+                />
+                <div className={styles.endpoints}>
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/stt"
+                    description="Current pricing for all STT models. Params: ?provider=openai&currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/stt/:modelId"
+                    description="Single STT model pricing. Param: ?currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/stt/history"
+                    description="Historical STT pricing data. Params: ?days=30&modelId=x&provider=y"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/stt/providers"
+                    description="STT provider list with model counts and cheapest prices."
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/stt/compare"
+                    description="Side-by-side STT model comparison. Params: ?models=a,b,c (max 10)&currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/stt/cheapest"
+                    description="Cheapest STT model overall or per provider. Params: ?provider=x&currency=EUR"
                   />
                 </div>
               </>

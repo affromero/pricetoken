@@ -24,6 +24,14 @@ const VIDEO_MAX_PRICE = 100; // Most expensive ~$30/min, leave headroom
 const AVATAR_MIN_PRICE = 0.10; // Cheapest ~$0.99/min
 const AVATAR_MAX_PRICE = 50; // Most expensive ~$6/min, leave headroom
 
+/** TTS model pricing bounds (USD per million characters) */
+const TTS_MIN_PRICE = 0.50;
+const TTS_MAX_PRICE = 500;
+
+/** STT model pricing bounds (USD per minute) */
+const STT_MIN_PRICE = 0.0005;
+const STT_MAX_PRICE = 1.0;
+
 export function checkTextPriceSanity(
   modelId: string,
   inputPerMTok: number,
@@ -91,6 +99,38 @@ export function checkAvatarPriceSanity(
   }
   if (costPerMinute < AVATAR_MIN_PRICE) {
     return { valid: false, reason: `${modelId}: cost $${costPerMinute}/min below min $${AVATAR_MIN_PRICE}` };
+  }
+  return { valid: true };
+}
+
+export function checkTtsPriceSanity(
+  modelId: string,
+  costPerMChars: number
+): SanityCheckResult {
+  if (costPerMChars <= 0) {
+    return { valid: false, reason: `${modelId}: cost must be positive ($${costPerMChars}/M chars)` };
+  }
+  if (costPerMChars > TTS_MAX_PRICE) {
+    return { valid: false, reason: `${modelId}: cost $${costPerMChars}/M chars exceeds max $${TTS_MAX_PRICE}` };
+  }
+  if (costPerMChars < TTS_MIN_PRICE) {
+    return { valid: false, reason: `${modelId}: cost $${costPerMChars}/M chars below min $${TTS_MIN_PRICE}` };
+  }
+  return { valid: true };
+}
+
+export function checkSttPriceSanity(
+  modelId: string,
+  costPerMinute: number
+): SanityCheckResult {
+  if (costPerMinute <= 0) {
+    return { valid: false, reason: `${modelId}: cost must be positive ($${costPerMinute}/min)` };
+  }
+  if (costPerMinute > STT_MAX_PRICE) {
+    return { valid: false, reason: `${modelId}: cost $${costPerMinute}/min exceeds max $${STT_MAX_PRICE}` };
+  }
+  if (costPerMinute < STT_MIN_PRICE) {
+    return { valid: false, reason: `${modelId}: cost $${costPerMinute}/min below min $${STT_MIN_PRICE}` };
   }
   return { valid: true };
 }

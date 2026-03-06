@@ -207,3 +207,91 @@ export interface AvatarProviderSummary {
   modelCount: number;
   cheapestCostPerMinute: number;
 }
+
+export interface TtsModelPricing {
+  modelId: string;
+  provider: string;
+  displayName: string;
+  costPerMChars: number;
+  voiceType: string | null;
+  maxCharacters: number | null;
+  supportedLanguages: number | null;
+  source: 'fetched' | 'seed' | 'admin' | 'verified' | 'carried';
+  status: ModelStatus | null;
+  confidence: DataConfidence;
+  confidenceScore: number;
+  confidenceLevel: ConfidenceLevel;
+  freshness: FreshnessInfo;
+  lastUpdated: string | null;
+  launchDate: string | null;
+}
+
+export interface TtsCostEstimate {
+  modelId: string;
+  characters: number;
+  costPerMChars: number;
+  totalCost: number;
+}
+
+export interface TtsPriceHistoryPoint {
+  date: string;
+  costPerMChars: number;
+}
+
+export interface TtsModelHistory {
+  modelId: string;
+  provider: string;
+  displayName: string;
+  history: TtsPriceHistoryPoint[];
+}
+
+export interface TtsProviderSummary {
+  id: string;
+  displayName: string;
+  modelCount: number;
+  cheapestCostPerMChars: number;
+}
+
+export interface SttModelPricing {
+  modelId: string;
+  provider: string;
+  displayName: string;
+  costPerMinute: number;
+  sttType: string | null;
+  maxDuration: number | null;
+  supportedLanguages: number | null;
+  source: 'fetched' | 'seed' | 'admin' | 'verified' | 'carried';
+  status: ModelStatus | null;
+  confidence: DataConfidence;
+  confidenceScore: number;
+  confidenceLevel: ConfidenceLevel;
+  freshness: FreshnessInfo;
+  lastUpdated: string | null;
+  launchDate: string | null;
+}
+
+export interface SttCostEstimate {
+  modelId: string;
+  durationSeconds: number;
+  costPerMinute: number;
+  totalCost: number;
+}
+
+export interface SttPriceHistoryPoint {
+  date: string;
+  costPerMinute: number;
+}
+
+export interface SttModelHistory {
+  modelId: string;
+  provider: string;
+  displayName: string;
+  history: SttPriceHistoryPoint[];
+}
+
+export interface SttProviderSummary {
+  id: string;
+  displayName: string;
+  modelCount: number;
+  cheapestCostPerMinute: number;
+}

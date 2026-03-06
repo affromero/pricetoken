@@ -497,4 +497,196 @@ describe('PriceTokenClient', () => {
       expect.anything()
     );
   });
+
+  // TTS pricing methods
+
+  it('getTtsPricing returns TTS model array', async () => {
+    const mockData = [{ modelId: 'openai-tts-1', provider: 'openai', costPerMChars: 15.0 }];
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(mockResponse(mockData) as Response);
+
+    const result = await client.getTtsPricing();
+    expect(result).toEqual(mockData);
+  });
+
+  it('getTtsPricing filters by provider', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getTtsPricing({ provider: 'openai' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/tts?provider=openai',
+      expect.anything()
+    );
+  });
+
+  it('getTtsModel fetches single TTS model', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse({ modelId: 'openai-tts-1' }) as Response
+    );
+
+    await client.getTtsModel('openai-tts-1');
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/tts/openai-tts-1',
+      expect.anything()
+    );
+  });
+
+  it('getTtsHistory passes query params', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getTtsHistory({ days: 30, provider: 'openai' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('days=30'),
+      expect.anything()
+    );
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('provider=openai'),
+      expect.anything()
+    );
+  });
+
+  it('getTtsProviders fetches TTS provider list', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getTtsProviders();
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/tts/providers',
+      expect.anything()
+    );
+  });
+
+  it('compareTtsModels sends model IDs', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.compareTtsModels(['openai-tts-1', 'openai-tts-1-hd']);
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('models=openai-tts-1%2Copenai-tts-1-hd'),
+      expect.anything()
+    );
+  });
+
+  it('getCheapestTtsModel fetches cheapest TTS model', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse({}) as Response
+    );
+
+    await client.getCheapestTtsModel({ provider: 'openai' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('/api/v1/tts/cheapest'),
+      expect.anything()
+    );
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('provider=openai'),
+      expect.anything()
+    );
+  });
+
+  // STT pricing methods
+
+  it('getSttPricing returns STT model array', async () => {
+    const mockData = [{ modelId: 'openai-whisper-1', provider: 'openai', costPerMinute: 0.006 }];
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(mockResponse(mockData) as Response);
+
+    const result = await client.getSttPricing();
+    expect(result).toEqual(mockData);
+  });
+
+  it('getSttPricing filters by provider', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getSttPricing({ provider: 'openai' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/stt?provider=openai',
+      expect.anything()
+    );
+  });
+
+  it('getSttModel fetches single STT model', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse({ modelId: 'openai-whisper-1' }) as Response
+    );
+
+    await client.getSttModel('openai-whisper-1');
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/stt/openai-whisper-1',
+      expect.anything()
+    );
+  });
+
+  it('getSttHistory passes query params', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getSttHistory({ days: 30, provider: 'openai' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('days=30'),
+      expect.anything()
+    );
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('provider=openai'),
+      expect.anything()
+    );
+  });
+
+  it('getSttProviders fetches STT provider list', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.getSttProviders();
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      'https://test.api/api/v1/stt/providers',
+      expect.anything()
+    );
+  });
+
+  it('compareSttModels sends model IDs', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse([]) as Response
+    );
+
+    await client.compareSttModels(['openai-whisper-1', 'deepgram-nova-2']);
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('models=openai-whisper-1%2Cdeepgram-nova-2'),
+      expect.anything()
+    );
+  });
+
+  it('getCheapestSttModel fetches cheapest STT model', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      mockResponse({}) as Response
+    );
+
+    await client.getCheapestSttModel({ provider: 'openai' });
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('/api/v1/stt/cheapest'),
+      expect.anything()
+    );
+    expect(fetchSpy).toHaveBeenCalledWith(
+      expect.stringContaining('provider=openai'),
+      expect.anything()
+    );
+  });
 });

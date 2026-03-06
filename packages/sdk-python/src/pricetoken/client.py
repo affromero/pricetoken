@@ -24,6 +24,12 @@ from pricetoken.types import (
     ModelPricing,
     PriceTokenError,
     ProviderSummary,
+    SttModelHistory,
+    SttModelPricing,
+    SttProviderSummary,
+    TtsModelHistory,
+    TtsModelPricing,
+    TtsProviderSummary,
     VideoModelHistory,
     VideoModelPricing,
     VideoProviderSummary,
@@ -36,6 +42,12 @@ from pricetoken.types import (
     _parse_model_history,
     _parse_model_pricing,
     _parse_provider_summary,
+    _parse_stt_model_history,
+    _parse_stt_model_pricing,
+    _parse_stt_provider_summary,
+    _parse_tts_model_history,
+    _parse_tts_model_pricing,
+    _parse_tts_provider_summary,
     _parse_video_model_history,
     _parse_video_model_pricing,
     _parse_video_provider_summary,
@@ -386,3 +398,143 @@ class PriceTokenClient:
         qs = self._build_qs(params)
         data: dict[str, Any] = self._request(f"/api/v1/avatar/cheapest{qs}")
         return _parse_avatar_model_pricing(data)
+
+    # TTS pricing methods
+
+    def get_tts_pricing(
+        self,
+        *,
+        provider: str | None = None,
+        currency: str | None = None,
+        after: str | None = None,
+        before: str | None = None,
+    ) -> list[TtsModelPricing]:
+        """Get current pricing for all TTS models."""
+        params = {"provider": provider, "currency": currency, "after": after, "before": before}
+        qs = self._build_qs(params)
+        data: list[dict[str, Any]] = self._request(f"/api/v1/tts{qs}")
+        return [_parse_tts_model_pricing(m) for m in data]
+
+    def get_tts_model(
+        self,
+        model_id: str,
+        *,
+        currency: str | None = None,
+    ) -> TtsModelPricing:
+        """Get pricing for a single TTS model."""
+        encoded = urllib.parse.quote(model_id, safe="")
+        qs = self._build_qs({"currency": currency})
+        data: dict[str, Any] = self._request(f"/api/v1/tts/{encoded}{qs}")
+        return _parse_tts_model_pricing(data)
+
+    def get_tts_history(
+        self,
+        *,
+        days: int | None = None,
+        model_id: str | None = None,
+        provider: str | None = None,
+    ) -> list[TtsModelHistory]:
+        """Get TTS price history."""
+        qs = self._build_qs({"days": days, "modelId": model_id, "provider": provider})
+        data: list[dict[str, Any]] = self._request(f"/api/v1/tts/history{qs}")
+        return [_parse_tts_model_history(m) for m in data]
+
+    def get_tts_providers(self) -> list[TtsProviderSummary]:
+        """Get TTS provider list with stats."""
+        data: list[dict[str, Any]] = self._request("/api/v1/tts/providers")
+        return [_parse_tts_provider_summary(p) for p in data]
+
+    def compare_tts_models(
+        self,
+        model_ids: list[str],
+        *,
+        currency: str | None = None,
+    ) -> list[TtsModelPricing]:
+        """Compare TTS models side by side."""
+        qs = self._build_qs({"models": ",".join(model_ids), "currency": currency})
+        data: list[dict[str, Any]] = self._request(f"/api/v1/tts/compare{qs}")
+        return [_parse_tts_model_pricing(m) for m in data]
+
+    def get_cheapest_tts_model(
+        self,
+        *,
+        provider: str | None = None,
+        currency: str | None = None,
+        after: str | None = None,
+        before: str | None = None,
+    ) -> TtsModelPricing:
+        """Get the cheapest TTS model."""
+        params = {"provider": provider, "currency": currency, "after": after, "before": before}
+        qs = self._build_qs(params)
+        data: dict[str, Any] = self._request(f"/api/v1/tts/cheapest{qs}")
+        return _parse_tts_model_pricing(data)
+
+    # STT pricing methods
+
+    def get_stt_pricing(
+        self,
+        *,
+        provider: str | None = None,
+        currency: str | None = None,
+        after: str | None = None,
+        before: str | None = None,
+    ) -> list[SttModelPricing]:
+        """Get current pricing for all STT models."""
+        params = {"provider": provider, "currency": currency, "after": after, "before": before}
+        qs = self._build_qs(params)
+        data: list[dict[str, Any]] = self._request(f"/api/v1/stt{qs}")
+        return [_parse_stt_model_pricing(m) for m in data]
+
+    def get_stt_model(
+        self,
+        model_id: str,
+        *,
+        currency: str | None = None,
+    ) -> SttModelPricing:
+        """Get pricing for a single STT model."""
+        encoded = urllib.parse.quote(model_id, safe="")
+        qs = self._build_qs({"currency": currency})
+        data: dict[str, Any] = self._request(f"/api/v1/stt/{encoded}{qs}")
+        return _parse_stt_model_pricing(data)
+
+    def get_stt_history(
+        self,
+        *,
+        days: int | None = None,
+        model_id: str | None = None,
+        provider: str | None = None,
+    ) -> list[SttModelHistory]:
+        """Get STT price history."""
+        qs = self._build_qs({"days": days, "modelId": model_id, "provider": provider})
+        data: list[dict[str, Any]] = self._request(f"/api/v1/stt/history{qs}")
+        return [_parse_stt_model_history(m) for m in data]
+
+    def get_stt_providers(self) -> list[SttProviderSummary]:
+        """Get STT provider list with stats."""
+        data: list[dict[str, Any]] = self._request("/api/v1/stt/providers")
+        return [_parse_stt_provider_summary(p) for p in data]
+
+    def compare_stt_models(
+        self,
+        model_ids: list[str],
+        *,
+        currency: str | None = None,
+    ) -> list[SttModelPricing]:
+        """Compare STT models side by side."""
+        qs = self._build_qs({"models": ",".join(model_ids), "currency": currency})
+        data: list[dict[str, Any]] = self._request(f"/api/v1/stt/compare{qs}")
+        return [_parse_stt_model_pricing(m) for m in data]
+
+    def get_cheapest_stt_model(
+        self,
+        *,
+        provider: str | None = None,
+        currency: str | None = None,
+        after: str | None = None,
+        before: str | None = None,
+    ) -> SttModelPricing:
+        """Get the cheapest STT model."""
+        params = {"provider": provider, "currency": currency, "after": after, "before": before}
+        qs = self._build_qs(params)
+        data: dict[str, Any] = self._request(f"/api/v1/stt/cheapest{qs}")
+        return _parse_stt_model_pricing(data)

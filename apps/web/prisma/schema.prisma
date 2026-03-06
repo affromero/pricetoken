@@ -162,6 +162,48 @@ model AvatarPricingSnapshot {
   @@index([createdAt])
 }
 
+model TtsPricingSnapshot {
+  id                 String   @id @default(cuid())
+  modelId            String
+  provider           String
+  displayName        String   @default("")
+  costPerMChars      Float                         // $/1M characters
+  voiceType          String?                       // "standard" | "neural" | "wavenet" | "hd"
+  maxCharacters      Int?                          // max chars per request
+  supportedLanguages Int?                          // number of supported languages
+  source             String   @default("fetched")
+  status             String?
+  confidence         String   @default("high")
+  agentApprovals     Int?
+  agentTotal         Int?
+  launchDate         DateTime?
+  createdAt          DateTime @default(now())
+
+  @@index([modelId, createdAt])
+  @@index([createdAt])
+}
+
+model SttPricingSnapshot {
+  id                 String   @id @default(cuid())
+  modelId            String
+  provider           String
+  displayName        String   @default("")
+  costPerMinute      Float
+  sttType            String?                       // "batch" | "streaming" | "real-time"
+  maxDuration        Int?                          // max audio duration in seconds
+  supportedLanguages Int?
+  source             String   @default("fetched")
+  status             String?
+  confidence         String   @default("high")
+  agentApprovals     Int?
+  agentTotal         Int?
+  launchDate         DateTime?
+  createdAt          DateTime @default(now())
+
+  @@index([modelId, createdAt])
+  @@index([createdAt])
+}
+
 model SdkTelemetryPing {
   id        String   @id @default(cuid())
   sdk       String   // "js" | "python"
