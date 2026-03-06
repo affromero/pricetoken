@@ -10,6 +10,9 @@ import type {
   VideoModelPricing,
   VideoModelHistory,
   VideoProviderSummary,
+  AvatarModelPricing,
+  AvatarModelHistory,
+  AvatarProviderSummary,
 } from './types';
 
 const SDK_VERSION = '0.7.0';
@@ -221,5 +224,53 @@ export class PriceTokenClient {
     if (opts?.before) params.set('before', opts.before);
     const qs = params.toString();
     return this.request<VideoModelPricing>(`/api/v1/video/cheapest${qs ? `?${qs}` : ''}`);
+  }
+
+  // Avatar pricing methods
+
+  async getAvatarPricing(opts?: { provider?: string; currency?: string; after?: string; before?: string }): Promise<AvatarModelPricing[]> {
+    const params = new URLSearchParams();
+    if (opts?.provider) params.set('provider', opts.provider);
+    if (opts?.currency) params.set('currency', opts.currency);
+    if (opts?.after) params.set('after', opts.after);
+    if (opts?.before) params.set('before', opts.before);
+    const qs = params.toString();
+    return this.request<AvatarModelPricing[]>(`/api/v1/avatar${qs ? `?${qs}` : ''}`);
+  }
+
+  async getAvatarModel(modelId: string, opts?: { currency?: string }): Promise<AvatarModelPricing> {
+    const params = new URLSearchParams();
+    if (opts?.currency) params.set('currency', opts.currency);
+    const qs = params.toString();
+    return this.request<AvatarModelPricing>(`/api/v1/avatar/${encodeURIComponent(modelId)}${qs ? `?${qs}` : ''}`);
+  }
+
+  async getAvatarHistory(opts?: { days?: number; modelId?: string; provider?: string }): Promise<AvatarModelHistory[]> {
+    const params = new URLSearchParams();
+    if (opts?.days) params.set('days', String(opts.days));
+    if (opts?.modelId) params.set('modelId', opts.modelId);
+    if (opts?.provider) params.set('provider', opts.provider);
+    const qs = params.toString();
+    return this.request<AvatarModelHistory[]>(`/api/v1/avatar/history${qs ? `?${qs}` : ''}`);
+  }
+
+  async getAvatarProviders(): Promise<AvatarProviderSummary[]> {
+    return this.request<AvatarProviderSummary[]>('/api/v1/avatar/providers');
+  }
+
+  async compareAvatarModels(modelIds: string[], opts?: { currency?: string }): Promise<AvatarModelPricing[]> {
+    const params = new URLSearchParams({ models: modelIds.join(',') });
+    if (opts?.currency) params.set('currency', opts.currency);
+    return this.request<AvatarModelPricing[]>(`/api/v1/avatar/compare?${params}`);
+  }
+
+  async getCheapestAvatarModel(opts?: { provider?: string; currency?: string; after?: string; before?: string }): Promise<AvatarModelPricing> {
+    const params = new URLSearchParams();
+    if (opts?.provider) params.set('provider', opts.provider);
+    if (opts?.currency) params.set('currency', opts.currency);
+    if (opts?.after) params.set('after', opts.after);
+    if (opts?.before) params.set('before', opts.before);
+    const qs = params.toString();
+    return this.request<AvatarModelPricing>(`/api/v1/avatar/cheapest${qs ? `?${qs}` : ''}`);
   }
 }

@@ -162,3 +162,48 @@ export interface VideoProviderSummary {
   modelCount: number;
   cheapestCostPerMinute: number;
 }
+
+export interface AvatarModelPricing {
+  modelId: string;
+  provider: string;
+  displayName: string;
+  costPerMinute: number;
+  avatarType: string | null;
+  resolution: string | null;
+  maxDuration: number | null;
+  qualityMode: string | null;
+  source: 'fetched' | 'seed' | 'admin' | 'verified' | 'carried';
+  status: ModelStatus | null;
+  confidence: DataConfidence;
+  confidenceScore: number;
+  confidenceLevel: ConfidenceLevel;
+  freshness: FreshnessInfo;
+  lastUpdated: string | null;
+  launchDate: string | null;
+}
+
+export interface AvatarCostEstimate {
+  modelId: string;
+  durationSeconds: number;
+  costPerMinute: number;
+  totalCost: number;
+}
+
+export interface AvatarPriceHistoryPoint {
+  date: string;
+  costPerMinute: number;
+}
+
+export interface AvatarModelHistory {
+  modelId: string;
+  provider: string;
+  displayName: string;
+  history: AvatarPriceHistoryPoint[];
+}
+
+export interface AvatarProviderSummary {
+  id: string;
+  displayName: string;
+  modelCount: number;
+  cheapestCostPerMinute: number;
+}
