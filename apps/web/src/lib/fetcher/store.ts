@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import type { ModelPricing, ModelHistory, PriceHistoryPoint } from 'pricetoken';
+import { STATIC_PRICING } from 'pricetoken';
 import type { ExtractedModel } from './extractor';
 import type { VerifiedModel } from './verification-types';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
@@ -63,6 +64,9 @@ export async function saveSnapshots(
 
 export async function getLatestPricing(provider?: string): Promise<ModelPricing[]> {
   const where = provider ? Prisma.sql`WHERE "provider" = ${provider}` : Prisma.empty;
+  const staticLaunchDates = new Map(
+    STATIC_PRICING.filter((m) => m.launchDate).map((m) => [m.modelId, m.launchDate!])
+  );
 
   const snapshots = await prisma.$queryRaw<
     Array<{
@@ -119,7 +123,7 @@ export async function getLatestPricing(provider?: string): Promise<ModelPricing[
       confidenceLevel: level,
       freshness,
       lastUpdated: s.createdAt.toISOString(),
-      launchDate: s.launchDate?.toISOString().split('T')[0] ?? null,
+      launchDate: s.launchDate?.toISOString().split('T')[0] ?? staticLaunchDates.get(s.modelId) ?? null,
     };
   });
 }

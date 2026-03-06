@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import type { AvatarModelPricing, AvatarModelHistory, AvatarPriceHistoryPoint } from 'pricetoken';
+import { STATIC_AVATAR_PRICING } from 'pricetoken';
 import type { ExtractedAvatarModel } from './avatar-extractor';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
 
@@ -47,6 +48,9 @@ export async function saveAvatarSnapshots(
 
 export async function getLatestAvatarPricing(provider?: string): Promise<AvatarModelPricing[]> {
   const where = provider ? Prisma.sql`WHERE "provider" = ${provider}` : Prisma.empty;
+  const staticLaunchDates = new Map(
+    STATIC_AVATAR_PRICING.filter((m) => m.launchDate).map((m) => [m.modelId, m.launchDate!])
+  );
 
   const snapshots = await prisma.$queryRaw<
     Array<{
@@ -104,7 +108,7 @@ export async function getLatestAvatarPricing(provider?: string): Promise<AvatarM
       confidenceLevel: level,
       freshness,
       lastUpdated: s.createdAt.toISOString(),
-      launchDate: s.launchDate?.toISOString().split('T')[0] ?? null,
+      launchDate: s.launchDate?.toISOString().split('T')[0] ?? staticLaunchDates.get(s.modelId) ?? null,
     };
   });
 }

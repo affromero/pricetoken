@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import type { VideoModelPricing, VideoModelHistory, VideoPriceHistoryPoint } from 'pricetoken';
+import { STATIC_VIDEO_PRICING } from 'pricetoken';
 import type { ExtractedVideoModel } from './video-extractor';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
 
@@ -46,6 +47,9 @@ export async function saveVideoSnapshots(
 
 export async function getLatestVideoPricing(provider?: string): Promise<VideoModelPricing[]> {
   const where = provider ? Prisma.sql`WHERE "provider" = ${provider}` : Prisma.empty;
+  const staticLaunchDates = new Map(
+    STATIC_VIDEO_PRICING.filter((m) => m.launchDate).map((m) => [m.modelId, m.launchDate!])
+  );
 
   const snapshots = await prisma.$queryRaw<
     Array<{
@@ -101,7 +105,7 @@ export async function getLatestVideoPricing(provider?: string): Promise<VideoMod
       confidenceLevel: level,
       freshness,
       lastUpdated: s.createdAt.toISOString(),
-      launchDate: s.launchDate?.toISOString().split('T')[0] ?? null,
+      launchDate: s.launchDate?.toISOString().split('T')[0] ?? staticLaunchDates.get(s.modelId) ?? null,
     };
   });
 }
