@@ -53,7 +53,7 @@ export async function saveSnapshots(
       confidence,
       agentApprovals: 'agentApprovals' in m ? (m as unknown as VerifiedModel).agentApprovals : null,
       agentTotal: agentTotal ?? null,
-      launchDate: prior?.launchDate ?? null,
+      launchDate: m.launchDate ? new Date(m.launchDate) : prior?.launchDate ?? null,
     };
   });
 

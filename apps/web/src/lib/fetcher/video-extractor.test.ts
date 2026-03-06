@@ -123,6 +123,34 @@ describe('extractVideoPricing', () => {
     expect(userPrompt).not.toContain('x'.repeat(51));
   });
 
+  it('extracts launchDate when present', async () => {
+    const mockModels = [
+      { modelId: 'runway-gen4-720p', displayName: 'Gen-4', costPerMinute: 7.2, launchDate: '2025-03-31' },
+    ];
+
+    mockExtract.mockResolvedValue({
+      content: JSON.stringify(mockModels),
+      usage: { inputTokens: 100, outputTokens: 50 },
+    });
+
+    const result = await extractVideoPricing('runway', 'some page text');
+    expect(result.models[0]!.launchDate).toBe('2025-03-31');
+  });
+
+  it('strips invalid launchDate format', async () => {
+    const mockModels = [
+      { modelId: 'runway-gen4-720p', displayName: 'Gen-4', costPerMinute: 7.2, launchDate: 'March 2025' },
+    ];
+
+    mockExtract.mockResolvedValue({
+      content: JSON.stringify(mockModels),
+      usage: { inputTokens: 100, outputTokens: 50 },
+    });
+
+    const result = await extractVideoPricing('runway', 'some page text');
+    expect(result.models[0]!.launchDate).toBeUndefined();
+  });
+
   it('strips invalid status values', async () => {
     const mockModels = [
       { modelId: 'runway-gen4-720p', displayName: 'Gen-4', costPerMinute: 7.2, status: 'unknown' },

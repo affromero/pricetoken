@@ -189,6 +189,34 @@ describe('extractPricing', () => {
     expect(result.models[0]!.status).toBeUndefined();
   });
 
+  it('extracts launchDate when present', async () => {
+    const mockModels = [
+      { modelId: 'gpt-4.1', displayName: 'GPT-4.1', inputPerMTok: 2, outputPerMTok: 8, launchDate: '2025-04-14' },
+    ];
+
+    mockExtract.mockResolvedValue({
+      content: JSON.stringify(mockModels),
+      usage: { inputTokens: 100, outputTokens: 50 },
+    });
+
+    const result = await extractPricing('openai', 'some page text');
+    expect(result.models[0]!.launchDate).toBe('2025-04-14');
+  });
+
+  it('strips invalid launchDate format', async () => {
+    const mockModels = [
+      { modelId: 'gpt-4.1', displayName: 'GPT-4.1', inputPerMTok: 2, outputPerMTok: 8, launchDate: 'April 2025' },
+    ];
+
+    mockExtract.mockResolvedValue({
+      content: JSON.stringify(mockModels),
+      usage: { inputTokens: 100, outputTokens: 50 },
+    });
+
+    const result = await extractPricing('openai', 'some page text');
+    expect(result.models[0]!.launchDate).toBeUndefined();
+  });
+
   it('handles missing status gracefully', async () => {
     const mockModels = [
       { modelId: 'gpt-4.1', displayName: 'GPT-4.1', inputPerMTok: 2, outputPerMTok: 8 },

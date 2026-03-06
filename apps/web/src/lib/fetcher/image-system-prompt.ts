@@ -13,6 +13,9 @@ Return a JSON array of objects with these fields:
   - "preview" if the text says preview, beta, experimental, early access
   - "active" if listed without such qualifiers
   - Omit if status cannot be determined
+- launchDate: the model's release/launch date in "YYYY-MM-DD" format (string, optional)
+  - Extract if the page mentions a release date, launch date, or "available since" date
+  - Omit if no date is mentioned
 
 Only include image generation models. Skip text, embedding, audio, and video models.
 If a model has multiple quality tiers or resolutions at different prices, create separate entries with descriptive modelId suffixes (e.g. "dall-e-3-standard-1024", "dall-e-3-hd-1024").
