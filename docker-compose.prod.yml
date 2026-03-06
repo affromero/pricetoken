@@ -32,7 +32,7 @@ services:
       redis:
         condition: service_healthy
     volumes:
-      - /home/sotto/.claude:/home/pricetoken/.claude:ro
+      - /home/sotto/.claude:/home/node/.claude
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-pricetoken}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-pricetoken}
       REDIS_URL: redis://redis:6379

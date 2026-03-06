@@ -49,36 +49,39 @@ ENV PORT=3001
 ENV HOSTNAME="0.0.0.0"
 ENV CHROME_PATH=/usr/bin/chromium-browser
 
-RUN addgroup --system --gid 1001 pricetoken
-RUN adduser --system --uid 1001 -h /home/pricetoken pricetoken
-RUN mkdir -p /home/pricetoken/.claude && chown pricetoken:pricetoken /home/pricetoken/.claude
+# Reuse the existing node user (UID 1000) to match host sotto user for .claude mount
+RUN mkdir -p /home/node/.claude && chown node:node /home/node/.claude
 
 WORKDIR /app
 
 # Node modules (standalone trace fails in monorepo — copy full deps)
-COPY --from=deps --chown=pricetoken:pricetoken /app/node_modules ./node_modules
+COPY --from=deps --chown=node:node /app/node_modules ./node_modules
 
 # Standalone server + built app
-COPY --from=builder --chown=pricetoken:pricetoken /app/apps/web/.next/standalone ./
+COPY --from=builder --chown=node:node /app/apps/web/.next/standalone ./
 # Static assets: server.js looks at both ./.next/static and ./apps/web/.next/static
-COPY --from=builder --chown=pricetoken:pricetoken /app/apps/web/.next/static ./.next/static
-COPY --from=builder --chown=pricetoken:pricetoken /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder --chown=node:node /app/apps/web/.next/static ./.next/static
+COPY --from=builder --chown=node:node /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=builder /app/apps/web/public ./public
 COPY --from=builder /app/apps/web/public ./apps/web/public
-COPY --from=builder --chown=pricetoken:pricetoken /app/apps/web/prisma ./apps/web/prisma
+COPY --from=builder --chown=node:node /app/apps/web/prisma ./apps/web/prisma
 
 # Seed scripts + SDK source (for STATIC_*_PRICING imports via tsx)
-COPY --from=builder --chown=pricetoken:pricetoken /app/packages/sdk/src/static.ts ./packages/sdk/src/static.ts
-COPY --from=builder --chown=pricetoken:pricetoken /app/packages/sdk/src/static-image.ts ./packages/sdk/src/static-image.ts
-COPY --from=builder --chown=pricetoken:pricetoken /app/packages/sdk/src/video-static.ts ./packages/sdk/src/video-static.ts
-COPY --from=builder --chown=pricetoken:pricetoken /app/packages/sdk/src/types.ts ./packages/sdk/src/types.ts
-COPY --chown=pricetoken:pricetoken scripts/seed.ts ./scripts/seed.ts
-COPY --chown=pricetoken:pricetoken scripts/seed-video.ts ./scripts/seed-video.ts
-COPY --chown=pricetoken:pricetoken tsconfig.base.json ./tsconfig.base.json
-COPY --chown=pricetoken:pricetoken packages/sdk/tsconfig.json ./packages/sdk/tsconfig.json
+COPY --from=builder --chown=node:node /app/packages/sdk/src/static.ts ./packages/sdk/src/static.ts
+COPY --from=builder --chown=node:node /app/packages/sdk/src/static-image.ts ./packages/sdk/src/static-image.ts
+COPY --from=builder --chown=node:node /app/packages/sdk/src/video-static.ts ./packages/sdk/src/video-static.ts
+COPY --from=builder --chown=node:node /app/packages/sdk/src/types.ts ./packages/sdk/src/types.ts
+COPY --chown=node:node scripts/seed.ts ./scripts/seed.ts
+COPY --chown=node:node scripts/seed-video.ts ./scripts/seed-video.ts
+COPY --chown=node:node tsconfig.base.json ./tsconfig.base.json
+COPY --chown=node:node packages/sdk/tsconfig.json ./packages/sdk/tsconfig.json
 
-USER pricetoken
+COPY --chown=node:node docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+USER node
 WORKDIR /app
 EXPOSE 3001
 
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["node", "server.js"]
