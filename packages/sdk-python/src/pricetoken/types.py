@@ -261,6 +261,7 @@ class VideoModelPricing:
     freshness: FreshnessInfo
     last_updated: str | None
     launch_date: str | None
+    input_type: str | None = None
 
 
 @dataclass(slots=True)
@@ -310,6 +311,7 @@ def _parse_video_model_pricing(data: dict[str, Any]) -> VideoModelPricing:
         freshness=_parse_freshness(data.get("freshness")),
         last_updated=data.get("lastUpdated"),
         launch_date=data.get("launchDate"),
+        input_type=data.get("inputType"),
     )
 
 
