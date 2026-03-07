@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import type { VideoModelPricing, VideoModelHistory, VideoPriceHistoryPoint } from 'pricetoken';
 import { STATIC_VIDEO_PRICING } from 'pricetoken';
 import type { ExtractedVideoModel } from './video-extractor';
+import { carrySource } from './store';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
 
 export async function saveVideoSnapshots(
@@ -260,7 +261,7 @@ export async function carryForwardMissingVideo(): Promise<number> {
         resolution: latest.resolution,
         maxDuration: latest.maxDuration,
         qualityMode: latest.qualityMode,
-        source: 'carried',
+        source: carrySource(latest.source, latest.createdAt),
         status: latest.status,
         confidence: latest.confidence,
         launchDate: latest.launchDate,
