@@ -1,0 +1,544 @@
+/**
+ * Curated video pricing corrections — source of truth for manual overrides.
+ *
+ * Flow: this file → seed-video.ts → DB → API → update-static → SDK static files
+ *
+ * When to add entries here:
+ * - Scraper got the price wrong (e.g., wrong per-clip → per-minute conversion)
+ * - A new model isn't scraped yet but has known pricing
+ * - inputType or other metadata needs manual curation
+ *
+ * Prices use the cheapest per-second rate available (prefer 10s clips over 6s).
+ */
+
+import type { VideoInputType } from '../packages/sdk/src/types';
+
+export interface VideoCorrection {
+  modelId: string;
+  provider: string;
+  displayName: string;
+  costPerMinute: number;
+  inputType: VideoInputType | null;
+  resolution: string | null;
+  maxDuration: number | null;
+  qualityMode: string | null;
+  status?: 'active' | 'deprecated' | 'preview';
+  launchDate?: string;
+  /** Why this correction exists (documentation only, not stored in DB) */
+  reason: string;
+}
+
+export const VIDEO_CORRECTIONS: VideoCorrection[] = [
+  // =========================================================================
+  // Runway
+  // =========================================================================
+  {
+    modelId: 'runway-gen4-720p',
+    provider: 'runway',
+    displayName: 'Runway Gen-4 720p',
+    costPerMinute: 7.2,
+    inputType: 'text,image',
+    resolution: '720p',
+    maxDuration: 10,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-06-01',
+    reason: 'inputType curation',
+  },
+  {
+    modelId: 'runway-gen4-turbo-720p',
+    provider: 'runway',
+    displayName: 'Runway Gen-4 Turbo 720p',
+    costPerMinute: 3.0,
+    inputType: 'text,image',
+    resolution: '720p',
+    maxDuration: 10,
+    qualityMode: 'turbo',
+    status: 'active',
+    launchDate: '2025-06-01',
+    reason: 'inputType curation',
+  },
+
+  // =========================================================================
+  // Sora 2 (OpenAI)
+  // =========================================================================
+  {
+    modelId: 'sora2-720p',
+    provider: 'sora',
+    displayName: 'Sora 2 720p',
+    costPerMinute: 6.0,
+    inputType: 'text,image',
+    resolution: '720p',
+    maxDuration: 12,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-02-01',
+    reason: 'inputType curation + maxDuration fix (12s, not 20s)',
+  },
+  {
+    modelId: 'sora2-pro-720p',
+    provider: 'sora',
+    displayName: 'Sora 2 Pro 720p',
+    costPerMinute: 18.0,
+    inputType: 'text,image',
+    resolution: '720p',
+    maxDuration: 25,
+    qualityMode: 'professional',
+    status: 'active',
+    launchDate: '2025-02-01',
+    reason: 'inputType curation + maxDuration fix (25s, not 20s)',
+  },
+  {
+    modelId: 'sora2-pro-1080p',
+    provider: 'sora',
+    displayName: 'Sora 2 Pro 1080p',
+    costPerMinute: 30.0,
+    inputType: 'text,image',
+    resolution: '1080p',
+    maxDuration: 25,
+    qualityMode: 'professional',
+    status: 'active',
+    launchDate: '2025-02-01',
+    reason: 'inputType curation + maxDuration fix (25s, not 20s)',
+  },
+
+  // =========================================================================
+  // Google Veo 3.1
+  // =========================================================================
+  {
+    modelId: 'veo-3.1-1080p',
+    provider: 'veo',
+    displayName: 'Veo 3.1 1080p',
+    costPerMinute: 24.0,
+    inputType: 'text,image',
+    resolution: '1080p',
+    maxDuration: 8,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-12-01',
+    reason: 'inputType curation',
+  },
+  {
+    modelId: 'veo-3.1-4k',
+    provider: 'veo',
+    displayName: 'Veo 3.1 4K',
+    costPerMinute: 36.0,
+    inputType: 'text,image',
+    resolution: '4k',
+    maxDuration: 8,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-12-01',
+    reason: 'inputType curation',
+  },
+
+  // =========================================================================
+  // Kling 3.0
+  // =========================================================================
+  {
+    modelId: 'kling-3.0-1080p',
+    provider: 'kling',
+    displayName: 'Kling 3.0 1080p',
+    costPerMinute: 5.04,
+    inputType: 'text,image',
+    resolution: '1080p',
+    maxDuration: 15,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2026-02-05',
+    reason: 'inputType curation',
+  },
+
+  // =========================================================================
+  // Luma Ray 3.14
+  // =========================================================================
+  {
+    modelId: 'luma-ray-3.14-1080p',
+    provider: 'luma',
+    displayName: 'Luma Ray 3.14 1080p',
+    costPerMinute: 3.0,
+    inputType: 'text,image',
+    resolution: '1080p',
+    maxDuration: 18,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2026-01-26',
+    reason: 'inputType curation',
+  },
+
+  // =========================================================================
+  // Pika 2.5
+  // =========================================================================
+  {
+    modelId: 'pika-2.5-1080p',
+    provider: 'pika',
+    displayName: 'Pika 2.5 1080p',
+    costPerMinute: 3.6,
+    inputType: 'text,image',
+    resolution: '1080p',
+    maxDuration: 10,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-11-24',
+    reason: 'inputType curation + price from fal.ai ($0.06/sec)',
+  },
+
+  // =========================================================================
+  // MiniMax Hailuo — prices from https://platform.minimax.io/docs/guides/pricing-paygo
+  // Use 10s clip rate (cheaper per-second) where available, 6s where not.
+  // =========================================================================
+  {
+    modelId: 'minimax-hailuo02-512p',
+    provider: 'minimax',
+    displayName: 'MiniMax Hailuo 02 512p',
+    costPerMinute: 0.9,
+    inputType: 'text,image',
+    resolution: '512p',
+    maxDuration: 10,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-06-18',
+    reason: 'Pay-go: 512P 10s=$0.15 → $0.90/min',
+  },
+  {
+    modelId: 'minimax-hailuo02-768p',
+    provider: 'minimax',
+    displayName: 'Hailuo 02 768p',
+    costPerMinute: 3.36,
+    inputType: 'text,image',
+    resolution: '768p',
+    maxDuration: 10,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-06-18',
+    reason: 'Pay-go: 768P 10s=$0.56 → $3.36/min',
+  },
+  {
+    modelId: 'minimax-hailuo02-pro-1080p',
+    provider: 'minimax',
+    displayName: 'Hailuo 02 Pro 1080p',
+    costPerMinute: 4.9,
+    inputType: 'text,image',
+    resolution: '1080p',
+    maxDuration: 6,
+    qualityMode: 'professional',
+    status: 'active',
+    launchDate: '2025-06-18',
+    reason: 'Pay-go: 1080P 6s=$0.49 → $4.90/min (no 10s option)',
+  },
+  {
+    modelId: 'minimax-hailuo23-fast-1080p',
+    provider: 'minimax',
+    displayName: 'MiniMax Hailuo 2.3 Fast 1080p',
+    costPerMinute: 3.3,
+    inputType: 'text,image',
+    resolution: '1080p',
+    maxDuration: 6,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-10-28',
+    reason: 'Pay-go: 1080P 6s=$0.33 → $3.30/min (no 10s option)',
+  },
+  {
+    modelId: 'minimax-hailuo23-fast-768p',
+    provider: 'minimax',
+    displayName: 'MiniMax Hailuo 2.3 Fast 768p',
+    costPerMinute: 1.92,
+    inputType: 'text,image',
+    resolution: '768p',
+    maxDuration: 10,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-10-28',
+    reason: 'Pay-go: 768P 10s=$0.32 → $1.92/min',
+  },
+
+  // =========================================================================
+  // Seedance (ByteDance)
+  // =========================================================================
+  {
+    modelId: 'seedance-2.0-1080p',
+    provider: 'seedance',
+    displayName: 'Seedance 2.0 1080p',
+    costPerMinute: 4.8,
+    inputType: 'image',
+    resolution: '1080p',
+    maxDuration: 15,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2026-02-10',
+    reason: 'inputType=image (image-to-video only) + price $0.08/sec',
+  },
+  {
+    modelId: 'seedance-1.5-pro-480p',
+    provider: 'seedance',
+    displayName: 'Seedance 1.5 Pro 480p',
+    costPerMinute: 2.4,
+    inputType: 'image',
+    resolution: '480p',
+    maxDuration: 10,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-12-16',
+    reason: 'inputType=image (image-to-video only)',
+  },
+  {
+    modelId: 'seedance-1.5-pro-480p-audio',
+    provider: 'seedance',
+    displayName: 'Seedance 1.5 Pro 480p (with audio)',
+    costPerMinute: 3.6,
+    inputType: 'image',
+    resolution: '480p',
+    maxDuration: 10,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-12-16',
+    reason: 'inputType=image (image-to-video only)',
+  },
+  {
+    modelId: 'seedance-1.5-pro-720p',
+    provider: 'seedance',
+    displayName: 'Seedance 1.5 Pro 720p',
+    costPerMinute: 4.8,
+    inputType: 'image',
+    resolution: '720p',
+    maxDuration: 10,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-12-16',
+    reason: 'inputType=image (image-to-video only)',
+  },
+  {
+    modelId: 'seedance-1.5-pro-720p-audio',
+    provider: 'seedance',
+    displayName: 'Seedance 1.5 Pro 720p (with audio)',
+    costPerMinute: 7.2,
+    inputType: 'image',
+    resolution: '720p',
+    maxDuration: 10,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-12-16',
+    reason: 'inputType=image (image-to-video only)',
+  },
+
+  // =========================================================================
+  // LTX (Lightricks) — LTX-2.3
+  // =========================================================================
+  {
+    modelId: 'ltx-2.3-fast-1080p',
+    provider: 'ltx',
+    displayName: 'LTX-2.3 Fast 1080p',
+    costPerMinute: 2.4,
+    inputType: 'text,image',
+    resolution: '1080p',
+    maxDuration: 20,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2026-03-05',
+    reason: 'inputType curation + maxDuration fix (20s)',
+  },
+  {
+    modelId: 'ltx-2.3-pro-1080p',
+    provider: 'ltx',
+    displayName: 'LTX-2.3 Pro 1080p',
+    costPerMinute: 3.6,
+    inputType: 'text,image',
+    resolution: '1080p',
+    maxDuration: 10,
+    qualityMode: 'professional',
+    status: 'active',
+    launchDate: '2026-03-05',
+    reason: 'inputType curation',
+  },
+  {
+    modelId: 'ltx-2.3-fast-4k',
+    provider: 'ltx',
+    displayName: 'LTX-2.3 Fast 4K',
+    costPerMinute: 9.6,
+    inputType: 'text,image',
+    resolution: '4k',
+    maxDuration: 10,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2026-03-05',
+    reason: 'inputType curation',
+  },
+  {
+    modelId: 'ltx-2.3-pro-4k',
+    provider: 'ltx',
+    displayName: 'LTX-2.3 Pro 4K',
+    costPerMinute: 14.4,
+    inputType: 'text,image',
+    resolution: '4k',
+    maxDuration: 10,
+    qualityMode: 'professional',
+    status: 'active',
+    launchDate: '2026-03-05',
+    reason: 'inputType curation',
+  },
+
+  // =========================================================================
+  // FAL — existing models (corrections)
+  // =========================================================================
+  {
+    modelId: 'fal-kling2.5-turbo-1080p',
+    provider: 'fal',
+    displayName: 'FAL Kling 2.5 Turbo Pro 1080p',
+    costPerMinute: 4.2,
+    inputType: 'text,image',
+    resolution: '1080p',
+    maxDuration: 10,
+    qualityMode: 'turbo',
+    status: 'active',
+    launchDate: '2025-09-23',
+    reason: 'inputType curation + maxDuration fix (10s)',
+  },
+  {
+    modelId: 'fal-kling3-1080p',
+    provider: 'fal',
+    displayName: 'FAL Kling 3.0 1080p',
+    costPerMinute: 10.08,
+    inputType: 'text,image',
+    resolution: '1080p',
+    maxDuration: 15,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2026-02-05',
+    reason: 'Price fix: $0.168/sec = $10.08/min (DB had $6, wrong)',
+  },
+  {
+    modelId: 'fal-veo3-1080p',
+    provider: 'fal',
+    displayName: 'FAL Veo 3 1080p',
+    costPerMinute: 24.0,
+    inputType: 'text',
+    resolution: '1080p',
+    maxDuration: 8,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-10-15',
+    reason: 'inputType=text (text-to-video only on fal) + maxDuration fix (8s)',
+  },
+  {
+    modelId: 'fal-veo3-fast-1080p',
+    provider: 'fal',
+    displayName: 'FAL Veo 3 Fast 1080p',
+    costPerMinute: 6.0,
+    inputType: 'text',
+    resolution: '1080p',
+    maxDuration: 8,
+    qualityMode: 'turbo',
+    status: 'active',
+    launchDate: '2025-10-15',
+    reason: 'inputType=text (text-to-video only on fal)',
+  },
+  {
+    modelId: 'fal-wan2.5-480p',
+    provider: 'fal',
+    displayName: 'FAL WAN 2.5 480p',
+    costPerMinute: 3.0,
+    inputType: 'text,image',
+    resolution: '480p',
+    maxDuration: 5,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-06-01',
+    reason: 'inputType curation',
+  },
+
+  // =========================================================================
+  // FAL — new models (missing from DB, added in 333d8ca)
+  // =========================================================================
+  {
+    modelId: 'fal-sora2-720p',
+    provider: 'fal',
+    displayName: 'FAL Sora 2 720p',
+    costPerMinute: 6.0,
+    inputType: 'text,image',
+    resolution: '720p',
+    maxDuration: 12,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-09-30',
+    reason: 'New model: $0.10/sec = $6.00/min',
+  },
+  {
+    modelId: 'fal-sora2-pro-720p',
+    provider: 'fal',
+    displayName: 'FAL Sora 2 Pro 720p',
+    costPerMinute: 18.0,
+    inputType: 'text,image',
+    resolution: '720p',
+    maxDuration: 25,
+    qualityMode: 'professional',
+    status: 'active',
+    launchDate: '2025-09-30',
+    reason: 'New model: $0.30/sec = $18/min',
+  },
+  {
+    modelId: 'fal-sora2-pro-1080p',
+    provider: 'fal',
+    displayName: 'FAL Sora 2 Pro 1080p',
+    costPerMinute: 30.0,
+    inputType: 'text,image',
+    resolution: '1080p',
+    maxDuration: 25,
+    qualityMode: 'professional',
+    status: 'active',
+    launchDate: '2025-09-30',
+    reason: 'New model: $0.50/sec = $30/min',
+  },
+  {
+    modelId: 'fal-kling-v3-pro-1080p',
+    provider: 'fal',
+    displayName: 'FAL Kling v3 Pro 1080p',
+    costPerMinute: 13.44,
+    inputType: 'image',
+    resolution: '1080p',
+    maxDuration: 15,
+    qualityMode: 'professional',
+    status: 'active',
+    launchDate: '2026-02-05',
+    reason: 'New model: $0.224/sec = $13.44/min (image-to-video)',
+  },
+  {
+    modelId: 'fal-kling-o3-1080p',
+    provider: 'fal',
+    displayName: 'FAL Kling O3 1080p',
+    costPerMinute: 10.08,
+    inputType: 'image',
+    resolution: '1080p',
+    maxDuration: 15,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2026-02-05',
+    reason: 'New model: $0.168/sec = $10.08/min (image-to-video)',
+  },
+  {
+    modelId: 'fal-ltx2.3-1080p',
+    provider: 'fal',
+    displayName: 'FAL LTX-2.3 1080p',
+    costPerMinute: 3.6,
+    inputType: 'text,image',
+    resolution: '1080p',
+    maxDuration: 10,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2026-03-05',
+    reason: 'New model: $0.06/sec = $3.60/min',
+  },
+  {
+    modelId: 'fal-cosmos2.5-720p',
+    provider: 'fal',
+    displayName: 'FAL Cosmos 2.5 720p',
+    costPerMinute: 2.07,
+    inputType: 'text,image',
+    resolution: '720p',
+    maxDuration: 6,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2026-01-15',
+    reason: 'New model: ~$0.20/video (~5.8s) ≈ $2.07/min',
+  },
+];
