@@ -73,6 +73,7 @@ COPY --from=builder --chown=node:node /app/packages/sdk/src/video-static.ts ./pa
 COPY --from=builder --chown=node:node /app/packages/sdk/src/types.ts ./packages/sdk/src/types.ts
 COPY --chown=node:node scripts/seed.ts ./scripts/seed.ts
 COPY --chown=node:node scripts/seed-video.ts ./scripts/seed-video.ts
+COPY --chown=node:node scripts/video-corrections.ts ./scripts/video-corrections.ts
 COPY --chown=node:node tsconfig.base.json ./tsconfig.base.json
 COPY --chown=node:node packages/sdk/tsconfig.json ./packages/sdk/tsconfig.json
 
