@@ -15,34 +15,45 @@ export async function saveAvatarSnapshots(
 ): Promise<number> {
   if (models.length === 0) return 0;
 
-  // Look up prior snapshots to preserve launchDate
+  // Look up prior snapshots to carry forward metadata the extractor may omit
   const priorSnapshots = await prisma.$queryRaw<
-    Array<{ modelId: string; launchDate: Date | null }>
+    Array<{
+      modelId: string;
+      resolution: string | null;
+      maxDuration: number | null;
+      qualityMode: string | null;
+      lipSync: boolean | null;
+      launchDate: Date | null;
+    }>
   >`
-    SELECT DISTINCT ON ("modelId") "modelId", "launchDate"
+    SELECT DISTINCT ON ("modelId")
+      "modelId", "resolution", "maxDuration", "qualityMode", "lipSync", "launchDate"
     FROM "AvatarPricingSnapshot"
     WHERE "provider" = ${provider}
     ORDER BY "modelId", "createdAt" DESC
   `;
   const priorByModel = new Map(priorSnapshots.map((s) => [s.modelId, s]));
 
-  const data = models.map((m) => ({
-    modelId: m.modelId,
-    provider,
-    displayName: m.displayName,
-    costPerMinute: m.costPerMinute,
-    avatarType: m.avatarType ?? null,
-    resolution: m.resolution ?? null,
-    maxDuration: m.maxDuration ?? null,
-    qualityMode: m.qualityMode ?? null,
-    lipSync: m.lipSync ?? null,
-    source,
-    status: m.status ?? null,
-    confidence,
-    agentApprovals: 'agentApprovals' in m ? (m as unknown as { agentApprovals: number }).agentApprovals : null,
-    agentTotal: agentTotal ?? null,
-    launchDate: m.launchDate ? new Date(m.launchDate) : priorByModel.get(m.modelId)?.launchDate ?? null,
-  }));
+  const data = models.map((m) => {
+    const prior = priorByModel.get(m.modelId);
+    return {
+      modelId: m.modelId,
+      provider,
+      displayName: m.displayName,
+      costPerMinute: m.costPerMinute,
+      avatarType: m.avatarType ?? null,
+      resolution: m.resolution ?? prior?.resolution ?? null,
+      maxDuration: m.maxDuration ?? prior?.maxDuration ?? null,
+      qualityMode: m.qualityMode ?? prior?.qualityMode ?? null,
+      lipSync: m.lipSync ?? prior?.lipSync ?? null,
+      source,
+      status: m.status ?? null,
+      confidence,
+      agentApprovals: 'agentApprovals' in m ? (m as unknown as { agentApprovals: number }).agentApprovals : null,
+      agentTotal: agentTotal ?? null,
+      launchDate: m.launchDate ? new Date(m.launchDate) : prior?.launchDate ?? null,
+    };
+  });
 
   const result = await prisma.avatarPricingSnapshot.createMany({ data });
   return result.count;
