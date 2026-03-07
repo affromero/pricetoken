@@ -2,9 +2,9 @@
 
 # PriceToken
 
-**The missing API for LLM pricing.**
+**The missing API for AI pricing.**
 
-Real-time pricing data scraped from providers, served via REST API, visualized on a website, and distributed as npm and PyPI packages.
+Real-time pricing data across text, image, video, avatar, TTS, and STT — scraped from providers, served via REST API, visualized on a website, and distributed as npm and PyPI packages.
 
 [![CI](https://github.com/affromero/pricetoken/actions/workflows/ci.yml/badge.svg)](https://github.com/affromero/pricetoken/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/pricetoken)](https://www.npmjs.com/package/pricetoken)
@@ -20,7 +20,7 @@ Real-time pricing data scraped from providers, served via REST API, visualized o
 
 </div>
 
-![PriceToken — Real-time LLM pricing dashboard](assets/hero.png)
+![PriceToken — Real-time AI pricing dashboard](assets/hero.png)
 
 ## Quick Start
 
@@ -63,32 +63,38 @@ print(cost.total_cost)  # $4.50
 ### REST API
 
 ```bash
-# All models
+# Text models
 curl https://pricetoken.ai/api/v1/text
-
-# Single model
 curl https://pricetoken.ai/api/v1/text/claude-sonnet-4-6
 
-# Price history
+# Image models
+curl https://pricetoken.ai/api/v1/image
+curl https://pricetoken.ai/api/v1/image/gpt-image-1
+
+# Video, avatar, TTS, STT — same pattern
+curl https://pricetoken.ai/api/v1/video
+curl https://pricetoken.ai/api/v1/avatar
+curl https://pricetoken.ai/api/v1/tts
+curl https://pricetoken.ai/api/v1/stt
+
+# History, compare, cheapest (available for every modality)
 curl https://pricetoken.ai/api/v1/text/history?days=30
-
-# Compare models
 curl https://pricetoken.ai/api/v1/text/compare?models=claude-sonnet-4-6,gpt-4.1
-
-# Cheapest model
 curl https://pricetoken.ai/api/v1/text/cheapest
 ```
 
 ## API Reference
 
+Every modality (`text`, `image`, `video`, `avatar`, `tts`, `stt`) exposes the same six endpoints:
+
 | Endpoint | Description |
 |----------|-------------|
-| `GET /api/v1/text` | Current pricing. `?provider=anthropic` |
-| `GET /api/v1/text/:modelId` | Single model |
-| `GET /api/v1/text/history` | Historical data. `?days=30&modelId=x&provider=y` |
-| `GET /api/v1/text/providers` | Provider list with stats |
-| `GET /api/v1/text/compare` | Compare models. `?models=a,b,c` |
-| `GET /api/v1/text/cheapest` | Cheapest model. `?provider=x` |
+| `GET /api/v1/{modality}` | Current pricing. `?provider=anthropic` |
+| `GET /api/v1/{modality}/:modelId` | Single model |
+| `GET /api/v1/{modality}/history` | Historical data. `?days=30&modelId=x&provider=y` |
+| `GET /api/v1/{modality}/providers` | Provider list with stats |
+| `GET /api/v1/{modality}/compare` | Compare models. `?models=a,b,c` |
+| `GET /api/v1/{modality}/cheapest` | Cheapest model. `?provider=x` |
 
 ### Rate Limits
 
@@ -144,7 +150,7 @@ Provider pricing pages → Daily cron (AI extraction)
                               ↓
                Next.js API routes ← Redis cache (5min TTL)
                               ↓
-                    npm package (typed client)
+                  npm + PyPI packages (typed clients)
 ```
 
 ## Self-Hosting
