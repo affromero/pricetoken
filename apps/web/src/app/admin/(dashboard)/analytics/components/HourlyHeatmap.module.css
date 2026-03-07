@@ -1,0 +1,66 @@
+.card {
+  background-color: var(--pt-surface);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.cardTitle {
+  font-size: 1.125rem;
+  color: var(--pt-text);
+  margin-bottom: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: auto repeat(24, 1fr);
+  gap: 2px;
+}
+
+.dayLabel {
+  font-size: 0.75rem;
+  color: var(--pt-text-secondary);
+  display: flex;
+  align-items: center;
+  padding-right: 0.5rem;
+}
+
+.hourLabel {
+  font-size: 0.75rem;
+  color: var(--pt-text-secondary);
+  text-align: center;
+}
+
+.cell {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background-color: var(--pt-accent);
+  min-width: 12px;
+  min-height: 12px;
+}
+
+.empty {
+  color: var(--pt-text-secondary);
+  font-size: 0.875rem;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: var(--pt-text-secondary);
+}
+
+.legendBar {
+  display: flex;
+  gap: 2px;
+}
+
+.legendCell {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background-color: var(--pt-accent);
+}

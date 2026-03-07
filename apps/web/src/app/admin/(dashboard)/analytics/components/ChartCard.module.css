@@ -1,0 +1,25 @@
+.card {
+  background-color: var(--pt-surface);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.cardTitle {
+  font-size: 1.125rem;
+  color: var(--pt-text);
+  margin-bottom: 1rem;
+}
+
+.chartContainer {
+  width: 100%;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty {
+  color: var(--pt-text-secondary);
+  font-size: 0.875rem;
+}

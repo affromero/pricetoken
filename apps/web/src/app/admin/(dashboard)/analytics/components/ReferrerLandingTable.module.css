@@ -1,0 +1,52 @@
+.card {
+  background-color: var(--pt-surface);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.cardTitle {
+  font-size: 1.125rem;
+  color: var(--pt-text);
+  margin-bottom: 1rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  font-size: 0.875rem;
+  color: var(--pt-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--pt-border);
+}
+
+.table td {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--pt-text);
+  border-bottom: 1px solid var(--pt-border);
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.domain {
+  font-weight: 600;
+}
+
+.path {
+  font-family: var(--font-mono);
+  color: var(--pt-accent);
+}
+
+.empty {
+  color: var(--pt-text-secondary);
+  font-size: 0.875rem;
+}

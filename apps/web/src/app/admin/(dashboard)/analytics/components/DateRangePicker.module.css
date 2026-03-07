@@ -1,0 +1,49 @@
+.picker {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.presets {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.preset {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--pt-surface);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--radius);
+  color: var(--pt-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.preset:hover {
+  background-color: var(--pt-accent);
+  color: #fff;
+  border-color: var(--pt-accent);
+}
+
+.inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.dateInput {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--pt-surface);
+  border: 1px solid var(--pt-border);
+  border-radius: var(--radius);
+  color: var(--pt-text);
+  color-scheme: dark;
+}
+
+.separator {
+  color: var(--pt-text-secondary);
+}
