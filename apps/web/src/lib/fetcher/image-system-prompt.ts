@@ -14,8 +14,9 @@ Return a JSON array of objects with these fields:
   - "active" if listed without such qualifiers
   - Omit if status cannot be determined
 - launchDate: the model's release/launch date in "YYYY-MM-DD" format (string, optional)
-  - Extract if the page mentions a release date, launch date, or "available since" date
-  - Omit if no date is mentioned
+  - Look for: release date, launch date, "available since", "announced on", "released", version dates, changelog dates, blog post dates, copyright years with version context
+  - If the page mentions a year and month but no day, use the 1st of that month (e.g. "June 2025" → "2025-06-01")
+  - Omit only if absolutely no date information is available
 
 IMPORTANT — use these exact modelId values when extracting:
 - OpenAI: dall-e-3-standard-1024, dall-e-3-hd-1024, dall-e-3-standard-1792, dall-e-3-hd-1792, dall-e-2-1024, gpt-image-1-low, gpt-image-1-medium, gpt-image-1-high
