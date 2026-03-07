@@ -78,6 +78,6 @@ function getSqlite(): Database.Database {
   return sqlite;
 }
 
-export function getRawDb() {
+export function getRawDb(): Database.Database {
   return getSqlite();
 }

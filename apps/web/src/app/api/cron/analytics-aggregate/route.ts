@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { COOKIE_NAME, verifySessionToken } from '@/lib/admin-auth';
 import { aggregateDay, cleanupOldEvents, cleanupOldSalts } from '@/lib/analytics/aggregate';
 

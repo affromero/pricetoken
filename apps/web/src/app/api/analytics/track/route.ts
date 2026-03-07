@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { trackPageViewAsync } from '@/lib/analytics/track';
 
 const INTERNAL_SECRET = process.env.ANALYTICS_INTERNAL_SECRET || 'pt-analytics-internal';

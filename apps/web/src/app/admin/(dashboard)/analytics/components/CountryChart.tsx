@@ -45,7 +45,7 @@ export function CountryChart({ data }: { data: CountryBreakdown[] }) {
                   borderRadius: '8px',
                   color: 'var(--pt-text)',
                 }}
-                formatter={(value: number | undefined) => [value ?? 0, 'Visits']}
+                formatter={(value) => [String(value ?? 0), 'Visits']}
                 labelFormatter={(label) => formatCountryLabel(String(label))}
               />
               <Bar dataKey="count" fill="var(--pt-preview)" radius={[0, 4, 4, 0]} />

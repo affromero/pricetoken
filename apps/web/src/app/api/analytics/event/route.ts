@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { createHash } from 'crypto';
 import { getRawDb } from '@/lib/analytics/db';
 
