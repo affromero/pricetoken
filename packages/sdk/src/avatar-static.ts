@@ -1,13 +1,13 @@
 import type { AvatarModelPricing } from './types';
 
 export const STATIC_AVATAR_PRICING: AvatarModelPricing[] = [
-  // HeyGen — Standard Avatar
-  // 1 credit = 1 min of video, $0.99/credit on API plan
+  // HeyGen — Standard Avatar (Public Avatar III equivalent)
+  // $0.0167/sec × 60 = $1.002/min
   {
     modelId: 'heygen-avatar-standard',
     provider: 'heygen',
     displayName: 'HeyGen Standard Avatar',
-    costPerMinute: 0.99,
+    costPerMinute: 1.002,
     avatarType: 'standard',
     resolution: '1080p',
     maxDuration: 600,
@@ -23,12 +23,12 @@ export const STATIC_AVATAR_PRICING: AvatarModelPricing[] = [
     launchDate: '2024-01-15',
   },
   // HeyGen — Interactive Avatar (Avatar IV)
-  // 6 credits/min = $5.94/min
+  // $0.1/sec × 60 = $6.00/min
   {
     modelId: 'heygen-avatar-iv',
     provider: 'heygen',
     displayName: 'HeyGen Interactive Avatar IV',
-    costPerMinute: 5.94,
+    costPerMinute: 6.0,
     avatarType: 'premium',
     resolution: '1080p',
     maxDuration: 180,
@@ -43,13 +43,13 @@ export const STATIC_AVATAR_PRICING: AvatarModelPricing[] = [
     lastUpdated: null,
     launchDate: '2025-03-01',
   },
-  // HeyGen — Video Translation
-  // 3 credits/min = $2.97/min
+  // HeyGen — Video Translation (generic, speed mode rate)
+  // $0.05/sec × 60 = $3.00/min
   {
     modelId: 'heygen-video-translation',
     provider: 'heygen',
     displayName: 'HeyGen Video Translation',
-    costPerMinute: 2.97,
+    costPerMinute: 3.0,
     avatarType: 'translation',
     resolution: '1080p',
     maxDuration: 1800,
@@ -65,11 +65,12 @@ export const STATIC_AVATAR_PRICING: AvatarModelPricing[] = [
     launchDate: '2024-06-01',
   },
   // HeyGen Avatar III variants — launched 2024-09-12
+  // Digital Twin III: $0.0333/sec × 60 = $1.998/min
   {
     modelId: 'heygen-digital-twin-iii',
     provider: 'heygen',
     displayName: 'HeyGen Digital Twin III',
-    costPerMinute: 0.99,
+    costPerMinute: 1.998,
     avatarType: 'standard',
     resolution: '1080p',
     maxDuration: 600,
@@ -84,11 +85,12 @@ export const STATIC_AVATAR_PRICING: AvatarModelPricing[] = [
     lastUpdated: null,
     launchDate: '2024-09-12',
   },
+  // Photo Avatar III: $0.0167/sec × 60 = $1.002/min
   {
     modelId: 'heygen-photo-avatar-iii',
     provider: 'heygen',
     displayName: 'HeyGen Photo Avatar III',
-    costPerMinute: 0.99,
+    costPerMinute: 1.002,
     avatarType: 'standard',
     resolution: '1080p',
     maxDuration: 600,
@@ -103,11 +105,12 @@ export const STATIC_AVATAR_PRICING: AvatarModelPricing[] = [
     lastUpdated: null,
     launchDate: '2024-09-12',
   },
+  // Public Avatar III: $0.0167/sec × 60 = $1.002/min
   {
     modelId: 'heygen-public-avatar-iii',
     provider: 'heygen',
     displayName: 'HeyGen Public Avatar III',
-    costPerMinute: 0.99,
+    costPerMinute: 1.002,
     avatarType: 'standard',
     resolution: '1080p',
     maxDuration: 600,
@@ -123,11 +126,12 @@ export const STATIC_AVATAR_PRICING: AvatarModelPricing[] = [
     launchDate: '2024-09-12',
   },
   // HeyGen Avatar IV variants — launched 2025-05-01
+  // All Avatar IV: $0.1/sec × 60 = $6.00/min
   {
     modelId: 'heygen-digital-twin-iv',
     provider: 'heygen',
     displayName: 'HeyGen Digital Twin IV',
-    costPerMinute: 5.94,
+    costPerMinute: 6.0,
     avatarType: 'premium',
     resolution: '1080p',
     maxDuration: 180,
@@ -146,7 +150,7 @@ export const STATIC_AVATAR_PRICING: AvatarModelPricing[] = [
     modelId: 'heygen-photo-avatar-iv',
     provider: 'heygen',
     displayName: 'HeyGen Photo Avatar IV',
-    costPerMinute: 5.94,
+    costPerMinute: 6.0,
     avatarType: 'premium',
     resolution: '1080p',
     maxDuration: 180,
@@ -165,7 +169,7 @@ export const STATIC_AVATAR_PRICING: AvatarModelPricing[] = [
     modelId: 'heygen-public-avatar-iv',
     provider: 'heygen',
     displayName: 'HeyGen Public Avatar IV',
-    costPerMinute: 5.94,
+    costPerMinute: 6.0,
     avatarType: 'premium',
     resolution: '1080p',
     maxDuration: 180,
@@ -181,68 +185,12 @@ export const STATIC_AVATAR_PRICING: AvatarModelPricing[] = [
     launchDate: '2025-05-01',
   },
   // HeyGen Video Translation variants
-  {
-    modelId: 'heygen-translate-precision',
-    provider: 'heygen',
-    displayName: 'HeyGen Video Translation Precision Mode',
-    costPerMinute: 2.97,
-    avatarType: 'translation',
-    resolution: '1080p',
-    maxDuration: 1800,
-    qualityMode: 'standard',
-    lipSync: true,
-    source: 'seed',
-    status: 'active',
-    confidence: 'high',
-    confidenceScore: 65,
-    confidenceLevel: 'medium',
-    freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
-    lastUpdated: null,
-    launchDate: '2025-11-17',
-  },
-  {
-    modelId: 'heygen-translate-speed',
-    provider: 'heygen',
-    displayName: 'HeyGen Video Translation Speed Mode',
-    costPerMinute: 2.97,
-    avatarType: 'translation',
-    resolution: '1080p',
-    maxDuration: 1800,
-    qualityMode: 'standard',
-    lipSync: true,
-    source: 'seed',
-    status: 'active',
-    confidence: 'high',
-    confidenceScore: 65,
-    confidenceLevel: 'medium',
-    freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
-    lastUpdated: null,
-    launchDate: '2025-11-17',
-  },
-  {
-    modelId: 'heygen-translate-proofread',
-    provider: 'heygen',
-    displayName: 'HeyGen Video Translation Proofread',
-    costPerMinute: 2.97,
-    avatarType: 'translation',
-    resolution: '1080p',
-    maxDuration: 1800,
-    qualityMode: 'standard',
-    lipSync: false,
-    source: 'seed',
-    status: 'active',
-    confidence: 'high',
-    confidenceScore: 65,
-    confidenceLevel: 'medium',
-    freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
-    lastUpdated: null,
-    launchDate: '2024-08-01',
-  },
+  // Precision: $0.1/sec × 60 = $6.00/min
   {
     modelId: 'heygen-translation-precision',
     provider: 'heygen',
     displayName: 'HeyGen Video Translation — Precision Mode',
-    costPerMinute: 2.97,
+    costPerMinute: 6.0,
     avatarType: 'translation',
     resolution: '1080p',
     maxDuration: 1800,
@@ -257,11 +205,12 @@ export const STATIC_AVATAR_PRICING: AvatarModelPricing[] = [
     lastUpdated: null,
     launchDate: '2025-11-17',
   },
+  // Speed: $0.05/sec × 60 = $3.00/min
   {
     modelId: 'heygen-translation-speed',
     provider: 'heygen',
     displayName: 'HeyGen Video Translation — Speed Mode',
-    costPerMinute: 2.97,
+    costPerMinute: 3.0,
     avatarType: 'translation',
     resolution: '1080p',
     maxDuration: 1800,
@@ -276,11 +225,12 @@ export const STATIC_AVATAR_PRICING: AvatarModelPricing[] = [
     lastUpdated: null,
     launchDate: '2025-11-17',
   },
+  // Proofread: $0.0083/sec × 60 = $0.498/min (Enterprise only)
   {
     modelId: 'heygen-translation-proofread',
     provider: 'heygen',
     displayName: 'HeyGen Video Translation — Proofread',
-    costPerMinute: 2.97,
+    costPerMinute: 0.498,
     avatarType: 'translation',
     resolution: '1080p',
     maxDuration: 1800,
