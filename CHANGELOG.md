@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.10.2] - 2026-03-07
+
+### Added
+- `update-static` script (`npm run update-static`) — fetches all 6 modalities from production API and regenerates both TS and Python SDK static files automatically
+- `inputType` field on Python SDK `VideoModelPricing` dataclass
+
+### Fixed
+- Python SDK static data fully synced with production API across all 6 modalities (text, TTS, STT, avatar, image, video) — added 50+ missing models
+- Video static template now always includes `inputType` field (fixes TS type errors)
+- Test assertions relaxed for nullable fields (`inputType`, `supportedFormats`)
+
 ## [0.10.1] - 2026-03-07
 
 ### Added
