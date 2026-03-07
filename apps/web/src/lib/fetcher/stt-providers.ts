@@ -24,16 +24,19 @@ export const STT_PROVIDERS: Record<string, ProviderConfig> = {
   azure: {
     url: 'https://azure.microsoft.com/en-us/pricing/details/speech/',
     displayName: 'Microsoft Azure',
-    requiresBrowser: false,
+    requiresBrowser: true,
+    fallbackUrls: ['https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-to-text'],
   },
   elevenlabs: {
     url: 'https://elevenlabs.io/pricing/api',
     displayName: 'ElevenLabs',
     requiresBrowser: true,
+    fallbackUrls: ['https://elevenlabs.io/docs/overview/pricing'],
   },
   cartesia: {
     url: 'https://cartesia.ai/pricing',
     displayName: 'Cartesia',
     requiresBrowser: true,
+    fallbackUrls: ['https://docs.cartesia.ai/build-with-cartesia/pricing'],
   },
 };

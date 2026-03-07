@@ -6,12 +6,26 @@ export interface ProviderConfig {
 }
 
 export const VIDEO_PROVIDERS: Record<string, ProviderConfig> = {
-  runway: { url: 'https://runwayml.com/pricing', displayName: 'Runway', requiresBrowser: true },
+  runway: {
+    url: 'https://runwayml.com/pricing',
+    displayName: 'Runway',
+    requiresBrowser: true,
+    fallbackUrls: ['https://docs.runwayml.com/reference/pricing'],
+  },
   sora: { url: 'https://developers.openai.com/api/docs/pricing', displayName: 'Sora (OpenAI)' },
   veo: { url: 'https://ai.google.dev/gemini-api/docs/pricing', displayName: 'Google Veo' },
   pika: { url: 'https://pika.art/pricing', displayName: 'Pika', requiresBrowser: true },
-  kling: { url: 'https://klingai.com/pricing', displayName: 'Kling', requiresBrowser: true },
-  luma: { url: 'https://lumalabs.ai/api/pricing', displayName: 'Luma' },
+  kling: {
+    url: 'https://klingai.com/pricing',
+    displayName: 'Kling',
+    requiresBrowser: true,
+    fallbackUrls: ['https://platform.klingai.com/docs/api/pricing'],
+  },
+  luma: {
+    url: 'https://lumalabs.ai/api/pricing',
+    displayName: 'Luma',
+    fallbackUrls: ['https://docs.lumalabs.ai/docs/api/pricing'],
+  },
   minimax: { url: 'https://platform.minimax.io/docs/guides/pricing-video', displayName: 'MiniMax (Hailuo)', requiresBrowser: true },
   seedance: { url: 'https://www.byteplus.com/en/product/seedance', displayName: 'Seedance (ByteDance)', requiresBrowser: true },
   fal: { url: 'https://fal.ai/pricing', displayName: 'FAL', requiresBrowser: true },

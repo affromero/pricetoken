@@ -61,6 +61,25 @@ export async function runImagePricingFetch(): Promise<ImageFetchResult> {
         extraction = await extractImagePricing(providerId, pageText);
       }
 
+      // Try fallback URLs when primary extraction fails
+      if (extraction.models.length === 0 && config.fallbackUrls?.length) {
+        for (const fallbackUrl of config.fallbackUrls) {
+          try {
+            console.log(`${config.displayName}: trying fallback URL ${fallbackUrl}...`);
+            const fallbackText = config.requiresBrowser
+              ? await fetchPricingPageWithBrowser(fallbackUrl)
+              : await fetchPricingPage(fallbackUrl);
+            extraction = await extractImagePricing(providerId, fallbackText);
+            if (extraction.models.length > 0) {
+              console.log(`${config.displayName}: recovered ${extraction.models.length} image model(s) from fallback`);
+              break;
+            }
+          } catch {
+            console.warn(`${config.displayName}: fallback URL ${fallbackUrl} failed`);
+          }
+        }
+      }
+
       if (extraction.models.length === 0) {
         errors.push(`${config.displayName}: no image models extracted`);
         await saveFetchRun(logProvider, [], [], [], 0, 'no image models extracted');

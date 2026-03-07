@@ -28,22 +28,26 @@ export const IMAGE_PRICING_PROVIDERS: Record<string, ImageProviderConfig> = {
     displayName: 'Recraft',
   },
   bytedance: {
-    url: 'https://www.volcengine.com/product/doubao',
+    url: 'https://www.byteplus.com/en/product/seedream',
     displayName: 'Bytedance',
     requiresBrowser: true,
+    fallbackUrls: ['https://www.volcengine.com/product/doubao'],
   },
   fal: {
     url: 'https://fal.ai/pricing',
     displayName: 'fal.ai',
     requiresBrowser: true,
+    fallbackUrls: ['https://fal.ai/models?category=image-generation'],
   },
   ideogram: {
     url: 'https://docs.ideogram.ai/plans-and-pricing/available-plans',
     displayName: 'Ideogram',
+    fallbackUrls: ['https://docs.ideogram.ai/api-reference/generate'],
   },
   xai: {
     url: 'https://docs.x.ai/docs/models',
     displayName: 'xAI',
     requiresBrowser: true,
+    fallbackUrls: ['https://docs.x.ai/docs/api-reference#image-generation'],
   },
 };
