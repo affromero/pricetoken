@@ -26,7 +26,7 @@ export const VIDEO_PROVIDERS: Record<string, ProviderConfig> = {
     displayName: 'Luma',
     fallbackUrls: ['https://docs.lumalabs.ai/docs/api/pricing'],
   },
-  minimax: { url: 'https://platform.minimax.io/docs/guides/pricing-video', displayName: 'MiniMax (Hailuo)', requiresBrowser: true },
+  minimax: { url: 'https://platform.minimax.io/docs/guides/pricing-paygo', displayName: 'MiniMax (Hailuo)', requiresBrowser: true },
   seedance: { url: 'https://www.byteplus.com/en/product/seedance', displayName: 'Seedance (ByteDance)', requiresBrowser: true },
   fal: { url: 'https://fal.ai/pricing', displayName: 'FAL', requiresBrowser: true },
   ltx: { url: 'https://docs.ltx.video/pricing', displayName: 'LTX (Lightricks)', requiresBrowser: true },

@@ -129,6 +129,7 @@ export function VideoPricingTable({ pricing: initialPricing }: VideoPricingTable
               <th onClick={() => handleSort('costPerMinute')} className={styles.sortable}>
                 Cost/Min {sortKey === 'costPerMinute' ? (sortAsc ? '↑' : '↓') : ''}
               </th>
+              <th>Input</th>
               <th onClick={() => handleSort('resolution')} className={styles.sortable}>
                 Resolution {sortKey === 'resolution' ? (sortAsc ? '↑' : '↓') : ''}
               </th>
@@ -156,6 +157,15 @@ export function VideoPricingTable({ pricing: initialPricing }: VideoPricingTable
                   <StatusBadge status={model.status} confidence={model.confidence} />
                 </td>
                 <td className={styles.price}>{currencySymbol}{formatPrice(model.costPerMinute)}</td>
+                <td className={styles.inputTypes}>
+                  {model.inputType
+                    ? model.inputType.split(',').map((t) => (
+                        <span key={t} className={`${styles.inputBadge} ${styles[`input_${t}`] ?? ''}`}>
+                          {t}
+                        </span>
+                      ))
+                    : '—'}
+                </td>
                 <td className={styles.meta}>{model.resolution ?? '—'}</td>
                 <td className={styles.meta}>{formatDuration(model.maxDuration)}</td>
                 <td className={styles.freshness}>

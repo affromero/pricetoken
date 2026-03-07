@@ -30,6 +30,7 @@ export type {
   ImagePriceHistoryPoint,
   ImageModelHistory,
   ImageProviderSummary,
+  VideoInputType,
   VideoModelPricing,
   VideoCostEstimate,
   VideoPriceHistoryPoint,
