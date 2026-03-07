@@ -12,6 +12,7 @@ export interface ExtractedAvatarModel {
   resolution?: string;
   maxDuration?: number;
   qualityMode?: string;
+  lipSync?: boolean;
   status?: 'active' | 'deprecated' | 'preview';
   launchDate?: string;
 }

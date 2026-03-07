@@ -19,6 +19,7 @@ const mockModel = {
   resolution: '1080p',
   maxDuration: null,
   qualityMode: 'standard',
+  lipSync: true,
   source: 'seed' as const,
   status: 'active' as const,
   confidence: 'high' as const,

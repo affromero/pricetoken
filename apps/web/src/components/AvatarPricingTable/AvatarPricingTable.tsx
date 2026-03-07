@@ -145,6 +145,7 @@ export function AvatarPricingTable({ pricing: initialPricing }: AvatarPricingTab
               <th onClick={() => handleSort('resolution')} className={styles.sortable}>
                 Resolution {sortKey === 'resolution' ? (sortAsc ? '↑' : '↓') : ''}
               </th>
+              <th>Lip Sync</th>
               <th>Max Duration</th>
               <th onClick={() => handleSort('confidenceScore')} className={styles.sortable}>
                 Freshness {sortKey === 'confidenceScore' ? (sortAsc ? '↑' : '↓') : ''}
@@ -171,6 +172,7 @@ export function AvatarPricingTable({ pricing: initialPricing }: AvatarPricingTab
                 <td className={styles.price}>{currencySymbol}{formatPrice(model.costPerMinute)}</td>
                 <td className={styles.meta}>{formatAvatarType(model.avatarType)}</td>
                 <td className={styles.meta}>{model.resolution ?? '—'}</td>
+                <td className={styles.meta}>{model.lipSync == null ? '—' : model.lipSync ? 'Yes' : 'No'}</td>
                 <td className={styles.meta}>{formatDuration(model.maxDuration)}</td>
                 <td className={styles.freshness}>
                   <FreshnessIndicator

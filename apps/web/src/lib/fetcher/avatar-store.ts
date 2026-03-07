@@ -35,6 +35,7 @@ export async function saveAvatarSnapshots(
     resolution: m.resolution ?? null,
     maxDuration: m.maxDuration ?? null,
     qualityMode: m.qualityMode ?? null,
+    lipSync: m.lipSync ?? null,
     source,
     status: m.status ?? null,
     confidence,
@@ -63,6 +64,7 @@ export async function getLatestAvatarPricing(provider?: string): Promise<AvatarM
       resolution: string | null;
       maxDuration: number | null;
       qualityMode: string | null;
+      lipSync: boolean | null;
       source: string;
       status: string | null;
       confidence: string | null;
@@ -74,7 +76,7 @@ export async function getLatestAvatarPricing(provider?: string): Promise<AvatarM
   >(Prisma.sql`
     SELECT DISTINCT ON ("modelId")
       "modelId", "provider", "displayName",
-      "costPerMinute", "avatarType", "resolution", "maxDuration", "qualityMode",
+      "costPerMinute", "avatarType", "resolution", "maxDuration", "qualityMode", "lipSync",
       "source", "status", "confidence",
       "agentApprovals", "agentTotal",
       "launchDate", "createdAt"
@@ -102,6 +104,7 @@ export async function getLatestAvatarPricing(provider?: string): Promise<AvatarM
       resolution: s.resolution,
       maxDuration: s.maxDuration,
       qualityMode: s.qualityMode,
+      lipSync: s.lipSync,
       source: s.source as AvatarModelPricing['source'],
       status: (s.status as AvatarModelPricing['status']) ?? null,
       confidence: level,
@@ -191,6 +194,7 @@ export async function seedAvatarFromStatic(staticPricing: AvatarModelPricing[]):
       resolution: m.resolution,
       maxDuration: m.maxDuration,
       qualityMode: m.qualityMode,
+      lipSync: m.lipSync,
       source: 'seed',
       status: m.status ?? 'active',
       confidence: m.confidence ?? 'high',
@@ -246,6 +250,7 @@ export async function carryForwardMissingAvatar(): Promise<number> {
     resolution: string | null;
     maxDuration: number | null;
     qualityMode: string | null;
+    lipSync: boolean | null;
     source: string;
     status: string | null;
     confidence: string;
@@ -279,6 +284,7 @@ export async function carryForwardMissingAvatar(): Promise<number> {
         resolution: latest.resolution,
         maxDuration: latest.maxDuration,
         qualityMode: latest.qualityMode,
+        lipSync: latest.lipSync,
         source: carrySource(latest.source, latest.createdAt, originalSource, originalCreatedAt),
         status: latest.status,
         confidence: latest.confidence,

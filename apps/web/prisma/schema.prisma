@@ -150,6 +150,7 @@ model AvatarPricingSnapshot {
   resolution     String?
   maxDuration    Int?
   qualityMode    String?
+  lipSync        Boolean?
   source         String   @default("fetched")
   status         String?
   confidence     String   @default("high")

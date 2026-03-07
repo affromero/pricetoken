@@ -172,6 +172,7 @@ export interface AvatarModelPricing {
   resolution: string | null;
   maxDuration: number | null;
   qualityMode: string | null;
+  lipSync: boolean | null;
   source: 'fetched' | 'seed' | 'admin' | 'verified' | 'carried';
   status: ModelStatus | null;
   confidence: DataConfidence;

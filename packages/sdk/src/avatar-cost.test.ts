@@ -49,6 +49,7 @@ describe('calculateAvatarModelCost', () => {
         resolution: null,
         maxDuration: null,
         qualityMode: null,
+        lipSync: true,
         source: 'seed' as const,
         status: 'active' as const,
         confidence: 'high' as const,
