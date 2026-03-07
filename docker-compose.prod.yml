@@ -33,6 +33,7 @@ services:
         condition: service_healthy
     volumes:
       - /home/sotto/.claude:/home/node/.claude
+      - analytics-data:/app/data
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-pricetoken}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-pricetoken}
       REDIS_URL: redis://redis:6379
@@ -43,6 +44,8 @@ services:
       CRON_SECRET: ${CRON_SECRET:?CRON_SECRET required}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:?ADMIN_PASSWORD required}
       ADMIN_SESSION_SECRET: ${ADMIN_SESSION_SECRET:?ADMIN_SESSION_SECRET required}
+      ANALYTICS_INTERNAL_SECRET: ${ANALYTICS_INTERNAL_SECRET:-pt-analytics-internal}
       PORT: '3001'
 volumes:
   pgdata:
+  analytics-data:

@@ -6,7 +6,7 @@
 
 # ---- Stage 1: Install dependencies ----
 FROM node:22-alpine AS deps
-RUN apk add --no-cache libc6-compat openssl
+RUN apk add --no-cache libc6-compat openssl python3 make g++
 WORKDIR /app
 
 COPY package.json package-lock.json ./
@@ -14,7 +14,7 @@ COPY apps/web/package.json ./apps/web/
 COPY packages/sdk/package.json ./packages/sdk/
 COPY apps/web/prisma ./apps/web/prisma/
 
-RUN --mount=type=cache,target=/root/.npm npm ci --ignore-scripts
+RUN --mount=type=cache,target=/root/.npm npm ci
 RUN npx prisma generate --schema=apps/web/prisma/schema.prisma
 
 # ---- Stage 2: Build the application ----
@@ -81,6 +81,9 @@ COPY --chown=node:node packages/sdk/tsconfig.json ./packages/sdk/tsconfig.json
 
 COPY --chown=node:node docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Analytics SQLite data directory
+RUN mkdir -p /app/data && chown node:node /app/data
 
 USER node
 WORKDIR /app
