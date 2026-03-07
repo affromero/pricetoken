@@ -414,7 +414,7 @@ export const STATIC_TTS_PRICING: TtsModelPricing[] = [
     confidenceLevel: 'medium',
     freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2024-05-01',
+    launchDate: '2024-05-08',
   },
   {
     modelId: 'amazon-polly-govcloud-neural',
@@ -431,7 +431,7 @@ export const STATIC_TTS_PRICING: TtsModelPricing[] = [
     confidenceLevel: 'medium',
     freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2019-07-30',
+    launchDate: '2020-11-23',
   },
   {
     modelId: 'amazon-polly-govcloud-standard',
@@ -448,7 +448,7 @@ export const STATIC_TTS_PRICING: TtsModelPricing[] = [
     confidenceLevel: 'medium',
     freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2016-11-30',
+    launchDate: '2018-02-28',
   },
   {
     modelId: 'amazon-polly-long-form',
@@ -465,7 +465,7 @@ export const STATIC_TTS_PRICING: TtsModelPricing[] = [
     confidenceLevel: 'medium',
     freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2023-01-01',
+    launchDate: '2023-11-16',
   },
   {
     modelId: 'azure-custom-deprecated',
@@ -499,7 +499,7 @@ export const STATIC_TTS_PRICING: TtsModelPricing[] = [
     confidenceLevel: 'medium',
     freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2021-10-01',
+    launchDate: '2021-02-03',
   },
   {
     modelId: 'azure-custom-neural-professional-hd',
@@ -516,7 +516,7 @@ export const STATIC_TTS_PRICING: TtsModelPricing[] = [
     confidenceLevel: 'medium',
     freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2025-02-01',
+    launchDate: '2025-03-30',
   },
   {
     modelId: 'azure-neural-standard',
@@ -533,7 +533,7 @@ export const STATIC_TTS_PRICING: TtsModelPricing[] = [
     confidenceLevel: 'medium',
     freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2019-09-01',
+    launchDate: '2019-05-04',
   },
   {
     modelId: 'azure-standard-deprecated',
@@ -567,7 +567,7 @@ export const STATIC_TTS_PRICING: TtsModelPricing[] = [
     confidenceLevel: 'medium',
     freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2024-06-01',
+    launchDate: '2025-03-11',
   },
   {
     modelId: 'deepgram-aura-1-growth',
@@ -652,7 +652,7 @@ export const STATIC_TTS_PRICING: TtsModelPricing[] = [
     confidenceLevel: 'medium',
     freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2025-03-17',
+    launchDate: '2025-04-02',
   },
   {
     modelId: 'google-cloud-instant-custom-voice',
@@ -669,7 +669,7 @@ export const STATIC_TTS_PRICING: TtsModelPricing[] = [
     confidenceLevel: 'medium',
     freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2025-03-17',
+    launchDate: '2025-04-09',
   },
   {
     modelId: 'google-cloud-neural2',
@@ -686,7 +686,7 @@ export const STATIC_TTS_PRICING: TtsModelPricing[] = [
     confidenceLevel: 'medium',
     freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2022-06-01',
+    launchDate: '2022-06-27',
   },
   {
     modelId: 'google-cloud-polyglot',
@@ -703,7 +703,7 @@ export const STATIC_TTS_PRICING: TtsModelPricing[] = [
     confidenceLevel: 'medium',
     freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2023-06-01',
+    launchDate: '2025-04-16',
   },
   {
     modelId: 'google-cloud-polyglot-preview',
@@ -720,7 +720,7 @@ export const STATIC_TTS_PRICING: TtsModelPricing[] = [
     confidenceLevel: 'medium',
     freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2023-06-01',
+    launchDate: '2023-09-01',
   },
   {
     modelId: 'google-cloud-standard',
@@ -754,7 +754,7 @@ export const STATIC_TTS_PRICING: TtsModelPricing[] = [
     confidenceLevel: 'medium',
     freshness: { lastVerified: new Date().toISOString(), ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2023-06-01',
+    launchDate: '2023-06-28',
   },
   {
     modelId: 'google-cloud-wavenet',

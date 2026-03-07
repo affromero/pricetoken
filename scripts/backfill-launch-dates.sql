@@ -85,28 +85,28 @@ WHERE "modelId" IN (
 -- TTS (24 models)
 -- ============================================================
 
--- Amazon Polly Generative — GA May 2024
+-- Amazon Polly Generative — GA 2024-05-08
 -- Source: https://aws.amazon.com/blogs/aws/a-new-generative-engine-and-three-voices-are-now-generally-available-on-amazon-polly/
 UPDATE "TtsPricingSnapshot"
-SET "launchDate" = '2024-05-01'
+SET "launchDate" = '2024-05-08'
 WHERE "modelId" = 'amazon-polly-generative' AND "launchDate" IS NULL;
 
--- Amazon Polly Neural (GovCloud) — same engine as Neural, launched 2019-07-30
--- Source: https://aws.amazon.com/about-aws/whats-new/2019/07/amazon-polly-neural-tts/
+-- Amazon Polly Neural (GovCloud) — GovCloud availability 2020-11-23
+-- Source: https://aws.amazon.com/about-aws/whats-new/2020/11/amazon-polly-now-available-in-aws-govcloud/
 UPDATE "TtsPricingSnapshot"
-SET "launchDate" = '2019-07-30'
+SET "launchDate" = '2020-11-23'
 WHERE "modelId" = 'amazon-polly-govcloud-neural' AND "launchDate" IS NULL;
 
--- Amazon Polly Standard (GovCloud) — same engine as Standard, launched 2016-11-30
--- Source: https://aws.amazon.com/about-aws/whats-new/2016/11/introducing-amazon-polly/
+-- Amazon Polly Standard (GovCloud) — GovCloud availability 2018-02-28
+-- Source: https://aws.amazon.com/about-aws/whats-new/2018/02/amazon-polly-now-available-in-aws-govcloud/
 UPDATE "TtsPricingSnapshot"
-SET "launchDate" = '2016-11-30'
+SET "launchDate" = '2018-02-28'
 WHERE "modelId" = 'amazon-polly-govcloud-standard' AND "launchDate" IS NULL;
 
--- Amazon Polly Long-Form — launched 2023-01-01 (approximate)
--- Source: https://docs.aws.amazon.com/polly/latest/dg/long-form-voices.html
+-- Amazon Polly Long-Form — launched 2023-11-16
+-- Source: https://aws.amazon.com/about-aws/whats-new/2023/11/amazon-polly-long-form-text-to-speech/
 UPDATE "TtsPricingSnapshot"
-SET "launchDate" = '2023-01-01'
+SET "launchDate" = '2023-11-16'
 WHERE "modelId" = 'amazon-polly-long-form' AND "launchDate" IS NULL;
 
 -- Azure TTS Custom (Deprecated) — Azure Speech GA 2018-11-01
@@ -115,22 +115,22 @@ UPDATE "TtsPricingSnapshot"
 SET "launchDate" = '2018-11-01'
 WHERE "modelId" = 'azure-custom-deprecated' AND "launchDate" IS NULL;
 
--- Azure Custom Neural Voice Professional — GA 2021-10-01
+-- Azure Custom Neural Voice Professional — GA 2021-02-03
 -- Source: https://learn.microsoft.com/en-us/azure/ai-services/speech-service/custom-neural-voice
 UPDATE "TtsPricingSnapshot"
-SET "launchDate" = '2021-10-01'
+SET "launchDate" = '2021-02-03'
 WHERE "modelId" = 'azure-custom-neural-professional' AND "launchDate" IS NULL;
 
--- Azure Custom Neural Voice Professional HD — announced Feb/Mar 2025
+-- Azure Custom Neural Voice Professional HD — announced 2025-03-30
 -- Source: https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/azure-ai-speech-text-to-speech-feb-2025-updates-new-hd-voices-and-more/4387263
 UPDATE "TtsPricingSnapshot"
-SET "launchDate" = '2025-02-01'
+SET "launchDate" = '2025-03-30'
 WHERE "modelId" = 'azure-custom-neural-professional-hd' AND "launchDate" IS NULL;
 
--- Azure Neural TTS (Standard tier) — 2019-09-01
--- Source: same as azure-tts-neural in static data
+-- Azure Neural TTS (Standard tier) — 2019-05-04
+-- Source: https://azure.microsoft.com/en-us/updates/azure-cognitive-services-speech-service/
 UPDATE "TtsPricingSnapshot"
-SET "launchDate" = '2019-09-01'
+SET "launchDate" = '2019-05-04'
 WHERE "modelId" = 'azure-neural-standard' AND "launchDate" IS NULL;
 
 -- Azure TTS Standard (Deprecated) — 2018-11-01
@@ -139,10 +139,10 @@ UPDATE "TtsPricingSnapshot"
 SET "launchDate" = '2018-11-01'
 WHERE "modelId" = 'azure-standard-deprecated' AND "launchDate" IS NULL;
 
--- Cartesia Sonic-Turbo — launched with Sonic 2/3 family, ~2024-06-01
--- Source: https://cartesia.ai/sonic
+-- Cartesia Sonic-Turbo — launched 2025-03-11
+-- Source: https://cartesia.ai/blog/sonic-turbo
 UPDATE "TtsPricingSnapshot"
-SET "launchDate" = '2024-06-01'
+SET "launchDate" = '2025-03-11'
 WHERE "modelId" = 'cartesia-sonic-turbo' AND "launchDate" IS NULL;
 
 -- Deepgram Aura-1 (Growth/PAYG) — launched 2024-03-12
@@ -157,29 +157,33 @@ UPDATE "TtsPricingSnapshot"
 SET "launchDate" = '2025-04-15'
 WHERE "modelId" IN ('deepgram-aura-2-growth', 'deepgram-aura-2-payg') AND "launchDate" IS NULL;
 
--- Google Cloud Chirp 3 HD — launched 2025-03-17
--- Source: https://techcrunch.com/2025/03/17/google-adds-its-hd-voice-model-chirp-3-to-its-vertex-ai-platform/
+-- Google Cloud Chirp 3 HD — launched 2025-04-02
+-- Source: https://cloud.google.com/text-to-speech/docs/release-notes
 UPDATE "TtsPricingSnapshot"
-SET "launchDate" = '2025-03-17'
+SET "launchDate" = '2025-04-02'
 WHERE "modelId" = 'google-cloud-chirp3-hd' AND "launchDate" IS NULL;
 
--- Google Cloud Instant Custom Voice — launched with Chirp 3, 2025-03-17
--- Source: https://docs.cloud.google.com/text-to-speech/docs/chirp3-instant-custom-voice
+-- Google Cloud Instant Custom Voice — launched 2025-04-09
+-- Source: https://cloud.google.com/text-to-speech/docs/release-notes
 UPDATE "TtsPricingSnapshot"
-SET "launchDate" = '2025-03-17'
+SET "launchDate" = '2025-04-09'
 WHERE "modelId" = 'google-cloud-instant-custom-voice' AND "launchDate" IS NULL;
 
--- Google Cloud Neural2 — launched 2022-06-01
--- Source: same as google-cloud-tts-neural2 in static data
+-- Google Cloud Neural2 — launched 2022-06-27
+-- Source: https://cloud.google.com/text-to-speech/docs/release-notes
 UPDATE "TtsPricingSnapshot"
-SET "launchDate" = '2022-06-01'
+SET "launchDate" = '2022-06-27'
 WHERE "modelId" = 'google-cloud-neural2' AND "launchDate" IS NULL;
 
--- Google Cloud Polyglot Voices — launched ~2023-06-01
--- Source: https://docs.cloud.google.com/text-to-speech/docs/polyglot
+-- Google Cloud Polyglot Voices — GA 2025-04-16, Preview 2023-09-01
+-- Source: https://cloud.google.com/text-to-speech/docs/release-notes
 UPDATE "TtsPricingSnapshot"
-SET "launchDate" = '2023-06-01'
-WHERE "modelId" IN ('google-cloud-polyglot', 'google-cloud-polyglot-preview') AND "launchDate" IS NULL;
+SET "launchDate" = '2025-04-16'
+WHERE "modelId" = 'google-cloud-polyglot' AND "launchDate" IS NULL;
+
+UPDATE "TtsPricingSnapshot"
+SET "launchDate" = '2023-09-01'
+WHERE "modelId" = 'google-cloud-polyglot-preview' AND "launchDate" IS NULL;
 
 -- Google Cloud Standard — launched 2018-03-27
 -- Source: same as google-cloud-tts-standard in static data
@@ -187,10 +191,10 @@ UPDATE "TtsPricingSnapshot"
 SET "launchDate" = '2018-03-27'
 WHERE "modelId" = 'google-cloud-standard' AND "launchDate" IS NULL;
 
--- Google Cloud Studio — launched ~2023-06-01
--- Source: https://docs.cloud.google.com/text-to-speech/docs/release-notes
+-- Google Cloud Studio — launched 2023-06-28
+-- Source: https://cloud.google.com/text-to-speech/docs/release-notes
 UPDATE "TtsPricingSnapshot"
-SET "launchDate" = '2023-06-01'
+SET "launchDate" = '2023-06-28'
 WHERE "modelId" = 'google-cloud-studio' AND "launchDate" IS NULL;
 
 -- Google Cloud WaveNet — launched 2018-03-27
