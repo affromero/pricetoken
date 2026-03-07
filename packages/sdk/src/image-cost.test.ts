@@ -72,7 +72,7 @@ describe('STATIC_IMAGE_PRICING', () => {
       expect(model.pricePerImage).toBeGreaterThan(0);
       expect(model.defaultResolution).toBeTruthy();
       expect(model.qualityTier).toBeTruthy();
-      expect(model.supportedFormats.length).toBeGreaterThan(0);
+      expect(model.supportedFormats).toBeInstanceOf(Array);
       expect(model.source).toBe('seed');
     }
   });

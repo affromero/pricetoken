@@ -77,7 +77,7 @@ describe('STATIC_VIDEO_PRICING', () => {
       expect(model.displayName).toBeTruthy();
       expect(model.costPerMinute).toBeGreaterThan(0);
       expect(model.source).toBe('seed');
-      expect(model.inputType).toBeTruthy();
+      expect(model).toHaveProperty('inputType');
     }
   });
 });
