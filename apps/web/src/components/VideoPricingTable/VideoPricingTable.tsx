@@ -19,6 +19,7 @@ export function VideoPricingTable({ pricing: initialPricing }: VideoPricingTable
   const [sortKey, setSortKey] = useState<SortKey>('costPerMinute');
   const [sortAsc, setSortAsc] = useState(true);
   const [filter, setFilter] = useState<string>('');
+  const [hideDeprecated, setHideDeprecated] = useState(true);
   const [currency, setCurrency] = useState('USD');
 
   const providers = [...new Set(pricing.map((m) => m.provider))];
@@ -40,7 +41,10 @@ export function VideoPricingTable({ pricing: initialPricing }: VideoPricingTable
     }
   }, [initialPricing]);
 
-  const filtered = filter ? pricing.filter((m) => m.provider === filter) : pricing;
+  let filtered = filter ? pricing.filter((m) => m.provider === filter) : pricing;
+  if (hideDeprecated) {
+    filtered = filtered.filter((m) => m.status !== 'deprecated');
+  }
 
   const sorted = [...filtered].sort((a, b) => {
     if (sortKey === 'launchDate') {
@@ -100,6 +104,15 @@ export function VideoPricingTable({ pricing: initialPricing }: VideoPricingTable
     <div className={styles.root}>
       <div className={styles.filters}>
         <ProviderFilterChips providers={providers} selected={filter} onSelect={setFilter} />
+        <label className={styles.toggleLabel}>
+          <input
+            type="checkbox"
+            checked={hideDeprecated}
+            onChange={(e) => setHideDeprecated(e.target.checked)}
+            className={styles.toggleCheckbox}
+          />
+          Hide deprecated
+        </label>
         <CurrencySelector onChange={handleCurrencyChange} />
       </div>
 

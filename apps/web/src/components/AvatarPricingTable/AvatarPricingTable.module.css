@@ -89,6 +89,20 @@
   white-space: nowrap;
 }
 
+.toggleLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--pt-text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggleCheckbox {
+  accent-color: var(--pt-accent);
+}
+
 .date {
   color: var(--pt-text-secondary);
   font-size: 0.8125rem;
