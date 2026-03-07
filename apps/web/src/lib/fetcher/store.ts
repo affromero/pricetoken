@@ -9,10 +9,19 @@ import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } fr
 const CARRY_GRACE_MS = 24 * 60 * 60 * 1000; // 1 day
 
 /** Preserve source for recently-verified data instead of degrading to 'carried'. */
-export function carrySource(source: string, createdAt: Date): string {
-  const trusted = source === 'verified' || source === 'admin';
-  const recent = Date.now() - createdAt.getTime() < CARRY_GRACE_MS;
-  return trusted && recent ? source : 'carried';
+export function carrySource(
+  source: string,
+  createdAt: Date,
+  originalSource?: string,
+  originalCreatedAt?: Date,
+): string {
+  // If the latest snapshot is already 'carried', look at the original non-carried source
+  const effectiveSource = source === 'carried' && originalSource ? originalSource : source;
+  const effectiveDate = source === 'carried' && originalCreatedAt ? originalCreatedAt : createdAt;
+
+  const trusted = effectiveSource === 'verified' || effectiveSource === 'admin';
+  const recent = Date.now() - effectiveDate.getTime() < CARRY_GRACE_MS;
+  return trusted && recent ? effectiveSource : 'carried';
 }
 
 export interface FetchWarning {
@@ -287,6 +296,18 @@ export async function carryForwardMissing(): Promise<number> {
       orderBy: { createdAt: 'desc' },
     });
     if (latest) {
+      let originalSource: string | undefined;
+      let originalCreatedAt: Date | undefined;
+      if (latest.source === 'carried') {
+        const original = await prisma.modelPricingSnapshot.findFirst({
+          where: { modelId, source: { notIn: ['carried'] } },
+          orderBy: { createdAt: 'desc' },
+        });
+        if (original) {
+          originalSource = original.source;
+          originalCreatedAt = original.createdAt;
+        }
+      }
       data.push({
         modelId: latest.modelId,
         provider: latest.provider,
@@ -295,7 +316,7 @@ export async function carryForwardMissing(): Promise<number> {
         outputPerMTok: latest.outputPerMTok,
         contextWindow: latest.contextWindow,
         maxOutputTokens: latest.maxOutputTokens,
-        source: carrySource(latest.source, latest.createdAt),
+        source: carrySource(latest.source, latest.createdAt, originalSource, originalCreatedAt),
         status: latest.status,
         confidence: latest.confidence,
         launchDate: latest.launchDate,

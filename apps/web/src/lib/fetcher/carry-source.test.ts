@@ -29,7 +29,23 @@ describe('carrySource', () => {
     expect(carrySource('fetched', hoursAgo(1))).toBe('carried');
   });
 
-  it('always degrades carried to carried', () => {
+  it('always degrades carried to carried without original', () => {
     expect(carrySource('carried', hoursAgo(1))).toBe('carried');
+  });
+
+  it('preserves verified via original source when latest is carried', () => {
+    expect(carrySource('carried', hoursAgo(1), 'verified', hoursAgo(12))).toBe('verified');
+  });
+
+  it('preserves admin via original source when latest is carried', () => {
+    expect(carrySource('carried', hoursAgo(1), 'admin', hoursAgo(6))).toBe('admin');
+  });
+
+  it('degrades to carried when original source is too old', () => {
+    expect(carrySource('carried', hoursAgo(1), 'verified', hoursAgo(25))).toBe('carried');
+  });
+
+  it('degrades to carried when original source is seed', () => {
+    expect(carrySource('carried', hoursAgo(1), 'seed', hoursAgo(1))).toBe('carried');
   });
 });

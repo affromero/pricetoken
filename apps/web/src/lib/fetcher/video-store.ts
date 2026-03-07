@@ -253,6 +253,18 @@ export async function carryForwardMissingVideo(): Promise<number> {
       orderBy: { createdAt: 'desc' },
     });
     if (latest) {
+      let originalSource: string | undefined;
+      let originalCreatedAt: Date | undefined;
+      if (latest.source === 'carried') {
+        const original = await prisma.videoPricingSnapshot.findFirst({
+          where: { modelId, source: { notIn: ['carried'] } },
+          orderBy: { createdAt: 'desc' },
+        });
+        if (original) {
+          originalSource = original.source;
+          originalCreatedAt = original.createdAt;
+        }
+      }
       data.push({
         modelId: latest.modelId,
         provider: latest.provider,
@@ -261,7 +273,7 @@ export async function carryForwardMissingVideo(): Promise<number> {
         resolution: latest.resolution,
         maxDuration: latest.maxDuration,
         qualityMode: latest.qualityMode,
-        source: carrySource(latest.source, latest.createdAt),
+        source: carrySource(latest.source, latest.createdAt, originalSource, originalCreatedAt),
         status: latest.status,
         confidence: latest.confidence,
         launchDate: latest.launchDate,
