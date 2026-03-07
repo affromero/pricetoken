@@ -24,7 +24,8 @@
     "fetch-video-pricing": "doppler run -- npx tsx scripts/fetch-video-pricing.ts",
     "fetch-tts-pricing": "doppler run -- npx tsx scripts/fetch-tts-pricing.ts",
     "fetch-stt-pricing": "doppler run -- npx tsx scripts/fetch-stt-pricing.ts",
-    "setup-dns": "doppler run -- npx tsx scripts/setup-dns.ts"
+    "setup-dns": "doppler run -- npx tsx scripts/setup-dns.ts",
+    "update-static": "npx tsx scripts/update-static.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
