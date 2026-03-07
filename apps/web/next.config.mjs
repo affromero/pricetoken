@@ -35,6 +35,7 @@ const securityHeaders = [
 const nextConfig = {
   output: 'standalone',
   transpilePackages: ['pricetoken'],
+  serverExternalPackages: ['better-sqlite3', 'geoip-lite'],
   env: {
     APP_VERSION: pkg.version,
   },
