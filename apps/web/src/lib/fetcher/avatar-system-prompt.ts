@@ -7,6 +7,7 @@ Return a JSON array of objects with these fields:
 - resolution: video resolution if specified (e.g. "1080p") (string, optional)
 - maxDuration: maximum video duration in seconds (number, optional)
 - qualityMode: one of "standard", "premium", "professional", or other (string, optional)
+- lipSync: whether the model produces lip-synced output (boolean, optional). True for avatar generation (text or audio input) and lip-synced video translation. False for audio-only dubbing/proofread modes that overlay audio without lip movement.
 - launchDate: the model's release/launch date in "YYYY-MM-DD" format (string, optional)
   - Look for: release date, launch date, "available since", "announced on", "released", version dates, changelog dates, blog post dates, copyright years with version context
   - If the page mentions a year and month but no day, use the 1st of that month (e.g. "June 2025" → "2025-06-01")

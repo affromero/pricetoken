@@ -57,6 +57,7 @@ class TestCalculateAvatarModelCost:
                 freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
                 last_updated=None,
                 launch_date=None,
+                lip_sync=True,
             ),
         ]
         result = calculate_avatar_model_cost("custom-avatar", 30, custom)

@@ -361,6 +361,7 @@ class AvatarModelPricing:
     freshness: FreshnessInfo
     last_updated: str | None
     launch_date: str | None
+    lip_sync: bool | None = None
 
 
 @dataclass(slots=True)
@@ -411,6 +412,7 @@ def _parse_avatar_model_pricing(data: dict[str, Any]) -> AvatarModelPricing:
         freshness=_parse_freshness(data.get("freshness")),
         last_updated=data.get("lastUpdated"),
         launch_date=data.get("launchDate"),
+        lip_sync=data.get("lipSync"),
     )
 
 
