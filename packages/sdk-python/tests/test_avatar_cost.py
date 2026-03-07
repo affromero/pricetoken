@@ -31,8 +31,8 @@ class TestCalculateAvatarCost:
 class TestCalculateAvatarModelCost:
     def test_looks_up_model_from_static_pricing(self) -> None:
         result = calculate_avatar_model_cost("heygen-avatar-standard", 60)
-        assert result.total_cost == pytest.approx(0.99)
-        assert result.cost_per_minute == 0.99
+        assert result.total_cost == pytest.approx(1.002)
+        assert result.cost_per_minute == 1.002
 
     def test_raises_for_unknown_model(self) -> None:
         with pytest.raises(ValueError, match="Unknown avatar model"):

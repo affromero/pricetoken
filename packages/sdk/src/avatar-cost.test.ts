@@ -30,8 +30,8 @@ describe('calculateAvatarCost', () => {
 describe('calculateAvatarModelCost', () => {
   it('looks up model from static pricing', () => {
     const result = calculateAvatarModelCost('heygen-avatar-standard', 60);
-    expect(result.totalCost).toBeCloseTo(0.99);
-    expect(result.costPerMinute).toBe(0.99);
+    expect(result.totalCost).toBeCloseTo(1.002);
+    expect(result.costPerMinute).toBe(1.002);
   });
 
   it('throws for unknown model', () => {

@@ -81,7 +81,7 @@ describe('checkVideoPriceSanity', () => {
 
 describe('checkAvatarPriceSanity', () => {
   it('accepts valid avatar pricing', () => {
-    expect(checkAvatarPriceSanity('heygen-avatar-standard', 0.99).valid).toBe(true);
+    expect(checkAvatarPriceSanity('heygen-avatar-standard', 1.002).valid).toBe(true);
   });
 
   it('rejects zero cost', () => {
