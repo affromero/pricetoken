@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import type { AvatarModelPricing, AvatarModelHistory, AvatarPriceHistoryPoint } from 'pricetoken';
 import { STATIC_AVATAR_PRICING } from 'pricetoken';
 import type { ExtractedAvatarModel } from './avatar-extractor';
+import { carrySource } from './store';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
 
 export async function saveAvatarSnapshots(
@@ -266,7 +267,7 @@ export async function carryForwardMissingAvatar(): Promise<number> {
         resolution: latest.resolution,
         maxDuration: latest.maxDuration,
         qualityMode: latest.qualityMode,
-        source: 'carried',
+        source: carrySource(latest.source, latest.createdAt),
         status: latest.status,
         confidence: latest.confidence,
         launchDate: latest.launchDate,

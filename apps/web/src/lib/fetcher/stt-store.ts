@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import type { SttModelPricing, SttModelHistory, SttPriceHistoryPoint } from 'pricetoken';
 import type { ExtractedSttModel } from './stt-extractor';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
+import { carrySource } from './store';
 
 export async function saveSttSnapshots(
   provider: string,
@@ -256,7 +257,7 @@ export async function carryForwardMissingStt(): Promise<number> {
         sttType: latest.sttType,
         maxDuration: latest.maxDuration,
         supportedLanguages: latest.supportedLanguages,
-        source: 'carried',
+        source: carrySource(latest.source, latest.createdAt),
         status: latest.status,
         confidence: latest.confidence,
         launchDate: latest.launchDate,

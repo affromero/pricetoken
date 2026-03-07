@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import type { ImageModelPricing, ImageModelHistory, ImagePriceHistoryPoint } from 'pricetoken';
 import { STATIC_IMAGE_PRICING } from 'pricetoken';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
+import { carrySource } from './store';
 
 export interface ExtractedImageModel {
   modelId: string;
@@ -279,7 +280,7 @@ export async function carryForwardMissingImages(): Promise<number> {
         qualityTier: latest.qualityTier,
         maxResolution: latest.maxResolution,
         supportedFormats: latest.supportedFormats,
-        source: 'carried',
+        source: carrySource(latest.source, latest.createdAt),
         status: latest.status,
         confidence: latest.confidence,
         launchDate: latest.launchDate,

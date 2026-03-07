@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import type { TtsModelPricing, TtsModelHistory, TtsPriceHistoryPoint } from 'pricetoken';
 import type { ExtractedTtsModel } from './tts-extractor';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
+import { carrySource } from './store';
 
 export async function saveTtsSnapshots(
   provider: string,
@@ -256,7 +257,7 @@ export async function carryForwardMissingTts(): Promise<number> {
         voiceType: latest.voiceType,
         maxCharacters: latest.maxCharacters,
         supportedLanguages: latest.supportedLanguages,
-        source: 'carried',
+        source: carrySource(latest.source, latest.createdAt),
         status: latest.status,
         confidence: latest.confidence,
         launchDate: latest.launchDate,

@@ -19,17 +19,20 @@ export const TTS_PROVIDERS: Record<string, ProviderConfig> = {
   azure: {
     url: 'https://azure.microsoft.com/en-us/pricing/details/speech/',
     displayName: 'Microsoft Azure',
-    requiresBrowser: false,
+    requiresBrowser: true,
+    fallbackUrls: ['https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech'],
   },
   elevenlabs: {
     url: 'https://elevenlabs.io/pricing/api',
     displayName: 'ElevenLabs',
     requiresBrowser: true,
+    fallbackUrls: ['https://elevenlabs.io/docs/overview/pricing'],
   },
   playht: {
     url: 'https://play.ht/pricing/',
     displayName: 'PlayHT',
     requiresBrowser: true,
+    fallbackUrls: ['https://docs.play.ht/reference/pricing'],
   },
   deepgram: {
     url: 'https://deepgram.com/pricing',
@@ -37,13 +40,15 @@ export const TTS_PROVIDERS: Record<string, ProviderConfig> = {
     requiresBrowser: true,
   },
   fal: {
-    url: 'https://fal.ai/models?category=text-to-speech',
+    url: 'https://fal.ai/pricing',
     displayName: 'FAL',
     requiresBrowser: true,
+    fallbackUrls: ['https://fal.ai/models?category=text-to-speech'],
   },
   cartesia: {
     url: 'https://cartesia.ai/pricing',
     displayName: 'Cartesia',
     requiresBrowser: true,
+    fallbackUrls: ['https://docs.cartesia.ai/build-with-cartesia/pricing'],
   },
 };

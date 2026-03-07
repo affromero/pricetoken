@@ -6,6 +6,15 @@ import type { ExtractedModel } from './extractor';
 import type { VerifiedModel } from './verification-types';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
 
+const CARRY_GRACE_MS = 24 * 60 * 60 * 1000; // 1 day
+
+/** Preserve source for recently-verified data instead of degrading to 'carried'. */
+export function carrySource(source: string, createdAt: Date): string {
+  const trusted = source === 'verified' || source === 'admin';
+  const recent = Date.now() - createdAt.getTime() < CARRY_GRACE_MS;
+  return trusted && recent ? source : 'carried';
+}
+
 export interface FetchWarning {
   type: 'models_missing' | 'low_confidence' | 'extraction_error' | 'sanity_check_failed';
   provider: string;
@@ -286,7 +295,7 @@ export async function carryForwardMissing(): Promise<number> {
         outputPerMTok: latest.outputPerMTok,
         contextWindow: latest.contextWindow,
         maxOutputTokens: latest.maxOutputTokens,
-        source: 'carried',
+        source: carrySource(latest.source, latest.createdAt),
         status: latest.status,
         confidence: latest.confidence,
         launchDate: latest.launchDate,
