@@ -12,8 +12,9 @@ Return a JSON array of objects with these fields:
   - "active" if listed without such qualifiers
   - Omit if status cannot be determined
 - launchDate: the model's release/launch date in "YYYY-MM-DD" format (string, optional)
-  - Extract if the page mentions a release date, launch date, or "available since" date
-  - Omit if no date is mentioned
+  - Look for: release date, launch date, "available since", "announced on", "released", version dates, changelog dates, blog post dates, copyright years with version context
+  - If the page mentions a year and month but no day, use the 1st of that month (e.g. "June 2025" → "2025-06-01")
+  - Omit only if absolutely no date information is available
 
 IMPORTANT — use these exact modelId values when extracting:
 - OpenAI: gpt-5.4, gpt-5.4-pro, gpt-5.3-chat-latest, gpt-5.3-codex, gpt-5.2, gpt-5, gpt-5-mini, gpt-5-nano, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-4o, gpt-4o-mini, o3, o4-mini, gpt-5.1, o3-pro, o3-mini
