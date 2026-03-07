@@ -270,6 +270,18 @@ export async function carryForwardMissingImages(): Promise<number> {
       orderBy: { createdAt: 'desc' },
     });
     if (latest) {
+      let originalSource: string | undefined;
+      let originalCreatedAt: Date | undefined;
+      if (latest.source === 'carried') {
+        const original = await prisma.imagePricingSnapshot.findFirst({
+          where: { modelId, source: { notIn: ['carried'] } },
+          orderBy: { createdAt: 'desc' },
+        });
+        if (original) {
+          originalSource = original.source;
+          originalCreatedAt = original.createdAt;
+        }
+      }
       data.push({
         modelId: latest.modelId,
         provider: latest.provider,
@@ -280,7 +292,7 @@ export async function carryForwardMissingImages(): Promise<number> {
         qualityTier: latest.qualityTier,
         maxResolution: latest.maxResolution,
         supportedFormats: latest.supportedFormats,
-        source: carrySource(latest.source, latest.createdAt),
+        source: carrySource(latest.source, latest.createdAt, originalSource, originalCreatedAt),
         status: latest.status,
         confidence: latest.confidence,
         launchDate: latest.launchDate,
