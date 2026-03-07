@@ -1,0 +1,32 @@
+.pulse {
+  background-color: var(--pt-surface);
+  border: 1px solid var(--pt-border);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #10B981;
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.text {
+  font-size: 0.875rem;
+  color: var(--pt-text-secondary);
+}
+
+.text strong {
+  color: var(--pt-text);
+  font-size: 1.125rem;
+}

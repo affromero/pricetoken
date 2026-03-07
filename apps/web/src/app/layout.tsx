@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import '@/styles/globals.css';
+import { ClientBeacon } from '@/components/ClientBeacon/ClientBeacon';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -95,6 +96,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             }),
           }}
         />
+        <ClientBeacon />
         {children}
       </body>
     </html>

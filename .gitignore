@@ -13,6 +13,10 @@ coverage/
 .claude/
 CLAUDE.md
 
+# Analytics SQLite
+data/
+*.db
+
 # Python
 __pycache__/
 *.egg-info/
