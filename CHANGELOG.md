@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.10.1] - 2026-03-07
+
+### Added
+- `lipSync` boolean field on avatar pricing — indicates whether a model produces lip-synced output (true for all avatar generation and lip-synced translation, false for proofread/audio dubbing)
+- Deprecated toggle for Video, TTS, STT, and Avatar pricing tables
+- Smart carry-forward with 1-day grace period and original source tracking
+- Fallback extraction URLs for all pricing categories
+- FAL, Cartesia, and ElevenLabs TTS/STT providers
+- Launch dates backfilled for 88 models across video, avatar, TTS, STT
+
+### Fixed
+- Carry-forward now preserves original non-carried source for confidence scoring
+- Ideogram V3 prices corrected to match actual API pricing
+- TTS static data synced with refined production launch dates
+- Python SDK avatar static data synced (3 → 15 entries)
+
+### Changed
+- fal.ai image models updated to match top platform models
+
 ## [0.10.0] - 2026-03-06
 
 ### Added
