@@ -35,6 +35,8 @@ jobs:
 
             echo "Pulling latest code..."
             git remote set-url origin "https://x-access-token:${REPO_TOKEN}@github.com/affromero/pricetoken.git"
+            git checkout -- .
+            git clean -fd
             git pull origin main
 
             echo "Syncing Caddy config..."
