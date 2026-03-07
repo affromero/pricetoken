@@ -204,20 +204,36 @@ Add `CRON_SECRET` to your environment variables.
 
 ## Related Projects
 
-There are several great projects tackling LLM pricing from different angles. We're grateful to all of them for pushing this space forward — PriceToken builds on ideas pioneered by many of these tools.
+There are several great projects tackling AI pricing from different angles. We're grateful to all of them for pushing this space forward — PriceToken builds on ideas pioneered by many of these tools.
 
-| Feature | PriceToken | [LiteLLM](https://github.com/BerriAI/litellm) | [tokencost](https://github.com/AgentOps-AI/tokencost) | [pricepertoken](https://pricepertoken.com) | [LLM Price Check](https://llmpricecheck.com) | [Helicone](https://github.com/Helicone/helicone) | [genai-prices](https://github.com/pydantic/genai-prices) | [llm-info](https://www.npmjs.com/package/llm-info) |
-|---------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| Free REST API | **Yes** | No | No | No | No | No | No | No |
-| npm Package | **Yes** | No | No | No | No | No | **Yes** | **Yes** |
-| PyPI Package | **Yes** | **Yes** | **Yes** | No | No | No | **Yes** | No |
-| Offline Calculator | **Yes** | No | **Yes** | No | No | No | **Yes** | No |
-| Price History | **Yes** | No | No | Partial | No | No | **Yes** | No |
-| Self-Hostable | **Yes** | **Yes** | N/A | No | No | **Yes** | N/A | N/A |
-| Open Source | **Yes** | **Yes** | **Yes** | No | No | **Yes** | **Yes** | **Yes** |
-| AI-Verified Data | **Yes** | No | No | No | No | No | No | No |
-| TypeScript Types | **Yes** | No | No | No | No | No | **Yes** | **Yes** |
-| Zero Dependencies | **Yes** | No | No | N/A | N/A | No | No | **Yes** |
+| Feature | PriceToken | [models.dev](https://models.dev) | [LiteLLM](https://github.com/BerriAI/litellm) | [tokencost](https://github.com/AgentOps-AI/tokencost) | [pricepertoken](https://pricepertoken.com) | [LLM Price Check](https://llmpricecheck.com) | [Helicone](https://github.com/Helicone/helicone) | [genai-prices](https://github.com/pydantic/genai-prices) | [llm-info](https://www.npmjs.com/package/llm-info) |
+|---------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Free REST API | **Yes** | **Yes** | No | No | No | No | No | No | No |
+| npm Package | **Yes** | No | No | No | No | No | No | **Yes** | **Yes** |
+| PyPI Package | **Yes** | No | **Yes** | **Yes** | No | No | No | **Yes** | No |
+| Offline Calculator | **Yes** | No | No | **Yes** | No | No | No | **Yes** | No |
+| Price History | **Yes** | No | No | No | Partial | No | No | **Yes** | No |
+| Self-Hostable | **Yes** | **Yes** | **Yes** | N/A | No | No | **Yes** | N/A | N/A |
+| Open Source | **Yes** | **Yes** | **Yes** | **Yes** | No | No | **Yes** | **Yes** | **Yes** |
+| AI-Verified Data | **Yes** | No | No | No | No | No | No | No | No |
+| TypeScript Types | **Yes** | No | No | No | No | No | No | **Yes** | **Yes** |
+| Zero Dependencies | **Yes** | N/A | No | No | N/A | N/A | No | No | **Yes** |
+
+### PriceToken & models.dev
+
+[models.dev](https://models.dev) by Anomaly is the largest open-source AI model database — community-curated TOML files covering hundreds of models with detailed capability metadata.
+
+| | PriceToken | models.dev |
+|---|---|---|
+| **Data source** | AI-powered scraping with multi-agent verification | Community-curated TOML files + GitHub PRs |
+| **Distribution** | REST API + website + npm/PyPI SDKs | Single `api.json` endpoint + web UI |
+| **Focus** | Pricing depth (cost calculators, history charts, compare) | Model breadth (capabilities, modalities, context windows) |
+| **Model count** | ~handful of major providers | Hundreds of models across many providers |
+| **Backing** | Solo project | Anomaly (active OSS community, 600+ forks) |
+
+**Where PriceToken focuses:** Live pricing API with offline cost calculators, price history tracking, and multi-agent data verification.
+
+**Where models.dev shines:** Broadest model catalog with rich capability metadata (modalities, reasoning, tool use, knowledge cutoffs) — ideal for model discovery and selection.
 
 ### PriceToken & genai-prices
 
