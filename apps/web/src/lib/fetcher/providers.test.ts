@@ -107,4 +107,8 @@ describe('VIDEO_PROVIDERS', () => {
     expect(VIDEO_PROVIDERS.veo!.requiresBrowser).toBeUndefined();
     expect(VIDEO_PROVIDERS.luma!.requiresBrowser).toBeUndefined();
   });
+
+  it('uses the pay-go pricing URL for MiniMax', () => {
+    expect(VIDEO_PROVIDERS.minimax!.url).toBe('https://platform.minimax.io/docs/guides/pricing-paygo');
+  });
 });

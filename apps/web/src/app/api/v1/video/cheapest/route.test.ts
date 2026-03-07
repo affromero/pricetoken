@@ -29,6 +29,7 @@ const mockModel = {
   provider: 'kling',
   displayName: 'Kling 3.0 1080p',
   costPerMinute: 5.04,
+  inputType: 'text,image' as const,
   resolution: '1080p',
   maxDuration: 15,
   qualityMode: 'standard',

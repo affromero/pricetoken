@@ -31,6 +31,7 @@ const mockModels = [
     provider: 'runway',
     displayName: 'Runway Gen-4 720p',
     costPerMinute: 7.2,
+    inputType: 'text,image' as const,
     resolution: '720p',
     maxDuration: 10,
     qualityMode: 'standard',

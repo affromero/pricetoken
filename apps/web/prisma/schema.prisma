@@ -125,6 +125,7 @@ model VideoPricingSnapshot {
   provider      String
   displayName   String   @default("")
   costPerMinute Float
+  inputType     String?
   resolution    String?
   maxDuration   Int?
   qualityMode   String?

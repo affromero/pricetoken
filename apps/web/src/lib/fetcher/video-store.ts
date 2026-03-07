@@ -15,11 +15,11 @@ export async function saveVideoSnapshots(
 ): Promise<number> {
   if (models.length === 0) return 0;
 
-  // Look up prior snapshots to preserve launchDate
+  // Look up prior snapshots to preserve launchDate and inputType
   const priorSnapshots = await prisma.$queryRaw<
-    Array<{ modelId: string; launchDate: Date | null }>
+    Array<{ modelId: string; launchDate: Date | null; inputType: string | null }>
   >`
-    SELECT DISTINCT ON ("modelId") "modelId", "launchDate"
+    SELECT DISTINCT ON ("modelId") "modelId", "launchDate", "inputType"
     FROM "VideoPricingSnapshot"
     WHERE "provider" = ${provider}
     ORDER BY "modelId", "createdAt" DESC
@@ -31,6 +31,7 @@ export async function saveVideoSnapshots(
     provider,
     displayName: m.displayName,
     costPerMinute: m.costPerMinute,
+    inputType: m.inputType ?? priorByModel.get(m.modelId)?.inputType ?? null,
     resolution: m.resolution ?? null,
     maxDuration: m.maxDuration ?? null,
     qualityMode: m.qualityMode ?? null,
@@ -52,12 +53,17 @@ export async function getLatestVideoPricing(provider?: string): Promise<VideoMod
     STATIC_VIDEO_PRICING.filter((m) => m.launchDate).map((m) => [m.modelId, m.launchDate!])
   );
 
+  const staticInputTypes = new Map(
+    STATIC_VIDEO_PRICING.filter((m) => m.inputType).map((m) => [m.modelId, m.inputType!])
+  );
+
   const snapshots = await prisma.$queryRaw<
     Array<{
       modelId: string;
       provider: string;
       displayName: string;
       costPerMinute: number;
+      inputType: string | null;
       resolution: string | null;
       maxDuration: number | null;
       qualityMode: string | null;
@@ -72,7 +78,7 @@ export async function getLatestVideoPricing(provider?: string): Promise<VideoMod
   >(Prisma.sql`
     SELECT DISTINCT ON ("modelId")
       "modelId", "provider", "displayName",
-      "costPerMinute", "resolution", "maxDuration", "qualityMode",
+      "costPerMinute", "inputType", "resolution", "maxDuration", "qualityMode",
       "source", "status", "confidence",
       "agentApprovals", "agentTotal",
       "launchDate", "createdAt"
@@ -96,6 +102,7 @@ export async function getLatestVideoPricing(provider?: string): Promise<VideoMod
       provider: s.provider,
       displayName: s.displayName,
       costPerMinute: s.costPerMinute,
+      inputType: (s.inputType ?? staticInputTypes.get(s.modelId) ?? null) as VideoModelPricing['inputType'],
       resolution: s.resolution,
       maxDuration: s.maxDuration,
       qualityMode: s.qualityMode,
@@ -184,6 +191,7 @@ export async function seedVideoFromStatic(staticPricing: VideoModelPricing[]): P
       provider: m.provider,
       displayName: m.displayName,
       costPerMinute: m.costPerMinute,
+      inputType: m.inputType,
       resolution: m.resolution,
       maxDuration: m.maxDuration,
       qualityMode: m.qualityMode,
@@ -238,6 +246,7 @@ export async function carryForwardMissingVideo(): Promise<number> {
     provider: string;
     displayName: string;
     costPerMinute: number;
+    inputType: string | null;
     resolution: string | null;
     maxDuration: number | null;
     qualityMode: string | null;
@@ -270,6 +279,7 @@ export async function carryForwardMissingVideo(): Promise<number> {
         provider: latest.provider,
         displayName: latest.displayName,
         costPerMinute: latest.costPerMinute,
+        inputType: latest.inputType,
         resolution: latest.resolution,
         maxDuration: latest.maxDuration,
         qualityMode: latest.qualityMode,

@@ -119,11 +119,14 @@ export interface ImageProviderSummary {
   cheapestPerImage: number;
 }
 
+export type VideoInputType = 'text' | 'image' | 'text,image' | 'audio' | 'multimodal';
+
 export interface VideoModelPricing {
   modelId: string;
   provider: string;
   displayName: string;
   costPerMinute: number;
+  inputType: VideoInputType | null;
   resolution: string | null;
   maxDuration: number | null;
   qualityMode: string | null;

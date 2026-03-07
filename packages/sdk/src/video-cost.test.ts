@@ -45,6 +45,7 @@ describe('calculateVideoModelCost', () => {
         provider: 'custom',
         displayName: 'Custom',
         costPerMinute: 10,
+        inputType: null,
         resolution: null,
         maxDuration: null,
         qualityMode: null,
@@ -76,6 +77,7 @@ describe('STATIC_VIDEO_PRICING', () => {
       expect(model.displayName).toBeTruthy();
       expect(model.costPerMinute).toBeGreaterThan(0);
       expect(model.source).toBe('seed');
+      expect(model.inputType).toBeTruthy();
     }
   });
 });

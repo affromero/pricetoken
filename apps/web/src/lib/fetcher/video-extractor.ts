@@ -8,6 +8,7 @@ export interface ExtractedVideoModel {
   modelId: string;
   displayName: string;
   costPerMinute: number;
+  inputType?: string;
   resolution?: string;
   maxDuration?: number;
   qualityMode?: string;
