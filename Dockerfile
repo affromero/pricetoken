@@ -70,10 +70,12 @@ COPY --from=builder --chown=node:node /app/apps/web/prisma ./apps/web/prisma
 COPY --from=builder --chown=node:node /app/packages/sdk/src/static.ts ./packages/sdk/src/static.ts
 COPY --from=builder --chown=node:node /app/packages/sdk/src/static-image.ts ./packages/sdk/src/static-image.ts
 COPY --from=builder --chown=node:node /app/packages/sdk/src/video-static.ts ./packages/sdk/src/video-static.ts
+COPY --from=builder --chown=node:node /app/packages/sdk/src/avatar-static.ts ./packages/sdk/src/avatar-static.ts
 COPY --from=builder --chown=node:node /app/packages/sdk/src/types.ts ./packages/sdk/src/types.ts
 COPY --chown=node:node scripts/seed.ts ./scripts/seed.ts
 COPY --chown=node:node scripts/seed-video.ts ./scripts/seed-video.ts
 COPY --chown=node:node scripts/video-corrections.ts ./scripts/video-corrections.ts
+COPY --chown=node:node scripts/seed-avatar.ts ./scripts/seed-avatar.ts
 COPY --chown=node:node tsconfig.base.json ./tsconfig.base.json
 COPY --chown=node:node packages/sdk/tsconfig.json ./packages/sdk/tsconfig.json
 
