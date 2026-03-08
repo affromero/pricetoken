@@ -48,6 +48,35 @@ export async function runAvatarFetch(): Promise<AvatarFetchResult> {
         extraction = await extractAvatarPricing(providerId, pageText);
       }
 
+      // Try fallback URLs to recover additional models
+      if (config.fallbackUrls?.length) {
+        const allModels = [...extraction.models];
+        const extractedIds = new Set(allModels.map((m) => m.modelId));
+        for (const fallbackUrl of config.fallbackUrls) {
+          try {
+            console.log(`${config.displayName}: trying fallback URL ${fallbackUrl}...`);
+            const fallbackText = config.requiresBrowser
+              ? await fetchPricingPageWithBrowser(fallbackUrl, config.browserOptions)
+              : await fetchPricingPage(fallbackUrl);
+            const fallbackExtraction = await extractAvatarPricing(providerId, fallbackText);
+            let added = 0;
+            for (const m of fallbackExtraction.models) {
+              if (!extractedIds.has(m.modelId)) {
+                allModels.push(m);
+                extractedIds.add(m.modelId);
+                added++;
+              }
+            }
+            if (added > 0) {
+              console.log(`${config.displayName}: recovered ${added} new avatar model(s) from ${fallbackUrl}`);
+            }
+          } catch {
+            console.warn(`${config.displayName}: fallback URL ${fallbackUrl} failed`);
+          }
+        }
+        extraction = { ...extraction, models: allModels };
+      }
+
       if (extraction.models.length === 0) {
         errors.push(`${config.displayName}: no avatar models extracted`);
         await saveFetchRun(providerId, [], [], [], 0, 'no avatar models extracted');

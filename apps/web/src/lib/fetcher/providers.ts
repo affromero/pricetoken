@@ -35,8 +35,12 @@ export const VIDEO_PROVIDERS: Record<string, ProviderConfig> = {
     url: 'https://klingai.com/pricing',
     displayName: 'Kling',
     requiresBrowser: true,
-    fallbackUrls: ['https://klingai.com/global/developer'],
-    browserOptions: { waitMs: 8000, scrollToBottom: true },
+    fallbackUrls: [
+      'https://klingai.com/global/developer',
+      'https://docs.klingai.com/api/pricing',
+      'https://platform.klingai.com/pricing',
+    ],
+    browserOptions: { waitMs: 10000, scrollToBottom: true },
   },
   luma: {
     url: 'https://lumalabs.ai/api/pricing',
@@ -57,9 +61,21 @@ export const VIDEO_PROVIDERS: Record<string, ProviderConfig> = {
     fallbackUrls: ['https://www.volcengine.com/product/doubao'],
   },
   fal: {
-    url: 'https://fal.ai/pricing',
+    url: 'https://fal.ai/models?category=video-generation',
     displayName: 'FAL',
     requiresBrowser: true,
+    fallbackUrls: [
+      'https://fal.ai/models/fal-ai/kling-video/v3/standard/text-to-video',
+      'https://fal.ai/models/fal-ai/kling-video/o3/standard/image-to-video',
+      'https://fal.ai/models/fal-ai/kling-video/v2.5-turbo/pro/text-to-video',
+      'https://fal.ai/models/fal-ai/sora-2/text-to-video',
+      'https://fal.ai/models/fal-ai/sora-2/text-to-video/pro',
+      'https://fal.ai/models/fal-ai/veo3',
+      'https://fal.ai/models/fal-ai/cosmos-predict-2.5/text-to-video',
+      'https://fal.ai/models/fal-ai/ltx-2.3/text-to-video',
+      'https://fal.ai/models/fal-ai/ovi',
+      'https://fal.ai/models/fal-ai/wan/v2.2-a14b/text-to-video',
+    ],
     browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
   ltx: {

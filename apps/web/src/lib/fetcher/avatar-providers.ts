@@ -8,10 +8,13 @@ export const AVATAR_PROVIDERS: Record<string, ProviderConfig> = {
     fallbackUrls: ['https://help.heygen.com/en/articles/10060327-heygen-api-pricing-explained'],
   },
   fal: {
-    url: 'https://fal.ai/pricing',
+    url: 'https://fal.ai/models?category=avatar',
     displayName: 'FAL',
     requiresBrowser: true,
-    fallbackUrls: ['https://fal.ai/models?category=avatar'],
+    fallbackUrls: [
+      'https://fal.ai/models/fal-ai/heygen/avatar4/image-to-video',
+      'https://fal.ai/models/fal-ai/heygen/avatar4/digital-twin',
+    ],
     browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
 };
