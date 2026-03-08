@@ -51,7 +51,7 @@ export async function runVideoFetch(): Promise<VideoFetchResult> {
 
       console.log(`Fetching video pricing for ${config.displayName}...`);
       const pageText = config.requiresBrowser
-        ? await fetchPricingPageWithBrowser(config.url)
+        ? await fetchPricingPageWithBrowser(config.url, config.browserOptions)
         : await fetchPricingPage(config.url);
 
       console.log(`Extracting video pricing for ${config.displayName}...`);
@@ -67,7 +67,7 @@ export async function runVideoFetch(): Promise<VideoFetchResult> {
           try {
             console.log(`${config.displayName}: trying fallback URL ${fallbackUrl}...`);
             const fallbackText = config.requiresBrowser
-              ? await fetchPricingPageWithBrowser(fallbackUrl)
+              ? await fetchPricingPageWithBrowser(fallbackUrl, config.browserOptions)
               : await fetchPricingPage(fallbackUrl);
             extraction = await extractVideoPricing(providerId, fallbackText);
             if (extraction.models.length > 0) {

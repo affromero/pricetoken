@@ -38,7 +38,7 @@ export async function runAvatarFetch(): Promise<AvatarFetchResult> {
     try {
       console.log(`Fetching avatar pricing for ${config.displayName}...`);
       const pageText = config.requiresBrowser
-        ? await fetchPricingPageWithBrowser(config.url)
+        ? await fetchPricingPageWithBrowser(config.url, config.browserOptions)
         : await fetchPricingPage(config.url);
 
       console.log(`Extracting avatar pricing for ${config.displayName}...`);

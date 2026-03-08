@@ -5,8 +5,11 @@ vi.mock('puppeteer-core', () => {
   const mockPage = {
     setUserAgent: vi.fn(),
     setExtraHTTPHeaders: vi.fn(),
+    setViewport: vi.fn(),
     goto: vi.fn(),
     content: vi.fn().mockResolvedValue('<html><body><p>Model pricing $5.00</p></body></html>'),
+    waitForSelector: vi.fn(),
+    evaluate: vi.fn().mockResolvedValue(undefined),
   };
   const mockBrowser = {
     newPage: vi.fn().mockResolvedValue(mockPage),
@@ -41,8 +44,10 @@ describe('fetchPricingPage', () => {
 });
 
 describe('fetchPricingPageWithBrowser', () => {
+  const noWait = { waitMs: 0 };
+
   it('launches browser, navigates, and returns stripped HTML', async () => {
-    const result = await fetchPricingPageWithBrowser('https://example.com/pricing');
+    const result = await fetchPricingPageWithBrowser('https://example.com/pricing', noWait);
 
     const puppeteer = await import('puppeteer-core');
     expect(puppeteer.launch).toHaveBeenCalledWith(
@@ -51,13 +56,49 @@ describe('fetchPricingPageWithBrowser', () => {
     expect(result).toContain('Model pricing $5.00');
   });
 
+  it('sets viewport to 1280x800', async () => {
+    await fetchPricingPageWithBrowser('https://example.com/pricing', noWait);
+
+    const puppeteer = await import('puppeteer-core');
+    const browser = await puppeteer.launch({} as never);
+    const page = await browser.newPage();
+    expect(page.setViewport).toHaveBeenCalledWith({ width: 1280, height: 800 });
+  });
+
+  it('calls waitForSelector when provided', async () => {
+    await fetchPricingPageWithBrowser('https://example.com/pricing', {
+      ...noWait,
+      waitForSelector: '[data-pricing]',
+    });
+
+    const puppeteer = await import('puppeteer-core');
+    const browser = await puppeteer.launch({} as never);
+    const page = await browser.newPage();
+    expect(page.waitForSelector).toHaveBeenCalledWith('[data-pricing]', { timeout: 15_000 });
+  });
+
+  it('calls evaluate for scroll when scrollToBottom is true', async () => {
+    await fetchPricingPageWithBrowser('https://example.com/pricing', {
+      ...noWait,
+      scrollToBottom: true,
+    });
+
+    const puppeteer = await import('puppeteer-core');
+    const browser = await puppeteer.launch({} as never);
+    const page = await browser.newPage();
+    expect(page.evaluate).toHaveBeenCalled();
+  });
+
   it('closes browser even if navigation fails', async () => {
     const puppeteer = await import('puppeteer-core');
     const mockPage = {
       setUserAgent: vi.fn(),
       setExtraHTTPHeaders: vi.fn(),
+      setViewport: vi.fn(),
       goto: vi.fn().mockRejectedValue(new Error('timeout')),
       content: vi.fn(),
+      waitForSelector: vi.fn(),
+      evaluate: vi.fn(),
     };
     const mockBrowser = {
       newPage: vi.fn().mockResolvedValue(mockPage),
@@ -65,7 +106,7 @@ describe('fetchPricingPageWithBrowser', () => {
     };
     vi.mocked(puppeteer.launch).mockResolvedValueOnce(mockBrowser as never);
 
-    await expect(fetchPricingPageWithBrowser('https://example.com')).rejects.toThrow('timeout');
+    await expect(fetchPricingPageWithBrowser('https://example.com', noWait)).rejects.toThrow('timeout');
     expect(mockBrowser.close).toHaveBeenCalled();
   });
 });

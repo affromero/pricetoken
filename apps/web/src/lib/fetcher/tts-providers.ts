@@ -27,12 +27,14 @@ export const TTS_PROVIDERS: Record<string, ProviderConfig> = {
     displayName: 'ElevenLabs',
     requiresBrowser: true,
     fallbackUrls: ['https://elevenlabs.io/pricing/api', 'https://elevenlabs.io/docs/guides/overview/pricing'],
+    browserOptions: { waitMs: 10000, scrollToBottom: true, waitForSelector: '[class*=price], [class*=pricing], [data-testid*=price]' },
   },
   playht: {
     url: 'https://play.ht/pricing/',
     displayName: 'PlayHT',
     requiresBrowser: true,
     fallbackUrls: ['https://docs.play.ht/reference/pricing', 'https://play.ht/studio/pricing'],
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
   deepgram: {
     url: 'https://deepgram.com/pricing',
@@ -44,6 +46,7 @@ export const TTS_PROVIDERS: Record<string, ProviderConfig> = {
     displayName: 'FAL',
     requiresBrowser: true,
     fallbackUrls: ['https://fal.ai/models?category=text-to-speech'],
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
   cartesia: {
     url: 'https://cartesia.ai/pricing',

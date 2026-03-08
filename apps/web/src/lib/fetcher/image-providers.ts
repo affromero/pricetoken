@@ -1,8 +1,11 @@
+import type { BrowserFetchOptions } from './providers';
+
 export interface ImageProviderConfig {
   url: string;
   displayName: string;
   fallbackUrls?: string[];
   requiresBrowser?: boolean;
+  browserOptions?: BrowserFetchOptions;
 }
 
 export const IMAGE_PRICING_PROVIDERS: Record<string, ImageProviderConfig> = {
@@ -38,6 +41,7 @@ export const IMAGE_PRICING_PROVIDERS: Record<string, ImageProviderConfig> = {
     displayName: 'fal.ai',
     requiresBrowser: true,
     fallbackUrls: ['https://fal.ai/models?category=image-generation'],
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
   ideogram: {
     url: 'https://docs.ideogram.ai/plans-and-pricing/available-plans',

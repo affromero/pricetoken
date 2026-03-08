@@ -32,6 +32,7 @@ export const STT_PROVIDERS: Record<string, ProviderConfig> = {
     displayName: 'ElevenLabs',
     requiresBrowser: true,
     fallbackUrls: ['https://elevenlabs.io/pricing/api', 'https://elevenlabs.io/docs/guides/overview/pricing'],
+    browserOptions: { waitMs: 10000, scrollToBottom: true, waitForSelector: '[class*=price], [class*=pricing], [data-testid*=price]' },
   },
   cartesia: {
     url: 'https://cartesia.ai/pricing',

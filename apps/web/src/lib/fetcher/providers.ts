@@ -1,8 +1,18 @@
+export interface BrowserFetchOptions {
+  /** Post-load wait in ms (default: 5000) */
+  waitMs?: number;
+  /** Scroll to bottom to trigger lazy-loaded content (default: false) */
+  scrollToBottom?: boolean;
+  /** CSS selector to wait for before extracting (e.g. for React SPAs) */
+  waitForSelector?: string;
+}
+
 export interface ProviderConfig {
   url: string;
   displayName: string;
   fallbackUrls?: string[];
   requiresBrowser?: boolean;
+  browserOptions?: BrowserFetchOptions;
 }
 
 export const VIDEO_PROVIDERS: Record<string, ProviderConfig> = {
@@ -20,16 +30,32 @@ export const VIDEO_PROVIDERS: Record<string, ProviderConfig> = {
     displayName: 'Kling',
     requiresBrowser: true,
     fallbackUrls: ['https://klingai.com/global/developer'],
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
   luma: {
     url: 'https://lumalabs.ai/api/pricing',
     displayName: 'Luma',
     fallbackUrls: ['https://docs.lumalabs.ai/docs/api/pricing'],
   },
-  minimax: { url: 'https://platform.minimax.io/docs/guides/pricing-paygo', displayName: 'MiniMax (Hailuo)', requiresBrowser: true },
+  minimax: {
+    url: 'https://platform.minimax.io/docs/guides/pricing-paygo',
+    displayName: 'MiniMax (Hailuo)',
+    requiresBrowser: true,
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
+  },
   seedance: { url: 'https://www.byteplus.com/en/product/seedance', displayName: 'Seedance (ByteDance)', requiresBrowser: true },
-  fal: { url: 'https://fal.ai/pricing', displayName: 'FAL', requiresBrowser: true },
-  ltx: { url: 'https://docs.ltx.video/pricing', displayName: 'LTX (Lightricks)', requiresBrowser: true },
+  fal: {
+    url: 'https://fal.ai/pricing',
+    displayName: 'FAL',
+    requiresBrowser: true,
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
+  },
+  ltx: {
+    url: 'https://docs.ltx.video/pricing',
+    displayName: 'LTX (Lightricks)',
+    requiresBrowser: true,
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
+  },
 };
 
 export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {

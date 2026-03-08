@@ -1,6 +1,7 @@
 import { fetchPricingPage, fetchPricingPageWithBrowser } from './scraper';
 import { extractPricing } from './extractor';
 import type { ExtractedModel } from './extractor';
+import type { BrowserFetchOptions } from './providers';
 
 export interface FallbackResult {
   models: ExtractedModel[];
@@ -11,14 +12,15 @@ export async function fetchFallbackPricing(
   providerId: string,
   fallbackUrls: string[],
   missingModelIds: string[],
-  requiresBrowser?: boolean
+  requiresBrowser?: boolean,
+  browserOptions?: BrowserFetchOptions
 ): Promise<FallbackResult[]> {
   const results: FallbackResult[] = [];
 
   for (const url of fallbackUrls) {
     try {
       const pageText = requiresBrowser
-        ? await fetchPricingPageWithBrowser(url)
+        ? await fetchPricingPageWithBrowser(url, browserOptions)
         : await fetchPricingPage(url);
       const extraction = await extractPricing(providerId, pageText);
       const matched = extraction.models.filter((m) =>

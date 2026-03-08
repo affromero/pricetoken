@@ -38,7 +38,7 @@ export async function runSttFetch(): Promise<SttFetchResult> {
     try {
       console.log(`Fetching STT pricing for ${config.displayName}...`);
       const pageText = config.requiresBrowser
-        ? await fetchPricingPageWithBrowser(config.url)
+        ? await fetchPricingPageWithBrowser(config.url, config.browserOptions)
         : await fetchPricingPage(config.url);
 
       console.log(`Extracting STT pricing for ${config.displayName}...`);
@@ -54,7 +54,7 @@ export async function runSttFetch(): Promise<SttFetchResult> {
           try {
             console.log(`${config.displayName}: trying fallback URL ${fallbackUrl}...`);
             const fallbackText = config.requiresBrowser
-              ? await fetchPricingPageWithBrowser(fallbackUrl)
+              ? await fetchPricingPageWithBrowser(fallbackUrl, config.browserOptions)
               : await fetchPricingPage(fallbackUrl);
             extraction = await extractSttPricing(providerId, fallbackText);
             if (extraction.models.length > 0) {
