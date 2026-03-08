@@ -41,6 +41,7 @@ export const IMAGE_PRICING_PROVIDERS: Record<string, ImageProviderConfig> = {
     displayName: 'fal.ai',
     requiresBrowser: true,
     fallbackUrls: ['https://fal.ai/models?category=image-generation'],
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
   ideogram: {
     url: 'https://docs.ideogram.ai/plans-and-pricing/available-plans',
