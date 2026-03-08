@@ -32,11 +32,14 @@ export const STT_PROVIDERS: Record<string, ProviderConfig> = {
     browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
   elevenlabs: {
-    url: 'https://elevenlabs.io/pricing',
+    url: 'https://elevenlabs.io/pricing/api',
     displayName: 'ElevenLabs',
     requiresBrowser: true,
-    fallbackUrls: ['https://elevenlabs.io/pricing/api'],
-    browserOptions: { waitMs: 15000, scrollToBottom: true, waitForSelector: 'table, [class*=Plan], [class*=plan], [class*=tier], [role=table]' },
+    fallbackUrls: [
+      'https://elevenlabs.io/pricing',
+      'https://elevenlabs.io/docs/overview/models',
+    ],
+    browserOptions: { waitMs: 20000, scrollToBottom: true, waitForSelector: '[class*=price], [class*=Price], [class*=cost], [class*=plan], [class*=Plan], [class*=tier], table, [role=table], [data-testid*=price]' },
   },
   cartesia: {
     url: 'https://cartesia.ai/pricing',

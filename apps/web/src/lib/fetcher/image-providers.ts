@@ -37,10 +37,21 @@ export const IMAGE_PRICING_PROVIDERS: Record<string, ImageProviderConfig> = {
     fallbackUrls: ['https://www.volcengine.com/product/doubao'],
   },
   fal: {
-    url: 'https://fal.ai/pricing',
+    url: 'https://fal.ai/models?category=image-generation',
     displayName: 'fal.ai',
     requiresBrowser: true,
-    fallbackUrls: ['https://fal.ai/models?category=image-generation'],
+    fallbackUrls: [
+      'https://fal.ai/models/fal-ai/flux-pro',
+      'https://fal.ai/models/fal-ai/flux-schnell',
+      'https://fal.ai/models/fal-ai/flux-dev',
+      'https://fal.ai/models/fal-ai/flux-2-pro',
+      'https://fal.ai/models/fal-ai/flux-2-flex',
+      'https://fal.ai/models/fal-ai/recraft-v3',
+      'https://fal.ai/models/fal-ai/ideogram/v2',
+      'https://fal.ai/models/fal-ai/ideogram/v3',
+      'https://fal.ai/models/fal-ai/stable-diffusion-v3-medium',
+      'https://fal.ai/models/fal-ai/flux-kontext/pro',
+    ],
     browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
   ideogram: {
