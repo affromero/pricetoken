@@ -55,7 +55,7 @@ export async function runPricingFetch(): Promise<FetchResult> {
 
       console.log(`Fetching pricing for ${config.displayName}...`);
       const pageText = config.requiresBrowser
-        ? await fetchPricingPageWithBrowser(config.url)
+        ? await fetchPricingPageWithBrowser(config.url, config.browserOptions)
         : await fetchPricingPage(config.url);
 
       console.log(`Extracting pricing for ${config.displayName}...`);
@@ -204,7 +204,7 @@ export async function runPricingFetch(): Promise<FetchResult> {
 
       if (missing.length > 0 && config.fallbackUrls?.length) {
         console.log(`Attempting fallback for ${missing.length} missing ${config.displayName} model(s)...`);
-        const fallbackResults = await fetchFallbackPricing(providerId, config.fallbackUrls, missing, config.requiresBrowser);
+        const fallbackResults = await fetchFallbackPricing(providerId, config.fallbackUrls, missing, config.requiresBrowser, config.browserOptions);
         for (const result of fallbackResults) {
           const fallbackSaved = await saveSnapshots(providerId, result.models, 'fetched', 'low');
           totalModels += fallbackSaved;
