@@ -37,7 +37,7 @@ export async function runAvatarFetch(): Promise<AvatarFetchResult> {
   for (const [providerId, config] of Object.entries(AVATAR_PROVIDERS)) {
     try {
       console.log(`Fetching avatar pricing for ${config.displayName}...`);
-      const pageText = config.requiresBrowser
+      let pageText = config.requiresBrowser
         ? await fetchPricingPageWithBrowser(config.url, config.browserOptions)
         : await fetchPricingPage(config.url);
 
@@ -70,6 +70,7 @@ export async function runAvatarFetch(): Promise<AvatarFetchResult> {
             if (added > 0) {
               console.log(`${config.displayName}: recovered ${added} new avatar model(s) from ${fallbackUrl}`);
             }
+            pageText += '\n\n---\n\n' + fallbackText;
           } catch {
             console.warn(`${config.displayName}: fallback URL ${fallbackUrl} failed`);
           }
