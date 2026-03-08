@@ -23,16 +23,16 @@ export const TTS_PROVIDERS: Record<string, ProviderConfig> = {
     fallbackUrls: ['https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech'],
   },
   elevenlabs: {
-    url: 'https://elevenlabs.io/pricing/api',
+    url: 'https://elevenlabs.io/pricing',
     displayName: 'ElevenLabs',
     requiresBrowser: true,
-    fallbackUrls: ['https://elevenlabs.io/docs/overview/pricing'],
+    fallbackUrls: ['https://elevenlabs.io/pricing/api', 'https://elevenlabs.io/docs/guides/overview/pricing'],
   },
   playht: {
     url: 'https://play.ht/pricing/',
     displayName: 'PlayHT',
     requiresBrowser: true,
-    fallbackUrls: ['https://docs.play.ht/reference/pricing'],
+    fallbackUrls: ['https://docs.play.ht/reference/pricing', 'https://play.ht/studio/pricing'],
   },
   deepgram: {
     url: 'https://deepgram.com/pricing',

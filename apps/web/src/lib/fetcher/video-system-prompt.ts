@@ -31,18 +31,18 @@ CRITICAL conversion rules — show your work mentally before outputting:
    Only use this if no API/pay-as-you-go pricing is available.
 
 IMPORTANT — use these exact modelId values when extracting:
-- Runway: runway-gen4-720p, runway-gen4-turbo-720p
+- Runway: runway-gen4-720p, runway-gen4-turbo-720p, runway-gen4.5-720p, runway-gen3alpha-720p
 - Sora: sora2-720p, sora2-pro-720p, sora2-pro-1080p
 - Veo: veo-3.1-1080p, veo-3.1-4k
-- Kling: kling-3.0-1080p
-- Luma: luma-ray-3.14-1080p
+- Kling: kling-3.0-1080p, kling-v3-omni-1080p, kling-video-o1-1080p, kling-v3-1080p
+- Luma: luma-ray2-720p, luma-ray2-1080p, luma-ray-flash2-720p, luma-ray-flash2-1080p
 - Pika: pika-2.5-1080p
 - MiniMax: minimax-hailuo02-768p, minimax-hailuo02-pro-1080p
-- Seedance: seedance-2.0-1080p
+- Seedance: seedance-2.0-1080p, seedance-1.5-pro-720p, seedance-1.5-pro-720p-audio, seedance-1.5-pro-480p, seedance-1.5-pro-480p-audio
 - LTX: ltx-2.3-fast-1080p, ltx-2.3-pro-1080p, ltx-2.3-fast-4k, ltx-2.3-pro-4k
-- FAL: fal-veo3-1080p, fal-veo3-fast-1080p, fal-kling3-1080p, fal-wan2.5-480p
+- FAL: fal-veo3-1080p, fal-veo3-fast-1080p, fal-kling3-1080p, fal-wan2.5-480p, fal-ovi-720p
 
-Map display names to these IDs. For example: "Gen-4" → "runway-gen4-720p", "Hailuo 02" → "minimax-hailuo02-768p", "Ray 3.14" → "luma-ray-3.14-1080p".
+Map display names to these IDs. For example: "Gen-4" → "runway-gen4-720p", "Hailuo 02" → "minimax-hailuo02-768p", "Ray 2" → "luma-ray2-720p", "Ray Flash 2" → "luma-ray-flash2-720p", "Seedance 1.5 Pro" → "seedance-1.5-pro-720p".
 If you find a model with a resolution or tier NOT in this list, create a new entry following the pattern: {provider}-{model}-{resolution} (e.g. "runway-gen4-1080p").
 
 Additional rules:

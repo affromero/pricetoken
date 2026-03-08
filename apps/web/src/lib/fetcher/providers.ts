@@ -10,7 +10,7 @@ export const VIDEO_PROVIDERS: Record<string, ProviderConfig> = {
     url: 'https://runwayml.com/pricing',
     displayName: 'Runway',
     requiresBrowser: true,
-    fallbackUrls: ['https://docs.runwayml.com/reference/pricing'],
+    fallbackUrls: ['https://help.runwayml.com/hc/en-us/articles/credits-pricing'],
   },
   sora: { url: 'https://developers.openai.com/api/docs/pricing', displayName: 'Sora (OpenAI)' },
   veo: { url: 'https://ai.google.dev/gemini-api/docs/pricing', displayName: 'Google Veo' },
@@ -19,7 +19,7 @@ export const VIDEO_PROVIDERS: Record<string, ProviderConfig> = {
     url: 'https://klingai.com/pricing',
     displayName: 'Kling',
     requiresBrowser: true,
-    fallbackUrls: ['https://platform.klingai.com/docs/api/pricing'],
+    fallbackUrls: ['https://klingai.com/global/developer'],
   },
   luma: {
     url: 'https://lumalabs.ai/api/pricing',
