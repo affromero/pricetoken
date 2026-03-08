@@ -49,8 +49,11 @@ export function shouldApprove(
   // No agents available — cannot verify, flag for review
   if (totalAgents === 0) return false;
 
-  // Price change requires unanimous agent approval to confirm it's legitimate
-  if (hasPriceChangeFlag) return approvals === totalAgents && rejections === 0;
+  // Price change requires strong majority (2/3) to confirm it's legitimate
+  if (hasPriceChangeFlag) {
+    if (totalAgents < 3) return rejections === 0 && approvals === totalAgents;
+    return approvals >= Math.ceil((totalAgents * 2) / 3) && approvals > rejections;
+  }
 
   // Require all remaining agents to agree if fewer than 3
   if (totalAgents < 3) return rejections === 0 && approvals === totalAgents;

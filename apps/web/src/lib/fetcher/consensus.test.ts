@@ -45,8 +45,12 @@ describe('shouldApprove', () => {
     expect(shouldApprove(3, 0, 3, true)).toBe(true);
   });
 
-  it('rejects when price_change flag is present without unanimous approval', () => {
-    expect(shouldApprove(2, 1, 3, true)).toBe(false);
+  it('approves when price_change flag is present with 2/3 majority', () => {
+    expect(shouldApprove(2, 1, 3, true)).toBe(true);
+  });
+
+  it('rejects when price_change flag is present with minority approval', () => {
+    expect(shouldApprove(1, 2, 3, true)).toBe(false);
   });
 
   it('rejects when price_change flag is present with no agents', () => {
@@ -114,11 +118,27 @@ describe('buildConsensus', () => {
     expect(result.approved[0]!.priorFlags).toHaveLength(1);
   });
 
-  it('flags models with price_change flag when agents disagree', () => {
+  it('approves models with price_change flag when 2/3 agents agree', () => {
     const models = [makeModel('gpt-4.1')];
     const agents = [
       makeAgent('anthropic', [{ modelId: 'gpt-4.1', approved: true }]),
       makeAgent('openai', [{ modelId: 'gpt-4.1', approved: true }]),
+      makeAgent('google', [{ modelId: 'gpt-4.1', approved: false }]),
+    ];
+    const flags: PriorConsistencyFlag[] = [
+      { modelId: 'gpt-4.1', type: 'price_change', detail: 'Price changed >50%' },
+    ];
+
+    const result = buildConsensus(models, agents, flags);
+    expect(result.approved).toHaveLength(1);
+    expect(result.flagged).toHaveLength(0);
+  });
+
+  it('flags models with price_change flag when majority rejects', () => {
+    const models = [makeModel('gpt-4.1')];
+    const agents = [
+      makeAgent('anthropic', [{ modelId: 'gpt-4.1', approved: true }]),
+      makeAgent('openai', [{ modelId: 'gpt-4.1', approved: false }]),
       makeAgent('google', [{ modelId: 'gpt-4.1', approved: false }]),
     ];
     const flags: PriorConsistencyFlag[] = [
