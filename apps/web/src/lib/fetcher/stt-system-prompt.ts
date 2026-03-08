@@ -26,6 +26,18 @@ CRITICAL conversion rules — show your work mentally before outputting:
 4. Subscription/credit conversions: total monthly credits × cost-per-credit, divided by total minutes.
    Only use this if no API/pay-as-you-go pricing is available.
 
+IMPORTANT — use these exact modelId values when extracting:
+- OpenAI: openai-whisper-1, openai-gpt-4o-transcribe, openai-gpt-4o-mini-transcribe, openai-gpt-4o-transcribe-diarize
+- Deepgram: deepgram-nova-3, deepgram-nova-3-multilingual-streaming, deepgram-nova-3-multilingual-prerecorded, deepgram-nova-3-multilingual-batch, deepgram-nova-3-monolingual-streaming, deepgram-nova-3-monolingual-prerecorded, deepgram-nova-3-monolingual-batch, deepgram-nova-2-streaming, deepgram-nova-2-prerecorded, deepgram-nova-2-batch, deepgram-enhanced-streaming, deepgram-enhanced-prerecorded, deepgram-enhanced-batch, deepgram-base-streaming, deepgram-base-prerecorded, deepgram-base-batch, deepgram-flux-prerecorded, deepgram-flux-batch
+- AssemblyAI: assemblyai-best, assemblyai-nano, assemblyai-universal-2, assemblyai-conformer-2, assemblyai-slam-1, assemblyai-best-async
+- Google Cloud: google-cloud-stt-standard, google-cloud-stt-enhanced, google-cloud-stt-v2-standard-tier2, google-cloud-stt-v2-standard-tier3, google-cloud-stt-v2-standard-tier4, google-cloud-stt-v2-dynamic-batch, google-cloud-stt-v1-standard-logged, google-cloud-stt-v1-standard-unlogged, google-cloud-stt-v1-medical-dictation, google-cloud-stt-v1-medical-conversation
+- Microsoft Azure: azure-stt-standard, azure-stt-custom, azure-stt-realtime, azure-stt-batch
+- ElevenLabs: elevenlabs-scribe-v2, elevenlabs-scribe-v2-realtime, elevenlabs-scribe-v1
+- Cartesia: cartesia-ink, cartesia-ink-whisper-standard
+
+Map display names to these IDs. For example: "Whisper" → "openai-whisper-1", "Nova-3" → "deepgram-nova-3", "Scribe v2" → "elevenlabs-scribe-v2".
+If you find a model NOT in this list, create a new entry following the pattern: {provider}-{model}-{variant}.
+
 Additional rules:
 - Each model tier should be a separate entry (batch vs streaming vs real-time).
 - Only include speech-to-text/transcription models. Skip text-to-speech, translation-only, and non-STT products.

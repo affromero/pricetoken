@@ -27,6 +27,20 @@ CRITICAL conversion rules — show your work mentally before outputting:
 5. Subscription/credit conversions: total monthly credits × cost-per-credit, divided by total characters.
    Only use this if no API/pay-as-you-go pricing is available.
 
+IMPORTANT — use these exact modelId values when extracting:
+- OpenAI: openai-tts-standard, openai-tts-hd, openai-tts-realtime
+- Google Cloud: google-cloud-tts-standard, google-cloud-tts-wavenet, google-cloud-tts-neural2, google-cloud-polyglot, google-cloud-tts-studio, google-cloud-tts-chirp3, google-cloud-tts-journey
+- Amazon Polly: amazon-polly-standard, amazon-polly-neural, amazon-polly-long-form, amazon-polly-generative, amazon-polly-neural-realtime, amazon-polly-generative-realtime
+- Microsoft Azure: azure-neural-standard, azure-tts-hd-v2, azure-custom-neural-professional, azure-custom-neural-professional-hd, azure-personal-voice
+- ElevenLabs: elevenlabs-v3, elevenlabs-multilingual-v2, elevenlabs-flash, elevenlabs-standard
+- PlayHT: playht-2, playht-3-mini
+- Deepgram: deepgram-aura-1, deepgram-aura-2, deepgram-aura-2-realtime, deepgram-aura-asteria
+- FAL: fal-dia-tts, fal-kokoro, fal-f5-tts, fal-orpheus-tts, fal-chatterboxhd
+- Cartesia: cartesia-sonic-3, cartesia-sonic-turbo
+
+Map display names to these IDs. For example: "TTS-1" → "openai-tts-standard", "WaveNet" → "google-cloud-tts-wavenet", "Multilingual v2" → "elevenlabs-multilingual-v2".
+If you find a model NOT in this list, create a new entry following the pattern: {provider}-{model}-{variant}.
+
 Additional rules:
 - Each voice type/tier should be a separate entry (standard vs neural vs wavenet vs HD).
 - Only include text-to-speech models. Skip speech-to-text, transcription, and non-TTS products.

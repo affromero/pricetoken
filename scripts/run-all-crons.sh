@@ -6,6 +6,10 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+LOG_DIR="$PROJECT_DIR/logs"
+
+# Ensure logs directory exists (crontab redirects output here)
+mkdir -p "$LOG_DIR"
 
 # Load CRON_SECRET from .env
 if [ -f "$PROJECT_DIR/.env" ]; then
@@ -51,11 +55,11 @@ run_cron() {
 
 log "=== Starting sequential pricing fetch ==="
 
-run_cron "Text pricing"  "/api/cron/fetch-pricing"       600
-run_cron "Image pricing" "/api/cron/fetch-image-pricing"  600
-run_cron "Video pricing"  "/api/cron/fetch-video-pricing"  600
+run_cron "Text pricing"  "/api/cron/fetch-pricing"       900
+run_cron "Image pricing" "/api/cron/fetch-image-pricing"  900
+run_cron "Video pricing"  "/api/cron/fetch-video-pricing"  1200
 run_cron "Avatar pricing" "/api/cron/fetch-avatar-pricing" 600
-run_cron "TTS pricing"    "/api/cron/fetch-tts-pricing"    600
-run_cron "STT pricing"    "/api/cron/fetch-stt-pricing"    600
+run_cron "TTS pricing"    "/api/cron/fetch-tts-pricing"    900
+run_cron "STT pricing"    "/api/cron/fetch-stt-pricing"    900
 
 log "=== All crons complete ==="

@@ -28,7 +28,7 @@ IMPORTANT — use these exact modelId values when extracting:
 - Bytedance: seedream-4.5
 - fal.ai: fal-flux-1-schnell, fal-flux-1-dev, fal-flux-1-pro, fal-flux-2-pro, fal-flux-2-flex, fal-flux-1-kontext-pro, fal-recraft-v3, fal-recraft-v4-pro, fal-ideogram-v3, fal-nano-banana-2, fal-nano-banana-pro, fal-qwen-image-2-pro
 - Ideogram: ideogram-v3, ideogram-v3-turbo
-- xAI: aurora-grok-2-image
+- xAI: grok-imagine-image-pro, grok-imagine-image
 
 Map display names to these IDs. For example: "DALL-E 3 Standard" → "dall-e-3-standard-1024", "FLUX 1.1 Pro" → "flux-1.1-pro", "SD 3.5 Large" → "sd-3.5-large", "Recraft V4" → "recraft-v4-raster".
 If you find a model NOT in this list, create a new entry following the naming pattern above.

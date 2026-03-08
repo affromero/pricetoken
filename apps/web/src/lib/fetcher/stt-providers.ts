@@ -28,10 +28,10 @@ export const STT_PROVIDERS: Record<string, ProviderConfig> = {
     fallbackUrls: ['https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-to-text'],
   },
   elevenlabs: {
-    url: 'https://elevenlabs.io/pricing/api',
+    url: 'https://elevenlabs.io/pricing',
     displayName: 'ElevenLabs',
     requiresBrowser: true,
-    fallbackUrls: ['https://elevenlabs.io/docs/overview/pricing'],
+    fallbackUrls: ['https://elevenlabs.io/pricing/api', 'https://elevenlabs.io/docs/guides/overview/pricing'],
   },
   cartesia: {
     url: 'https://cartesia.ai/pricing',
