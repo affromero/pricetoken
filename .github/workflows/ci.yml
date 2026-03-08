@@ -19,6 +19,8 @@ jobs:
         uses: dopplerhq/cli-action@v3
       - run: npm ci
       - run: npx prisma generate --schema=apps/web/prisma/schema.prisma
+      - name: Validate registry and generated static files
+        run: npx tsx scripts/generate-static.ts --check
       - run: npm run build --workspace=pricetoken
       - run: npm run lint
       - run: npm run typecheck
