@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.11.0] - 2026-03-08
+
+### Added
+- **YAML model registry** — single source of truth for all pricing data across 6 modalities (`registry/*.yaml`), with `generate-static` script producing both TS and Python SDK static files
+- **Self-hosted analytics system** — SQLite-based tracking with bot detection, 15+ dashboard chart/table components, middleware integration, and cron aggregation
+- **Enhanced browser scraper** — scroll support, `waitForSelector`, longer waits for JS-heavy pricing pages, and `browserOptions` threaded through all fetch pipelines
+- Per-model FAL fallback URLs with accumulative fallback logic across all models
+- Regression detection in `update-static` script
+- Video corrections pipeline with DB-first pricing flow
+- FAL HeyGen Avatar4 models
+- GenAI prices comparison script with coverage analysis
+- CI validation for registry YAML and generated static files
+- CONTRIBUTING.md, GitHub issue form, and PR template
+
+### Fixed
+- `pageText` limit increased to 100K and relaxed consensus threshold for price changes
+- Combined page text now passed to cross-verification for more accurate extraction
+- Complete model ID coverage in all system prompts (video, image, text)
+- Provider config URLs and extraction prompts updated for reliable scraping
+- Dirty working tree reset on server before `git pull` during deploy
+
+### Changed
+- `update-static.ts` refactored to write directly to `registry/*.yaml` instead of static files
+- All package versions unified to single version track (web, npm SDK, Python SDK)
+
 ## [0.10.2] - 2026-03-07
 
 ### Added
