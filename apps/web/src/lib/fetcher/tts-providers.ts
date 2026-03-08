@@ -21,13 +21,14 @@ export const TTS_PROVIDERS: Record<string, ProviderConfig> = {
     displayName: 'Microsoft Azure',
     requiresBrowser: true,
     fallbackUrls: ['https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech'],
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
   elevenlabs: {
     url: 'https://elevenlabs.io/pricing',
     displayName: 'ElevenLabs',
     requiresBrowser: true,
-    fallbackUrls: ['https://elevenlabs.io/pricing/api', 'https://elevenlabs.io/docs/guides/overview/pricing'],
-    browserOptions: { waitMs: 10000, scrollToBottom: true, waitForSelector: '[class*=price], [class*=pricing], [data-testid*=price]' },
+    fallbackUrls: ['https://elevenlabs.io/pricing/api'],
+    browserOptions: { waitMs: 15000, scrollToBottom: true, waitForSelector: 'table, [class*=Plan], [class*=plan], [class*=tier], [role=table]' },
   },
   playht: {
     url: 'https://play.ht/pricing/',
@@ -40,6 +41,7 @@ export const TTS_PROVIDERS: Record<string, ProviderConfig> = {
     url: 'https://deepgram.com/pricing',
     displayName: 'Deepgram',
     requiresBrowser: true,
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
   fal: {
     url: 'https://fal.ai/pricing',
@@ -53,5 +55,6 @@ export const TTS_PROVIDERS: Record<string, ProviderConfig> = {
     displayName: 'Cartesia',
     requiresBrowser: true,
     fallbackUrls: ['https://docs.cartesia.ai/build-with-cartesia/pricing'],
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
 };

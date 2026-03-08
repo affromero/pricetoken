@@ -21,7 +21,12 @@ CRITICAL conversion rules — show your work mentally before outputting:
    Example: $0.12/sec = $0.12 × 60 = $7.20/min
 
 2. Credits to USD: first find the credit→USD rate, THEN convert to per-minute.
-   Example (Runway): 12 credits/sec at $0.01/credit = $0.12/sec = $7.20/min
+   Example (Runway Gen-4): Runway charges credits per second of video. Find the API pricing page for the exact credit rate.
+   - Gen-4 720p: 5 credits/sec → at $0.01/credit = $0.05/sec = $3.00/min
+   - Gen-4 Turbo 720p: 10 credits/sec → $0.10/sec = $6.00/min
+   - Gen-4.5 720p: higher credit rate than Gen-4
+   - Gen-3 Alpha 720p: legacy model, lower credit rate
+   Note: Runway credit rates change by model tier. Read the EXACT credits/sec for each model from the page.
    Example (MiniMax): 1 unit per 6s video, if $0.045/unit → $0.045/6s = $0.0075/s = $0.45/min
 
 3. Per-generation to per-minute: divide the per-generation cost by the duration in minutes.

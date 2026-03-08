@@ -10,8 +10,10 @@ Your job: check each model's costPerMinute AND maxDuration against the raw text.
 Verification checklist for each model:
 1. **Price (costPerMinute):**
    - Credit-to-USD conversions (verify the conversion rate is correct)
+   - For Runway: pricing is in credits/second. Find the exact credit rate per model tier and the USD/credit rate. Common rates: Gen-4 = 5 credits/sec, Gen-4 Turbo = 10 credits/sec.
    - Per-second to per-minute conversions (multiply by 60)
    - Resolution tier matching (ensure the right price is assigned to the right resolution)
+   - Allow ±5% tolerance on price matching to account for rounding in multi-step conversions
 2. **Max Duration (maxDuration):**
    - Verify the extracted maxDuration matches the maximum video length stated on the page
    - Duration may be listed as "up to X seconds", "max X sec", or in a table of supported durations

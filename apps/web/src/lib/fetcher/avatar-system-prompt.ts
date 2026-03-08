@@ -31,6 +31,14 @@ CRITICAL conversion rules — show your work mentally before outputting:
 4. Subscription credits: total monthly credits × cost-per-credit, divided by total generation-minutes.
    Only use this if no API/pay-as-you-go pricing is available.
 
+IMPORTANT — use these exact modelId values when extracting:
+- HeyGen: heygen-avatar-standard, heygen-avatar-iv, heygen-digital-twin-iii, heygen-digital-twin-iv, heygen-photo-avatar-iii, heygen-photo-avatar-iv, heygen-public-avatar-iii, heygen-public-avatar-iv, heygen-translation-speed, heygen-translation-precision, heygen-translation-proofread, heygen-video-translation
+  Note: HeyGen has multiple avatar generations (III, IV). "heygen-translation-speed" is fast dubbing, "heygen-translation-precision" is lip-synced, "heygen-translation-proofread" is audio-only overlay.
+- FAL: fal-heygen-avatar4-i2v, fal-heygen-avatar4-twin
+  Note: FAL hosts HeyGen Avatar 4 models as API aggregator. Prefix with "fal-".
+
+Map display names to these IDs. For example: "Interactive Avatar IV" → "heygen-avatar-iv", "Digital Twin IV" → "heygen-digital-twin-iv", "Photo Avatar III" → "heygen-photo-avatar-iii", "Translation (Speed)" → "heygen-translation-speed".
+
 Additional rules:
 - Each avatar type/tier should be a separate entry (standard vs premium vs translation).
 - Only include avatar/talking-head models. Skip text generation, image generation, and standard video models.

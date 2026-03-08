@@ -28,17 +28,22 @@ CRITICAL conversion rules — show your work mentally before outputting:
    Only use this if no API/pay-as-you-go pricing is available.
 
 IMPORTANT — use these exact modelId values when extracting:
-- OpenAI: openai-tts-standard, openai-tts-hd, openai-tts-realtime
-- Google Cloud: google-cloud-tts-standard, google-cloud-tts-wavenet, google-cloud-tts-neural2, google-cloud-polyglot, google-cloud-tts-studio, google-cloud-tts-chirp3, google-cloud-tts-journey
-- Amazon Polly: amazon-polly-standard, amazon-polly-neural, amazon-polly-long-form, amazon-polly-generative, amazon-polly-neural-realtime, amazon-polly-generative-realtime
-- Microsoft Azure: azure-neural-standard, azure-tts-hd-v2, azure-custom-neural-professional, azure-custom-neural-professional-hd, azure-personal-voice
+- OpenAI: openai-tts-standard, openai-tts-hd, openai-tts-realtime, openai-tts-1, openai-tts-1-hd
+  Note: "openai-tts-1" and "openai-tts-standard" are aliases (same model). "openai-tts-1-hd" and "openai-tts-hd" are aliases. Extract BOTH alias pairs using the same price.
+- Google Cloud: google-cloud-tts-standard, google-cloud-standard, google-cloud-tts-wavenet, google-cloud-wavenet, google-cloud-tts-neural2, google-cloud-neural2, google-cloud-polyglot, google-cloud-polyglot-preview, google-cloud-tts-studio, google-cloud-studio, google-cloud-tts-chirp3, google-cloud-chirp3-hd, google-cloud-tts-journey, google-cloud-instant-custom-voice
+  Note: For each Google Cloud voice type, create entries BOTH with and without the "tts-" prefix (e.g. "google-cloud-tts-standard" AND "google-cloud-standard") using the same price.
+- Amazon Polly: amazon-polly-standard, amazon-polly-neural, amazon-polly-long-form, amazon-polly-generative, amazon-polly-govcloud-standard, amazon-polly-govcloud-neural
+  Note: If GovCloud pricing is listed separately, create separate govcloud entries.
+- Microsoft Azure: azure-neural-standard, azure-tts-hd-v2, azure-tts-neural, azure-custom-neural-professional, azure-custom-neural-professional-hd, azure-personal-voice, azure-custom-deprecated, azure-standard-deprecated
+  Note: Include deprecated tiers if they appear on the page — mark with status "deprecated".
 - ElevenLabs: elevenlabs-v3, elevenlabs-multilingual-v2, elevenlabs-flash, elevenlabs-standard
 - PlayHT: playht-2, playht-3-mini
-- Deepgram: deepgram-aura-1, deepgram-aura-2, deepgram-aura-2-realtime, deepgram-aura-asteria
+- Deepgram: deepgram-aura-1, deepgram-aura-1-growth, deepgram-aura-1-payg, deepgram-aura-2, deepgram-aura-2-growth, deepgram-aura-2-payg, deepgram-aura-2-realtime, deepgram-aura-asteria
+  Note: Deepgram may list separate pricing for Growth vs Pay-as-you-go plans. Create separate entries for each.
 - FAL: fal-dia-tts, fal-kokoro, fal-f5-tts, fal-orpheus-tts, fal-chatterboxhd
 - Cartesia: cartesia-sonic-3, cartesia-sonic-turbo
 
-Map display names to these IDs. For example: "TTS-1" → "openai-tts-standard", "WaveNet" → "google-cloud-tts-wavenet", "Multilingual v2" → "elevenlabs-multilingual-v2".
+Map display names to these IDs. For example: "TTS-1" → "openai-tts-standard", "WaveNet" → "google-cloud-tts-wavenet", "Multilingual v2" → "elevenlabs-multilingual-v2", "Aura" → "deepgram-aura-1".
 If you find a model NOT in this list, create a new entry following the pattern: {provider}-{model}-{variant}.
 
 Additional rules:
