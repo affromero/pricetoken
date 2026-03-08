@@ -136,7 +136,7 @@ models:
   - modelId: fal-flux-2-pro
     provider: fal
     displayName: fal FLUX 2 Pro
-    pricePerImage: 0.04
+    pricePerImage: 0.03
     pricePerMegapixel: null
     defaultResolution: 1024x1024
     qualityTier: standard
@@ -211,7 +211,7 @@ models:
   - modelId: fal-recraft-v3
     provider: fal
     displayName: fal Recraft V3
-    pricePerImage: 0.02
+    pricePerImage: 0.04
     pricePerMegapixel: null
     defaultResolution: 1024x1024
     qualityTier: standard
