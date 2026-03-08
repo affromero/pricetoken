@@ -153,6 +153,47 @@ Provider pricing pages → Daily cron (AI extraction)
                   npm + PyPI packages (typed clients)
 ```
 
+### Data Pipeline
+
+All pricing data flows through a YAML model registry — the single source of truth for both SDKs:
+
+```
+registry/*.yaml  ──→  scripts/generate-static.ts  ──→  12 static files (6 TS + 6 Python)
+     ↑                                                          ↓
+  Contributors                                            SDK packages
+  edit here                                              (npm + PyPI)
+     ↑
+  Daily cron
+  (API → YAML)
+```
+
+- **Automated**: Daily cron scrapes providers → writes to DB → `update-static.ts` pulls from the API and updates `registry/*.yaml` → `generate-static.ts` produces static files
+- **Manual**: Contributors edit `registry/*.yaml` directly → run `npm run generate-static` → open a PR
+- **CI**: `generate-static --check` validates YAML and ensures static files match on every PR
+
+## Contributing
+
+Adding a new model is as simple as editing a YAML file — no TypeScript or Python knowledge required:
+
+```yaml
+# registry/text.yaml
+models:
+  - modelId: my-provider-model-v1
+    provider: my-provider
+    displayName: My Provider Model v1
+    inputPerMTok: 3
+    outputPerMTok: 15
+    contextWindow: 128000
+    pricingUrl: https://my-provider.com/pricing
+```
+
+```bash
+npm run generate-static   # produces 12 static files from YAML
+npm run ci                # verify everything passes
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide, or [open an issue](../../issues/new?template=new-model.yml) to submit pricing data without writing code.
+
 ## Self-Hosting
 
 ### Prerequisites
@@ -225,7 +266,7 @@ There are several great projects tackling AI pricing from different angles. We'r
 
 | | PriceToken | models.dev |
 |---|---|---|
-| **Data source** | AI-powered scraping with multi-agent verification | Community-curated TOML files + GitHub PRs |
+| **Data source** | YAML registry + AI-powered scraping with multi-agent verification | Community-curated TOML files + GitHub PRs |
 | **Distribution** | REST API + website + npm/PyPI SDKs | Single `api.json` endpoint + web UI |
 | **Focus** | Pricing depth (cost calculators, history charts, compare) | Model breadth (capabilities, modalities, context windows) |
 | **Model count** | ~handful of major providers | Hundreds of models across many providers |
@@ -243,7 +284,7 @@ There are several great projects tackling AI pricing from different angles. We'r
 
 | | PriceToken | genai-prices |
 |---|---|---|
-| **Data source** | AI-powered scraping (Puppeteer + Claude) with multi-agent verification | Hand-curated YAML files + community PRs |
+| **Data source** | YAML registry + AI-powered scraping (Puppeteer + Claude) with multi-agent verification | Hand-curated YAML files + community PRs |
 | **Distribution** | REST API + website + npm SDK | Python/JS packages + raw JSON download |
 | **Web UI** | Full site (table, calculator, history charts, compare) | Planned |
 | **API** | Live REST API with Redis caching | Planned |

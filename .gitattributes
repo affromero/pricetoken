@@ -1,0 +1,13 @@
+# Generated static pricing files — do not hand-edit
+packages/sdk/src/static.ts linguist-generated=true
+packages/sdk/src/tts-static.ts linguist-generated=true
+packages/sdk/src/stt-static.ts linguist-generated=true
+packages/sdk/src/avatar-static.ts linguist-generated=true
+packages/sdk/src/static-image.ts linguist-generated=true
+packages/sdk/src/video-static.ts linguist-generated=true
+packages/sdk-python/src/pricetoken/static.py linguist-generated=true
+packages/sdk-python/src/pricetoken/tts_static.py linguist-generated=true
+packages/sdk-python/src/pricetoken/stt_static.py linguist-generated=true
+packages/sdk-python/src/pricetoken/avatar_static.py linguist-generated=true
+packages/sdk-python/src/pricetoken/static_image.py linguist-generated=true
+packages/sdk-python/src/pricetoken/video_static.py linguist-generated=true

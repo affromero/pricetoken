@@ -1,0 +1,379 @@
+models:
+  - modelId: claude-haiku-4-5-20251001
+    provider: anthropic
+    displayName: Claude Haiku 4.5
+    inputPerMTok: 1
+    outputPerMTok: 5
+    contextWindow: 200000
+    maxOutputTokens: 65536
+    status: active
+    launchDate: "2025-10-15"
+  - modelId: claude-opus-4-6
+    provider: anthropic
+    displayName: Claude Opus 4.6
+    inputPerMTok: 5
+    outputPerMTok: 25
+    contextWindow: 200000
+    maxOutputTokens: 131072
+    status: active
+    launchDate: "2026-02-05"
+  - modelId: claude-sonnet-4-6
+    provider: anthropic
+    displayName: Claude Sonnet 4.6
+    inputPerMTok: 3
+    outputPerMTok: 15
+    contextWindow: 200000
+    maxOutputTokens: 65536
+    status: active
+    launchDate: "2026-02-17"
+  - modelId: command-r
+    provider: cohere
+    displayName: Command R 03-2024
+    inputPerMTok: 0.5
+    outputPerMTok: 1.5
+    contextWindow: 128000
+    maxOutputTokens: null
+    status: deprecated
+    launchDate: "2025-08-15"
+  - modelId: command-r-plus
+    provider: cohere
+    displayName: Command R+ 08-2024
+    inputPerMTok: 2.5
+    outputPerMTok: 10
+    contextWindow: 128000
+    maxOutputTokens: null
+    status: deprecated
+    launchDate: "2025-08-15"
+  - modelId: deepseek-chat
+    provider: deepseek
+    displayName: DeepSeek Chat (V3.2)
+    inputPerMTok: 0.28
+    outputPerMTok: 0.42
+    contextWindow: 131072
+    maxOutputTokens: 8192
+    status: active
+    launchDate: "2025-12-01"
+  - modelId: deepseek-reasoner
+    provider: deepseek
+    displayName: DeepSeek Reasoner (V3.2 Thinking)
+    inputPerMTok: 0.28
+    outputPerMTok: 0.42
+    contextWindow: 131072
+    maxOutputTokens: 65536
+    status: active
+    launchDate: "2025-01-20"
+  - modelId: gemini-2.0-flash
+    provider: google
+    displayName: Gemini 2.0 Flash
+    inputPerMTok: 0.1
+    outputPerMTok: 0.4
+    contextWindow: 1000000
+    maxOutputTokens: 8192
+    status: active
+    launchDate: "2025-02-05"
+  - modelId: gemini-2.0-flash-lite
+    provider: google
+    displayName: Gemini 2.0 Flash-Lite
+    inputPerMTok: 0.075
+    outputPerMTok: 0.3
+    contextWindow: 1048576
+    maxOutputTokens: 8192
+    status: active
+    launchDate: "2025-02-25"
+  - modelId: gemini-2.5-flash
+    provider: google
+    displayName: Gemini 2.5 Flash
+    inputPerMTok: 0.3
+    outputPerMTok: 2.5
+    contextWindow: 1000000
+    maxOutputTokens: 65536
+    status: active
+    launchDate: "2025-06-17"
+  - modelId: gemini-2.5-flash-lite
+    provider: google
+    displayName: Gemini 2.5 Flash-Lite
+    inputPerMTok: 0.1
+    outputPerMTok: 0.4
+    contextWindow: 1048576
+    maxOutputTokens: 65536
+    status: active
+    launchDate: "2025-07-22"
+  - modelId: gemini-2.5-pro
+    provider: google
+    displayName: Gemini 2.5 Pro
+    inputPerMTok: 1.25
+    outputPerMTok: 10
+    contextWindow: 1048576
+    maxOutputTokens: 65536
+    status: active
+    launchDate: "2025-06-17"
+  - modelId: gemini-3-flash-preview
+    provider: google
+    displayName: Gemini 3 Flash Preview
+    inputPerMTok: 0.5
+    outputPerMTok: 3
+    contextWindow: 1048576
+    maxOutputTokens: 65536
+    status: preview
+    launchDate: "2025-12-17"
+  - modelId: gemini-3-pro-preview
+    provider: google
+    displayName: Gemini 3 Pro Preview
+    inputPerMTok: 2
+    outputPerMTok: 12
+    contextWindow: 1048576
+    maxOutputTokens: 65536
+    status: deprecated
+    launchDate: "2025-11-20"
+  - modelId: gemini-3.1-flash-lite-preview
+    provider: google
+    displayName: Gemini 3.1 Flash-Lite Preview
+    inputPerMTok: 0.25
+    outputPerMTok: 1.5
+    contextWindow: 1048576
+    maxOutputTokens: 65536
+    status: preview
+    launchDate: "2026-03-03"
+  - modelId: gemini-3.1-pro-preview
+    provider: google
+    displayName: Gemini 3.1 Pro Preview
+    inputPerMTok: 2
+    outputPerMTok: 12
+    contextWindow: 1048576
+    maxOutputTokens: 65536
+    status: preview
+    launchDate: "2026-02-19"
+  - modelId: gpt-4.1
+    provider: openai
+    displayName: GPT-4.1
+    inputPerMTok: 2
+    outputPerMTok: 8
+    contextWindow: 1000000
+    maxOutputTokens: 32768
+    status: active
+    launchDate: "2025-04-14"
+  - modelId: gpt-4.1-mini
+    provider: openai
+    displayName: GPT-4.1 mini
+    inputPerMTok: 0.4
+    outputPerMTok: 1.6
+    contextWindow: 1000000
+    maxOutputTokens: 32768
+    status: active
+    launchDate: "2025-04-14"
+  - modelId: gpt-4.1-nano
+    provider: openai
+    displayName: GPT-4.1 nano
+    inputPerMTok: 0.1
+    outputPerMTok: 0.4
+    contextWindow: 1000000
+    maxOutputTokens: 32768
+    status: active
+    launchDate: "2025-04-14"
+  - modelId: gpt-4o
+    provider: openai
+    displayName: GPT-4o
+    inputPerMTok: 2.5
+    outputPerMTok: 10
+    contextWindow: 128000
+    maxOutputTokens: 16384
+    status: active
+    launchDate: "2024-05-13"
+  - modelId: gpt-4o-mini
+    provider: openai
+    displayName: GPT-4o mini
+    inputPerMTok: 0.15
+    outputPerMTok: 0.6
+    contextWindow: 128000
+    maxOutputTokens: 16384
+    status: active
+    launchDate: "2024-07-18"
+  - modelId: gpt-5
+    provider: openai
+    displayName: GPT-5
+    inputPerMTok: 1.25
+    outputPerMTok: 10
+    contextWindow: 400000
+    maxOutputTokens: 128000
+    status: active
+    launchDate: "2025-08-07"
+  - modelId: gpt-5-mini
+    provider: openai
+    displayName: GPT-5 mini
+    inputPerMTok: 0.25
+    outputPerMTok: 2
+    contextWindow: 400000
+    maxOutputTokens: 128000
+    status: active
+    launchDate: "2025-08-07"
+  - modelId: gpt-5-nano
+    provider: openai
+    displayName: GPT-5 nano
+    inputPerMTok: 0.05
+    outputPerMTok: 0.4
+    contextWindow: 400000
+    maxOutputTokens: 128000
+    status: active
+    launchDate: "2025-08-07"
+  - modelId: gpt-5.1
+    provider: openai
+    displayName: GPT-5.1
+    inputPerMTok: 1.25
+    outputPerMTok: 10
+    contextWindow: 400000
+    maxOutputTokens: 128000
+    status: active
+    launchDate: "2025-11-13"
+  - modelId: gpt-5.2
+    provider: openai
+    displayName: GPT-5.2
+    inputPerMTok: 1.75
+    outputPerMTok: 14
+    contextWindow: 400000
+    maxOutputTokens: 128000
+    status: active
+    launchDate: "2025-12-11"
+  - modelId: gpt-5.3-chat-latest
+    provider: openai
+    displayName: GPT-5.3 Chat Latest
+    inputPerMTok: 1.75
+    outputPerMTok: 14
+    contextWindow: 128000
+    maxOutputTokens: 16384
+    status: active
+    launchDate: "2026-03-03"
+  - modelId: gpt-5.3-codex
+    provider: openai
+    displayName: GPT-5.3 Codex
+    inputPerMTok: 1.75
+    outputPerMTok: 14
+    contextWindow: 400000
+    maxOutputTokens: 128000
+    status: active
+    launchDate: "2026-02-24"
+  - modelId: gpt-5.4
+    provider: openai
+    displayName: GPT-5.4
+    inputPerMTok: 2.5
+    outputPerMTok: 15
+    contextWindow: 1050000
+    maxOutputTokens: 128000
+    status: active
+    launchDate: "2026-03-05"
+  - modelId: gpt-5.4-pro
+    provider: openai
+    displayName: GPT-5.4 Pro
+    inputPerMTok: 30
+    outputPerMTok: 180
+    contextWindow: 1050000
+    maxOutputTokens: 128000
+    status: active
+    launchDate: "2026-03-05"
+  - modelId: grok-3
+    provider: xai
+    displayName: Grok 3
+    inputPerMTok: 3
+    outputPerMTok: 15
+    contextWindow: 131072
+    maxOutputTokens: null
+    status: active
+    launchDate: "2025-04-09"
+  - modelId: grok-3-mini
+    provider: xai
+    displayName: Grok 3 Mini
+    inputPerMTok: 0.3
+    outputPerMTok: 0.5
+    contextWindow: 131072
+    maxOutputTokens: null
+    status: active
+    launchDate: "2025-04-09"
+  - modelId: grok-4
+    provider: xai
+    displayName: Grok 4
+    inputPerMTok: 3
+    outputPerMTok: 15
+    contextWindow: 256000
+    maxOutputTokens: null
+    status: active
+    launchDate: "2025-07-09"
+  - modelId: grok-4.1-fast
+    provider: xai
+    displayName: Grok 4.1 Fast
+    inputPerMTok: 0.2
+    outputPerMTok: 0.5
+    contextWindow: 2000000
+    maxOutputTokens: null
+    status: active
+    launchDate: "2025-11-19"
+  - modelId: jamba-1.5-mini
+    provider: ai21
+    displayName: Jamba Mini
+    inputPerMTok: 0.2
+    outputPerMTok: 0.4
+    contextWindow: 256000
+    maxOutputTokens: null
+    status: active
+    launchDate: "2025-06-01"
+  - modelId: jamba-large-1.7
+    provider: ai21
+    displayName: Jamba Large
+    inputPerMTok: 2
+    outputPerMTok: 8
+    contextWindow: 256000
+    maxOutputTokens: null
+    status: active
+    launchDate: "2025-08-01"
+  - modelId: o3
+    provider: openai
+    displayName: o3
+    inputPerMTok: 2
+    outputPerMTok: 8
+    contextWindow: 200000
+    maxOutputTokens: 100000
+    status: active
+    launchDate: "2025-04-16"
+  - modelId: o3-mini
+    provider: openai
+    displayName: o3-mini
+    inputPerMTok: 1.1
+    outputPerMTok: 4.4
+    contextWindow: 200000
+    maxOutputTokens: 100000
+    status: active
+    launchDate: "2025-01-31"
+  - modelId: o3-pro
+    provider: openai
+    displayName: o3-pro
+    inputPerMTok: 20
+    outputPerMTok: 80
+    contextWindow: 200000
+    maxOutputTokens: 100000
+    status: active
+    launchDate: "2025-06-10"
+  - modelId: o4-mini
+    provider: openai
+    displayName: o4-mini
+    inputPerMTok: 1.1
+    outputPerMTok: 4.4
+    contextWindow: 200000
+    maxOutputTokens: 100000
+    status: active
+    launchDate: "2025-04-16"
+  - modelId: qwen3-max
+    provider: qwen
+    displayName: Qwen3 Max
+    inputPerMTok: 0.3472
+    outputPerMTok: 1.3889
+    contextWindow: 262144
+    maxOutputTokens: 32768
+    status: active
+    launchDate: "2026-01-15"
+  - modelId: qwq-32b
+    provider: qwen
+    displayName: QwQ Plus
+    inputPerMTok: 0.2222
+    outputPerMTok: 0.5556
+    contextWindow: 131072
+    maxOutputTokens: 8192
+    status: active
+    launchDate: "2025-12-01"
