@@ -50,7 +50,7 @@ export async function runImagePricingFetch(): Promise<ImageFetchResult> {
       }
 
       console.log(`Fetching image pricing for ${config.displayName}...`);
-      const pageText = config.requiresBrowser
+      let pageText = config.requiresBrowser
         ? await fetchPricingPageWithBrowser(config.url, config.browserOptions)
         : await fetchPricingPage(config.url);
 
@@ -83,6 +83,7 @@ export async function runImagePricingFetch(): Promise<ImageFetchResult> {
             if (added > 0) {
               console.log(`${config.displayName}: recovered ${added} new image model(s) from ${fallbackUrl}`);
             }
+            pageText += '\n\n---\n\n' + fallbackText;
           } catch {
             console.warn(`${config.displayName}: fallback URL ${fallbackUrl} failed`);
           }
