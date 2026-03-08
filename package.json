@@ -25,16 +25,20 @@
     "fetch-tts-pricing": "doppler run -- npx tsx scripts/fetch-tts-pricing.ts",
     "fetch-stt-pricing": "doppler run -- npx tsx scripts/fetch-stt-pricing.ts",
     "setup-dns": "doppler run -- npx tsx scripts/setup-dns.ts",
-    "update-static": "npx tsx scripts/update-static.ts"
+    "update-static": "npx tsx scripts/update-static.ts",
+    "generate-static": "npx tsx scripts/generate-static.ts",
+    "generate-static:check": "npx tsx scripts/generate-static.ts --check"
   },
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.0.0",
     "eslint": "^9.0.0",
-    "@eslint/js": "^9.0.0",
-    "typescript-eslint": "^8.0.0",
     "eslint-plugin-next": "^0.0.0",
+    "js-yaml": "^4.1.1",
+    "prettier": "^3.4.0",
     "typescript": "^5.6.0",
-    "vitest": "^2.0.0",
-    "prettier": "^3.4.0"
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^2.0.0"
   }
 }

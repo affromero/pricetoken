@@ -1,3 +1,4 @@
+# DO NOT EDIT — generated from registry/*.yaml by `npm run generate-static`
 """Static text model pricing data for the PriceToken SDK."""
 
 from __future__ import annotations

@@ -1,0 +1,155 @@
+models:
+  - modelId: fal-heygen-avatar4-i2v
+    provider: fal
+    displayName: FAL HeyGen Avatar4 (Image-to-Video)
+    costPerMinute: 6
+    avatarType: premium
+    resolution: 1080p
+    maxDuration: null
+    qualityMode: premium
+    lipSync: null
+    status: active
+    launchDate: "2025-05-01"
+  - modelId: fal-heygen-avatar4-twin
+    provider: fal
+    displayName: FAL HeyGen Avatar4 (Digital Twin)
+    costPerMinute: 6
+    avatarType: premium
+    resolution: 1080p
+    maxDuration: null
+    qualityMode: premium
+    lipSync: null
+    status: active
+    launchDate: "2025-05-01"
+  - modelId: heygen-avatar-iv
+    provider: heygen
+    displayName: HeyGen Interactive Avatar IV
+    costPerMinute: 6
+    avatarType: premium
+    resolution: 1080p
+    maxDuration: 180
+    qualityMode: premium
+    lipSync: true
+    status: active
+    launchDate: "2025-03-01"
+  - modelId: heygen-avatar-standard
+    provider: heygen
+    displayName: HeyGen Standard Avatar
+    costPerMinute: 1.002
+    avatarType: standard
+    resolution: 1080p
+    maxDuration: 600
+    qualityMode: standard
+    lipSync: true
+    status: active
+    launchDate: "2024-01-15"
+  - modelId: heygen-digital-twin-iii
+    provider: heygen
+    displayName: HeyGen Digital Twin III
+    costPerMinute: 1.998
+    avatarType: standard
+    resolution: 1080p
+    maxDuration: 600
+    qualityMode: standard
+    lipSync: true
+    status: active
+    launchDate: "2024-09-12"
+  - modelId: heygen-digital-twin-iv
+    provider: heygen
+    displayName: HeyGen Digital Twin IV
+    costPerMinute: 6
+    avatarType: premium
+    resolution: 1080p
+    maxDuration: 180
+    qualityMode: premium
+    lipSync: true
+    status: active
+    launchDate: "2025-05-01"
+  - modelId: heygen-photo-avatar-iii
+    provider: heygen
+    displayName: HeyGen Photo Avatar III
+    costPerMinute: 1.002
+    avatarType: standard
+    resolution: 1080p
+    maxDuration: 600
+    qualityMode: standard
+    lipSync: true
+    status: active
+    launchDate: "2024-09-12"
+  - modelId: heygen-photo-avatar-iv
+    provider: heygen
+    displayName: HeyGen Photo Avatar IV
+    costPerMinute: 6
+    avatarType: premium
+    resolution: 1080p
+    maxDuration: 180
+    qualityMode: premium
+    lipSync: true
+    status: active
+    launchDate: "2025-05-01"
+  - modelId: heygen-public-avatar-iii
+    provider: heygen
+    displayName: HeyGen Public Avatar III
+    costPerMinute: 1.002
+    avatarType: standard
+    resolution: 1080p
+    maxDuration: 600
+    qualityMode: standard
+    lipSync: true
+    status: active
+    launchDate: "2024-09-12"
+  - modelId: heygen-public-avatar-iv
+    provider: heygen
+    displayName: HeyGen Public Avatar IV
+    costPerMinute: 6
+    avatarType: premium
+    resolution: 1080p
+    maxDuration: 180
+    qualityMode: premium
+    lipSync: true
+    status: active
+    launchDate: "2025-05-01"
+  - modelId: heygen-translation-precision
+    provider: heygen
+    displayName: HeyGen Video Translation — Precision Mode
+    costPerMinute: 6
+    avatarType: translation
+    resolution: 1080p
+    maxDuration: 1800
+    qualityMode: standard
+    lipSync: true
+    status: active
+    launchDate: "2025-11-17"
+  - modelId: heygen-translation-proofread
+    provider: heygen
+    displayName: HeyGen Video Translation — Proofread
+    costPerMinute: 0.498
+    avatarType: translation
+    resolution: 1080p
+    maxDuration: 1800
+    qualityMode: standard
+    lipSync: false
+    status: active
+    launchDate: "2024-08-01"
+  - modelId: heygen-translation-speed
+    provider: heygen
+    displayName: HeyGen Video Translation — Speed Mode
+    costPerMinute: 3
+    avatarType: translation
+    resolution: 1080p
+    maxDuration: 1800
+    qualityMode: standard
+    lipSync: true
+    status: active
+    launchDate: "2025-11-17"
+  - modelId: heygen-video-translation
+    provider: heygen
+    displayName: HeyGen Video Translation
+    costPerMinute: 3
+    avatarType: translation
+    resolution: 1080p
+    maxDuration: 1800
+    qualityMode: standard
+    lipSync: true
+    status: active
+    launchDate: "2024-06-01"

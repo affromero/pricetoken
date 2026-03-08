@@ -1,0 +1,451 @@
+models:
+  - modelId: fal-cosmos2.5-720p
+    provider: fal
+    displayName: FAL Cosmos 2.5 720p
+    costPerMinute: 2.07
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 6
+    qualityMode: standard
+    status: active
+    launchDate: "2026-01-15"
+  - modelId: fal-kling-o3-1080p
+    provider: fal
+    displayName: FAL Kling O3 1080p
+    costPerMinute: 10.08
+    inputType: image
+    resolution: 1080p
+    maxDuration: 15
+    qualityMode: standard
+    status: active
+    launchDate: "2026-02-05"
+  - modelId: fal-kling-v3-pro-1080p
+    provider: fal
+    displayName: FAL Kling v3 Pro 1080p
+    costPerMinute: 13.44
+    inputType: image
+    resolution: 1080p
+    maxDuration: 15
+    qualityMode: professional
+    status: active
+    launchDate: "2026-02-05"
+  - modelId: fal-kling2.5-turbo-1080p
+    provider: fal
+    displayName: FAL Kling 2.5 Turbo Pro 1080p
+    costPerMinute: 4.2
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 10
+    qualityMode: turbo
+    status: active
+    launchDate: "2025-09-23"
+  - modelId: fal-kling3-1080p
+    provider: fal
+    displayName: FAL Kling 3.0 1080p
+    costPerMinute: 10.08
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 15
+    qualityMode: standard
+    status: active
+    launchDate: "2026-02-05"
+  - modelId: fal-ltx2.3-1080p
+    provider: fal
+    displayName: FAL LTX-2.3 1080p
+    costPerMinute: 3.6
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2026-03-05"
+  - modelId: fal-ovi-720p
+    provider: fal
+    displayName: FAL OVI 720p
+    costPerMinute: 6
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2026-03-01"
+  - modelId: fal-sora2-720p
+    provider: fal
+    displayName: FAL Sora 2 720p
+    costPerMinute: 6
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 12
+    qualityMode: standard
+    status: active
+    launchDate: "2025-09-30"
+  - modelId: fal-sora2-pro-1080p
+    provider: fal
+    displayName: FAL Sora 2 Pro 1080p
+    costPerMinute: 30
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 25
+    qualityMode: professional
+    status: active
+    launchDate: "2025-09-30"
+  - modelId: fal-sora2-pro-720p
+    provider: fal
+    displayName: FAL Sora 2 Pro 720p
+    costPerMinute: 18
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 25
+    qualityMode: professional
+    status: active
+    launchDate: "2025-09-30"
+  - modelId: fal-veo3-1080p
+    provider: fal
+    displayName: FAL Veo 3 1080p
+    costPerMinute: 24
+    inputType: text
+    resolution: 1080p
+    maxDuration: 8
+    qualityMode: standard
+    status: active
+    launchDate: "2025-10-15"
+  - modelId: fal-veo3-fast-1080p
+    provider: fal
+    displayName: FAL Veo 3 Fast 1080p
+    costPerMinute: 6
+    inputType: text
+    resolution: 1080p
+    maxDuration: 8
+    qualityMode: turbo
+    status: active
+    launchDate: "2025-12-01"
+  - modelId: fal-wan2.5-480p
+    provider: fal
+    displayName: FAL WAN 2.5 480p
+    costPerMinute: 3
+    inputType: text,image
+    resolution: 480p
+    maxDuration: 5
+    qualityMode: standard
+    status: active
+    launchDate: "2025-06-01"
+  - modelId: kling-3.0-1080p
+    provider: kling
+    displayName: Kling 3.0 1080p
+    costPerMinute: 5.04
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 15
+    qualityMode: standard
+    status: active
+    launchDate: "2026-02-05"
+  - modelId: kling-v3-1080p
+    provider: kling
+    displayName: Kling V3 1080p
+    costPerMinute: 5.04
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 15
+    qualityMode: standard
+    status: active
+    launchDate: "2026-03-01"
+  - modelId: kling-v3-omni-1080p
+    provider: kling
+    displayName: Kling V3 Omni 1080p
+    costPerMinute: 5.04
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 15
+    qualityMode: standard
+    status: active
+    launchDate: "2026-03-01"
+  - modelId: kling-video-o1-1080p
+    provider: kling
+    displayName: Kling Video O1 1080p
+    costPerMinute: 5.04
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 15
+    qualityMode: standard
+    status: active
+    launchDate: "2026-03-01"
+  - modelId: ltx-2.3-fast-1080p
+    provider: ltx
+    displayName: LTX-2.3 Fast 1080p
+    costPerMinute: 2.4
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 20
+    qualityMode: standard
+    status: active
+    launchDate: "2026-03-05"
+  - modelId: ltx-2.3-fast-4k
+    provider: ltx
+    displayName: LTX-2.3 Fast 4K
+    costPerMinute: 9.6
+    inputType: text,image
+    resolution: 4k
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2026-03-05"
+  - modelId: ltx-2.3-pro-1080p
+    provider: ltx
+    displayName: LTX-2.3 Pro 1080p
+    costPerMinute: 3.6
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 10
+    qualityMode: professional
+    status: active
+    launchDate: "2026-03-05"
+  - modelId: ltx-2.3-pro-4k
+    provider: ltx
+    displayName: LTX-2.3 Pro 4K
+    costPerMinute: 14.4
+    inputType: text,image
+    resolution: 4k
+    maxDuration: 10
+    qualityMode: professional
+    status: active
+    launchDate: "2026-03-05"
+  - modelId: luma-ray-flash2-1080p
+    provider: luma
+    displayName: Luma Ray Flash 2 1080p
+    costPerMinute: 6.48
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 10
+    qualityMode: turbo
+    status: active
+    launchDate: "2026-03-01"
+  - modelId: luma-ray-flash2-720p
+    provider: luma
+    displayName: Luma Ray Flash 2 720p
+    costPerMinute: 2.88
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 10
+    qualityMode: turbo
+    status: active
+    launchDate: "2026-03-01"
+  - modelId: luma-ray2-1080p
+    provider: luma
+    displayName: Luma Ray 2 1080p
+    costPerMinute: 19.2
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2026-03-01"
+  - modelId: luma-ray2-720p
+    provider: luma
+    displayName: Luma Ray 2 720p
+    costPerMinute: 8.52
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2026-03-01"
+  - modelId: minimax-hailuo02-512p
+    provider: minimax
+    displayName: MiniMax Hailuo 02 512p
+    costPerMinute: 0.9
+    inputType: text,image
+    resolution: 512p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2025-06-18"
+  - modelId: minimax-hailuo02-768p
+    provider: minimax
+    displayName: Hailuo 02 768p
+    costPerMinute: 3.36
+    inputType: text,image
+    resolution: 768p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2025-06-18"
+  - modelId: minimax-hailuo02-pro-1080p
+    provider: minimax
+    displayName: Hailuo 02 Pro 1080p
+    costPerMinute: 4.9
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 6
+    qualityMode: professional
+    status: active
+    launchDate: "2025-06-18"
+  - modelId: minimax-hailuo23-fast-1080p
+    provider: minimax
+    displayName: MiniMax Hailuo 2.3 Fast 1080p
+    costPerMinute: 3.3
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 6
+    qualityMode: standard
+    status: active
+    launchDate: "2025-10-28"
+  - modelId: minimax-hailuo23-fast-768p
+    provider: minimax
+    displayName: MiniMax Hailuo 2.3 Fast 768p
+    costPerMinute: 1.92
+    inputType: text,image
+    resolution: 768p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2025-10-28"
+  - modelId: pika-2.5-1080p
+    provider: pika
+    displayName: Pika 2.5 1080p
+    costPerMinute: 3.6
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2025-11-24"
+  - modelId: runway-gen3alpha-720p
+    provider: runway
+    displayName: Runway Gen-3 Alpha 720p
+    costPerMinute: 3.6
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2024-06-17"
+  - modelId: runway-gen4-720p
+    provider: runway
+    displayName: Runway Gen-4 720p
+    costPerMinute: 7.2
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2025-06-01"
+  - modelId: runway-gen4-turbo-720p
+    provider: runway
+    displayName: Runway Gen-4 Turbo 720p
+    costPerMinute: 3
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 10
+    qualityMode: turbo
+    status: active
+    launchDate: "2025-06-01"
+  - modelId: runway-gen4.5-720p
+    provider: runway
+    displayName: Runway Gen-4.5 720p
+    costPerMinute: 15
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2026-02-01"
+  - modelId: seedance-1.5-pro-480p
+    provider: seedance
+    displayName: Seedance 1.5 Pro 480p
+    costPerMinute: 2.4
+    inputType: image
+    resolution: 480p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2025-12-16"
+  - modelId: seedance-1.5-pro-480p-audio
+    provider: seedance
+    displayName: Seedance 1.5 Pro 480p (with audio)
+    costPerMinute: 3.6
+    inputType: image
+    resolution: 480p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2025-12-16"
+  - modelId: seedance-1.5-pro-720p
+    provider: seedance
+    displayName: Seedance 1.5 Pro 720p
+    costPerMinute: 4.8
+    inputType: image
+    resolution: 720p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2025-12-16"
+  - modelId: seedance-1.5-pro-720p-audio
+    provider: seedance
+    displayName: Seedance 1.5 Pro 720p (with audio)
+    costPerMinute: 7.2
+    inputType: image
+    resolution: 720p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2025-12-16"
+  - modelId: seedance-2.0-1080p
+    provider: seedance
+    displayName: Seedance 2.0 1080p
+    costPerMinute: 4.8
+    inputType: image
+    resolution: 1080p
+    maxDuration: 15
+    qualityMode: standard
+    status: active
+    launchDate: "2026-02-10"
+  - modelId: sora2-720p
+    provider: sora
+    displayName: Sora 2 720p
+    costPerMinute: 6
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 12
+    qualityMode: standard
+    status: active
+    launchDate: "2025-02-01"
+  - modelId: sora2-pro-1080p
+    provider: sora
+    displayName: Sora 2 Pro 1080p
+    costPerMinute: 30
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 25
+    qualityMode: professional
+    status: active
+    launchDate: "2025-02-01"
+  - modelId: sora2-pro-720p
+    provider: sora
+    displayName: Sora 2 Pro 720p
+    costPerMinute: 18
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 25
+    qualityMode: professional
+    status: active
+    launchDate: "2025-02-01"
+  - modelId: veo-3.1-1080p
+    provider: veo
+    displayName: Veo 3.1 1080p
+    costPerMinute: 24
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 8
+    qualityMode: standard
+    status: active
+    launchDate: "2025-12-01"
+  - modelId: veo-3.1-4k
+    provider: veo
+    displayName: Veo 3.1 4K
+    costPerMinute: 36
+    inputType: text,image
+    resolution: 4k
+    maxDuration: 8
+    qualityMode: standard
+    status: active
+    launchDate: "2025-12-01"

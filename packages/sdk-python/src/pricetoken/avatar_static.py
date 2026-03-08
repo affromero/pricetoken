@@ -1,3 +1,4 @@
+# DO NOT EDIT — generated from registry/*.yaml by `npm run generate-static`
 """Static avatar pricing data for the PriceToken SDK."""
 
 from __future__ import annotations
@@ -17,7 +18,7 @@ STATIC_AVATAR_PRICING: list[AvatarModelPricing] = [
         source="seed",
         status="active",
         confidence="high",
-        confidence_score=82,
+        confidence_score=99,
         confidence_level="high",
         freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
         last_updated=None,
@@ -36,7 +37,7 @@ STATIC_AVATAR_PRICING: list[AvatarModelPricing] = [
         source="seed",
         status="active",
         confidence="high",
-        confidence_score=82,
+        confidence_score=99,
         confidence_level="high",
         freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
         last_updated=None,
@@ -55,7 +56,7 @@ STATIC_AVATAR_PRICING: list[AvatarModelPricing] = [
         source="seed",
         status="active",
         confidence="high",
-        confidence_score=97,
+        confidence_score=99,
         confidence_level="high",
         freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
         last_updated=None,
@@ -74,7 +75,7 @@ STATIC_AVATAR_PRICING: list[AvatarModelPricing] = [
         source="seed",
         status="active",
         confidence="high",
-        confidence_score=97,
+        confidence_score=99,
         confidence_level="high",
         freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
         last_updated=None,
@@ -264,7 +265,7 @@ STATIC_AVATAR_PRICING: list[AvatarModelPricing] = [
         source="seed",
         status="active",
         confidence="high",
-        confidence_score=97,
+        confidence_score=99,
         confidence_level="high",
         freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
         last_updated=None,
