@@ -1,0 +1,69 @@
+name: Add New Model Pricing
+description: Submit pricing data for a new AI model
+title: "[New Model] {provider} — {model_name}"
+labels: [new-model]
+body:
+  - type: dropdown
+    id: modality
+    attributes:
+      label: Model Type
+      options:
+        - Text (LLM)
+        - Text-to-Speech (TTS)
+        - Speech-to-Text (STT)
+        - Avatar
+        - Image Generation
+        - Video Generation
+    validations:
+      required: true
+  - type: input
+    id: provider
+    attributes:
+      label: Provider name (lowercase)
+      placeholder: "openai"
+    validations:
+      required: true
+  - type: input
+    id: model_id
+    attributes:
+      label: Model ID (lowercase, kebab-case)
+      placeholder: "gpt-5-turbo"
+    validations:
+      required: true
+  - type: input
+    id: display_name
+    attributes:
+      label: Display Name
+      placeholder: "GPT-5 Turbo"
+    validations:
+      required: true
+  - type: input
+    id: pricing
+    attributes:
+      label: Pricing
+      description: >
+        Text: "$X input / $Y output per million tokens".
+        TTS: "$X per million characters".
+        STT/Avatar/Video: "$X per minute".
+        Image: "$X per image".
+      placeholder: "$3 input / $15 output per million tokens"
+    validations:
+      required: true
+  - type: input
+    id: pricing_url
+    attributes:
+      label: Official pricing page URL
+    validations:
+      required: true
+  - type: input
+    id: fallback_urls
+    attributes:
+      label: Alternative pricing URLs (comma-separated)
+      description: "Backup links to pricing documentation"
+    validations:
+      required: false
+  - type: textarea
+    id: extra_fields
+    attributes:
+      label: Additional details
+      description: "Context window, max output tokens, resolution, launch date, etc."
