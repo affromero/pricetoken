@@ -1,8 +1,18 @@
+export interface BrowserFetchOptions {
+  /** Post-load wait in ms (default: 5000) */
+  waitMs?: number;
+  /** Scroll to bottom to trigger lazy-loaded content (default: false) */
+  scrollToBottom?: boolean;
+  /** CSS selector to wait for before extracting (e.g. for React SPAs) */
+  waitForSelector?: string;
+}
+
 export interface ProviderConfig {
   url: string;
   displayName: string;
   fallbackUrls?: string[];
   requiresBrowser?: boolean;
+  browserOptions?: BrowserFetchOptions;
 }
 
 export const VIDEO_PROVIDERS: Record<string, ProviderConfig> = {

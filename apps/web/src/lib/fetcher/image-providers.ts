@@ -1,8 +1,11 @@
+import type { BrowserFetchOptions } from './providers';
+
 export interface ImageProviderConfig {
   url: string;
   displayName: string;
   fallbackUrls?: string[];
   requiresBrowser?: boolean;
+  browserOptions?: BrowserFetchOptions;
 }
 
 export const IMAGE_PRICING_PROVIDERS: Record<string, ImageProviderConfig> = {
