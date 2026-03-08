@@ -10,7 +10,7 @@ models:
     launchDate: "2024-05-08"
   - modelId: amazon-polly-govcloud-neural
     provider: amazon
-    displayName: Amazon Polly Neural (GovCloud)
+    displayName: Amazon Polly GovCloud Neural
     costPerMChars: 19.2
     voiceType: neural
     maxCharacters: null
@@ -19,7 +19,7 @@ models:
     launchDate: "2020-11-23"
   - modelId: amazon-polly-govcloud-standard
     provider: amazon
-    displayName: Amazon Polly Standard (GovCloud)
+    displayName: Amazon Polly GovCloud Standard
     costPerMChars: 4.8
     voiceType: standard
     maxCharacters: null
@@ -55,7 +55,7 @@ models:
     launchDate: "2016-11-30"
   - modelId: azure-custom-deprecated
     provider: azure
-    displayName: Azure TTS Custom (Deprecated)
+    displayName: Azure Custom TTS (Deprecated)
     costPerMChars: 6
     voiceType: standard
     maxCharacters: null
@@ -98,24 +98,78 @@ models:
     supportedLanguages: null
     status: deprecated
     launchDate: "2018-11-01"
+  - modelId: azure-tts-custom-deprecated
+    provider: azure
+    displayName: Azure TTS Custom (Deprecated)
+    costPerMChars: 6
+    voiceType: standard
+    maxCharacters: null
+    supportedLanguages: null
+    status: deprecated
+    launchDate: null
+  - modelId: azure-tts-custom-legacy
+    provider: azure
+    displayName: Azure TTS Custom (Deprecated)
+    costPerMChars: 6
+    voiceType: standard
+    maxCharacters: null
+    supportedLanguages: null
+    status: deprecated
+    launchDate: null
+  - modelId: azure-tts-custom-professional
+    provider: azure
+    displayName: Azure Custom Neural Voice Professional
+    costPerMChars: 24
+    voiceType: neural
+    maxCharacters: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
+  - modelId: azure-tts-custom-professional-hd
+    provider: azure
+    displayName: Azure Custom Neural Voice Professional HD
+    costPerMChars: 48
+    voiceType: hd
+    maxCharacters: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
   - modelId: azure-tts-hd-v2
     provider: azure
     displayName: Azure TTS HD V2
     costPerMChars: 30
-    voiceType: hd
+    voiceType: null
     maxCharacters: null
     supportedLanguages: null
     status: active
     launchDate: "2024-06-01"
   - modelId: azure-tts-neural
     provider: azure
-    displayName: Azure TTS Neural
-    costPerMChars: 16
+    displayName: Azure Neural TTS
+    costPerMChars: 15
     voiceType: neural
     maxCharacters: null
     supportedLanguages: null
     status: active
     launchDate: "2019-09-01"
+  - modelId: azure-tts-standard-deprecated
+    provider: azure
+    displayName: Azure TTS Standard (Deprecated)
+    costPerMChars: 4
+    voiceType: standard
+    maxCharacters: null
+    supportedLanguages: null
+    status: deprecated
+    launchDate: null
+  - modelId: azure-tts-standard-legacy
+    provider: azure
+    displayName: Azure TTS Standard (Deprecated)
+    costPerMChars: 4
+    voiceType: standard
+    maxCharacters: null
+    supportedLanguages: null
+    status: deprecated
+    launchDate: null
   - modelId: cartesia-sonic-3
     provider: cartesia
     displayName: Cartesia Sonic-3
@@ -192,7 +246,7 @@ models:
     provider: elevenlabs
     displayName: ElevenLabs Flash
     costPerMChars: 80
-    voiceType: standard
+    voiceType: null
     maxCharacters: null
     supportedLanguages: null
     status: active
@@ -201,7 +255,7 @@ models:
     provider: elevenlabs
     displayName: ElevenLabs Multilingual v2
     costPerMChars: 120
-    voiceType: neural
+    voiceType: null
     maxCharacters: null
     supportedLanguages: null
     status: active
@@ -210,7 +264,7 @@ models:
     provider: elevenlabs
     displayName: ElevenLabs Standard
     costPerMChars: 30
-    voiceType: neural
+    voiceType: null
     maxCharacters: null
     supportedLanguages: null
     status: active
@@ -219,14 +273,14 @@ models:
     provider: elevenlabs
     displayName: ElevenLabs v3
     costPerMChars: 120
-    voiceType: neural
+    voiceType: null
     maxCharacters: null
     supportedLanguages: null
     status: active
     launchDate: "2025-04-01"
   - modelId: fal-chatterboxhd
     provider: fal
-    displayName: FAL Chatterboxhd
+    displayName: FAL Chatterbox TTS
     costPerMChars: 25
     voiceType: neural
     maxCharacters: null
@@ -240,7 +294,7 @@ models:
     voiceType: neural
     maxCharacters: null
     supportedLanguages: null
-    status: active
+    status: null
     launchDate: "2025-03-01"
   - modelId: fal-f5-tts
     provider: fal
@@ -253,9 +307,9 @@ models:
     launchDate: "2024-10-01"
   - modelId: fal-kokoro
     provider: fal
-    displayName: FAL Kokoro
+    displayName: fal Kokoro TTS (American English)
     costPerMChars: 20
-    voiceType: standard
+    voiceType: neural
     maxCharacters: null
     supportedLanguages: null
     status: active
@@ -271,13 +325,22 @@ models:
     launchDate: "2025-03-01"
   - modelId: google-cloud-chirp3-hd
     provider: google-cloud
-    displayName: Google Cloud Chirp 3 HD Voices
+    displayName: Google Cloud Chirp 3 HD
     costPerMChars: 30
     voiceType: hd
     maxCharacters: null
     supportedLanguages: null
     status: active
     launchDate: "2025-04-02"
+  - modelId: google-cloud-chirp3-instant-custom
+    provider: google-cloud
+    displayName: Google Cloud Chirp 3 Instant Custom Voice
+    costPerMChars: 60
+    voiceType: hd
+    maxCharacters: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
   - modelId: google-cloud-instant-custom-voice
     provider: google-cloud
     displayName: Google Cloud Instant Custom Voice
@@ -289,7 +352,7 @@ models:
     launchDate: "2025-04-09"
   - modelId: google-cloud-neural2
     provider: google-cloud
-    displayName: Google Cloud Neural2 Voices
+    displayName: Google Cloud Neural2
     costPerMChars: 16
     voiceType: neural
     maxCharacters: null
@@ -298,7 +361,7 @@ models:
     launchDate: "2022-06-27"
   - modelId: google-cloud-polyglot
     provider: google-cloud
-    displayName: Google Cloud Polyglot Voices
+    displayName: Google Cloud Polyglot
     costPerMChars: 16
     voiceType: neural
     maxCharacters: null
@@ -307,7 +370,7 @@ models:
     launchDate: "2025-04-16"
   - modelId: google-cloud-polyglot-preview
     provider: google-cloud
-    displayName: Google Cloud Polyglot Voices (Preview)
+    displayName: Google Cloud Polyglot (Preview)
     costPerMChars: 16
     voiceType: neural
     maxCharacters: null
@@ -316,7 +379,7 @@ models:
     launchDate: "2023-09-01"
   - modelId: google-cloud-standard
     provider: google-cloud
-    displayName: Google Cloud Standard Voices
+    displayName: Google Cloud Standard
     costPerMChars: 4
     voiceType: standard
     maxCharacters: null
@@ -325,13 +388,31 @@ models:
     launchDate: "2018-03-27"
   - modelId: google-cloud-studio
     provider: google-cloud
-    displayName: Google Cloud Studio Voices
+    displayName: Google Cloud Studio
     costPerMChars: 160
-    voiceType: neural
+    voiceType: hd
     maxCharacters: null
     supportedLanguages: null
     status: active
     launchDate: "2023-06-28"
+  - modelId: google-cloud-tts-chirp3
+    provider: google-cloud
+    displayName: Google Cloud TTS Chirp 3 HD
+    costPerMChars: 30
+    voiceType: hd
+    maxCharacters: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
+  - modelId: google-cloud-tts-chirp3-instant-custom
+    provider: google-cloud
+    displayName: Google Cloud Chirp 3 Instant Custom Voice
+    costPerMChars: 60
+    voiceType: hd
+    maxCharacters: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
   - modelId: google-cloud-tts-neural2
     provider: google-cloud
     displayName: Google Cloud TTS Neural2
@@ -350,10 +431,19 @@ models:
     supportedLanguages: null
     status: active
     launchDate: "2018-03-27"
+  - modelId: google-cloud-tts-studio
+    provider: google-cloud
+    displayName: Google Cloud TTS Studio
+    costPerMChars: 160
+    voiceType: hd
+    maxCharacters: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
   - modelId: google-cloud-tts-wavenet
     provider: google-cloud
     displayName: Google Cloud TTS WaveNet
-    costPerMChars: 16
+    costPerMChars: 4
     voiceType: wavenet
     maxCharacters: null
     supportedLanguages: null
@@ -361,16 +451,34 @@ models:
     launchDate: "2018-03-27"
   - modelId: google-cloud-wavenet
     provider: google-cloud
-    displayName: Google Cloud WaveNet Voices
+    displayName: Google Cloud WaveNet
     costPerMChars: 4
     voiceType: wavenet
     maxCharacters: null
     supportedLanguages: null
     status: active
     launchDate: "2018-03-27"
+  - modelId: openai-gpt-4o-mini-tts
+    provider: openai
+    displayName: OpenAI GPT-4o Mini TTS
+    costPerMChars: 0.6
+    voiceType: neural
+    maxCharacters: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
+  - modelId: openai-gpt4o-mini-tts
+    provider: openai
+    displayName: OpenAI GPT-4o Mini TTS
+    costPerMChars: 0.6
+    voiceType: neural
+    maxCharacters: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
   - modelId: openai-tts-1
     provider: openai
-    displayName: OpenAI TTS Standard
+    displayName: OpenAI TTS-1
     costPerMChars: 15
     voiceType: standard
     maxCharacters: null
@@ -379,7 +487,7 @@ models:
     launchDate: "2023-11-06"
   - modelId: openai-tts-1-hd
     provider: openai
-    displayName: OpenAI TTS HD
+    displayName: OpenAI TTS-1 HD
     costPerMChars: 30
     voiceType: hd
     maxCharacters: null
@@ -408,7 +516,7 @@ models:
     provider: playht
     displayName: PlayHT 2.0
     costPerMChars: 30
-    voiceType: neural
+    voiceType: null
     maxCharacters: null
     supportedLanguages: null
     status: active

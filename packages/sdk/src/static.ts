@@ -17,7 +17,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     confidenceLevel: 'high',
     freshness: { lastVerified: '', ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2025-10-15',
+    launchDate: '2025-10-01',
   },
   {
     modelId: 'claude-opus-4-6',
@@ -68,7 +68,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     confidenceLevel: 'high',
     freshness: { lastVerified: '', ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2025-08-15',
+    launchDate: '2024-03-01',
   },
   {
     modelId: 'command-r-plus',
@@ -85,7 +85,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     confidenceLevel: 'high',
     freshness: { lastVerified: '', ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2025-08-15',
+    launchDate: '2024-08-01',
   },
   {
     modelId: 'deepseek-chat',
@@ -107,7 +107,7 @@ export const STATIC_PRICING: ModelPricing[] = [
   {
     modelId: 'deepseek-reasoner',
     provider: 'deepseek',
-    displayName: 'DeepSeek Reasoner (V3.2 Thinking)',
+    displayName: 'DeepSeek Reasoner (V3.2)',
     inputPerMTok: 0.28,
     outputPerMTok: 0.42,
     contextWindow: 131072,
@@ -119,7 +119,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     confidenceLevel: 'high',
     freshness: { lastVerified: '', ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2025-01-20',
+    launchDate: '2025-12-01',
   },
   {
     modelId: 'gemini-2.0-flash',
@@ -294,7 +294,7 @@ export const STATIC_PRICING: ModelPricing[] = [
   {
     modelId: 'gpt-4.1-mini',
     provider: 'openai',
-    displayName: 'GPT-4.1 mini',
+    displayName: 'GPT-4.1 Mini',
     inputPerMTok: 0.4,
     outputPerMTok: 1.6,
     contextWindow: 1000000,
@@ -311,7 +311,7 @@ export const STATIC_PRICING: ModelPricing[] = [
   {
     modelId: 'gpt-4.1-nano',
     provider: 'openai',
-    displayName: 'GPT-4.1 nano',
+    displayName: 'GPT-4.1 Nano',
     inputPerMTok: 0.1,
     outputPerMTok: 0.4,
     contextWindow: 1000000,
@@ -345,7 +345,7 @@ export const STATIC_PRICING: ModelPricing[] = [
   {
     modelId: 'gpt-4o-mini',
     provider: 'openai',
-    displayName: 'GPT-4o mini',
+    displayName: 'GPT-4o Mini',
     inputPerMTok: 0.15,
     outputPerMTok: 0.6,
     contextWindow: 128000,
@@ -379,7 +379,7 @@ export const STATIC_PRICING: ModelPricing[] = [
   {
     modelId: 'gpt-5-mini',
     provider: 'openai',
-    displayName: 'GPT-5 mini',
+    displayName: 'GPT-5 Mini',
     inputPerMTok: 0.25,
     outputPerMTok: 2,
     contextWindow: 400000,
@@ -396,7 +396,7 @@ export const STATIC_PRICING: ModelPricing[] = [
   {
     modelId: 'gpt-5-nano',
     provider: 'openai',
-    displayName: 'GPT-5 nano',
+    displayName: 'GPT-5 Nano',
     inputPerMTok: 0.05,
     outputPerMTok: 0.4,
     contextWindow: 400000,
@@ -634,7 +634,7 @@ export const STATIC_PRICING: ModelPricing[] = [
   {
     modelId: 'o3-mini',
     provider: 'openai',
-    displayName: 'o3-mini',
+    displayName: 'o3 Mini',
     inputPerMTok: 1.1,
     outputPerMTok: 4.4,
     contextWindow: 200000,
@@ -651,7 +651,7 @@ export const STATIC_PRICING: ModelPricing[] = [
   {
     modelId: 'o3-pro',
     provider: 'openai',
-    displayName: 'o3-pro',
+    displayName: 'o3 Pro',
     inputPerMTok: 20,
     outputPerMTok: 80,
     contextWindow: 200000,
@@ -668,7 +668,7 @@ export const STATIC_PRICING: ModelPricing[] = [
   {
     modelId: 'o4-mini',
     provider: 'openai',
-    displayName: 'o4-mini',
+    displayName: 'o4 Mini',
     inputPerMTok: 1.1,
     outputPerMTok: 4.4,
     contextWindow: 200000,
@@ -689,7 +689,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     inputPerMTok: 0.3472,
     outputPerMTok: 1.3889,
     contextWindow: 262144,
-    maxOutputTokens: 32768,
+    maxOutputTokens: 65536,
     source: 'seed',
     status: 'active',
     confidence: 'high',
@@ -697,7 +697,7 @@ export const STATIC_PRICING: ModelPricing[] = [
     confidenceLevel: 'high',
     freshness: { lastVerified: '', ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2026-01-15',
+    launchDate: '2025-09-23',
   },
   {
     modelId: 'qwq-32b',
@@ -714,6 +714,6 @@ export const STATIC_PRICING: ModelPricing[] = [
     confidenceLevel: 'high',
     freshness: { lastVerified: '', ageHours: 0, stale: false },
     lastUpdated: null,
-    launchDate: '2025-12-01',
+    launchDate: '2025-03-05',
   },
 ];

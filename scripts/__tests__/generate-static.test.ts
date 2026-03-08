@@ -25,11 +25,11 @@ describe('generate-static', () => {
     const result = runGenerator();
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain('text: 42 models');
-    expect(result.stdout).toContain('tts: 46 models');
-    expect(result.stdout).toContain('stt: 58 models');
-    expect(result.stdout).toContain('avatar: 14 models');
+    expect(result.stdout).toContain('tts: 58 models');
+    expect(result.stdout).toContain('stt: 73 models');
+    expect(result.stdout).toContain('avatar: 18 models');
     expect(result.stdout).toContain('image: 47 models');
-    expect(result.stdout).toContain('video: 45 models');
+    expect(result.stdout).toContain('video: 46 models');
   });
 
   it('--check passes when files are in sync', () => {

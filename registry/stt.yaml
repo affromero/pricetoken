@@ -1,11 +1,29 @@
 models:
+  - modelId: assemblyai-best
+    provider: assemblyai
+    displayName: AssemblyAI Best (Universal-3 Pro)
+    costPerMinute: 0.0035
+    sttType: batch
+    maxDuration: null
+    supportedLanguages: 6
+    status: active
+    launchDate: "2026-02-01"
+  - modelId: assemblyai-best-async
+    provider: assemblyai
+    displayName: AssemblyAI Best Async (Universal-3 Pro)
+    costPerMinute: 0.0035
+    sttType: batch
+    maxDuration: null
+    supportedLanguages: 6
+    status: active
+    launchDate: null
   - modelId: assemblyai-universal-2
     provider: assemblyai
     displayName: AssemblyAI Universal-2
     costPerMinute: 0.0025
     sttType: batch
     maxDuration: null
-    supportedLanguages: null
+    supportedLanguages: 99
     status: active
     launchDate: "2024-06-01"
   - modelId: assemblyai-universal-2-batch
@@ -25,7 +43,7 @@ models:
     maxDuration: null
     supportedLanguages: 6
     status: active
-    launchDate: "2026-02-03"
+    launchDate: "2026-02-01"
   - modelId: assemblyai-universal-3-pro-streaming
     provider: assemblyai
     displayName: AssemblyAI Universal-3 Pro Streaming
@@ -34,7 +52,16 @@ models:
     maxDuration: null
     supportedLanguages: 6
     status: active
-    launchDate: "2026-03-03"
+    launchDate: "2026-02-01"
+  - modelId: assemblyai-universal-streaming
+    provider: assemblyai
+    displayName: AssemblyAI Universal-Streaming
+    costPerMinute: 0.0025
+    sttType: streaming
+    maxDuration: null
+    supportedLanguages: 1
+    status: active
+    launchDate: null
   - modelId: assemblyai-universal-streaming-en
     provider: assemblyai
     displayName: AssemblyAI Universal-Streaming (English)
@@ -98,11 +125,47 @@ models:
     supportedLanguages: null
     status: active
     launchDate: "2018-09-24"
+  - modelId: azure-stt-batch
+    provider: azure
+    displayName: Azure Speech Standard Batch Transcription
+    costPerMinute: 0.003
+    sttType: batch
+    maxDuration: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
+  - modelId: azure-stt-custom
+    provider: azure
+    displayName: Azure Speech Custom Real-time
+    costPerMinute: 0.02
+    sttType: real-time
+    maxDuration: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
+  - modelId: azure-stt-custom-batch
+    provider: azure
+    displayName: Azure Speech Custom Batch Transcription
+    costPerMinute: 0.00375
+    sttType: batch
+    maxDuration: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
+  - modelId: azure-stt-realtime
+    provider: azure
+    displayName: Azure Speech Standard Real-time Transcription
+    costPerMinute: 0.016667
+    sttType: real-time
+    maxDuration: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
   - modelId: azure-stt-standard
     provider: azure
-    displayName: Azure STT Standard
-    costPerMinute: 0.017
-    sttType: batch
+    displayName: Azure Speech Standard Real-time
+    costPerMinute: 0.016667
+    sttType: real-time
     maxDuration: null
     supportedLanguages: null
     status: active
@@ -110,8 +173,8 @@ models:
   - modelId: cartesia-ink
     provider: cartesia
     displayName: Cartesia Ink
-    costPerMinute: 0.017
-    sttType: streaming
+    costPerMinute: 0.002167
+    sttType: null
     maxDuration: null
     supportedLanguages: null
     status: active
@@ -119,7 +182,7 @@ models:
   - modelId: cartesia-ink-whisper
     provider: cartesia
     displayName: Cartesia Ink-Whisper
-    costPerMinute: 0.0021667
+    costPerMinute: 0.002167
     sttType: streaming
     maxDuration: null
     supportedLanguages: null
@@ -134,9 +197,18 @@ models:
     supportedLanguages: null
     status: active
     launchDate: "2025-06-10"
+  - modelId: deepgram-base
+    provider: deepgram
+    displayName: Deepgram Base
+    costPerMinute: 0.0145
+    sttType: batch
+    maxDuration: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
   - modelId: deepgram-base-batch
     provider: deepgram
-    displayName: Deepgram Base (Pre-Recorded)
+    displayName: Deepgram Base (Batch)
     costPerMinute: 0.0145
     sttType: batch
     maxDuration: null
@@ -161,9 +233,18 @@ models:
     supportedLanguages: null
     status: active
     launchDate: "2022-07-07"
+  - modelId: deepgram-enhanced
+    provider: deepgram
+    displayName: Deepgram Enhanced
+    costPerMinute: 0.0165
+    sttType: batch
+    maxDuration: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
   - modelId: deepgram-enhanced-batch
     provider: deepgram
-    displayName: Deepgram Enhanced (Pre-Recorded)
+    displayName: Deepgram Enhanced (Batch)
     costPerMinute: 0.0165
     sttType: batch
     maxDuration: null
@@ -190,7 +271,7 @@ models:
     launchDate: "2022-05-26"
   - modelId: deepgram-flux-batch
     provider: deepgram
-    displayName: Deepgram Flux (Pre-Recorded)
+    displayName: Deepgram Flux (Batch)
     costPerMinute: 0.0077
     sttType: batch
     maxDuration: null
@@ -219,14 +300,14 @@ models:
     provider: deepgram
     displayName: Deepgram Nova-2
     costPerMinute: 0.0058
-    sttType: streaming
+    sttType: batch
     maxDuration: null
-    supportedLanguages: null
+    supportedLanguages: 45
     status: active
     launchDate: "2023-12-01"
   - modelId: deepgram-nova-2-batch
     provider: deepgram
-    displayName: Deepgram Nova-1 & 2 (Pre-Recorded)
+    displayName: Deepgram Nova-2 (Batch)
     costPerMinute: 0.0058
     sttType: batch
     maxDuration: null
@@ -235,7 +316,7 @@ models:
     launchDate: "2023-11-14"
   - modelId: deepgram-nova-2-prerecorded
     provider: deepgram
-    displayName: Deepgram Nova-1 & 2 (Pre-Recorded)
+    displayName: Deepgram Nova-2 (Pre-Recorded)
     costPerMinute: 0.0058
     sttType: batch
     maxDuration: null
@@ -244,7 +325,7 @@ models:
     launchDate: "2023-11-14"
   - modelId: deepgram-nova-2-streaming
     provider: deepgram
-    displayName: Deepgram Nova-1 & 2 (Streaming)
+    displayName: Deepgram Nova-2 (Streaming)
     costPerMinute: 0.0058
     sttType: streaming
     maxDuration: null
@@ -255,14 +336,23 @@ models:
     provider: deepgram
     displayName: Deepgram Nova-3
     costPerMinute: 0.0077
-    sttType: streaming
+    sttType: batch
     maxDuration: null
-    supportedLanguages: null
+    supportedLanguages: 45
     status: active
     launchDate: "2025-01-01"
+  - modelId: deepgram-nova-3-monolingual
+    provider: deepgram
+    displayName: Deepgram Nova-3 (Monolingual)
+    costPerMinute: 0.0077
+    sttType: batch
+    maxDuration: null
+    supportedLanguages: 45
+    status: active
+    launchDate: null
   - modelId: deepgram-nova-3-monolingual-batch
     provider: deepgram
-    displayName: Deepgram Nova-3 Monolingual (Pre-Recorded)
+    displayName: Deepgram Nova-3 Monolingual (Batch)
     costPerMinute: 0.0077
     sttType: batch
     maxDuration: null
@@ -291,14 +381,14 @@ models:
     provider: deepgram
     displayName: Deepgram Nova-3 Multilingual
     costPerMinute: 0.0092
-    sttType: streaming
+    sttType: batch
     maxDuration: null
-    supportedLanguages: null
+    supportedLanguages: 45
     status: active
     launchDate: "2025-01-01"
   - modelId: deepgram-nova-3-multilingual-batch
     provider: deepgram
-    displayName: Deepgram Nova-3 Multilingual (Pre-Recorded)
+    displayName: Deepgram Nova-3 Multilingual (Batch)
     costPerMinute: 0.0092
     sttType: batch
     maxDuration: null
@@ -327,7 +417,7 @@ models:
     provider: elevenlabs
     displayName: ElevenLabs Scribe v1
     costPerMinute: 0.0067
-    sttType: batch
+    sttType: null
     maxDuration: null
     supportedLanguages: null
     status: active
@@ -336,7 +426,7 @@ models:
     provider: elevenlabs
     displayName: ElevenLabs Scribe v2
     costPerMinute: 0.0067
-    sttType: batch
+    sttType: null
     maxDuration: null
     supportedLanguages: null
     status: active
@@ -345,7 +435,7 @@ models:
     provider: elevenlabs
     displayName: ElevenLabs Scribe v2 Realtime
     costPerMinute: 0.008
-    sttType: streaming
+    sttType: null
     maxDuration: null
     supportedLanguages: null
     status: active
@@ -354,16 +444,34 @@ models:
     provider: google-cloud
     displayName: Google Cloud STT Enhanced
     costPerMinute: 0.036
-    sttType: batch
+    sttType: null
     maxDuration: null
     supportedLanguages: null
     status: active
     launchDate: "2018-04-01"
+  - modelId: google-cloud-stt-medical-conversation
+    provider: google-cloud
+    displayName: Google Cloud Speech-to-Text Medical Conversation
+    costPerMinute: 0.078
+    sttType: batch
+    maxDuration: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
+  - modelId: google-cloud-stt-medical-dictation
+    provider: google-cloud
+    displayName: Google Cloud Speech-to-Text Medical Dictation
+    costPerMinute: 0.078
+    sttType: batch
+    maxDuration: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
   - modelId: google-cloud-stt-standard
     provider: google-cloud
     displayName: Google Cloud STT Standard
     costPerMinute: 0.024
-    sttType: batch
+    sttType: null
     maxDuration: null
     supportedLanguages: null
     status: active
@@ -388,7 +496,7 @@ models:
     launchDate: "2021-11-08"
   - modelId: google-cloud-stt-v1-standard-logged
     provider: google-cloud
-    displayName: Google Cloud Speech-to-Text V1 Standard (with data logging)
+    displayName: Google Cloud Speech-to-Text V1 Standard (With Data Logging)
     costPerMinute: 0.016
     sttType: batch
     maxDuration: null
@@ -397,7 +505,7 @@ models:
     launchDate: "2017-04-18"
   - modelId: google-cloud-stt-v1-standard-unlogged
     provider: google-cloud
-    displayName: Google Cloud Speech-to-Text V1 Standard (without data logging)
+    displayName: Google Cloud Speech-to-Text V1 Standard (Without Data Logging)
     costPerMinute: 0.024
     sttType: batch
     maxDuration: null
@@ -406,7 +514,7 @@ models:
     launchDate: "2017-04-18"
   - modelId: google-cloud-stt-v1-standard-with-logging
     provider: google-cloud
-    displayName: Google Cloud Speech-to-Text V1 Standard (with data logging)
+    displayName: Google Cloud Speech-to-Text V1 Standard (With Logging)
     costPerMinute: 0.016
     sttType: batch
     maxDuration: null
@@ -415,7 +523,7 @@ models:
     launchDate: "2017-04-18"
   - modelId: google-cloud-stt-v1-standard-without-logging
     provider: google-cloud
-    displayName: Google Cloud Speech-to-Text V1 Standard (without data logging)
+    displayName: Google Cloud Speech-to-Text V1 Standard (Without Logging)
     costPerMinute: 0.024
     sttType: batch
     maxDuration: null
@@ -433,16 +541,25 @@ models:
     launchDate: "2023-08-09"
   - modelId: google-cloud-stt-v2-standard
     provider: google-cloud
-    displayName: Google Cloud Speech-to-Text V2 Standard (0–500k min)
+    displayName: Google Cloud Speech-to-Text V2 Standard
     costPerMinute: 0.016
     sttType: batch
     maxDuration: null
     supportedLanguages: null
     status: active
     launchDate: "2023-08-09"
+  - modelId: google-cloud-stt-v2-standard-dynamic-batch
+    provider: google-cloud
+    displayName: Google Cloud Speech-to-Text V2 Standard Dynamic Batch
+    costPerMinute: 0.003
+    sttType: batch
+    maxDuration: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
   - modelId: google-cloud-stt-v2-standard-tier2
     provider: google-cloud
-    displayName: Google Cloud Speech-to-Text V2 Standard (500k–1M min)
+    displayName: Google Cloud Speech-to-Text V2 Standard (Tier 2)
     costPerMinute: 0.01
     sttType: batch
     maxDuration: null
@@ -451,7 +568,7 @@ models:
     launchDate: "2023-08-09"
   - modelId: google-cloud-stt-v2-standard-tier3
     provider: google-cloud
-    displayName: Google Cloud Speech-to-Text V2 Standard (1M–2M min)
+    displayName: Google Cloud Speech-to-Text V2 Standard (Tier 3)
     costPerMinute: 0.008
     sttType: batch
     maxDuration: null
@@ -460,13 +577,22 @@ models:
     launchDate: "2023-08-09"
   - modelId: google-cloud-stt-v2-standard-tier4
     provider: google-cloud
-    displayName: Google Cloud Speech-to-Text V2 Standard (2M+ min)
+    displayName: Google Cloud Speech-to-Text V2 Standard (Tier 4)
     costPerMinute: 0.004
     sttType: batch
     maxDuration: null
     supportedLanguages: null
     status: active
     launchDate: "2023-08-09"
+  - modelId: google-cloud-stt-v2-standard-tier5
+    provider: google-cloud
+    displayName: Google Cloud STT V2 Standard (2M+ min)
+    costPerMinute: 0.004
+    sttType: batch
+    maxDuration: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
   - modelId: openai-gpt-4o-mini-transcribe
     provider: openai
     displayName: OpenAI GPT-4o Mini Transcribe
@@ -487,7 +613,7 @@ models:
     launchDate: "2025-03-20"
   - modelId: openai-gpt-4o-transcribe-diarize
     provider: openai
-    displayName: OpenAI GPT-4o Transcribe (Diarize)
+    displayName: OpenAI GPT-4o Transcribe with Diarization
     costPerMinute: 0.006
     sttType: batch
     maxDuration: null
@@ -512,6 +638,15 @@ models:
     supportedLanguages: null
     status: active
     launchDate: "2025-03-01"
+  - modelId: openai-gpt4o-transcribe-diarize
+    provider: openai
+    displayName: OpenAI GPT-4o Transcribe Diarize
+    costPerMinute: 0.006
+    sttType: batch
+    maxDuration: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
   - modelId: openai-whisper-1
     provider: openai
     displayName: OpenAI Whisper

@@ -6,10 +6,9 @@ models:
     pricePerMegapixel: null
     defaultResolution: 1024x1024
     qualityTier: standard
-    maxResolution: 1024x1024
+    maxResolution: null
     supportedFormats:
       - png
-      - jpeg
     status: active
     launchDate: "2022-11-01"
   - modelId: dall-e-3-hd-1024
@@ -22,8 +21,6 @@ models:
     maxResolution: 1792x1024
     supportedFormats:
       - png
-      - jpeg
-      - webp
     status: active
     launchDate: "2023-10-01"
   - modelId: dall-e-3-hd-1792
@@ -31,13 +28,11 @@ models:
     displayName: DALL-E 3 HD 1792x1024
     pricePerImage: 0.12
     pricePerMegapixel: null
-    defaultResolution: 1024x1792
+    defaultResolution: 1792x1024
     qualityTier: hd
     maxResolution: null
     supportedFormats:
       - png
-      - jpeg
-      - webp
     status: active
     launchDate: "2023-10-01"
   - modelId: dall-e-3-standard-1024
@@ -50,8 +45,6 @@ models:
     maxResolution: 1792x1024
     supportedFormats:
       - png
-      - jpeg
-      - webp
     status: active
     launchDate: "2023-10-01"
   - modelId: dall-e-3-standard-1792
@@ -59,13 +52,11 @@ models:
     displayName: DALL-E 3 Standard 1792x1024
     pricePerImage: 0.08
     pricePerMegapixel: null
-    defaultResolution: 1024x1792
+    defaultResolution: 1792x1024
     qualityTier: standard
     maxResolution: null
     supportedFormats:
       - png
-      - jpeg
-      - webp
     status: active
     launchDate: "2023-10-01"
   - modelId: fal-flux-1-dev
@@ -78,12 +69,11 @@ models:
     maxResolution: null
     supportedFormats:
       - png
-      - jpeg
     status: active
     launchDate: "2024-08-01"
   - modelId: fal-flux-1-kontext-pro
     provider: fal
-    displayName: fal FLUX.1 Kontext Pro
+    displayName: Flux Kontext Pro
     pricePerImage: 0.04
     pricePerMegapixel: null
     defaultResolution: 1024x1024
@@ -91,21 +81,19 @@ models:
     maxResolution: null
     supportedFormats:
       - png
-      - jpeg
     status: active
     launchDate: "2025-05-29"
   - modelId: fal-flux-1-pro
     provider: fal
-    displayName: fal FLUX 1 Pro
-    pricePerImage: 0.025
-    pricePerMegapixel: null
+    displayName: FLUX.1 [pro] (legacy)
+    pricePerImage: 0.05
+    pricePerMegapixel: 0.05
     defaultResolution: 1024x1024
     qualityTier: standard
     maxResolution: null
     supportedFormats:
-      - png
       - jpeg
-    status: active
+    status: deprecated
     launchDate: "2025-01-15"
   - modelId: fal-flux-1-schnell
     provider: fal
@@ -117,38 +105,37 @@ models:
     maxResolution: null
     supportedFormats:
       - png
-      - jpeg
     status: active
     launchDate: "2024-08-01"
   - modelId: fal-flux-2-flex
     provider: fal
-    displayName: fal FLUX.2 Flex
+    displayName: FLUX.2 [flex]
     pricePerImage: 0.05
     pricePerMegapixel: 0.05
     defaultResolution: 1024x1024
     qualityTier: standard
     maxResolution: null
     supportedFormats:
-      - png
       - jpeg
+      - png
     status: active
     launchDate: "2025-11-25"
   - modelId: fal-flux-2-pro
     provider: fal
-    displayName: fal FLUX 2 Pro
+    displayName: FLUX.2 [pro] Text-to-Image
     pricePerImage: 0.03
-    pricePerMegapixel: null
+    pricePerMegapixel: 0.03
     defaultResolution: 1024x1024
     qualityTier: standard
     maxResolution: null
     supportedFormats:
-      - png
       - jpeg
+      - png
     status: active
     launchDate: "2025-01-15"
   - modelId: fal-ideogram-v2
     provider: fal
-    displayName: fal Ideogram V2
+    displayName: Ideogram V2
     pricePerImage: 0.08
     pricePerMegapixel: null
     defaultResolution: 1024x1024
@@ -172,15 +159,14 @@ models:
     launchDate: "2025-06-01"
   - modelId: fal-nano-banana-2
     provider: fal
-    displayName: fal Nano Banana 2
-    pricePerImage: 0.08
+    displayName: Nano Banana 2
+    pricePerImage: 0.0398
     pricePerMegapixel: null
     defaultResolution: 1024x1024
     qualityTier: standard
-    maxResolution: 4096x4096
+    maxResolution: null
     supportedFormats:
       - png
-      - jpeg
     status: active
     launchDate: "2025-12-01"
   - modelId: fal-nano-banana-pro
@@ -190,17 +176,16 @@ models:
     pricePerMegapixel: null
     defaultResolution: 1024x1024
     qualityTier: hd
-    maxResolution: 4096x4096
+    maxResolution: null
     supportedFormats:
       - png
-      - jpeg
     status: active
     launchDate: "2025-12-01"
   - modelId: fal-qwen-image-2-pro
     provider: fal
-    displayName: fal Qwen Image 2.0 Pro
-    pricePerImage: 0.075
-    pricePerMegapixel: null
+    displayName: Qwen Image
+    pricePerImage: 0.02
+    pricePerMegapixel: 0.02
     defaultResolution: 1024x1024
     qualityTier: standard
     maxResolution: null
@@ -210,13 +195,15 @@ models:
     launchDate: "2025-10-01"
   - modelId: fal-recraft-v3
     provider: fal
-    displayName: fal Recraft V3
+    displayName: Recraft V3
     pricePerImage: 0.04
     pricePerMegapixel: null
     defaultResolution: 1024x1024
     qualityTier: standard
     maxResolution: null
     supportedFormats:
+      - webp
+      - jpeg
       - png
     status: active
     launchDate: "2025-01-15"
@@ -230,19 +217,18 @@ models:
     maxResolution: null
     supportedFormats:
       - png
-      - svg
     status: active
     launchDate: "2025-01-15"
   - modelId: fal-sd3
     provider: fal
-    displayName: fal SD3
+    displayName: Stable Diffusion 3 Medium
     pricePerImage: 0.035
     pricePerMegapixel: null
     defaultResolution: 1024x1024
     qualityTier: standard
     maxResolution: null
     supportedFormats:
-      - png
+      - jpeg
     status: active
     launchDate: "2025-01-15"
   - modelId: flux-1-fill-pro
@@ -253,7 +239,9 @@ models:
     defaultResolution: 1024x1024
     qualityTier: standard
     maxResolution: null
-    supportedFormats: []
+    supportedFormats:
+      - png
+      - jpeg
     status: active
     launchDate: "2024-11-01"
   - modelId: flux-1-kontext-max
@@ -264,12 +252,14 @@ models:
     defaultResolution: 1024x1024
     qualityTier: hd
     maxResolution: null
-    supportedFormats: []
+    supportedFormats:
+      - png
+      - jpeg
     status: active
     launchDate: "2025-05-29"
   - modelId: flux-1-kontext-pro
-    provider: fal
-    displayName: Flux Kontext Pro
+    provider: bfl
+    displayName: FLUX.1 Kontext [pro]
     pricePerImage: 0.04
     pricePerMegapixel: null
     defaultResolution: 1024x1024
@@ -288,7 +278,9 @@ models:
     defaultResolution: 1024x1024
     qualityTier: standard
     maxResolution: null
-    supportedFormats: []
+    supportedFormats:
+      - png
+      - jpeg
     status: active
     launchDate: "2024-10-01"
   - modelId: flux-1.1-pro-raw
@@ -299,7 +291,9 @@ models:
     defaultResolution: 1024x1024
     qualityTier: hd
     maxResolution: null
-    supportedFormats: []
+    supportedFormats:
+      - png
+      - jpeg
     status: active
     launchDate: "2024-11-01"
   - modelId: flux-1.1-pro-ultra
@@ -310,18 +304,22 @@ models:
     defaultResolution: 1024x1024
     qualityTier: ultra
     maxResolution: null
-    supportedFormats: []
+    supportedFormats:
+      - png
+      - jpeg
     status: active
     launchDate: "2024-11-01"
   - modelId: flux-2-flex
     provider: bfl
     displayName: FLUX.2 [flex]
     pricePerImage: 0.05
-    pricePerMegapixel: null
+    pricePerMegapixel: 0.05
     defaultResolution: 1024x1024
     qualityTier: ultra
     maxResolution: null
-    supportedFormats: []
+    supportedFormats:
+      - png
+      - jpeg
     status: active
     launchDate: "2025-11-25"
   - modelId: flux-2-klein-4b
@@ -332,7 +330,9 @@ models:
     defaultResolution: 1024x1024
     qualityTier: standard
     maxResolution: null
-    supportedFormats: []
+    supportedFormats:
+      - png
+      - jpeg
     status: active
     launchDate: "2026-01-15"
   - modelId: flux-2-klein-9b
@@ -343,7 +343,9 @@ models:
     defaultResolution: 1024x1024
     qualityTier: standard
     maxResolution: null
-    supportedFormats: []
+    supportedFormats:
+      - png
+      - jpeg
     status: active
     launchDate: "2026-01-15"
   - modelId: flux-2-pro
@@ -354,7 +356,9 @@ models:
     defaultResolution: 1024x1024
     qualityTier: hd
     maxResolution: null
-    supportedFormats: []
+    supportedFormats:
+      - png
+      - jpeg
     status: active
     launchDate: "2025-11-25"
   - modelId: gpt-image-1-high
@@ -363,12 +367,10 @@ models:
     pricePerImage: 0.167
     pricePerMegapixel: null
     defaultResolution: 1024x1024
-    qualityTier: hd
-    maxResolution: 1536x1024
+    qualityTier: ultra
+    maxResolution: 1024x1536
     supportedFormats:
       - png
-      - jpeg
-      - webp
     status: active
     launchDate: "2025-04-23"
   - modelId: gpt-image-1-low
@@ -378,11 +380,9 @@ models:
     pricePerMegapixel: null
     defaultResolution: 1024x1024
     qualityTier: standard
-    maxResolution: 1536x1024
+    maxResolution: 1024x1536
     supportedFormats:
       - png
-      - jpeg
-      - webp
     status: active
     launchDate: "2025-04-23"
   - modelId: gpt-image-1-medium
@@ -391,12 +391,10 @@ models:
     pricePerImage: 0.042
     pricePerMegapixel: null
     defaultResolution: 1024x1024
-    qualityTier: standard
-    maxResolution: 1536x1024
+    qualityTier: hd
+    maxResolution: 1024x1536
     supportedFormats:
       - png
-      - jpeg
-      - webp
     status: active
     launchDate: "2025-04-23"
   - modelId: grok-imagine-image
@@ -428,7 +426,7 @@ models:
   - modelId: ideogram-v3
     provider: ideogram
     displayName: Ideogram 3.0 Default
-    pricePerImage: 0.024
+    pricePerImage: 0.016
     pricePerMegapixel: null
     defaultResolution: 1024x1024
     qualityTier: standard
@@ -471,7 +469,9 @@ models:
     defaultResolution: 1024x1024
     qualityTier: standard
     maxResolution: null
-    supportedFormats: []
+    supportedFormats:
+      - png
+      - jpeg
     status: preview
     launchDate: "2025-05-01"
   - modelId: imagen-4-standard
@@ -482,7 +482,9 @@ models:
     defaultResolution: 1024x1024
     qualityTier: hd
     maxResolution: null
-    supportedFormats: []
+    supportedFormats:
+      - png
+      - jpeg
     status: preview
     launchDate: "2025-05-01"
   - modelId: imagen-4-ultra
@@ -493,7 +495,9 @@ models:
     defaultResolution: 1024x1024
     qualityTier: ultra
     maxResolution: null
-    supportedFormats: []
+    supportedFormats:
+      - png
+      - jpeg
     status: preview
     launchDate: "2025-05-01"
   - modelId: recraft-v4-raster
@@ -502,7 +506,7 @@ models:
     pricePerImage: 0.04
     pricePerMegapixel: null
     defaultResolution: 1024x1024
-    qualityTier: standard
+    qualityTier: hd
     maxResolution: null
     supportedFormats:
       - png
@@ -516,7 +520,7 @@ models:
     pricePerImage: 0.08
     pricePerMegapixel: null
     defaultResolution: 1024x1024
-    qualityTier: standard
+    qualityTier: hd
     maxResolution: null
     supportedFormats:
       - svg

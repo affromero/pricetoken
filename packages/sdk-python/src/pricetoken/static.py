@@ -21,7 +21,7 @@ STATIC_PRICING: list[ModelPricing] = [
         confidence_level="high",
         freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
         last_updated=None,
-        launch_date="2025-10-15",
+        launch_date="2025-10-01",
     ),
     ModelPricing(
         model_id="claude-opus-4-6",
@@ -72,7 +72,7 @@ STATIC_PRICING: list[ModelPricing] = [
         confidence_level="high",
         freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
         last_updated=None,
-        launch_date="2025-08-15",
+        launch_date="2024-03-01",
     ),
     ModelPricing(
         model_id="command-r-plus",
@@ -89,7 +89,7 @@ STATIC_PRICING: list[ModelPricing] = [
         confidence_level="high",
         freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
         last_updated=None,
-        launch_date="2025-08-15",
+        launch_date="2024-08-01",
     ),
     ModelPricing(
         model_id="deepseek-chat",
@@ -111,7 +111,7 @@ STATIC_PRICING: list[ModelPricing] = [
     ModelPricing(
         model_id="deepseek-reasoner",
         provider="deepseek",
-        display_name="DeepSeek Reasoner (V3.2 Thinking)",
+        display_name="DeepSeek Reasoner (V3.2)",
         input_per_m_tok=0.28,
         output_per_m_tok=0.42,
         context_window=131_072,
@@ -123,7 +123,7 @@ STATIC_PRICING: list[ModelPricing] = [
         confidence_level="high",
         freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
         last_updated=None,
-        launch_date="2025-01-20",
+        launch_date="2025-12-01",
     ),
     ModelPricing(
         model_id="gemini-2.0-flash",
@@ -298,7 +298,7 @@ STATIC_PRICING: list[ModelPricing] = [
     ModelPricing(
         model_id="gpt-4.1-mini",
         provider="openai",
-        display_name="GPT-4.1 mini",
+        display_name="GPT-4.1 Mini",
         input_per_m_tok=0.4,
         output_per_m_tok=1.6,
         context_window=1_000_000,
@@ -315,7 +315,7 @@ STATIC_PRICING: list[ModelPricing] = [
     ModelPricing(
         model_id="gpt-4.1-nano",
         provider="openai",
-        display_name="GPT-4.1 nano",
+        display_name="GPT-4.1 Nano",
         input_per_m_tok=0.1,
         output_per_m_tok=0.4,
         context_window=1_000_000,
@@ -349,7 +349,7 @@ STATIC_PRICING: list[ModelPricing] = [
     ModelPricing(
         model_id="gpt-4o-mini",
         provider="openai",
-        display_name="GPT-4o mini",
+        display_name="GPT-4o Mini",
         input_per_m_tok=0.15,
         output_per_m_tok=0.6,
         context_window=128_000,
@@ -383,7 +383,7 @@ STATIC_PRICING: list[ModelPricing] = [
     ModelPricing(
         model_id="gpt-5-mini",
         provider="openai",
-        display_name="GPT-5 mini",
+        display_name="GPT-5 Mini",
         input_per_m_tok=0.25,
         output_per_m_tok=2,
         context_window=400_000,
@@ -400,7 +400,7 @@ STATIC_PRICING: list[ModelPricing] = [
     ModelPricing(
         model_id="gpt-5-nano",
         provider="openai",
-        display_name="GPT-5 nano",
+        display_name="GPT-5 Nano",
         input_per_m_tok=0.05,
         output_per_m_tok=0.4,
         context_window=400_000,
@@ -638,7 +638,7 @@ STATIC_PRICING: list[ModelPricing] = [
     ModelPricing(
         model_id="o3-mini",
         provider="openai",
-        display_name="o3-mini",
+        display_name="o3 Mini",
         input_per_m_tok=1.1,
         output_per_m_tok=4.4,
         context_window=200_000,
@@ -655,7 +655,7 @@ STATIC_PRICING: list[ModelPricing] = [
     ModelPricing(
         model_id="o3-pro",
         provider="openai",
-        display_name="o3-pro",
+        display_name="o3 Pro",
         input_per_m_tok=20,
         output_per_m_tok=80,
         context_window=200_000,
@@ -672,7 +672,7 @@ STATIC_PRICING: list[ModelPricing] = [
     ModelPricing(
         model_id="o4-mini",
         provider="openai",
-        display_name="o4-mini",
+        display_name="o4 Mini",
         input_per_m_tok=1.1,
         output_per_m_tok=4.4,
         context_window=200_000,
@@ -693,7 +693,7 @@ STATIC_PRICING: list[ModelPricing] = [
         input_per_m_tok=0.3472,
         output_per_m_tok=1.3889,
         context_window=262_144,
-        max_output_tokens=32768,
+        max_output_tokens=65536,
         source="seed",
         status="active",
         confidence="high",
@@ -701,7 +701,7 @@ STATIC_PRICING: list[ModelPricing] = [
         confidence_level="high",
         freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
         last_updated=None,
-        launch_date="2026-01-15",
+        launch_date="2025-09-23",
     ),
     ModelPricing(
         model_id="qwq-32b",
@@ -718,6 +718,6 @@ STATIC_PRICING: list[ModelPricing] = [
         confidence_level="high",
         freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
         last_updated=None,
-        launch_date="2025-12-01",
+        launch_date="2025-03-05",
     ),
 ]
