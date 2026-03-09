@@ -197,3 +197,14 @@ models:
     lipSync: true
     status: active
     launchDate: "2024-06-01"
+  - modelId: runway-characters
+    provider: runway
+    displayName: Runway Characters (GWM-1 Avatars)
+    costPerMinute: 0.2
+    avatarType: standard
+    resolution: 720p
+    maxDuration: null
+    qualityMode: null
+    lipSync: true
+    status: active
+    launchDate: "2026-03-09"
