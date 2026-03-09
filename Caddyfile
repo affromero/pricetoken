@@ -1,3 +1,7 @@
+www.pricetoken.ai {
+  redir https://pricetoken.ai{uri} permanent
+}
+
 pricetoken.ai {
   reverse_proxy localhost:3001
   encode gzip zstd
