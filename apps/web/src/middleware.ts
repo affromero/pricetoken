@@ -21,7 +21,9 @@ export async function middleware(request: NextRequest) {
       pathname === '/api/admin/auth' ||
       pathname === '/api/admin/auth/logout'
     ) {
-      return NextResponse.next();
+      const response = NextResponse.next();
+      response.headers.set('X-Robots-Tag', 'noindex');
+      return response;
     }
 
     const { verifySessionToken, COOKIE_NAME } = await import('@/lib/admin-auth');
@@ -43,12 +45,16 @@ export async function middleware(request: NextRequest) {
 
   // Analytics API routes — no rate limiting
   if (pathname.startsWith('/api/analytics/')) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    response.headers.set('X-Robots-Tag', 'noindex');
+    return response;
   }
 
   // Cron routes — pass through (auth handled in route handlers)
   if (pathname.startsWith('/api/cron/')) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    response.headers.set('X-Robots-Tag', 'noindex');
+    return response;
   }
 
   // Rate limiting — only for /api/v1/ routes
@@ -122,6 +128,7 @@ export async function middleware(request: NextRequest) {
       response.headers.set('X-RateLimit-Limit', String(limit));
       response.headers.set('X-RateLimit-Remaining', String(result.remaining));
       response.headers.set('X-RateLimit-Reset', String(result.resetAt));
+      response.headers.set('X-Robots-Tag', 'noindex');
       return response;
     } catch {
       // If Redis is unavailable, allow the request through
@@ -131,7 +138,9 @@ export async function middleware(request: NextRequest) {
 
   // Other API routes — pass through
   if (pathname.startsWith('/api/')) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    response.headers.set('X-Robots-Tag', 'noindex');
+    return response;
   }
 
   // --- Page view tracking (fire-and-forget to internal API) ---
