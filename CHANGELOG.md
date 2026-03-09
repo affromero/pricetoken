@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.11.1] - 2026-03-09
+
+### Added
+- Runway Characters (GWM-1 Avatars) — first non-HeyGen avatar provider, real-time conversational avatars at $0.20/min
+
 ## [0.11.0] - 2026-03-08
 
 ### Added
