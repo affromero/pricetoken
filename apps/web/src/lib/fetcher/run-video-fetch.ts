@@ -16,7 +16,9 @@ import { checkVideoPriceSanity } from './sanity-bounds';
 import { VIDEO_VERIFICATION_SYSTEM_PROMPT } from './video-verification-prompt';
 import { arbitrate } from './verify-with-retry';
 import { getFetcherConfig, parseArbitratorAgent } from '@/lib/fetcher-config';
+import { prisma } from '@/lib/prisma';
 import type { VideoVerificationResult } from './video-verification-types';
+import type { FetchOptions } from './run-fetch';
 
 export interface VideoFetchResult {
   totalModels: number;
@@ -26,7 +28,7 @@ export interface VideoFetchResult {
   verificationResults: Map<string, VideoVerificationResult>;
 }
 
-export async function runVideoFetch(): Promise<VideoFetchResult> {
+export async function runVideoFetch(options: FetchOptions = {}): Promise<VideoFetchResult> {
   await seedVideoFromStatic(STATIC_VIDEO_PRICING);
 
   const knownIds = await getKnownVideoModelIds();
@@ -44,9 +46,22 @@ export async function runVideoFetch(): Promise<VideoFetchResult> {
       // Skip providers that already have a successful run today
       const todayRun = await getLastFetchRun(providerId);
       if (todayRun && todayRun.createdAt >= startOfDay && !todayRun.error && todayRun.totalExtracted > 0) {
-        console.log(`${config.displayName}: already verified today (${todayRun.totalExtracted} video models), skipping`);
-        totalModels += todayRun.totalExtracted;
-        continue;
+        if (options.retryFlagged) {
+          const flaggedCount = await prisma.videoPricingSnapshot.count({
+            where: { provider: providerId, source: 'flagged', createdAt: { gte: startOfDay } },
+          });
+          if (flaggedCount > 0) {
+            console.log(`${config.displayName}: ${flaggedCount} flagged video model(s) today, retrying`);
+          } else {
+            console.log(`${config.displayName}: already verified today (no flagged), skipping`);
+            totalModels += todayRun.totalExtracted;
+            continue;
+          }
+        } else {
+          console.log(`${config.displayName}: already verified today (${todayRun.totalExtracted} video models), skipping`);
+          totalModels += todayRun.totalExtracted;
+          continue;
+        }
       }
 
       console.log(`Fetching video pricing for ${config.displayName}...`);

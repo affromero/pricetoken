@@ -91,6 +91,7 @@ model FetcherConfig {
 
 model FetchRunSummary {
   id               String   @id @default(cuid())
+  category         String   @default("unknown") // 'text' | 'avatar' | 'image' | 'video' | 'stt' | 'tts'
   status           String   // 'success' | 'partial' | 'failed' | 'resolved'
   providersRun     Int
   modelsVerified   Int
@@ -100,6 +101,7 @@ model FetchRunSummary {
   createdAt        DateTime @default(now())
 
   @@index([createdAt])
+  @@index([category, createdAt])
 }
 
 model ApiUsageLog {

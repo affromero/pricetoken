@@ -15,7 +15,9 @@ import { checkImagePriceSanity } from './sanity-bounds';
 import { IMAGE_VERIFICATION_SYSTEM_PROMPT } from './image-verification-prompt';
 import { arbitrate } from './verify-with-retry';
 import { getFetcherConfig, parseArbitratorAgent } from '@/lib/fetcher-config';
+import { prisma } from '@/lib/prisma';
 import type { ImageVerificationResult } from './image-verification-types';
+import type { FetchOptions } from './run-fetch';
 
 export interface ImageFetchResult {
   totalModels: number;
@@ -25,7 +27,7 @@ export interface ImageFetchResult {
   verificationResults: Map<string, ImageVerificationResult>;
 }
 
-export async function runImagePricingFetch(): Promise<ImageFetchResult> {
+export async function runImagePricingFetch(options: FetchOptions = {}): Promise<ImageFetchResult> {
   await seedImageFromStatic();
 
   const knownIds = await getKnownImageModelIds();
@@ -44,9 +46,22 @@ export async function runImagePricingFetch(): Promise<ImageFetchResult> {
       // Skip providers that already have a successful run today
       const todayRun = await getLastFetchRun(logProvider);
       if (todayRun && todayRun.createdAt >= startOfDay && !todayRun.error && todayRun.totalExtracted > 0) {
-        console.log(`${config.displayName}: already verified today (${todayRun.totalExtracted} image models), skipping`);
-        totalModels += todayRun.totalExtracted;
-        continue;
+        if (options.retryFlagged) {
+          const flaggedCount = await prisma.imagePricingSnapshot.count({
+            where: { provider: providerId, source: 'flagged', createdAt: { gte: startOfDay } },
+          });
+          if (flaggedCount > 0) {
+            console.log(`${config.displayName}: ${flaggedCount} flagged image model(s) today, retrying`);
+          } else {
+            console.log(`${config.displayName}: already verified today (no flagged), skipping`);
+            totalModels += todayRun.totalExtracted;
+            continue;
+          }
+        } else {
+          console.log(`${config.displayName}: already verified today (${todayRun.totalExtracted} image models), skipping`);
+          totalModels += todayRun.totalExtracted;
+          continue;
+        }
       }
 
       console.log(`Fetching image pricing for ${config.displayName}...`);

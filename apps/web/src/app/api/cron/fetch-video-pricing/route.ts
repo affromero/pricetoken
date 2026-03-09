@@ -25,6 +25,7 @@ export async function GET(request: Request) {
 
     await prisma.fetchRunSummary.create({
       data: {
+        category: 'video',
         status,
         providersRun: result.verificationResults.size + result.errors.length,
         modelsVerified: result.totalModels,
@@ -47,6 +48,7 @@ export async function GET(request: Request) {
 
     await prisma.fetchRunSummary.create({
       data: {
+        category: 'video',
         status: 'failed',
         providersRun: 0,
         modelsVerified: 0,

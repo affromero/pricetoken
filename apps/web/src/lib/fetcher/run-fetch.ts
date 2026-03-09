@@ -18,6 +18,7 @@ import { checkTextPriceSanity } from './sanity-bounds';
 import { VERIFICATION_SYSTEM_PROMPT } from './verification-prompt';
 import { arbitrate } from './verify-with-retry';
 import { getFetcherConfig, parseArbitratorAgent } from '@/lib/fetcher-config';
+import { prisma } from '@/lib/prisma';
 import type { VerificationResult } from './verification-types';
 
 export interface FetchResult {
@@ -28,7 +29,11 @@ export interface FetchResult {
   verificationResults: Map<string, VerificationResult>;
 }
 
-export async function runPricingFetch(): Promise<FetchResult> {
+export interface FetchOptions {
+  retryFlagged?: boolean;
+}
+
+export async function runPricingFetch(options: FetchOptions = {}): Promise<FetchResult> {
   // Seed DB from static data if empty (first run)
   await seedFromStatic();
 
@@ -48,9 +53,22 @@ export async function runPricingFetch(): Promise<FetchResult> {
       // Skip providers that already have a successful run today
       const todayRun = await getLastFetchRun(providerId);
       if (todayRun && todayRun.createdAt >= startOfDay && !todayRun.error && todayRun.totalExtracted > 0) {
-        console.log(`${config.displayName}: already verified today (${todayRun.totalExtracted} models), skipping`);
-        totalModels += todayRun.totalExtracted;
-        continue;
+        if (options.retryFlagged) {
+          const flaggedCount = await prisma.modelPricingSnapshot.count({
+            where: { provider: providerId, source: 'flagged', createdAt: { gte: startOfDay } },
+          });
+          if (flaggedCount > 0) {
+            console.log(`${config.displayName}: ${flaggedCount} flagged model(s) today, retrying`);
+          } else {
+            console.log(`${config.displayName}: already verified today (no flagged), skipping`);
+            totalModels += todayRun.totalExtracted;
+            continue;
+          }
+        } else {
+          console.log(`${config.displayName}: already verified today (${todayRun.totalExtracted} models), skipping`);
+          totalModels += todayRun.totalExtracted;
+          continue;
+        }
       }
 
       console.log(`Fetching pricing for ${config.displayName}...`);
