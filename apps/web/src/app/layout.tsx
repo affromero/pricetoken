@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'PriceToken — Real-time LLM Pricing API & Cost Calculator',
     description:
-      'Free REST API for real-time LLM pricing data. Compare costs across OpenAI, Anthropic, Google, and a growing list of providers. Open source npm package with offline cost calculator.',
+      'Free REST API for real-time LLM pricing. Compare costs across OpenAI, Anthropic, Google, and more. Open-source npm package with offline cost calculator.',
     url: 'https://pricetoken.ai',
     siteName: 'PriceToken',
     type: 'website',
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'PriceToken — Real-time LLM Pricing API & Cost Calculator',
     description:
-      'Free REST API for real-time LLM pricing data. Compare costs across OpenAI, Anthropic, Google, and a growing list of providers. Open source npm package with offline cost calculator.',
+      'Free REST API for real-time LLM pricing. Compare costs across OpenAI, Anthropic, Google, and more. Open-source npm package with offline cost calculator.',
     site: '@afromero',
     creator: '@afromero',
   },
