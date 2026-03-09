@@ -120,6 +120,7 @@ jobs:
             docker compose -f docker-compose.prod.yml exec web npx tsx scripts/seed-video.ts
 
             echo "Syncing systemd timer..."
+            chmod +x ~/pricetoken/infra/fetch-all-pricing.sh
             sudo cp ~/pricetoken/infra/pricetoken-fetch.service /etc/systemd/system/
             sudo cp ~/pricetoken/infra/pricetoken-fetch.timer /etc/systemd/system/
             sudo systemctl daemon-reload

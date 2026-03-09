@@ -1,5 +1,5 @@
 [Unit]
-Description=PriceToken daily pricing fetch
+Description=PriceToken daily pricing fetch (all categories + retry)
 After=network-online.target docker.service
 Wants=network-online.target
 
@@ -7,8 +7,8 @@ Wants=network-online.target
 Type=oneshot
 User=sotto
 EnvironmentFile=/home/sotto/.config/pricetoken/env
-ExecStart=/bin/bash -c 'curl -sf --max-time 300 -H "Authorization: Bearer ${CRON_SECRET}" http://localhost:3001/api/cron/fetch-pricing'
-TimeoutStartSec=600
+ExecStart=/home/sotto/pricetoken/infra/fetch-all-pricing.sh
+TimeoutStartSec=3600
 StandardOutput=journal
 StandardError=journal
 
