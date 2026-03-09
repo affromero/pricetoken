@@ -10,42 +10,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publish:
-    name: Publish Docker Image
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: docker/setup-buildx-action@v3
-
-      - name: Login to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Short SHA
-        id: sha
-        run: echo "short=${GITHUB_SHA::8}" >> "$GITHUB_OUTPUT"
-
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: |
-            ghcr.io/affromero/pricetoken:latest
-            ghcr.io/affromero/pricetoken:${{ steps.sha.outputs.short }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
   deploy:
     name: Deploy to Production
-    needs: publish
     runs-on: ubuntu-latest
     outputs:
       deploy_status: ${{ steps.deploy.outcome }}
@@ -90,8 +56,8 @@ jobs:
             chmod 600 ~/.config/pricetoken/env
             rm -f /tmp/pt-cron-env
 
-            echo "Pulling pre-built image from GHCR..."
-            docker compose -f docker-compose.prod.yml pull web
+            echo "Building containers..."
+            docker compose -f docker-compose.prod.yml build web
 
             echo "Starting infra services..."
             docker compose -f docker-compose.prod.yml up -d --no-recreate postgres redis
@@ -170,7 +136,7 @@ jobs:
 
   notify:
     name: Telegram Notification
-    needs: [publish, deploy]
+    needs: deploy
     if: always()
     runs-on: ubuntu-latest
     steps:
