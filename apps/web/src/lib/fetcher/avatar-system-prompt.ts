@@ -36,8 +36,10 @@ IMPORTANT — use these exact modelId values when extracting:
   Note: HeyGen has multiple avatar generations (III, IV). "heygen-translation-speed" is fast dubbing, "heygen-translation-precision" is lip-synced, "heygen-translation-proofread" is audio-only overlay.
 - FAL: fal-heygen-avatar4-i2v, fal-heygen-avatar4-twin
   Note: FAL hosts HeyGen Avatar 4 models as API aggregator. Prefix with "fal-".
+- Runway: runway-characters
+  Note: Runway Characters (GWM-1 Avatars) uses credit-based pricing at $0.01/credit. Convert: 2 credits upfront + 2 credits per 6 seconds = $0.20/min ongoing rate. Use the per-minute ongoing rate for costPerMinute (exclude one-time session fees).
 
-Map display names to these IDs. For example: "Interactive Avatar IV" → "heygen-avatar-iv", "Digital Twin IV" → "heygen-digital-twin-iv", "Photo Avatar III" → "heygen-photo-avatar-iii", "Translation (Speed)" → "heygen-translation-speed".
+Map display names to these IDs. For example: "Interactive Avatar IV" → "heygen-avatar-iv", "Digital Twin IV" → "heygen-digital-twin-iv", "Photo Avatar III" → "heygen-photo-avatar-iii", "Translation (Speed)" → "heygen-translation-speed", "GWM Avatars" or "gwm1_avatars" → "runway-characters".
 
 Additional rules:
 - Each avatar type/tier should be a separate entry (standard vs premium vs translation).

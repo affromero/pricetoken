@@ -17,4 +17,11 @@ export const AVATAR_PROVIDERS: Record<string, ProviderConfig> = {
     ],
     browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
+  runway: {
+    url: 'https://docs.dev.runwayml.com/guides/pricing/',
+    displayName: 'Runway',
+    requiresBrowser: true,
+    fallbackUrls: ['https://docs.dev.runwayml.com/guides/models/'],
+    browserOptions: { waitMs: 5000, scrollToBottom: true },
+  },
 };
