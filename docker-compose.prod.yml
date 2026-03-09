@@ -23,6 +23,7 @@ services:
       timeout: 5s
       retries: 5
   web:
+    image: ghcr.io/affromero/pricetoken:latest
     restart: unless-stopped
     build:
       context: .
