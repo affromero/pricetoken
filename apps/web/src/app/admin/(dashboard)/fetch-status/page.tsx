@@ -5,6 +5,7 @@ import styles from './page.module.css';
 
 interface FetchRunSummary {
   id: string;
+  category: string;
   status: string;
   providersRun: number;
   modelsVerified: number;
@@ -98,6 +99,7 @@ export default function FetchStatusPage() {
           <thead>
             <tr>
               <th>Date</th>
+              <th>Category</th>
               <th>Status</th>
               <th>Providers</th>
               <th>Verified</th>
@@ -116,6 +118,9 @@ export default function FetchStatusPage() {
                     hour: '2-digit',
                     minute: '2-digit',
                   })}
+                </td>
+                <td>
+                  <span className={styles.categoryBadge}>{run.category}</span>
                 </td>
                 <td>
                   <span className={`${styles.statusBadge} ${styles[`status_${run.status}`] ?? ''}`}>

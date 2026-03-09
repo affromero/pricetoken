@@ -11,13 +11,14 @@ export async function GET(request: Request) {
     return apiError('Unauthorized', 401);
   }
 
-  // Check freeze state
+  // Check freeze state (scoped to text category)
   const lastRun = await prisma.fetchRunSummary.findFirst({
+    where: { category: 'text' },
     orderBy: { createdAt: 'desc' },
   });
 
   if (lastRun?.status === 'failed') {
-    return apiError('Fetch frozen due to previous failure. Manual review required.', 423);
+    return apiError('Text fetch frozen due to previous failure. Manual review required.', 423);
   }
 
   try {
@@ -35,6 +36,7 @@ export async function GET(request: Request) {
 
     await prisma.fetchRunSummary.create({
       data: {
+        category: 'text',
         status,
         providersRun: result.verificationResults.size + result.errors.length,
         modelsVerified: result.totalModels,
@@ -58,6 +60,7 @@ export async function GET(request: Request) {
 
     await prisma.fetchRunSummary.create({
       data: {
+        category: 'text',
         status: 'failed',
         providersRun: 0,
         modelsVerified: 0,
