@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import styles from './DocsModeSwitcher.module.css';
 
-type Modality = 'text' | 'image' | 'video' | 'avatar' | 'tts' | 'stt';
+type Modality = 'text' | 'image' | 'video' | 'avatar' | 'tts' | 'stt' | 'music';
 
 interface Tab {
   id: Modality;
@@ -79,6 +79,17 @@ const TABS: Tab[] = [
       </svg>
     ),
   },
+  {
+    id: 'music',
+    label: 'Music',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 18V5l12-2v13" />
+        <circle cx="6" cy="18" r="3" />
+        <circle cx="18" cy="16" r="3" />
+      </svg>
+    ),
+  },
 ];
 
 interface DocsModeSwitcherProps {
@@ -88,9 +99,10 @@ interface DocsModeSwitcherProps {
   avatarContent: React.ReactNode;
   ttsContent: React.ReactNode;
   sttContent: React.ReactNode;
+  musicContent: React.ReactNode;
 }
 
-export function DocsModeSwitcher({ textContent, imageContent, videoContent, avatarContent, ttsContent, sttContent }: DocsModeSwitcherProps) {
+export function DocsModeSwitcher({ textContent, imageContent, videoContent, avatarContent, ttsContent, sttContent, musicContent }: DocsModeSwitcherProps) {
   const [active, setActive] = useState<Modality>('text');
 
   const contentMap: Record<Modality, React.ReactNode> = {
@@ -100,6 +112,7 @@ export function DocsModeSwitcher({ textContent, imageContent, videoContent, avat
     avatar: avatarContent,
     tts: ttsContent,
     stt: sttContent,
+    music: musicContent,
   };
 
   return (

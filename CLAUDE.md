@@ -68,6 +68,16 @@ npm run fetch-pricing          # Run pricing scraper
 | `avatar/calculator/page.tsx` | Avatar cost calculator |
 | `avatar/compare/page.tsx` | Avatar model comparison |
 | `avatar/history/page.tsx` | Avatar price history |
+| `api/v1/music/route.ts` | `GET /api/v1/music` — all music models |
+| `api/v1/music/[modelId]/route.ts` | `GET /api/v1/music/:modelId` — single music model |
+| `api/v1/music/cheapest/route.ts` | `GET /api/v1/music/cheapest` |
+| `api/v1/music/compare/route.ts` | `GET /api/v1/music/compare` |
+| `api/v1/music/history/route.ts` | `GET /api/v1/music/history` |
+| `api/v1/music/providers/route.ts` | `GET /api/v1/music/providers` |
+| `music/page.tsx` | Music pricing page — table with official/unofficial badges |
+| `music/calculator/page.tsx` | Music cost calculator |
+| `music/compare/page.tsx` | Music model comparison |
+| `music/history/page.tsx` | Music price history |
 
 ### `apps/web/src/components/` — UI components
 
@@ -85,6 +95,10 @@ npm run fetch-pricing          # Run pricing scraper
 | `AvatarModelCompare/` | Avatar model comparison |
 | `AvatarPriceHistoryChart/` | Avatar price history chart |
 | `NonApiProviderCards/` | Non-API provider directory cards |
+| `MusicPricingTable/` | Music pricing table with pricingNote tooltips |
+| `MusicCostCalculator/` | Music cost calculator |
+| `MusicModelCompare/` | Music model comparison |
+| `MusicPriceHistoryChart/` | Music price history chart |
 
 ### `apps/web/src/lib/` — Core logic
 
@@ -97,6 +111,7 @@ npm run fetch-pricing          # Run pricing scraper
 | `pricing-queries.ts` | Shared pricing query logic for API routes |
 | `avatar-pricing-queries.ts` | Avatar pricing query logic |
 | `avatar-non-api-providers.ts` | Static config for non-API avatar providers |
+| `music-pricing-queries.ts` | Music pricing query logic |
 
 ### `apps/web/src/lib/fetcher/` — Pricing scraper pipeline
 
@@ -114,6 +129,8 @@ Pipeline: `providers.ts` → `scraper.ts` → `extractor.ts` → `store.ts` → 
 | `avatar-extractor.ts` | AI-powered avatar pricing extraction |
 | `avatar-store.ts` | Save/read avatar pricing snapshots |
 | `run-avatar-fetch.ts` | Orchestrates avatar fetch pipeline |
+| `music-providers.ts` | Music provider registry (ElevenLabs, Soundverse, SunoAPI) |
+| `music-store.ts` | Save/read music pricing snapshots |
 
 ### `registry/` — YAML model registry (single source of truth)
 
@@ -125,13 +142,14 @@ Pipeline: `providers.ts` → `scraper.ts` → `extractor.ts` → `store.ts` → 
 | `avatar.yaml` | Avatar video model pricing |
 | `image.yaml` | Image generation model pricing |
 | `video.yaml` | Video generation model pricing |
+| `music.yaml` | Music generation model pricing |
 
 ### `scripts/` — Build & generation scripts
 
 | File | Purpose |
 |------|---------|
 | `lib/formatters.ts` | Shared TS/Python formatter functions for static file generation |
-| `generate-static.ts` | Generates 12 static files from `registry/*.yaml` (`--check` for CI) |
+| `generate-static.ts` | Generates 14 static files from `registry/*.yaml` (`--check` for CI) |
 | `bootstrap-registry.ts` | One-time: bootstrapped YAML from existing TS static files |
 | `update-static.ts` | Fetches pricing from live API → writes static files |
 
@@ -146,10 +164,12 @@ Pipeline: `providers.ts` → `scraper.ts` → `extractor.ts` → `store.ts` → 
 | `src/index.ts` | Public exports |
 | `src/avatar-static.ts` | Static avatar pricing data (generated — do not hand-edit) |
 | `src/avatar-cost.ts` | `calculateAvatarCost()` — offline avatar cost calculation |
+| `src/music-static.ts` | Static music pricing data (generated — do not hand-edit) |
+| `src/music-cost.ts` | `calculateMusicCost()` — offline music cost calculation |
 
 ## Prisma Schema
 
-Models: `ModelPricingSnapshot` (pricing data), `AvatarPricingSnapshot` (avatar pricing), `ApiKey` (API key management).
+Models: `ModelPricingSnapshot` (pricing data), `AvatarPricingSnapshot` (avatar pricing), `MusicPricingSnapshot` (music pricing), `ApiKey` (API key management).
 
 ## Design System: "Developer Dark"
 
@@ -165,7 +185,7 @@ Fonts: Inter (body), JetBrains Mono (code).
 
 ## Adding a New Model or Provider
 
-When adding a new model or provider to **any** category (text, tts, stt, avatar, image, video), complete **all** of these steps:
+When adding a new model or provider to **any** category (text, tts, stt, avatar, image, video, music), complete **all** of these steps:
 
 1. **Registry** — add the model entry to `registry/<category>.yaml`
 2. **Generate static** — `npm run generate-static` (regenerates both TS + Python SDK files)

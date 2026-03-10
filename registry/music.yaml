@@ -1,0 +1,38 @@
+models:
+  - modelId: elevenlabs-eleven-music
+    provider: elevenlabs
+    displayName: ElevenLabs Eleven Music
+    costPerMinute: 0.50
+    maxDuration: null
+    outputFormat: mp3
+    vocals: true
+    official: true
+    status: active
+    launchDate: "2025-06-01"
+    pricingUrl: "https://elevenlabs.io/pricing"
+
+  - modelId: soundverse-music
+    provider: soundverse
+    displayName: Soundverse Music Generation
+    costPerMinute: 0.0125
+    maxDuration: 240
+    outputFormat: mp3
+    vocals: true
+    official: true
+    pricingNote: "Approximated from ~$0.05/song at ~4 min avg"
+    status: active
+    launchDate: "2025-01-01"
+    pricingUrl: "https://www.soundverse.ai/pricing"
+
+  - modelId: sunoapi-suno-v4.5
+    provider: sunoapi
+    displayName: Suno v4.5 via SunoAPI.org
+    costPerMinute: 0.00625
+    maxDuration: 480
+    outputFormat: mp3
+    vocals: true
+    official: false
+    pricingNote: "Unofficial wrapper. ~$0.025/song ($0.005/credit x 5 credits) at ~4 min avg"
+    status: active
+    launchDate: "2025-09-01"
+    pricingUrl: "https://sunoapi.org/billing"

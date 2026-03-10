@@ -7,9 +7,21 @@ interface StatusBadgeProps {
   confidence: DataConfidence;
   source?: string;
   freshness?: FreshnessInfo;
+  official?: boolean;
 }
 
-export function StatusBadge({ status, confidence, source, freshness }: StatusBadgeProps) {
+export function StatusBadge({ status, confidence, source, freshness, official }: StatusBadgeProps) {
+  if (official === false) {
+    return (
+      <span
+        className={`${styles.badge} ${styles.unofficial} ${styles.tooltipWrapper}`}
+        data-tooltip="Unofficial third-party API — not affiliated with the original provider."
+      >
+        Unofficial
+      </span>
+    );
+  }
+
   if (confidence === 'low' || confidence === 'medium') {
     const tooltip =
       source && freshness

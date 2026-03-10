@@ -639,3 +639,106 @@ def _parse_stt_provider_summary(data: dict[str, Any]) -> SttProviderSummary:
         model_count=data["modelCount"],
         cheapest_cost_per_minute=data["cheapestCostPerMinute"],
     )
+
+
+# ---------------------------------------------------------------------------
+# Music pricing types
+# ---------------------------------------------------------------------------
+
+
+@dataclass(slots=True)
+class MusicModelPricing:
+    model_id: str
+    provider: str
+    display_name: str
+    cost_per_minute: float
+    max_duration: int | None
+    output_format: str | None
+    vocals: bool | None
+    source: Source
+    status: ModelStatus | None
+    confidence: DataConfidence
+    confidence_score: int
+    confidence_level: ConfidenceLevel
+    freshness: FreshnessInfo
+    last_updated: str | None
+    launch_date: str | None
+    official: bool = True
+    pricing_note: str | None = None
+
+
+@dataclass(slots=True)
+class MusicCostEstimate:
+    model_id: str
+    duration_seconds: float
+    cost_per_minute: float
+    total_cost: float
+
+
+@dataclass(slots=True)
+class MusicPriceHistoryPoint:
+    date: str
+    cost_per_minute: float
+
+
+@dataclass(slots=True)
+class MusicModelHistory:
+    model_id: str
+    provider: str
+    display_name: str
+    history: list[MusicPriceHistoryPoint]
+
+
+@dataclass(slots=True)
+class MusicProviderSummary:
+    id: str
+    display_name: str
+    model_count: int
+    cheapest_cost_per_minute: float
+
+
+def _parse_music_model_pricing(data: dict[str, Any]) -> MusicModelPricing:
+    return MusicModelPricing(
+        model_id=data["modelId"],
+        provider=data["provider"],
+        display_name=data["displayName"],
+        cost_per_minute=data["costPerMinute"],
+        max_duration=data.get("maxDuration"),
+        output_format=data.get("outputFormat"),
+        vocals=data.get("vocals"),
+        source=data["source"],
+        status=data.get("status"),
+        confidence=data.get("confidence", "low"),
+        confidence_score=data.get("confidenceScore", 0),
+        confidence_level=data.get("confidenceLevel", "low"),
+        freshness=_parse_freshness(data.get("freshness")),
+        last_updated=data.get("lastUpdated"),
+        launch_date=data.get("launchDate"),
+        official=data.get("official", True),
+        pricing_note=data.get("pricingNote"),
+    )
+
+
+def _parse_music_history_point(data: dict[str, Any]) -> MusicPriceHistoryPoint:
+    return MusicPriceHistoryPoint(
+        date=data["date"],
+        cost_per_minute=data["costPerMinute"],
+    )
+
+
+def _parse_music_model_history(data: dict[str, Any]) -> MusicModelHistory:
+    return MusicModelHistory(
+        model_id=data["modelId"],
+        provider=data["provider"],
+        display_name=data["displayName"],
+        history=[_parse_music_history_point(p) for p in data["history"]],
+    )
+
+
+def _parse_music_provider_summary(data: dict[str, Any]) -> MusicProviderSummary:
+    return MusicProviderSummary(
+        id=data["id"],
+        display_name=data["displayName"],
+        model_count=data["modelCount"],
+        cheapest_cost_per_minute=data["cheapestCostPerMinute"],
+    )

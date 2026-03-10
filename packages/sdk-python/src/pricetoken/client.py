@@ -22,6 +22,9 @@ from pricetoken.types import (
     ImageProviderSummary,
     ModelHistory,
     ModelPricing,
+    MusicModelHistory,
+    MusicModelPricing,
+    MusicProviderSummary,
     PriceTokenError,
     ProviderSummary,
     SttModelHistory,
@@ -41,6 +44,9 @@ from pricetoken.types import (
     _parse_image_provider_summary,
     _parse_model_history,
     _parse_model_pricing,
+    _parse_music_model_history,
+    _parse_music_model_pricing,
+    _parse_music_provider_summary,
     _parse_provider_summary,
     _parse_stt_model_history,
     _parse_stt_model_pricing,
@@ -538,3 +544,73 @@ class PriceTokenClient:
         qs = self._build_qs(params)
         data: dict[str, Any] = self._request(f"/api/v1/stt/cheapest{qs}")
         return _parse_stt_model_pricing(data)
+
+    # Music pricing methods
+
+    def get_music_pricing(
+        self,
+        *,
+        provider: str | None = None,
+        currency: str | None = None,
+        after: str | None = None,
+        before: str | None = None,
+    ) -> list[MusicModelPricing]:
+        """Get current pricing for all music models."""
+        params = {"provider": provider, "currency": currency, "after": after, "before": before}
+        qs = self._build_qs(params)
+        data: list[dict[str, Any]] = self._request(f"/api/v1/music{qs}")
+        return [_parse_music_model_pricing(m) for m in data]
+
+    def get_music_model(
+        self,
+        model_id: str,
+        *,
+        currency: str | None = None,
+    ) -> MusicModelPricing:
+        """Get pricing for a single music model."""
+        encoded = urllib.parse.quote(model_id, safe="")
+        qs = self._build_qs({"currency": currency})
+        data: dict[str, Any] = self._request(f"/api/v1/music/{encoded}{qs}")
+        return _parse_music_model_pricing(data)
+
+    def get_music_history(
+        self,
+        *,
+        days: int | None = None,
+        model_id: str | None = None,
+        provider: str | None = None,
+    ) -> list[MusicModelHistory]:
+        """Get music price history."""
+        qs = self._build_qs({"days": days, "modelId": model_id, "provider": provider})
+        data: list[dict[str, Any]] = self._request(f"/api/v1/music/history{qs}")
+        return [_parse_music_model_history(m) for m in data]
+
+    def get_music_providers(self) -> list[MusicProviderSummary]:
+        """Get music provider list with stats."""
+        data: list[dict[str, Any]] = self._request("/api/v1/music/providers")
+        return [_parse_music_provider_summary(p) for p in data]
+
+    def compare_music_models(
+        self,
+        model_ids: list[str],
+        *,
+        currency: str | None = None,
+    ) -> list[MusicModelPricing]:
+        """Compare music models side by side."""
+        qs = self._build_qs({"models": ",".join(model_ids), "currency": currency})
+        data: list[dict[str, Any]] = self._request(f"/api/v1/music/compare{qs}")
+        return [_parse_music_model_pricing(m) for m in data]
+
+    def get_cheapest_music_model(
+        self,
+        *,
+        provider: str | None = None,
+        currency: str | None = None,
+        after: str | None = None,
+        before: str | None = None,
+    ) -> MusicModelPricing:
+        """Get the cheapest music model."""
+        params = {"provider": provider, "currency": currency, "after": after, "before": before}
+        qs = self._build_qs(params)
+        data: dict[str, Any] = self._request(f"/api/v1/music/cheapest{qs}")
+        return _parse_music_model_pricing(data)

@@ -174,6 +174,35 @@ cheapest = client.get_cheapest_stt_model()
 cost = calculate_stt_cost("openai-whisper-1", 0.006, 60)
 print(cost.total_cost)  # 0.006 for 1 minute`;
 
+const musicCurlExample = `# All music models
+curl https://pricetoken.ai/api/v1/music
+
+# Single music model
+curl https://pricetoken.ai/api/v1/music/elevenlabs-eleven-music
+
+# Cheapest music model
+curl https://pricetoken.ai/api/v1/music/cheapest`;
+
+const musicJsExample = `import { PriceTokenClient, calculateMusicCost } from 'pricetoken';
+
+const client = new PriceTokenClient();
+const models = await client.getMusicPricing();
+const cheapest = await client.getCheapestMusicModel();
+
+// Offline cost calculation
+const cost = calculateMusicCost('elevenlabs-eleven-music', 0.50, 300);
+console.log(cost.totalCost); // $2.50 for 5 minutes`;
+
+const musicPyExample = `from pricetoken import PriceTokenClient, calculate_music_cost
+
+client = PriceTokenClient()
+models = client.get_music_pricing()
+cheapest = client.get_cheapest_music_model()
+
+# Offline cost calculation
+cost = calculate_music_cost("elevenlabs-eleven-music", 0.50, 300)
+print(cost.total_cost)  # 2.5 for 5 minutes`;
+
 const costExample = `import { calculateModelCost } from 'pricetoken';
 
 const cost = calculateModelCost(
@@ -522,6 +551,54 @@ export default function DocsPage() {
                     method="GET"
                     path="/api/v1/stt/cheapest"
                     description="Cheapest STT model overall or per provider. Params: ?provider=x&currency=EUR"
+                  />
+                </div>
+              </>
+            }
+            musicContent={
+              <>
+                <p className={styles.text}>
+                  Per-minute pricing for AI music generation APIs. Uses{' '}
+                  <code>costPerMinute</code> with additional fields for{' '}
+                  <code>outputFormat</code>, <code>vocals</code>, and <code>official</code> (marks unofficial third-party wrappers).
+                </p>
+                <CodeBlock
+                  tabs={[
+                    { label: 'curl', code: musicCurlExample },
+                    { label: 'JavaScript', code: musicJsExample },
+                    { label: 'Python', code: musicPyExample },
+                  ]}
+                />
+                <div className={styles.endpoints}>
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/music"
+                    description="Current pricing for all music models. Params: ?provider=elevenlabs&currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/music/:modelId"
+                    description="Single music model pricing. Param: ?currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/music/history"
+                    description="Historical music pricing data. Params: ?days=30&modelId=x&provider=y"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/music/providers"
+                    description="Music provider list with model counts and cheapest prices."
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/music/compare"
+                    description="Side-by-side music model comparison. Params: ?models=a,b,c (max 10)&currency=EUR"
+                  />
+                  <Endpoint
+                    method="GET"
+                    path="/api/v1/music/cheapest"
+                    description="Cheapest music model overall or per provider. Params: ?provider=x&currency=EUR"
                   />
                 </div>
               </>

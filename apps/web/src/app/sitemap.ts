@@ -29,6 +29,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/stt/calculator`, lastModified: buildDate, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${baseUrl}/stt/compare`, lastModified: buildDate, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${baseUrl}/stt/history`, lastModified: buildDate, changeFrequency: 'daily', priority: 0.7 },
+    { url: `${baseUrl}/music`, lastModified: buildDate, changeFrequency: 'daily', priority: 0.8 },
+    { url: `${baseUrl}/music/calculator`, lastModified: buildDate, changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${baseUrl}/music/compare`, lastModified: buildDate, changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${baseUrl}/music/history`, lastModified: buildDate, changeFrequency: 'daily', priority: 0.7 },
     { url: `${baseUrl}/docs`, lastModified: buildDate, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${baseUrl}/legal`, lastModified: buildDate, changeFrequency: 'yearly', priority: 0.3 },
   ];

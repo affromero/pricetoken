@@ -91,7 +91,7 @@ model FetcherConfig {
 
 model FetchRunSummary {
   id               String   @id @default(cuid())
-  category         String   @default("unknown") // 'text' | 'avatar' | 'image' | 'video' | 'stt' | 'tts'
+  category         String   @default("unknown") // 'text' | 'avatar' | 'image' | 'video' | 'stt' | 'tts' | 'music'
   status           String   // 'success' | 'partial' | 'failed' | 'resolved'
   providersRun     Int
   modelsVerified   Int
@@ -203,6 +203,29 @@ model SttPricingSnapshot {
   agentTotal         Int?
   launchDate         DateTime?
   createdAt          DateTime @default(now())
+
+  @@index([modelId, createdAt])
+  @@index([createdAt])
+}
+
+model MusicPricingSnapshot {
+  id             String   @id @default(cuid())
+  modelId        String
+  provider       String
+  displayName    String   @default("")
+  costPerMinute  Float
+  maxDuration    Int?
+  outputFormat   String?
+  vocals         Boolean?
+  official       Boolean  @default(true)
+  pricingNote    String?
+  source         String   @default("fetched")
+  status         String?
+  confidence     String   @default("high")
+  agentApprovals Int?
+  agentTotal     Int?
+  launchDate     DateTime?
+  createdAt      DateTime @default(now())
 
   @@index([modelId, createdAt])
   @@index([createdAt])

@@ -21,7 +21,7 @@ function runGenerator(args: string = '', env: Record<string, string> = {}): { st
 }
 
 describe('generate-static', () => {
-  it('generates all 12 static files from registry YAML', () => {
+  it('generates all 14 static files from registry YAML', () => {
     const result = runGenerator();
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain('text: 42 models');
@@ -30,6 +30,7 @@ describe('generate-static', () => {
     expect(result.stdout).toContain('avatar: 14 models');
     expect(result.stdout).toContain('image: 47 models');
     expect(result.stdout).toContain('video: 46 models');
+    expect(result.stdout).toContain('music: 3 models');
   });
 
   it('--check passes when files are in sync', () => {
@@ -74,7 +75,7 @@ describe('generate-static', () => {
   it('generated files do not contain pricingUrl or fallbackUrls', () => {
     runGenerator();
 
-    const tsFiles = ['static.ts', 'tts-static.ts', 'stt-static.ts', 'avatar-static.ts', 'static-image.ts', 'video-static.ts'];
+    const tsFiles = ['static.ts', 'tts-static.ts', 'stt-static.ts', 'avatar-static.ts', 'static-image.ts', 'video-static.ts', 'music-static.ts'];
     for (const file of tsFiles) {
       const content = readFileSync(join(__dirname, '../../packages/sdk/src', file), 'utf-8');
       expect(content).not.toContain('pricingUrl');

@@ -1,5 +1,5 @@
 /**
- * Generates all 12 static pricing files (6 TS + 6 Python) from the
+ * Generates all 14 static pricing files (7 TS + 7 Python) from the
  * YAML model registry under registry/*.yaml.
  *
  * Usage:
@@ -18,6 +18,7 @@ import {
   avatarToTs, avatarToPy,
   imageToTs, imageToPy,
   videoToTs, videoToPy,
+  musicToTs, musicToPy,
 } from './lib/formatters';
 
 const CHECK = process.argv.includes('--check');
@@ -175,6 +176,17 @@ function validateVideo(models: Record<string, unknown>[], file: string): string[
   return errors;
 }
 
+function validateMusic(models: Record<string, unknown>[], file: string): string[] {
+  const errors: string[] = [];
+  for (let i = 0; i < models.length; i++) {
+    const m = models[i]!;
+    const prefix = `${file}[${i}]`;
+    errors.push(...validateCommon(m, i, file));
+    errors.push(...validatePriceField(m, 'costPerMinute', prefix));
+  }
+  return errors;
+}
+
 function checkDuplicateIds(models: Record<string, unknown>[], file: string): string[] {
   const seen = new Set<string>();
   const errors: string[] = [];
@@ -242,6 +254,7 @@ const MODALITIES: ModalityConfig[] = [
   { name: 'avatar', yamlFile: 'avatar.yaml', tsFile: 'avatar-static.ts', pyFile: 'avatar_static.py', validate: validateAvatar, toTs: avatarToTs as (m: never[]) => string, toPy: avatarToPy as (m: never[]) => string },
   { name: 'image', yamlFile: 'image.yaml', tsFile: 'static-image.ts', pyFile: 'static_image.py', validate: validateImage, toTs: imageToTs as (m: never[]) => string, toPy: imageToPy as (m: never[]) => string },
   { name: 'video', yamlFile: 'video.yaml', tsFile: 'video-static.ts', pyFile: 'video_static.py', validate: validateVideo, toTs: videoToTs as (m: never[]) => string, toPy: videoToPy as (m: never[]) => string },
+  { name: 'music', yamlFile: 'music.yaml', tsFile: 'music-static.ts', pyFile: 'music_static.py', validate: validateMusic, toTs: musicToTs as (m: never[]) => string, toPy: musicToPy as (m: never[]) => string },
 ];
 
 export function generateModality(config: ModalityConfig): {

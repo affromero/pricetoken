@@ -1,0 +1,66 @@
+# DO NOT EDIT — generated from registry/*.yaml by `npm run generate-static`
+"""Static music pricing data for the PriceToken SDK."""
+
+from __future__ import annotations
+
+from .types import FreshnessInfo, MusicModelPricing
+
+STATIC_MUSIC_PRICING: list[MusicModelPricing] = [
+    MusicModelPricing(
+        model_id="elevenlabs-eleven-music",
+        provider="elevenlabs",
+        display_name="ElevenLabs Eleven Music",
+        cost_per_minute=0.5,
+        max_duration=None,
+        output_format="mp3",
+        vocals=True,
+        source="seed",
+        status="active",
+        confidence="high",
+        confidence_score=99,
+        confidence_level="high",
+        freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
+        last_updated=None,
+        launch_date="2025-06-01",
+        official=True,
+        pricing_note=None,
+    ),
+    MusicModelPricing(
+        model_id="soundverse-music",
+        provider="soundverse",
+        display_name="Soundverse Music Generation",
+        cost_per_minute=0.0125,
+        max_duration=240,
+        output_format="mp3",
+        vocals=True,
+        source="seed",
+        status="active",
+        confidence="high",
+        confidence_score=99,
+        confidence_level="high",
+        freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
+        last_updated=None,
+        launch_date="2025-01-01",
+        official=True,
+        pricing_note="Approximated from ~$0.05/song at ~4 min avg",
+    ),
+    MusicModelPricing(
+        model_id="sunoapi-suno-v4.5",
+        provider="sunoapi",
+        display_name="Suno v4.5 via SunoAPI.org",
+        cost_per_minute=0.00625,
+        max_duration=480,
+        output_format="mp3",
+        vocals=True,
+        source="seed",
+        status="active",
+        confidence="high",
+        confidence_score=99,
+        confidence_level="high",
+        freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
+        last_updated=None,
+        launch_date="2025-09-01",
+        official=False,
+        pricing_note="Unofficial wrapper. ~$0.025/song ($0.005/credit x 5 credits) at ~4 min avg",
+    ),
+]

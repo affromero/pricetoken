@@ -299,3 +299,49 @@ export interface SttProviderSummary {
   modelCount: number;
   cheapestCostPerMinute: number;
 }
+
+export interface MusicModelPricing {
+  modelId: string;
+  provider: string;
+  displayName: string;
+  costPerMinute: number;
+  maxDuration: number | null;
+  outputFormat: string | null;
+  vocals: boolean | null;
+  official: boolean;
+  pricingNote: string | null;
+  source: 'fetched' | 'seed' | 'admin' | 'verified' | 'carried';
+  status: ModelStatus | null;
+  confidence: DataConfidence;
+  confidenceScore: number;
+  confidenceLevel: ConfidenceLevel;
+  freshness: FreshnessInfo;
+  lastUpdated: string | null;
+  launchDate: string | null;
+}
+
+export interface MusicCostEstimate {
+  modelId: string;
+  durationSeconds: number;
+  costPerMinute: number;
+  totalCost: number;
+}
+
+export interface MusicPriceHistoryPoint {
+  date: string;
+  costPerMinute: number;
+}
+
+export interface MusicModelHistory {
+  modelId: string;
+  provider: string;
+  displayName: string;
+  history: MusicPriceHistoryPoint[];
+}
+
+export interface MusicProviderSummary {
+  id: string;
+  displayName: string;
+  modelCount: number;
+  cheapestCostPerMinute: number;
+}

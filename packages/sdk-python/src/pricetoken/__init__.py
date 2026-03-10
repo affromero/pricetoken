@@ -12,6 +12,8 @@ from pricetoken.avatar_static import STATIC_AVATAR_PRICING
 from pricetoken.client import PriceTokenClient
 from pricetoken.cost import calculate_cost, calculate_model_cost
 from pricetoken.image_cost import calculate_image_cost, calculate_image_model_cost
+from pricetoken.music_cost import calculate_music_cost, calculate_music_model_cost
+from pricetoken.music_static import STATIC_MUSIC_PRICING
 from pricetoken.static import STATIC_PRICING
 from pricetoken.static_image import STATIC_IMAGE_PRICING
 from pricetoken.stt_cost import calculate_stt_cost, calculate_stt_model_cost
@@ -37,6 +39,11 @@ from pricetoken.types import (
     ModelHistory,
     ModelPricing,
     ModelStatus,
+    MusicCostEstimate,
+    MusicModelHistory,
+    MusicModelPricing,
+    MusicPriceHistoryPoint,
+    MusicProviderSummary,
     PriceHistoryPoint,
     PriceTokenError,
     ProviderSummary,
@@ -63,6 +70,7 @@ from pricetoken.video_static import STATIC_VIDEO_PRICING
 __all__ = [
     "STATIC_AVATAR_PRICING",
     "STATIC_IMAGE_PRICING",
+    "STATIC_MUSIC_PRICING",
     "STATIC_PRICING",
     "STATIC_STT_PRICING",
     "STATIC_TTS_PRICING",
@@ -85,6 +93,11 @@ __all__ = [
     "ModelHistory",
     "ModelPricing",
     "ModelStatus",
+    "MusicCostEstimate",
+    "MusicModelHistory",
+    "MusicModelPricing",
+    "MusicPriceHistoryPoint",
+    "MusicProviderSummary",
     "PriceHistoryPoint",
     "PriceTokenClient",
     "PriceTokenError",
@@ -112,6 +125,8 @@ __all__ = [
     "calculate_image_cost",
     "calculate_image_model_cost",
     "calculate_model_cost",
+    "calculate_music_cost",
+    "calculate_music_model_cost",
     "calculate_stt_cost",
     "calculate_stt_model_cost",
     "calculate_tts_cost",

@@ -30,6 +30,7 @@ export function NavLinks({ isAdmin }: NavLinksProps) {
   const isAvatar = pathname.startsWith('/avatar');
   const isTts = pathname.startsWith('/tts');
   const isStt = pathname.startsWith('/stt');
+  const isMusic = pathname.startsWith('/music');
   const isDocs = pathname === '/docs';
 
   return (
@@ -62,6 +63,9 @@ export function NavLinks({ isAdmin }: NavLinksProps) {
         </Link>
         <Link href="/stt" className={`${styles.link} ${isStt ? styles.linkActive : ''}`} onClick={close}>
           STT
+        </Link>
+        <Link href="/music" className={`${styles.link} ${isMusic ? styles.linkActive : ''}`} onClick={close}>
+          Music
         </Link>
         <Link href="/docs" className={`${styles.link} ${isDocs ? styles.linkActive : ''}`} onClick={close}>
           Docs

@@ -19,6 +19,9 @@ import type {
   SttModelPricing,
   SttModelHistory,
   SttProviderSummary,
+  MusicModelPricing,
+  MusicModelHistory,
+  MusicProviderSummary,
 } from './types';
 
 const SDK_VERSION = '0.10.0';
@@ -374,5 +377,53 @@ export class PriceTokenClient {
     if (opts?.before) params.set('before', opts.before);
     const qs = params.toString();
     return this.request<SttModelPricing>(`/api/v1/stt/cheapest${qs ? `?${qs}` : ''}`);
+  }
+
+  // Music pricing methods
+
+  async getMusicPricing(opts?: { provider?: string; currency?: string; after?: string; before?: string }): Promise<MusicModelPricing[]> {
+    const params = new URLSearchParams();
+    if (opts?.provider) params.set('provider', opts.provider);
+    if (opts?.currency) params.set('currency', opts.currency);
+    if (opts?.after) params.set('after', opts.after);
+    if (opts?.before) params.set('before', opts.before);
+    const qs = params.toString();
+    return this.request<MusicModelPricing[]>(`/api/v1/music${qs ? `?${qs}` : ''}`);
+  }
+
+  async getMusicModel(modelId: string, opts?: { currency?: string }): Promise<MusicModelPricing> {
+    const params = new URLSearchParams();
+    if (opts?.currency) params.set('currency', opts.currency);
+    const qs = params.toString();
+    return this.request<MusicModelPricing>(`/api/v1/music/${encodeURIComponent(modelId)}${qs ? `?${qs}` : ''}`);
+  }
+
+  async getMusicHistory(opts?: { days?: number; modelId?: string; provider?: string }): Promise<MusicModelHistory[]> {
+    const params = new URLSearchParams();
+    if (opts?.days) params.set('days', String(opts.days));
+    if (opts?.modelId) params.set('modelId', opts.modelId);
+    if (opts?.provider) params.set('provider', opts.provider);
+    const qs = params.toString();
+    return this.request<MusicModelHistory[]>(`/api/v1/music/history${qs ? `?${qs}` : ''}`);
+  }
+
+  async getMusicProviders(): Promise<MusicProviderSummary[]> {
+    return this.request<MusicProviderSummary[]>('/api/v1/music/providers');
+  }
+
+  async compareMusicModels(modelIds: string[], opts?: { currency?: string }): Promise<MusicModelPricing[]> {
+    const params = new URLSearchParams({ models: modelIds.join(',') });
+    if (opts?.currency) params.set('currency', opts.currency);
+    return this.request<MusicModelPricing[]>(`/api/v1/music/compare?${params}`);
+  }
+
+  async getCheapestMusicModel(opts?: { provider?: string; currency?: string; after?: string; before?: string }): Promise<MusicModelPricing> {
+    const params = new URLSearchParams();
+    if (opts?.provider) params.set('provider', opts.provider);
+    if (opts?.currency) params.set('currency', opts.currency);
+    if (opts?.after) params.set('after', opts.after);
+    if (opts?.before) params.set('before', opts.before);
+    const qs = params.toString();
+    return this.request<MusicModelPricing>(`/api/v1/music/cheapest${qs ? `?${qs}` : ''}`);
   }
 }

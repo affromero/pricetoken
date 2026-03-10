@@ -147,6 +147,25 @@ export interface VideoModel {
   launchDate: string | null;
 }
 
+export interface MusicModel {
+  modelId: string;
+  provider: string;
+  displayName: string;
+  costPerMinute: number;
+  maxDuration: number | null;
+  outputFormat: string | null;
+  vocals: boolean | null;
+  official: boolean;
+  pricingNote: string | null;
+  source: string;
+  status: string | null;
+  confidence: string;
+  confidenceScore: number;
+  confidenceLevel: string;
+  lastUpdated: string | null;
+  launchDate: string | null;
+}
+
 // ---------------------------------------------------------------------------
 // Text formatters
 // ---------------------------------------------------------------------------
@@ -524,6 +543,72 @@ from __future__ import annotations
 from .types import FreshnessInfo, VideoModelPricing
 
 STATIC_VIDEO_PRICING: list[VideoModelPricing] = [
+${entries}
+]
+`;
+}
+
+// ---------------------------------------------------------------------------
+// Music formatters
+// ---------------------------------------------------------------------------
+
+export function musicToTs(models: MusicModel[]): string {
+  const entries = models.map((m) => `  {
+    modelId: ${tsVal(m.modelId)},
+    provider: ${tsVal(m.provider)},
+    displayName: ${tsVal(m.displayName)},
+    costPerMinute: ${m.costPerMinute},
+    maxDuration: ${m.maxDuration ?? 'null'},
+    outputFormat: ${tsVal(m.outputFormat)},
+    vocals: ${m.vocals ?? 'null'},
+    official: ${m.official ?? true},
+    pricingNote: ${tsVal(m.pricingNote)},
+    source: 'seed',
+    status: ${tsVal(m.status ?? 'active')},
+    confidence: ${tsVal(m.confidence)},
+    confidenceScore: ${m.confidenceScore},
+    confidenceLevel: ${tsVal(m.confidenceLevel)},
+    freshness: { lastVerified: '', ageHours: 0, stale: false },
+    lastUpdated: null,
+    launchDate: ${tsVal(m.launchDate)},
+  }`).join(',\n');
+
+  return `import type { MusicModelPricing } from './types';
+
+export const STATIC_MUSIC_PRICING: MusicModelPricing[] = [
+${entries},
+];
+`;
+}
+
+export function musicToPy(models: MusicModel[]): string {
+  const entries = models.map((m) => `    MusicModelPricing(
+        model_id=${pyVal(m.modelId)},
+        provider=${pyVal(m.provider)},
+        display_name=${pyVal(m.displayName)},
+        cost_per_minute=${m.costPerMinute},
+        max_duration=${m.maxDuration ?? 'None'},
+        output_format=${pyVal(m.outputFormat)},
+        vocals=${pyVal(m.vocals)},
+        source="seed",
+        status=${pyVal(m.status ?? 'active')},
+        confidence=${pyVal(m.confidence)},
+        confidence_score=${m.confidenceScore},
+        confidence_level=${pyVal(m.confidenceLevel)},
+        freshness=FreshnessInfo(last_verified="", age_hours=0, stale=False),
+        last_updated=None,
+        launch_date=${pyVal(m.launchDate)},
+        official=${pyVal(m.official ?? true)},
+        pricing_note=${pyVal(m.pricingNote)},
+    ),`).join('\n');
+
+  return `"""Static music pricing data for the PriceToken SDK."""
+
+from __future__ import annotations
+
+from .types import FreshnessInfo, MusicModelPricing
+
+STATIC_MUSIC_PRICING: list[MusicModelPricing] = [
 ${entries}
 ]
 `;
