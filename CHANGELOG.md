@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.12.0] - 2026-03-10
+
+### Added
+- Confidence tooltip on "unverified" badges — hover to see why a model shows medium/low confidence (carried forward, flagged, stale, etc.)
+- 7-day carry-forward expiry — orphaned models that haven't been scraped in 7+ days stop being carried, preventing indefinite zombie entries
+- Runway Characters added to avatar scraper pipeline for daily price fetching
+
+### Fixed
+- Removed 5 orphaned HeyGen avatar model IDs (`heygen-translate-*`, `heygen-video-agent-prompt`, `heygen-video-translation`) that were renamed but still in the registry
+- Deprecated `heygen-avatar-standard` and `heygen-avatar-iv` in registry and updated all docs/prompts to use active model IDs
+- Removed `gemini-3-pro-preview` from scraper system prompt (already deprecated in registry)
+- Added one-time DB cleanup script for stale low-confidence rows from early March
+
 ## [0.11.1] - 2026-03-09
 
 ### Added
