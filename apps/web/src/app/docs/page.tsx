@@ -91,7 +91,7 @@ const avatarCurlExample = `# All avatar models
 curl https://pricetoken.ai/api/v1/avatar
 
 # Single avatar model
-curl https://pricetoken.ai/api/v1/avatar/heygen-avatar-standard
+curl https://pricetoken.ai/api/v1/avatar/heygen-public-avatar-iii
 
 # Cheapest avatar model
 curl https://pricetoken.ai/api/v1/avatar/cheapest`;
@@ -103,7 +103,7 @@ const models = await client.getAvatarPricing();
 const cheapest = await client.getCheapestAvatarModel();
 
 // Offline cost calculation
-const cost = calculateAvatarCost('heygen-avatar-standard', 0.99, 60);
+const cost = calculateAvatarCost('heygen-public-avatar-iii', 0.99, 60);
 console.log(cost.totalCost); // $0.99 for 1 minute`;
 
 const avatarPyExample = `from pricetoken import PriceTokenClient, calculate_avatar_cost
@@ -113,7 +113,7 @@ models = client.get_avatar_pricing()
 cheapest = client.get_cheapest_avatar_model()
 
 # Offline cost calculation
-cost = calculate_avatar_cost("heygen-avatar-standard", 0.99, 60)
+cost = calculate_avatar_cost("heygen-public-avatar-iii", 0.99, 60)
 print(cost.total_cost)  # 0.99 for 1 minute`;
 
 const ttsCurlExample = `# All TTS models

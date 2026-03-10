@@ -16,6 +16,6 @@ Return ONLY a JSON array of verdict objects, no markdown or explanation.
 
 Example response:
 [
-  {"modelId": "heygen-avatar-standard", "approved": true, "reason": "Page says 1 credit/min at $0.99/credit = $0.99/min — matches"},
-  {"modelId": "heygen-avatar-iv", "approved": false, "reason": "Page says 6 credits/min at $0.99/credit = $5.94/min but extracted $6.00/min"}
+  {"modelId": "heygen-public-avatar-iii", "approved": true, "reason": "Page says 1 credit/min at $0.99/credit = $0.99/min — matches"},
+  {"modelId": "heygen-photo-avatar-iv", "approved": false, "reason": "Page says 6 credits/min at $0.99/credit = $5.94/min but extracted $6.00/min"}
 ]`;
