@@ -33,10 +33,13 @@ IMPORTANT — use these exact modelId values when extracting:
   Note: ElevenLabs Music (Eleven Music) is a first-party API. official=true.
 - Soundverse: soundverse-music
   Note: Soundverse is a first-party API. official=true. Pricing may be per-song; convert to per-minute using average song duration (~4 min).
-- SunoAPI.org: sunoapi-suno-v4.5
-  Note: SunoAPI.org is an UNOFFICIAL third-party wrapper for Suno's music generation. official=false. Uses credit-based pricing — convert credits to USD to per-minute. Always include a pricingNote explaining the conversion.
+- SunoAPI.org: sunoapi-suno-v4, sunoapi-suno-v4.5, sunoapi-suno-v4.5-plus, sunoapi-suno-v4.5-all, sunoapi-suno-v5
+  Note: SunoAPI.org is an UNOFFICIAL third-party wrapper for Suno's music generation. official=false for all SunoAPI models.
+  All models cost 12 credits per API call ($0.005/credit = $0.06/call), generating 2 songs per call = $0.03/song.
+  V4 max duration is 4 min → $0.03/4 = $0.0075/min. V4.5/V4.5 Plus/V4.5 All/V5 max duration is 8 min → $0.03/8 = $0.00375/min.
+  Always include a pricingNote explaining the credit conversion.
 
-Map display names to these IDs. For example: "Eleven Music" → "elevenlabs-eleven-music", "Suno v4.5" or "Suno API" → "sunoapi-suno-v4.5".
+Map display names to these IDs. For example: "Eleven Music" → "elevenlabs-eleven-music", "Suno v4" → "sunoapi-suno-v4", "Suno v4.5" → "sunoapi-suno-v4.5", "Suno v4.5 Plus" → "sunoapi-suno-v4.5-plus", "Suno v4.5 All" → "sunoapi-suno-v4.5-all", "Suno v5" or "Suno V5" → "sunoapi-suno-v5".
 
 Additional rules:
 - Each distinct model/tier should be a separate entry.

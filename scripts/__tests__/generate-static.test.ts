@@ -30,7 +30,7 @@ describe('generate-static', () => {
     expect(result.stdout).toContain('avatar: 14 models');
     expect(result.stdout).toContain('image: 47 models');
     expect(result.stdout).toContain('video: 46 models');
-    expect(result.stdout).toContain('music: 3 models');
+    expect(result.stdout).toContain('music: 7 models');
   });
 
   it('--check passes when files are in sync', () => {
