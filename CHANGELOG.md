@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.13.0] - 2026-03-10
+
+### Added
+- **Music generation** as 7th pricing modality — 3 providers: ElevenLabs ($0.50/min), Soundverse ($0.0125/min), SunoAPI.org ($0.00625/min, unofficial)
+- Music YAML registry, static generation (14 files total), and SDK support in both TypeScript and Python (types, cost functions, client methods)
+- 6 REST API endpoints under `/api/v1/music` (list, single model, cheapest, compare, history, providers)
+- Music frontend pages: pricing table, cost calculator, model comparison, price history chart
+- Full 3-tier music scraper pipeline with AI extraction, cross-verification, prior consistency checks, and consensus building
+- Cron route `/api/cron/fetch-music-pricing` for automated music price scraping
+- "Unofficial" purple badge variant on `StatusBadge` for third-party API wrappers
+- `pricingNote` tooltip on music pricing table for credit/per-song conversion explanations
+- Music API documentation in docs page with curl, JavaScript, and Python examples
+
 ## [0.12.0] - 2026-03-10
 
 ### Added
