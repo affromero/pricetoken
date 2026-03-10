@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import type { ImageModelPricing, ImageModelHistory, ImagePriceHistoryPoint } from 'pricetoken';
 import { STATIC_IMAGE_PRICING } from 'pricetoken';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
-import { carrySource } from './store';
+import { carrySource, findOriginalSnapshot } from './store';
 
 export interface ExtractedImageModel {
   modelId: string;
@@ -265,39 +265,33 @@ export async function carryForwardMissingImages(): Promise<number> {
   }> = [];
 
   for (const modelId of missing) {
+    const original = await findOriginalSnapshot(
+      prisma.imagePricingSnapshot.findFirst.bind(prisma.imagePricingSnapshot),
+      modelId,
+    );
+    if (!original) continue;
+
     const latest = await prisma.imagePricingSnapshot.findFirst({
       where: { modelId },
       orderBy: { createdAt: 'desc' },
     });
-    if (latest) {
-      let originalSource: string | undefined;
-      let originalCreatedAt: Date | undefined;
-      if (latest.source === 'carried') {
-        const original = await prisma.imagePricingSnapshot.findFirst({
-          where: { modelId, source: { notIn: ['carried'] } },
-          orderBy: { createdAt: 'desc' },
-        });
-        if (original) {
-          originalSource = original.source;
-          originalCreatedAt = original.createdAt;
-        }
-      }
-      data.push({
-        modelId: latest.modelId,
-        provider: latest.provider,
-        displayName: latest.displayName,
-        pricePerImage: latest.pricePerImage,
-        pricePerMegapixel: latest.pricePerMegapixel,
-        defaultResolution: latest.defaultResolution,
-        qualityTier: latest.qualityTier,
-        maxResolution: latest.maxResolution,
-        supportedFormats: latest.supportedFormats,
-        source: carrySource(latest.source, latest.createdAt, originalSource, originalCreatedAt),
-        status: latest.status,
-        confidence: latest.confidence,
-        launchDate: latest.launchDate,
-      });
-    }
+    if (!latest) continue;
+
+    data.push({
+      modelId: latest.modelId,
+      provider: latest.provider,
+      displayName: latest.displayName,
+      pricePerImage: latest.pricePerImage,
+      pricePerMegapixel: latest.pricePerMegapixel,
+      defaultResolution: latest.defaultResolution,
+      qualityTier: latest.qualityTier,
+      maxResolution: latest.maxResolution,
+      supportedFormats: latest.supportedFormats,
+      source: carrySource(latest.source, latest.createdAt, original.source, original.createdAt),
+      status: latest.status,
+      confidence: latest.confidence,
+      launchDate: latest.launchDate,
+    });
   }
 
   if (data.length === 0) return 0;

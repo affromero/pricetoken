@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import type { AvatarModelPricing, AvatarModelHistory, AvatarPriceHistoryPoint } from 'pricetoken';
 import { STATIC_AVATAR_PRICING } from 'pricetoken';
 import type { ExtractedAvatarModel } from './avatar-extractor';
-import { carrySource } from './store';
+import { carrySource, findOriginalSnapshot } from './store';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
 
 export async function saveAvatarSnapshots(
@@ -269,39 +269,33 @@ export async function carryForwardMissingAvatar(): Promise<number> {
   }> = [];
 
   for (const modelId of missing) {
+    const original = await findOriginalSnapshot(
+      prisma.avatarPricingSnapshot.findFirst.bind(prisma.avatarPricingSnapshot),
+      modelId,
+    );
+    if (!original) continue;
+
     const latest = await prisma.avatarPricingSnapshot.findFirst({
       where: { modelId },
       orderBy: { createdAt: 'desc' },
     });
-    if (latest) {
-      let originalSource: string | undefined;
-      let originalCreatedAt: Date | undefined;
-      if (latest.source === 'carried') {
-        const original = await prisma.avatarPricingSnapshot.findFirst({
-          where: { modelId, source: { notIn: ['carried'] } },
-          orderBy: { createdAt: 'desc' },
-        });
-        if (original) {
-          originalSource = original.source;
-          originalCreatedAt = original.createdAt;
-        }
-      }
-      data.push({
-        modelId: latest.modelId,
-        provider: latest.provider,
-        displayName: latest.displayName,
-        costPerMinute: latest.costPerMinute,
-        avatarType: latest.avatarType,
-        resolution: latest.resolution,
-        maxDuration: latest.maxDuration,
-        qualityMode: latest.qualityMode,
-        lipSync: latest.lipSync,
-        source: carrySource(latest.source, latest.createdAt, originalSource, originalCreatedAt),
-        status: latest.status,
-        confidence: latest.confidence,
-        launchDate: latest.launchDate,
-      });
-    }
+    if (!latest) continue;
+
+    data.push({
+      modelId: latest.modelId,
+      provider: latest.provider,
+      displayName: latest.displayName,
+      costPerMinute: latest.costPerMinute,
+      avatarType: latest.avatarType,
+      resolution: latest.resolution,
+      maxDuration: latest.maxDuration,
+      qualityMode: latest.qualityMode,
+      lipSync: latest.lipSync,
+      source: carrySource(latest.source, latest.createdAt, original.source, original.createdAt),
+      status: latest.status,
+      confidence: latest.confidence,
+      launchDate: latest.launchDate,
+    });
   }
 
   if (data.length === 0) return 0;
