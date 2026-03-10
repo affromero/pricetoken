@@ -7,6 +7,20 @@ import type { VerifiedModel } from './verification-types';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
 
 const CARRY_GRACE_MS = 24 * 60 * 60 * 1000; // 1 day
+export const CARRY_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+/** Find the most recent non-carried snapshot for a model. Returns null if expired (>7 days) or not found. */
+export async function findOriginalSnapshot<T extends { source: string; createdAt: Date }>(
+  findFirst: (args: { where: Record<string, unknown>; orderBy: Record<string, string> }) => Promise<T | null>,
+  modelId: string,
+): Promise<T | null> {
+  const original = await findFirst({
+    where: { modelId, source: { notIn: ['carried'] } },
+    orderBy: { createdAt: 'desc' },
+  });
+  if (!original || Date.now() - original.createdAt.getTime() > CARRY_EXPIRY_MS) return null;
+  return original;
+}
 
 /** Preserve source for recently-verified data instead of degrading to 'carried'. */
 export function carrySource(
@@ -291,37 +305,31 @@ export async function carryForwardMissing(): Promise<number> {
   }> = [];
 
   for (const modelId of missing) {
+    const original = await findOriginalSnapshot(
+      prisma.modelPricingSnapshot.findFirst.bind(prisma.modelPricingSnapshot),
+      modelId,
+    );
+    if (!original) continue; // expired or never had a non-carried snapshot
+
     const latest = await prisma.modelPricingSnapshot.findFirst({
       where: { modelId },
       orderBy: { createdAt: 'desc' },
     });
-    if (latest) {
-      let originalSource: string | undefined;
-      let originalCreatedAt: Date | undefined;
-      if (latest.source === 'carried') {
-        const original = await prisma.modelPricingSnapshot.findFirst({
-          where: { modelId, source: { notIn: ['carried'] } },
-          orderBy: { createdAt: 'desc' },
-        });
-        if (original) {
-          originalSource = original.source;
-          originalCreatedAt = original.createdAt;
-        }
-      }
-      data.push({
-        modelId: latest.modelId,
-        provider: latest.provider,
-        displayName: latest.displayName,
-        inputPerMTok: latest.inputPerMTok,
-        outputPerMTok: latest.outputPerMTok,
-        contextWindow: latest.contextWindow,
-        maxOutputTokens: latest.maxOutputTokens,
-        source: carrySource(latest.source, latest.createdAt, originalSource, originalCreatedAt),
-        status: latest.status,
-        confidence: latest.confidence,
-        launchDate: latest.launchDate,
-      });
-    }
+    if (!latest) continue;
+
+    data.push({
+      modelId: latest.modelId,
+      provider: latest.provider,
+      displayName: latest.displayName,
+      inputPerMTok: latest.inputPerMTok,
+      outputPerMTok: latest.outputPerMTok,
+      contextWindow: latest.contextWindow,
+      maxOutputTokens: latest.maxOutputTokens,
+      source: carrySource(latest.source, latest.createdAt, original.source, original.createdAt),
+      status: latest.status,
+      confidence: latest.confidence,
+      launchDate: latest.launchDate,
+    });
   }
 
   if (data.length === 0) return 0;

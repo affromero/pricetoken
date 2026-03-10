@@ -166,7 +166,7 @@ export function SttPricingTable({ pricing: initialPricing }: SttPricingTableProp
                 </td>
                 <td className={styles.modelName}>
                   {model.displayName}
-                  <StatusBadge status={model.status} confidence={model.confidence} />
+                  <StatusBadge status={model.status} confidence={model.confidence} source={model.source} freshness={model.freshness} />
                 </td>
                 <td className={styles.price}>{currencySymbol}{formatPrice(model.costPerMinute)}</td>
                 <td className={styles.meta}>{formatSttType(model.sttType)}</td>
@@ -177,6 +177,7 @@ export function SttPricingTable({ pricing: initialPricing }: SttPricingTableProp
                     freshness={model.freshness}
                     confidenceScore={model.confidenceScore}
                     confidenceLevel={model.confidenceLevel}
+                    source={model.source}
                   />
                 </td>
                 <td className={styles.date}>

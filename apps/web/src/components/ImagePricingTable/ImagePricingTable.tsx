@@ -159,7 +159,7 @@ export function ImagePricingTable({ data: initialData }: ImagePricingTableProps)
                 </td>
                 <td className={styles.modelName}>
                   {model.displayName}
-                  <StatusBadge status={model.status} confidence={model.confidence} />
+                  <StatusBadge status={model.status} confidence={model.confidence} source={model.source} freshness={model.freshness} />
                 </td>
                 <td className={styles.price}>{currencySymbol}{formatPrice(model.pricePerImage)}</td>
                 <td>{QUALITY_LABELS[model.qualityTier] ?? model.qualityTier}</td>
@@ -169,6 +169,7 @@ export function ImagePricingTable({ data: initialData }: ImagePricingTableProps)
                     freshness={model.freshness}
                     confidenceScore={model.confidenceScore}
                     confidenceLevel={model.confidenceLevel}
+                    source={model.source}
                   />
                 </td>
                 <td className={styles.date}>

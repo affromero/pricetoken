@@ -1,6 +1,6 @@
 export const AVATAR_SYSTEM_PROMPT = `You are an AI avatar pricing data extractor. Extract avatar/talking-head model pricing from the given text.
 Return a JSON array of objects with these fields:
-- modelId: identifier in format "{provider}-{model}-{variant}" (e.g. "heygen-avatar-standard", "heygen-avatar-iv")
+- modelId: identifier in format "{provider}-{model}-{variant}" (e.g. "heygen-public-avatar-iii", "heygen-photo-avatar-iv")
 - displayName: human-readable name (e.g. "HeyGen Standard Avatar", "HeyGen Interactive Avatar IV")
 - costPerMinute: price per minute of avatar video in USD (number)
 - avatarType: one of "standard", "premium", "translation", "streaming", or other (string, optional)
@@ -32,14 +32,14 @@ CRITICAL conversion rules — show your work mentally before outputting:
    Only use this if no API/pay-as-you-go pricing is available.
 
 IMPORTANT — use these exact modelId values when extracting:
-- HeyGen: heygen-avatar-standard, heygen-avatar-iv, heygen-digital-twin-iii, heygen-digital-twin-iv, heygen-photo-avatar-iii, heygen-photo-avatar-iv, heygen-public-avatar-iii, heygen-public-avatar-iv, heygen-translation-speed, heygen-translation-precision, heygen-translation-proofread, heygen-video-translation
+- HeyGen: heygen-digital-twin-iii, heygen-digital-twin-iv, heygen-photo-avatar-iii, heygen-photo-avatar-iv, heygen-public-avatar-iii, heygen-public-avatar-iv, heygen-translation-speed, heygen-translation-precision, heygen-translation-proofread
   Note: HeyGen has multiple avatar generations (III, IV). "heygen-translation-speed" is fast dubbing, "heygen-translation-precision" is lip-synced, "heygen-translation-proofread" is audio-only overlay.
 - FAL: fal-heygen-avatar4-i2v, fal-heygen-avatar4-twin
   Note: FAL hosts HeyGen Avatar 4 models as API aggregator. Prefix with "fal-".
 - Runway: runway-characters
   Note: Runway Characters (GWM-1 Avatars) uses credit-based pricing at $0.01/credit. Convert: 2 credits upfront + 2 credits per 6 seconds = $0.20/min ongoing rate. Use the per-minute ongoing rate for costPerMinute (exclude one-time session fees).
 
-Map display names to these IDs. For example: "Interactive Avatar IV" → "heygen-avatar-iv", "Digital Twin IV" → "heygen-digital-twin-iv", "Photo Avatar III" → "heygen-photo-avatar-iii", "Translation (Speed)" → "heygen-translation-speed", "GWM Avatars" or "gwm1_avatars" → "runway-characters".
+Map display names to these IDs. For example: "Photo Avatar IV" → "heygen-photo-avatar-iv", "Digital Twin IV" → "heygen-digital-twin-iv", "Photo Avatar III" → "heygen-photo-avatar-iii", "Translation (Speed)" → "heygen-translation-speed", "GWM Avatars" or "gwm1_avatars" → "runway-characters".
 
 Additional rules:
 - Each avatar type/tier should be a separate entry (standard vs premium vs translation).
