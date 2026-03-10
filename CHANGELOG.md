@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.1] - 2026-03-10
+
+### Added
+- 4 new SunoAPI.org models: Suno v4, v4.5 Plus, v4.5 All, and v5 — music registry now has 7 models
+
+### Fixed
+- Corrected SunoAPI.org pricing from estimated $0.00625/min to verified $0.00375/min (v4.5+) and $0.0075/min (v4), based on actual API call credit measurements (12 credits/call, 2 songs/call, $0.005/credit)
+
 ## [0.13.0] - 2026-03-10
 
 ### Added
