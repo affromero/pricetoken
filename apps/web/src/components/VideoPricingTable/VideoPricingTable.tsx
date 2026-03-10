@@ -154,7 +154,7 @@ export function VideoPricingTable({ pricing: initialPricing }: VideoPricingTable
                 </td>
                 <td className={styles.modelName}>
                   {model.displayName}
-                  <StatusBadge status={model.status} confidence={model.confidence} />
+                  <StatusBadge status={model.status} confidence={model.confidence} source={model.source} freshness={model.freshness} />
                 </td>
                 <td className={styles.price}>{currencySymbol}{formatPrice(model.costPerMinute)}</td>
                 <td className={styles.inputTypes}>
@@ -173,6 +173,7 @@ export function VideoPricingTable({ pricing: initialPricing }: VideoPricingTable
                     freshness={model.freshness}
                     confidenceScore={model.confidenceScore}
                     confidenceLevel={model.confidenceLevel}
+                    source={model.source}
                   />
                 </td>
                 <td className={styles.date}>

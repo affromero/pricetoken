@@ -57,6 +57,21 @@ export function confidenceLevelFromScore(score: number): ConfidenceLevel {
   return 'low';
 }
 
+export function computeConfidenceReason(
+  source: string,
+  freshness: FreshnessInfo,
+  confidenceLevel: ConfidenceLevel,
+): string {
+  if (confidenceLevel === 'high') return 'Price verified recently';
+  const reasons: string[] = [];
+  if (source === 'carried') reasons.push('Price carried forward from a previous day');
+  else if (source === 'flagged') reasons.push('Price discrepancy detected during verification');
+  else if (source === 'seed') reasons.push('Price from initial seed data, not yet verified');
+  else if (source === 'fetched') reasons.push('Price extracted but not fully verified');
+  if (freshness.stale) reasons.push('Data may be outdated');
+  return reasons.join('. ') || 'Confidence could not be determined';
+}
+
 export function computeFreshness(createdAt: Date): FreshnessInfo {
   const ageMs = Date.now() - createdAt.getTime();
   const ageHours = Math.round(ageMs / (1000 * 60 * 60));

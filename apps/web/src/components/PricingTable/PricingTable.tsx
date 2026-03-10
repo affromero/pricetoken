@@ -141,7 +141,7 @@ export function PricingTable({ pricing: initialPricing }: PricingTableProps) {
                 </td>
                 <td className={styles.modelName}>
                   {model.displayName}
-                  <StatusBadge status={model.status} confidence={model.confidence} />
+                  <StatusBadge status={model.status} confidence={model.confidence} source={model.source} freshness={model.freshness} />
                 </td>
                 <td className={styles.price}>{currencySymbol}{formatPrice(model.inputPerMTok)}</td>
                 <td className={styles.price}>{currencySymbol}{formatPrice(model.outputPerMTok)}</td>
@@ -153,6 +153,7 @@ export function PricingTable({ pricing: initialPricing }: PricingTableProps) {
                     freshness={model.freshness}
                     confidenceScore={model.confidenceScore}
                     confidenceLevel={model.confidenceLevel}
+                    source={model.source}
                   />
                 </td>
                 <td className={styles.date}>
