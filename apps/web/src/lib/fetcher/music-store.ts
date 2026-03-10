@@ -2,8 +2,63 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import type { MusicModelPricing, MusicModelHistory, MusicPriceHistoryPoint } from 'pricetoken';
 import { STATIC_MUSIC_PRICING } from 'pricetoken';
+import type { ExtractedMusicModel } from './music-extractor';
 import { carrySource, findOriginalSnapshot } from './store';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
+
+export async function saveMusicSnapshots(
+  provider: string,
+  models: ExtractedMusicModel[],
+  source: string = 'fetched',
+  confidence: 'high' | 'low' = 'high',
+  agentTotal?: number
+): Promise<number> {
+  if (models.length === 0) return 0;
+
+  // Look up prior snapshots to carry forward metadata the extractor may omit
+  const priorSnapshots = await prisma.$queryRaw<
+    Array<{
+      modelId: string;
+      maxDuration: number | null;
+      outputFormat: string | null;
+      vocals: boolean | null;
+      official: boolean;
+      pricingNote: string | null;
+      launchDate: Date | null;
+    }>
+  >`
+    SELECT DISTINCT ON ("modelId")
+      "modelId", "maxDuration", "outputFormat", "vocals", "official", "pricingNote", "launchDate"
+    FROM "MusicPricingSnapshot"
+    WHERE "provider" = ${provider}
+    ORDER BY "modelId", "createdAt" DESC
+  `;
+  const priorByModel = new Map(priorSnapshots.map((s) => [s.modelId, s]));
+
+  const data = models.map((m) => {
+    const prior = priorByModel.get(m.modelId);
+    return {
+      modelId: m.modelId,
+      provider,
+      displayName: m.displayName,
+      costPerMinute: m.costPerMinute,
+      maxDuration: m.maxDuration ?? prior?.maxDuration ?? null,
+      outputFormat: m.outputFormat ?? prior?.outputFormat ?? null,
+      vocals: m.vocals ?? prior?.vocals ?? null,
+      official: m.official ?? prior?.official ?? true,
+      pricingNote: m.pricingNote ?? prior?.pricingNote ?? null,
+      source,
+      status: m.status ?? null,
+      confidence,
+      agentApprovals: 'agentApprovals' in m ? (m as unknown as { agentApprovals: number }).agentApprovals : null,
+      agentTotal: agentTotal ?? null,
+      launchDate: m.launchDate ? new Date(m.launchDate) : prior?.launchDate ?? null,
+    };
+  });
+
+  const result = await prisma.musicPricingSnapshot.createMany({ data });
+  return result.count;
+}
 
 export async function getLatestMusicPricing(provider?: string): Promise<MusicModelPricing[]> {
   const where = provider ? Prisma.sql`WHERE "provider" = ${provider}` : Prisma.empty;

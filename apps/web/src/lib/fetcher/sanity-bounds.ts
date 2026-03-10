@@ -119,6 +119,26 @@ export function checkTtsPriceSanity(
   return { valid: true };
 }
 
+/** Music model pricing bounds (USD per minute) */
+const MUSIC_MIN_PRICE = 0.001; // SunoAPI.org is ~$0.00625/min
+const MUSIC_MAX_PRICE = 10; // ElevenLabs is $0.50/min, generous ceiling
+
+export function checkMusicPriceSanity(
+  modelId: string,
+  costPerMinute: number
+): SanityCheckResult {
+  if (costPerMinute <= 0) {
+    return { valid: false, reason: `${modelId}: cost must be positive ($${costPerMinute}/min)` };
+  }
+  if (costPerMinute > MUSIC_MAX_PRICE) {
+    return { valid: false, reason: `${modelId}: cost $${costPerMinute}/min exceeds max $${MUSIC_MAX_PRICE}` };
+  }
+  if (costPerMinute < MUSIC_MIN_PRICE) {
+    return { valid: false, reason: `${modelId}: cost $${costPerMinute}/min below min $${MUSIC_MIN_PRICE}` };
+  }
+  return { valid: true };
+}
+
 export function checkSttPriceSanity(
   modelId: string,
   costPerMinute: number
