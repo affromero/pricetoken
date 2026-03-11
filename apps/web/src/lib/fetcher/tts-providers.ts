@@ -66,4 +66,11 @@ export const TTS_PROVIDERS: Record<string, ProviderConfig> = {
     fallbackUrls: ['https://docs.cartesia.ai/build-with-cartesia/pricing'],
     browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
+  replicate: {
+    url: 'https://replicate.com/inworld/tts-1.5-max',
+    displayName: 'Replicate',
+    requiresBrowser: true,
+    fallbackUrls: ['https://replicate.com/inworld/tts-1.5-mini'],
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
+  },
 };
