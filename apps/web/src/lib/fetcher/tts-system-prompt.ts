@@ -42,6 +42,7 @@ IMPORTANT — use these exact modelId values when extracting:
   Note: Deepgram may list separate pricing for Growth vs Pay-as-you-go plans. Create separate entries for each.
 - FAL: fal-dia-tts, fal-kokoro, fal-f5-tts, fal-orpheus-tts, fal-chatterboxhd
 - Cartesia: cartesia-sonic-3, cartesia-sonic-turbo
+- Replicate (Inworld): replicate-inworld-tts-1.5-max, replicate-inworld-tts-1.5-mini
 
 Map display names to these IDs. For example: "TTS-1" → "openai-tts-standard", "WaveNet" → "google-cloud-tts-wavenet", "Multilingual v2" → "elevenlabs-multilingual-v2", "Aura" → "deepgram-aura-1".
 If you find a model NOT in this list, create a new entry following the pattern: {provider}-{model}-{variant}.

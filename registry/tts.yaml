@@ -521,3 +521,21 @@ models:
     supportedLanguages: null
     status: active
     launchDate: "2023-06-01"
+  - modelId: replicate-inworld-tts-1.5-max
+    provider: replicate
+    displayName: Inworld TTS 1.5 Max
+    costPerMChars: 10
+    voiceType: neural
+    maxCharacters: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
+  - modelId: replicate-inworld-tts-1.5-mini
+    provider: replicate
+    displayName: Inworld TTS 1.5 Mini
+    costPerMChars: 5
+    voiceType: neural
+    maxCharacters: null
+    supportedLanguages: null
+    status: active
+    launchDate: null
