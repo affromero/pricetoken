@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.13.2] - 2026-03-11
+
+### Added
+- 2 new Replicate/Inworld TTS models: Inworld TTS 1.5 Max ($10/M chars) and Inworld TTS 1.5 Mini ($5/M chars) — TTS registry now has 60 models
+
 ## [0.13.1] - 2026-03-10
 
 ### Added
