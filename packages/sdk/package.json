@@ -1,6 +1,6 @@
 {
   "name": "pricetoken",
-  "version": "0.13.3",
+  "version": "0.13.4",
   "description": "Real-time LLM pricing data — typed client, cost calculator, and static pricing",
   "keywords": [
     "llm",
