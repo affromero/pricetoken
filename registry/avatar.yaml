@@ -1,4 +1,37 @@
 models:
+  - modelId: fal-kling-lipsync-t2v
+    provider: fal
+    displayName: Kling Video LipSync Text-to-Video (FAL)
+    costPerMinute: 0.84
+    avatarType: standard
+    resolution: null
+    maxDuration: null
+    qualityMode: null
+    lipSync: true
+    status: active
+    launchDate: "2026-03-13"
+  - modelId: fal-veed-fabric-1-480p
+    provider: fal
+    displayName: VEED Fabric 1.0 480p (FAL)
+    costPerMinute: 4.8
+    avatarType: standard
+    resolution: 480p
+    maxDuration: null
+    qualityMode: null
+    lipSync: true
+    status: active
+    launchDate: "2026-03-13"
+  - modelId: fal-veed-fabric-1-720p
+    provider: fal
+    displayName: VEED Fabric 1.0 720p (FAL)
+    costPerMinute: 9
+    avatarType: standard
+    resolution: 720p
+    maxDuration: null
+    qualityMode: null
+    lipSync: true
+    status: active
+    launchDate: "2026-03-13"
   - modelId: fal-heygen-avatar4-i2v
     provider: fal
     displayName: HeyGen Photo Avatar 4 (FAL Image-to-Video)
