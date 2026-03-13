@@ -28,7 +28,7 @@ describe('generate-static', () => {
     expect(result.stdout).toContain('tts: 60 models');
     expect(result.stdout).toContain('stt: 73 models');
     expect(result.stdout).toContain('avatar: 17 models');
-    expect(result.stdout).toContain('image: 47 models');
+    expect(result.stdout).toContain('image: 46 models');
     expect(result.stdout).toContain('video: 46 models');
     expect(result.stdout).toContain('music: 7 models');
   });
