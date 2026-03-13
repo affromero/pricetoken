@@ -83,18 +83,6 @@ models:
       - png
     status: active
     launchDate: "2025-05-29"
-  - modelId: fal-flux-1-pro
-    provider: fal
-    displayName: FLUX.1 [pro] (legacy)
-    pricePerImage: 0.05
-    pricePerMegapixel: 0.05
-    defaultResolution: 1024x1024
-    qualityTier: standard
-    maxResolution: null
-    supportedFormats:
-      - jpeg
-    status: deprecated
-    launchDate: "2025-01-15"
   - modelId: fal-flux-1-schnell
     provider: fal
     displayName: fal FLUX.1 Schnell
