@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.13.3] - 2026-03-13
+
+### Added
+- 3 new FAL avatar models: VEED Fabric 1.0 480p ($4.80/min), VEED Fabric 1.0 720p ($9.00/min), and Kling Video LipSync Text-to-Video ($0.84/min) — avatar registry now has 17 models
+
 ## [0.13.2] - 2026-03-11
 
 ### Added
