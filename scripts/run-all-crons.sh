@@ -61,5 +61,6 @@ run_cron "Video pricing"  "/api/cron/fetch-video-pricing"  1200
 run_cron "Avatar pricing" "/api/cron/fetch-avatar-pricing" 600
 run_cron "TTS pricing"    "/api/cron/fetch-tts-pricing"    900
 run_cron "STT pricing"    "/api/cron/fetch-stt-pricing"    900
+run_cron "Music pricing"  "/api/cron/fetch-music-pricing"  900
 
 log "=== All crons complete ==="

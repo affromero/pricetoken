@@ -7,6 +7,7 @@ import { runImagePricingFetch } from '@/lib/fetcher/run-image-fetch';
 import { runVideoFetch } from '@/lib/fetcher/run-video-fetch';
 import { runSttFetch } from '@/lib/fetcher/run-stt-fetch';
 import { runTtsFetch } from '@/lib/fetcher/run-tts-fetch';
+import { runMusicFetch } from '@/lib/fetcher/run-music-fetch';
 
 const CATEGORIES = {
   text: {
@@ -38,6 +39,11 @@ const CATEGORIES = {
     run: () => runTtsFetch(),
     cache: 'pt:cache:tts:*',
     operation: 'tts_verification',
+  },
+  music: {
+    run: () => runMusicFetch(),
+    cache: 'pt:cache:music:*',
+    operation: 'music_verification',
   },
 } as const;
 
