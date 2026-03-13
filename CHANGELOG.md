@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.13.4] - 2026-03-12
+
+### Added
+- Music category to daily cron script and retry endpoint — music pricing now runs alongside the other 6 categories
+- Static fallback text mechanism for providers with unscrappable pricing pages (Framer SPAs, etc.)
+- Cartesia TTS static fallback — Sonic-3 and Sonic-Turbo no longer flagged daily due to scraping failures
+
+### Removed
+- Deprecated `fal-flux-1-pro` from image registry — image models reduced from 47 to 46
+
 ## [0.13.3] - 2026-03-13
 
 ### Added
