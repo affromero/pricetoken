@@ -13,6 +13,8 @@ export interface ProviderConfig {
   fallbackUrls?: string[];
   requiresBrowser?: boolean;
   browserOptions?: BrowserFetchOptions;
+  /** Plain-text pricing info used when all scraping attempts return 0 models (e.g. heavy SPAs). */
+  staticFallbackText?: string;
 }
 
 export const VIDEO_PROVIDERS: Record<string, ProviderConfig> = {

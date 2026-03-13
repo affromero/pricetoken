@@ -65,6 +65,12 @@ export const TTS_PROVIDERS: Record<string, ProviderConfig> = {
     requiresBrowser: true,
     fallbackUrls: ['https://docs.cartesia.ai/build-with-cartesia/pricing'],
     browserOptions: { waitMs: 8000, scrollToBottom: true },
+    staticFallbackText: [
+      'Cartesia TTS API Pricing (from docs.cartesia.ai):',
+      'Sonic-3: $0.029875 per 1,000 characters ($29.875 per 1,000,000 characters). Neural voice model, 42 languages supported.',
+      'Sonic-Turbo: $0.029875 per 1,000 characters ($29.875 per 1,000,000 characters). Low-latency neural voice model.',
+      'Both models are active and generally available.',
+    ].join('\n'),
   },
   replicate: {
     url: 'https://replicate.com/inworld/tts-1.5-max',

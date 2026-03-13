@@ -78,6 +78,18 @@ export async function runTtsFetch(): Promise<TtsFetchResult> {
         extraction = { ...extraction, models: allModels };
       }
 
+      // Static fallback: when scraping yields nothing, extract from known pricing text
+      let usedStaticFallback = false;
+      if (extraction.models.length === 0 && config.staticFallbackText) {
+        console.log(`${config.displayName}: scraping returned 0 models, trying static fallback text...`);
+        extraction = await extractTtsPricing(providerId, config.staticFallbackText);
+        if (extraction.models.length > 0) {
+          usedStaticFallback = true;
+          pageText = config.staticFallbackText;
+          console.log(`${config.displayName}: extracted ${extraction.models.length} model(s) from static fallback`);
+        }
+      }
+
       if (extraction.models.length === 0) {
         errors.push(`${config.displayName}: no TTS models extracted`);
         await saveFetchRun(providerId, [], [], [], 0, 'no TTS models extracted');
@@ -102,6 +114,17 @@ export async function runTtsFetch(): Promise<TtsFetchResult> {
       if (saneModels.length === 0) {
         errors.push(`${config.displayName}: all TTS models failed sanity checks`);
         await saveFetchRun(providerId, [], [], [], 0, 'all TTS models failed sanity checks');
+        continue;
+      }
+
+      // Static fallback: skip cross-verification (verifying our own text is circular),
+      // save directly with low confidence and 'static-fallback' source
+      if (usedStaticFallback) {
+        const saved = await saveTtsSnapshots(providerId, saneModels, 'static-fallback', 'low', 0);
+        totalModels += saved;
+        console.log(`${config.displayName}: saved ${saved} TTS model(s) from static fallback (low confidence)`);
+        const modelIds = saneModels.map((m) => m.modelId);
+        await saveFetchRun(providerId, modelIds, [], [], saved);
         continue;
       }
 
