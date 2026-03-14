@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.13.5] - 2026-03-14
+
+### Added
+- Google Cloud Gemini 2.5 Flash-Lite Preview TTS model ($0.50/M chars) — TTS registry now has 61 models
+
 ## [0.13.4] - 2026-03-12
 
 ### Added
