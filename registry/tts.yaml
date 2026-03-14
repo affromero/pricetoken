@@ -341,6 +341,15 @@ models:
     supportedLanguages: null
     status: active
     launchDate: null
+  - modelId: google-cloud-gemini-2-5-flash-lite-tts
+    provider: google-cloud
+    displayName: Google Cloud Gemini 2.5 Flash-Lite Preview TTS
+    costPerMChars: 0.5
+    voiceType: neural
+    maxCharacters: null
+    supportedLanguages: null
+    status: preview
+    launchDate: "2026-03-13"
   - modelId: google-cloud-instant-custom-voice
     provider: google-cloud
     displayName: Google Cloud Instant Custom Voice
