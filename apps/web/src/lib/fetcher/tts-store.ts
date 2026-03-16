@@ -1,9 +1,10 @@
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import type { TtsModelPricing, TtsModelHistory, TtsPriceHistoryPoint } from 'pricetoken';
+import { STATIC_TTS_PRICING } from 'pricetoken';
 import type { ExtractedTtsModel } from './tts-extractor';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
-import { carrySource, findOriginalSnapshot } from './store';
+import { carrySource, findOriginalSnapshot, type RegistryValidationResult } from './store';
 
 export async function saveTtsSnapshots(
   provider: string,
@@ -274,4 +275,47 @@ export async function carryForwardMissingTts(): Promise<number> {
   if (data.length === 0) return 0;
   const result = await prisma.ttsPricingSnapshot.createMany({ data });
   return result.count;
+}
+
+export async function registryValidateCarriedTts(): Promise<RegistryValidationResult> {
+  const startOfDay = new Date(new Date().toISOString().split('T')[0] + 'T00:00:00Z');
+
+  const carriedSnapshots = await prisma.ttsPricingSnapshot.findMany({
+    where: { source: 'carried', createdAt: { gte: startOfDay } },
+    select: { id: true, modelId: true, costPerMChars: true },
+  });
+
+  if (carriedSnapshots.length === 0) return { validated: 0, unvalidated: 0 };
+
+  const registryByModel = new Map(
+    STATIC_TTS_PRICING.map((m) => [m.modelId, m])
+  );
+
+  const matchIds: string[] = [];
+  const mismatchIds: string[] = [];
+
+  for (const snap of carriedSnapshots) {
+    const reg = registryByModel.get(snap.modelId);
+    if (reg && reg.costPerMChars === snap.costPerMChars) {
+      matchIds.push(snap.id);
+    } else {
+      mismatchIds.push(snap.id);
+    }
+  }
+
+  if (matchIds.length > 0) {
+    await prisma.ttsPricingSnapshot.updateMany({
+      where: { id: { in: matchIds } },
+      data: { source: 'admin', confidence: 'high' },
+    });
+  }
+
+  if (mismatchIds.length > 0) {
+    await prisma.ttsPricingSnapshot.updateMany({
+      where: { id: { in: mismatchIds } },
+      data: { confidence: 'low' },
+    });
+  }
+
+  return { validated: matchIds.length, unvalidated: mismatchIds.length };
 }

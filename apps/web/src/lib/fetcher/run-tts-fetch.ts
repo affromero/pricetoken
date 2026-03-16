@@ -6,6 +6,7 @@ import {
   saveTtsSnapshots,
   seedTtsFromStatic,
   carryForwardMissingTts,
+  registryValidateCarriedTts,
 } from './tts-store';
 import { getLastFetchRun, saveFetchRun, type FetchWarning } from './store';
 import { ttsCrossVerify } from './tts-cross-verify';
@@ -20,6 +21,7 @@ import type { TtsVerificationResult } from './tts-verification-types';
 export interface TtsFetchResult {
   totalModels: number;
   totalFlagged: number;
+  totalUnvalidated: number;
   errors: string[];
   warnings: FetchWarning[];
   verificationResults: Map<string, TtsVerificationResult>;
@@ -243,8 +245,13 @@ export async function runTtsFetch(): Promise<TtsFetchResult> {
     console.log(`Carried forward ${carried} TTS models with no new data today`);
   }
 
+  const { validated: regValidated, unvalidated: totalUnvalidated } = await registryValidateCarriedTts();
+  if (regValidated > 0 || totalUnvalidated > 0) {
+    console.log(`Registry validation: ${regValidated} validated, ${totalUnvalidated} unvalidated`);
+  }
+
   console.log(
-    `TTS pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried, ${errors.length} errors, ${warnings.length} warnings`
+    `TTS pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried (${regValidated} registry-validated), ${errors.length} errors, ${warnings.length} warnings`
   );
-  return { totalModels, totalFlagged, errors, warnings, verificationResults };
+  return { totalModels, totalFlagged, totalUnvalidated, errors, warnings, verificationResults };
 }

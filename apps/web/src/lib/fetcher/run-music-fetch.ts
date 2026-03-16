@@ -6,6 +6,7 @@ import {
   saveMusicSnapshots,
   seedMusicFromStatic,
   carryForwardMissingMusic,
+  registryValidateCarriedMusic,
 } from './music-store';
 import { getLastFetchRun, saveFetchRun, type FetchWarning } from './store';
 import { musicCrossVerify } from './music-cross-verify';
@@ -20,6 +21,7 @@ import type { MusicVerificationResult } from './music-verification-types';
 export interface MusicFetchResult {
   totalModels: number;
   totalFlagged: number;
+  totalUnvalidated: number;
   errors: string[];
   warnings: FetchWarning[];
   verificationResults: Map<string, MusicVerificationResult>;
@@ -220,8 +222,13 @@ export async function runMusicFetch(): Promise<MusicFetchResult> {
     console.log(`Carried forward ${carried} music models with no new data today`);
   }
 
+  const { validated: regValidated, unvalidated: totalUnvalidated } = await registryValidateCarriedMusic();
+  if (regValidated > 0 || totalUnvalidated > 0) {
+    console.log(`Registry validation: ${regValidated} validated, ${totalUnvalidated} unvalidated`);
+  }
+
   console.log(
-    `Music pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried, ${errors.length} errors, ${warnings.length} warnings`
+    `Music pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried (${regValidated} registry-validated), ${errors.length} errors, ${warnings.length} warnings`
   );
-  return { totalModels, totalFlagged, errors, warnings, verificationResults };
+  return { totalModels, totalFlagged, totalUnvalidated, errors, warnings, verificationResults };
 }

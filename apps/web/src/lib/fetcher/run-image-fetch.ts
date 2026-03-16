@@ -5,6 +5,7 @@ import {
   saveImageSnapshots,
   seedImageFromStatic,
   carryForwardMissingImages,
+  registryValidateCarriedImages,
   getKnownImageModelIds,
 } from './image-store';
 import { saveFetchRun, getLastFetchRun, type FetchWarning } from './store';
@@ -22,6 +23,7 @@ import type { FetchOptions } from './run-fetch';
 export interface ImageFetchResult {
   totalModels: number;
   totalFlagged: number;
+  totalUnvalidated: number;
   errors: string[];
   warnings: FetchWarning[];
   verificationResults: Map<string, ImageVerificationResult>;
@@ -266,8 +268,13 @@ export async function runImagePricingFetch(options: FetchOptions = {}): Promise<
     console.log(`Carried forward ${carried} image models not seen in this run`);
   }
 
+  const { validated: regValidated, unvalidated: totalUnvalidated } = await registryValidateCarriedImages();
+  if (regValidated > 0 || totalUnvalidated > 0) {
+    console.log(`Registry validation: ${regValidated} validated, ${totalUnvalidated} unvalidated`);
+  }
+
   console.log(
-    `Image pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried, ${errors.length} errors, ${warnings.length} warnings`
+    `Image pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried (${regValidated} registry-validated), ${errors.length} errors, ${warnings.length} warnings`
   );
-  return { totalModels, totalFlagged, errors, warnings, verificationResults };
+  return { totalModels, totalFlagged, totalUnvalidated, errors, warnings, verificationResults };
 }

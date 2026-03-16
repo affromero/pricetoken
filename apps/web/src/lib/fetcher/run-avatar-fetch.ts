@@ -6,6 +6,7 @@ import {
   saveAvatarSnapshots,
   seedAvatarFromStatic,
   carryForwardMissingAvatar,
+  registryValidateCarriedAvatar,
 } from './avatar-store';
 import { getLastFetchRun, saveFetchRun, type FetchWarning } from './store';
 import { avatarCrossVerify } from './avatar-cross-verify';
@@ -20,6 +21,7 @@ import type { AvatarVerificationResult } from './avatar-verification-types';
 export interface AvatarFetchResult {
   totalModels: number;
   totalFlagged: number;
+  totalUnvalidated: number;
   errors: string[];
   warnings: FetchWarning[];
   verificationResults: Map<string, AvatarVerificationResult>;
@@ -220,8 +222,13 @@ export async function runAvatarFetch(): Promise<AvatarFetchResult> {
     console.log(`Carried forward ${carried} avatar models with no new data today`);
   }
 
+  const { validated: regValidated, unvalidated: totalUnvalidated } = await registryValidateCarriedAvatar();
+  if (regValidated > 0 || totalUnvalidated > 0) {
+    console.log(`Registry validation: ${regValidated} validated, ${totalUnvalidated} unvalidated`);
+  }
+
   console.log(
-    `Avatar pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried, ${errors.length} errors, ${warnings.length} warnings`
+    `Avatar pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried (${regValidated} registry-validated), ${errors.length} errors, ${warnings.length} warnings`
   );
-  return { totalModels, totalFlagged, errors, warnings, verificationResults };
+  return { totalModels, totalFlagged, totalUnvalidated, errors, warnings, verificationResults };
 }

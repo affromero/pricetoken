@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import type { AvatarModelPricing, AvatarModelHistory, AvatarPriceHistoryPoint } from 'pricetoken';
 import { STATIC_AVATAR_PRICING } from 'pricetoken';
 import type { ExtractedAvatarModel } from './avatar-extractor';
-import { carrySource, findOriginalSnapshot } from './store';
+import { carrySource, findOriginalSnapshot, type RegistryValidationResult } from './store';
 import { computeConfidenceScore, confidenceLevelFromScore, computeFreshness } from '@/lib/confidence';
 
 export async function saveAvatarSnapshots(
@@ -57,6 +57,49 @@ export async function saveAvatarSnapshots(
 
   const result = await prisma.avatarPricingSnapshot.createMany({ data });
   return result.count;
+}
+
+export async function registryValidateCarriedAvatar(): Promise<RegistryValidationResult> {
+  const startOfDay = new Date(new Date().toISOString().split('T')[0] + 'T00:00:00Z');
+
+  const carriedSnapshots = await prisma.avatarPricingSnapshot.findMany({
+    where: { source: 'carried', createdAt: { gte: startOfDay } },
+    select: { id: true, modelId: true, costPerMinute: true },
+  });
+
+  if (carriedSnapshots.length === 0) return { validated: 0, unvalidated: 0 };
+
+  const registryByModel = new Map(
+    STATIC_AVATAR_PRICING.map((m) => [m.modelId, m])
+  );
+
+  const matchIds: string[] = [];
+  const mismatchIds: string[] = [];
+
+  for (const snap of carriedSnapshots) {
+    const reg = registryByModel.get(snap.modelId);
+    if (reg && reg.costPerMinute === snap.costPerMinute) {
+      matchIds.push(snap.id);
+    } else {
+      mismatchIds.push(snap.id);
+    }
+  }
+
+  if (matchIds.length > 0) {
+    await prisma.avatarPricingSnapshot.updateMany({
+      where: { id: { in: matchIds } },
+      data: { source: 'admin', confidence: 'high' },
+    });
+  }
+
+  if (mismatchIds.length > 0) {
+    await prisma.avatarPricingSnapshot.updateMany({
+      where: { id: { in: mismatchIds } },
+      data: { confidence: 'low' },
+    });
+  }
+
+  return { validated: matchIds.length, unvalidated: mismatchIds.length };
 }
 
 export async function getLatestAvatarPricing(provider?: string): Promise<AvatarModelPricing[]> {

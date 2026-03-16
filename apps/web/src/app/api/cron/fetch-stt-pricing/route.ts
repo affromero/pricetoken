@@ -14,10 +14,11 @@ export async function GET(request: Request) {
   try {
     const result = await runSttFetch();
 
+    const hasUnvalidated = (result.totalUnvalidated ?? 0) > 0;
     const status =
-      result.errors.length === 0
+      result.errors.length === 0 && !hasUnvalidated
         ? 'success'
-        : result.totalModels > 0
+        : (result.totalModels > 0 || hasUnvalidated)
           ? 'partial'
           : 'failed';
 
