@@ -59,6 +59,16 @@ models:
     qualityMode: standard
     status: active
     launchDate: "2026-03-05"
+  - modelId: fal-ltx2.3-a2v-1080p
+    provider: fal
+    displayName: FAL LTX-2.3 Audio-to-Video 1080p
+    costPerMinute: 6
+    inputType: audio,text,image
+    resolution: 1080p
+    maxDuration: 20
+    qualityMode: standard
+    status: active
+    launchDate: "2026-03-16"
   - modelId: fal-ovi-720p
     provider: fal
     displayName: FAL Ovi Text to Video 720p
