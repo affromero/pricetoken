@@ -16,6 +16,7 @@ CATEGORIES=(
   "fetch-video-pricing"
   "fetch-stt-pricing"
   "fetch-tts-pricing"
+  "fetch-music-pricing"
 )
 
 run_category() {

@@ -6,6 +6,7 @@ import {
   saveVideoSnapshots,
   seedVideoFromStatic,
   carryForwardMissingVideo,
+  registryValidateCarriedVideo,
   getKnownVideoModelIds,
 } from './video-store';
 import { getLastFetchRun, saveFetchRun, type FetchWarning } from './store';
@@ -23,6 +24,7 @@ import type { FetchOptions } from './run-fetch';
 export interface VideoFetchResult {
   totalModels: number;
   totalFlagged: number;
+  totalUnvalidated: number;
   errors: string[];
   warnings: FetchWarning[];
   verificationResults: Map<string, VideoVerificationResult>;
@@ -266,8 +268,13 @@ export async function runVideoFetch(options: FetchOptions = {}): Promise<VideoFe
     console.log(`Carried forward ${carried} video models with no new data today`);
   }
 
+  const { validated: regValidated, unvalidated: totalUnvalidated } = await registryValidateCarriedVideo();
+  if (regValidated > 0 || totalUnvalidated > 0) {
+    console.log(`Registry validation: ${regValidated} validated, ${totalUnvalidated} unvalidated`);
+  }
+
   console.log(
-    `Video pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried, ${errors.length} errors, ${warnings.length} warnings`
+    `Video pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried (${regValidated} registry-validated), ${errors.length} errors, ${warnings.length} warnings`
   );
-  return { totalModels, totalFlagged, errors, warnings, verificationResults };
+  return { totalModels, totalFlagged, totalUnvalidated, errors, warnings, verificationResults };
 }
