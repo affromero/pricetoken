@@ -7,6 +7,7 @@ import {
   getLastFetchRun,
   saveFetchRun,
   carryForwardMissing,
+  registryValidateCarried,
   getKnownModelIds,
   type FetchWarning,
 } from './store';
@@ -24,6 +25,7 @@ import type { VerificationResult } from './verification-types';
 export interface FetchResult {
   totalModels: number;
   totalFlagged: number;
+  totalUnvalidated: number;
   errors: string[];
   warnings: FetchWarning[];
   verificationResults: Map<string, VerificationResult>;
@@ -260,8 +262,14 @@ export async function runPricingFetch(options: FetchOptions = {}): Promise<Fetch
     console.log(`Carried forward ${carried} models with no new data today`);
   }
 
+  // Validate carried models against YAML registry
+  const { validated: regValidated, unvalidated: totalUnvalidated } = await registryValidateCarried();
+  if (regValidated > 0 || totalUnvalidated > 0) {
+    console.log(`Registry validation: ${regValidated} validated, ${totalUnvalidated} unvalidated`);
+  }
+
   console.log(
-    `Pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried, ${errors.length} errors, ${warnings.length} warnings`
+    `Pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried (${regValidated} registry-validated), ${errors.length} errors, ${warnings.length} warnings`
   );
-  return { totalModels, totalFlagged, errors, warnings, verificationResults };
+  return { totalModels, totalFlagged, totalUnvalidated, errors, warnings, verificationResults };
 }

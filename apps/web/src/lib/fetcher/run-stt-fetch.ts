@@ -6,6 +6,7 @@ import {
   saveSttSnapshots,
   seedSttFromStatic,
   carryForwardMissingStt,
+  registryValidateCarriedStt,
 } from './stt-store';
 import { getLastFetchRun, saveFetchRun, type FetchWarning } from './store';
 import { sttCrossVerify } from './stt-cross-verify';
@@ -20,6 +21,7 @@ import type { SttVerificationResult } from './stt-verification-types';
 export interface SttFetchResult {
   totalModels: number;
   totalFlagged: number;
+  totalUnvalidated: number;
   errors: string[];
   warnings: FetchWarning[];
   verificationResults: Map<string, SttVerificationResult>;
@@ -220,8 +222,13 @@ export async function runSttFetch(): Promise<SttFetchResult> {
     console.log(`Carried forward ${carried} STT models with no new data today`);
   }
 
+  const { validated: regValidated, unvalidated: totalUnvalidated } = await registryValidateCarriedStt();
+  if (regValidated > 0 || totalUnvalidated > 0) {
+    console.log(`Registry validation: ${regValidated} validated, ${totalUnvalidated} unvalidated`);
+  }
+
   console.log(
-    `STT pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried, ${errors.length} errors, ${warnings.length} warnings`
+    `STT pricing fetch complete: ${totalModels} verified, ${totalFlagged} flagged, ${carried} carried (${regValidated} registry-validated), ${errors.length} errors, ${warnings.length} warnings`
   );
-  return { totalModels, totalFlagged, errors, warnings, verificationResults };
+  return { totalModels, totalFlagged, totalUnvalidated, errors, warnings, verificationResults };
 }

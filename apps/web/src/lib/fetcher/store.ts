@@ -38,6 +38,11 @@ export function carrySource(
   return trusted && recent ? effectiveSource : 'carried';
 }
 
+export interface RegistryValidationResult {
+  validated: number;
+  unvalidated: number;
+}
+
 export interface FetchWarning {
   type: 'models_missing' | 'low_confidence' | 'extraction_error' | 'sanity_check_failed';
   provider: string;
@@ -368,6 +373,52 @@ export async function saveFetchRun(
   return prisma.fetchRunLog.create({
     data: { provider, modelsFound, modelsMissing, modelsNew, totalExtracted, error },
   });
+}
+
+/** Validate today's carried snapshots against the YAML registry.
+ *  Matches → upgrade to source='admin', confidence='high'.
+ *  Mismatches or not in registry → downgrade to confidence='low'. */
+export async function registryValidateCarried(): Promise<RegistryValidationResult> {
+  const startOfDay = new Date(new Date().toISOString().split('T')[0] + 'T00:00:00Z');
+
+  const carriedSnapshots = await prisma.modelPricingSnapshot.findMany({
+    where: { source: 'carried', createdAt: { gte: startOfDay } },
+    select: { id: true, modelId: true, inputPerMTok: true, outputPerMTok: true },
+  });
+
+  if (carriedSnapshots.length === 0) return { validated: 0, unvalidated: 0 };
+
+  const registryByModel = new Map(
+    STATIC_PRICING.map((m) => [m.modelId, m])
+  );
+
+  const matchIds: string[] = [];
+  const mismatchIds: string[] = [];
+
+  for (const snap of carriedSnapshots) {
+    const reg = registryByModel.get(snap.modelId);
+    if (reg && reg.inputPerMTok === snap.inputPerMTok && reg.outputPerMTok === snap.outputPerMTok) {
+      matchIds.push(snap.id);
+    } else {
+      mismatchIds.push(snap.id);
+    }
+  }
+
+  if (matchIds.length > 0) {
+    await prisma.modelPricingSnapshot.updateMany({
+      where: { id: { in: matchIds } },
+      data: { source: 'admin', confidence: 'high' },
+    });
+  }
+
+  if (mismatchIds.length > 0) {
+    await prisma.modelPricingSnapshot.updateMany({
+      where: { id: { in: mismatchIds } },
+      data: { confidence: 'low' },
+    });
+  }
+
+  return { validated: matchIds.length, unvalidated: mismatchIds.length };
 }
 
 export async function getRecentWarnings(days = 7): Promise<FetchWarning[]> {
