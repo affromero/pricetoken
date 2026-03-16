@@ -118,6 +118,10 @@ jobs:
             echo "Seeding new models..."
             docker compose -f docker-compose.prod.yml exec web npx tsx scripts/seed.ts
             docker compose -f docker-compose.prod.yml exec web npx tsx scripts/seed-video.ts
+            docker compose -f docker-compose.prod.yml exec web npx tsx scripts/seed-avatar.ts
+            docker compose -f docker-compose.prod.yml exec web npx tsx scripts/seed-tts.ts
+            docker compose -f docker-compose.prod.yml exec web npx tsx scripts/seed-stt.ts
+            docker compose -f docker-compose.prod.yml exec web npx tsx scripts/seed-music.ts
 
             echo "Syncing systemd timer..."
             chmod +x ~/pricetoken/infra/fetch-all-pricing.sh
