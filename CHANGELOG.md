@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.13.6] - 2026-03-16
+
+### Added
+- FAL LTX-2.3 Audio-to-Video model in video and avatar registries
+- Registry validation for carried models and music fetch pipeline support
+
+### Fixed
+- Deploy seed now covers all 6 categories (was missing avatar, tts, stt, music)
+
 ## [0.13.5] - 2026-03-14
 
 ### Added
