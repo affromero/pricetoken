@@ -174,7 +174,7 @@ export async function middleware(request: NextRequest) {
 
   after(async () => {
     try {
-      await fetch(trackUrl, {
+      const res = await fetch(trackUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -182,8 +182,12 @@ export async function middleware(request: NextRequest) {
         },
         body: trackBody,
       });
-    } catch {
-      // Silently fail — analytics should never break the site
+      if (!res.ok) {
+        const text = await res.text();
+        console.error(`[analytics] track failed: ${res.status} ${text} secret=${ANALYTICS_INTERNAL_SECRET.slice(0, 6)}... url=${trackUrl}`);
+      }
+    } catch (err) {
+      console.error('[analytics] track error:', err);
     }
   });
 
