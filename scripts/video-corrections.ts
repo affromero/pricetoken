@@ -541,4 +541,20 @@ export const VIDEO_CORRECTIONS: VideoCorrection[] = [
     launchDate: '2026-01-15',
     reason: 'New model: ~$0.20/video (~5.8s) ≈ $2.07/min',
   },
+  // =========================================================================
+  // xAI
+  // =========================================================================
+  {
+    modelId: 'grok-imagine-video',
+    provider: 'xai',
+    displayName: 'Grok Imagine Video',
+    costPerMinute: 3,
+    inputType: 'text,image',
+    resolution: null,
+    maxDuration: null,
+    qualityMode: 'standard',
+    status: 'active',
+    launchDate: '2025-06-01',
+    reason: 'New model: $0.05/sec = $3.00/min (from docs.x.ai)',
+  },
 ];
