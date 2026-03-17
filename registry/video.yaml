@@ -139,6 +139,16 @@ models:
     qualityMode: standard
     status: active
     launchDate: "2025-06-01"
+  - modelId: grok-imagine-video
+    provider: xai
+    displayName: Grok Imagine Video
+    costPerMinute: 3
+    inputType: text,image
+    resolution: null
+    maxDuration: null
+    qualityMode: standard
+    status: active
+    launchDate: "2025-06-01"
   - modelId: kling-3.0-1080p
     provider: kling
     displayName: Kling 3.0 1080p

@@ -269,6 +269,24 @@ models:
     maxOutputTokens: 128000
     status: active
     launchDate: "2026-03-05"
+  - modelId: grok-4.20
+    provider: xai
+    displayName: Grok 4.20
+    inputPerMTok: 2
+    outputPerMTok: 6
+    contextWindow: 2000000
+    maxOutputTokens: null
+    status: active
+    launchDate: "2026-03-09"
+  - modelId: grok-code-fast-1
+    provider: xai
+    displayName: Grok Code Fast 1
+    inputPerMTok: 0.2
+    outputPerMTok: 1.5
+    contextWindow: 256000
+    maxOutputTokens: null
+    status: active
+    launchDate: "2026-01-01"
   - modelId: grok-3
     provider: xai
     displayName: Grok 3

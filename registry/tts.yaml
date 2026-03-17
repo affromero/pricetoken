@@ -287,6 +287,33 @@ models:
     supportedLanguages: null
     status: active
     launchDate: "2025-06-01"
+  - modelId: fal-tada-1b
+    provider: fal
+    displayName: FAL TADA 1B TTS
+    costPerMChars: 50
+    voiceType: neural
+    maxCharacters: null
+    supportedLanguages: null
+    status: active
+    launchDate: "2026-03-14"
+  - modelId: fal-tada-3b
+    provider: fal
+    displayName: FAL TADA 3B TTS
+    costPerMChars: 80
+    voiceType: neural
+    maxCharacters: null
+    supportedLanguages: null
+    status: active
+    launchDate: "2026-03-14"
+  - modelId: fal-xai-tts
+    provider: fal
+    displayName: FAL xAI TTS
+    costPerMChars: 4.2
+    voiceType: neural
+    maxCharacters: null
+    supportedLanguages: null
+    status: active
+    launchDate: "2026-03-01"
   - modelId: fal-dia-tts
     provider: fal
     displayName: FAL Dia TTS
