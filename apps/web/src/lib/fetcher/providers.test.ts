@@ -76,11 +76,11 @@ describe('PRICING_PROVIDERS', () => {
 });
 
 describe('VIDEO_PROVIDERS', () => {
-  it('exports configs for all 10 video providers', () => {
+  it('exports configs for all 11 video providers', () => {
     expect(Object.keys(VIDEO_PROVIDERS)).toEqual(
-      expect.arrayContaining(['runway', 'sora', 'veo', 'pika', 'kling', 'luma', 'minimax', 'seedance', 'fal', 'ltx'])
+      expect.arrayContaining(['runway', 'sora', 'veo', 'pika', 'kling', 'luma', 'minimax', 'seedance', 'fal', 'ltx', 'xai'])
     );
-    expect(Object.keys(VIDEO_PROVIDERS)).toHaveLength(10);
+    expect(Object.keys(VIDEO_PROVIDERS)).toHaveLength(11);
   });
 
   it('all URLs are valid HTTPS URLs', () => {

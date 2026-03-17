@@ -21,7 +21,7 @@ IMPORTANT — use these exact modelId values when extracting:
 - Anthropic: claude-opus-4-6, claude-sonnet-4-6, claude-haiku-4-5-20251001
 - Google: gemini-2.5-pro, gemini-2.5-flash, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-2.5-flash-lite, gemini-3.1-pro-preview, gemini-3.1-flash-lite-preview, gemini-3-flash-preview
 - DeepSeek: deepseek-chat, deepseek-reasoner
-- xAI: grok-4, grok-4.1-fast, grok-3, grok-3-mini
+- xAI: grok-4.20, grok-code-fast-1, grok-4, grok-4.1-fast, grok-3, grok-3-mini
 - Qwen: qwen3-max, qwq-32b
 - Cohere: command-r-plus, command-r
 - AI21: jamba-large-1.7, jamba-1.5-mini

@@ -40,7 +40,7 @@ IMPORTANT — use these exact modelId values when extracting:
 - PlayHT: playht-2, playht-3-mini
 - Deepgram: deepgram-aura-1, deepgram-aura-1-growth, deepgram-aura-1-payg, deepgram-aura-2, deepgram-aura-2-growth, deepgram-aura-2-payg, deepgram-aura-2-realtime, deepgram-aura-asteria
   Note: Deepgram may list separate pricing for Growth vs Pay-as-you-go plans. Create separate entries for each.
-- FAL: fal-dia-tts, fal-kokoro, fal-f5-tts, fal-orpheus-tts, fal-chatterboxhd
+- FAL: fal-dia-tts, fal-kokoro, fal-f5-tts, fal-orpheus-tts, fal-chatterboxhd, fal-xai-tts, fal-tada-1b, fal-tada-3b
 - Cartesia: cartesia-sonic-3, cartesia-sonic-turbo
 - Replicate (Inworld): replicate-inworld-tts-1.5-max, replicate-inworld-tts-1.5-mini
 

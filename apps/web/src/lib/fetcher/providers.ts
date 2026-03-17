@@ -86,6 +86,12 @@ export const VIDEO_PROVIDERS: Record<string, ProviderConfig> = {
     requiresBrowser: true,
     browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
+  xai: {
+    url: 'https://docs.x.ai/developers/models',
+    displayName: 'xAI',
+    requiresBrowser: true,
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
+  },
 };
 
 export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {
