@@ -37,7 +37,7 @@ CRITICAL conversion rules — show your work mentally before outputting:
 
 IMPORTANT — use these exact modelId values when extracting:
 - Runway: runway-gen4-720p, runway-gen4-turbo-720p, runway-gen4.5-720p, runway-gen3alpha-720p
-- Sora: sora2-720p, sora2-pro-720p, sora2-pro-1080p
+- Sora: sora2-720p, sora2-pro-720p, sora2-pro-1024p, sora2-pro-1080p
 - Veo: veo-3.1-1080p, veo-3.1-4k
 - Kling: kling-3.0-1080p, kling-v3-omni-1080p, kling-video-o1-1080p, kling-v3-1080p
 - Luma: luma-ray2-720p, luma-ray2-1080p, luma-ray-flash2-720p, luma-ray-flash2-1080p
