@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.7] - 2026-03-17
+
+### Added
+- xAI text models: Grok 4.20 ($2/$6/MTok, 2M context) and Grok Code Fast 1 ($0.20/$1.50/MTok)
+- xAI video: Grok Imagine Video ($3/min)
+- FAL TTS: xAI TTS ($4.20/M chars), TADA 1B ($50/M chars), TADA 3B ($80/M chars)
+- Scraper pipeline wiring for all new models (system prompts, provider configs, fallback URLs)
+
 ## [0.13.6] - 2026-03-16
 
 ### Added
