@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.13.8] - 2026-03-17
+
+### Added
+- GPT-5.4 mini/nano, GPT Image 1.5, and Sora 2 Pro pricing correction in registry
+
+### Fixed
+- Analytics crash on null SUM aggregation and broken event tracking
+- Edge Runtime sandbox bypass for analytics tracking (use localhost)
+- Video corrections: added grok-imagine-video to DB seeding pipeline
+
 ## [0.13.7] - 2026-03-17
 
 ### Added
