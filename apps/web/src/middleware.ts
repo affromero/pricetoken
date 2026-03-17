@@ -169,12 +169,14 @@ export async function middleware(request: NextRequest) {
   }
 
   // Track page view after response is sent (after() keeps the runtime alive)
+  // Use localhost to avoid Edge Runtime sandbox fetch restrictions on external URLs
   const trackBody = JSON.stringify({ path: pathname, ip, userAgent, referrer, botScore });
-  const trackUrl = new URL('/api/analytics/track', request.url).toString();
+  const port = process.env.PORT || '3001';
+  const trackUrl = `http://127.0.0.1:${port}/api/analytics/track`;
 
   after(async () => {
     try {
-      const res = await fetch(trackUrl, {
+      await fetch(trackUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -182,12 +184,8 @@ export async function middleware(request: NextRequest) {
         },
         body: trackBody,
       });
-      if (!res.ok) {
-        const text = await res.text();
-        console.error(`[analytics] track failed: ${res.status} ${text} secret=${ANALYTICS_INTERNAL_SECRET.slice(0, 6)}... url=${trackUrl}`);
-      }
-    } catch (err) {
-      console.error('[analytics] track error:', err);
+    } catch {
+      // Silently fail — analytics should never break the site
     }
   });
 
