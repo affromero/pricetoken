@@ -285,8 +285,8 @@ export function getBotStats(opts: { from: string; to: string }): BotStats {
       `SELECT
         COUNT(*) as totalBotHits,
         COUNT(DISTINCT user_agent) as uniqueBots,
-        SUM(CASE WHEN bot_score = 2 THEN 1 ELSE 0 END) as suspectedBots,
-        SUM(CASE WHEN bot_score = 3 THEN 1 ELSE 0 END) as knownBots
+        COALESCE(SUM(CASE WHEN bot_score = 2 THEN 1 ELSE 0 END), 0) as suspectedBots,
+        COALESCE(SUM(CASE WHEN bot_score = 3 THEN 1 ELSE 0 END), 0) as knownBots
       FROM page_events
       WHERE timestamp >= ? AND timestamp <= ? AND bot_score >= 2`,
     )
@@ -342,8 +342,8 @@ export function getHumanStats(opts: { from: string; to: string }): HumanStats {
   const row = db
     .prepare(
       `SELECT
-        SUM(CASE WHEN bot_score = 0 THEN 1 ELSE 0 END) as confirmedHumans,
-        SUM(CASE WHEN bot_score = 1 THEN 1 ELSE 0 END) as presumedHumans,
+        COALESCE(SUM(CASE WHEN bot_score = 0 THEN 1 ELSE 0 END), 0) as confirmedHumans,
+        COALESCE(SUM(CASE WHEN bot_score = 1 THEN 1 ELSE 0 END), 0) as presumedHumans,
         COUNT(*) as total
       FROM page_events
       WHERE timestamp >= ? AND timestamp <= ? AND bot_score <= 1`,

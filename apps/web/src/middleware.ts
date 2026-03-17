@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, after } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 const FREE_RATE_LIMIT = 30;
@@ -168,17 +168,23 @@ export async function middleware(request: NextRequest) {
     // Invalid referrer URL
   }
 
-  // Fire-and-forget tracking via internal API route
-  const trackUrl = new URL('/api/analytics/track', request.url);
-  fetch(trackUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-analytics-secret': ANALYTICS_INTERNAL_SECRET,
-    },
-    body: JSON.stringify({ path: pathname, ip, userAgent, referrer, botScore }),
-  }).catch(() => {
-    // Silently fail — analytics should never break the site
+  // Track page view after response is sent (after() keeps the runtime alive)
+  const trackBody = JSON.stringify({ path: pathname, ip, userAgent, referrer, botScore });
+  const trackUrl = new URL('/api/analytics/track', request.url).toString();
+
+  after(async () => {
+    try {
+      await fetch(trackUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-analytics-secret': ANALYTICS_INTERNAL_SECRET,
+        },
+        body: trackBody,
+      });
+    } catch {
+      // Silently fail — analytics should never break the site
+    }
   });
 
   return NextResponse.next();
