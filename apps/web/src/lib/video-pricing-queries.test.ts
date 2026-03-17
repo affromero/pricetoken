@@ -42,7 +42,7 @@ const mockVideoPricing: VideoModelPricing[] = [
     modelId: 'sora2-pro-1080p',
     provider: 'sora',
     displayName: 'Sora 2 Pro 1080p',
-    costPerMinute: 30.0,
+    costPerMinute: 42.0,
     inputType: 'text,image',
     resolution: '1080p',
     maxDuration: 25,

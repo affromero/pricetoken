@@ -260,6 +260,24 @@ models:
     maxOutputTokens: 128000
     status: active
     launchDate: "2026-03-05"
+  - modelId: gpt-5.4-mini
+    provider: openai
+    displayName: GPT-5.4 Mini
+    inputPerMTok: 0.75
+    outputPerMTok: 4.5
+    contextWindow: 400000
+    maxOutputTokens: 128000
+    status: active
+    launchDate: "2026-03-17"
+  - modelId: gpt-5.4-nano
+    provider: openai
+    displayName: GPT-5.4 Nano
+    inputPerMTok: 0.2
+    outputPerMTok: 1.25
+    contextWindow: 400000
+    maxOutputTokens: 128000
+    status: active
+    launchDate: "2026-03-17"
   - modelId: gpt-5.4-pro
     provider: openai
     displayName: GPT-5.4 Pro

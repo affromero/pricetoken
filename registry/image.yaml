@@ -361,6 +361,42 @@ models:
       - png
     status: active
     launchDate: "2025-04-23"
+  - modelId: gpt-image-1.5-high
+    provider: openai
+    displayName: GPT Image 1.5 High
+    pricePerImage: 0.133
+    pricePerMegapixel: null
+    defaultResolution: 1024x1024
+    qualityTier: ultra
+    maxResolution: 1024x1536
+    supportedFormats:
+      - png
+    status: active
+    launchDate: "2026-03-17"
+  - modelId: gpt-image-1.5-low
+    provider: openai
+    displayName: GPT Image 1.5 Low
+    pricePerImage: 0.009
+    pricePerMegapixel: null
+    defaultResolution: 1024x1024
+    qualityTier: standard
+    maxResolution: 1024x1536
+    supportedFormats:
+      - png
+    status: active
+    launchDate: "2026-03-17"
+  - modelId: gpt-image-1.5-medium
+    provider: openai
+    displayName: GPT Image 1.5 Medium
+    pricePerImage: 0.034
+    pricePerMegapixel: null
+    defaultResolution: 1024x1024
+    qualityTier: hd
+    maxResolution: 1024x1536
+    supportedFormats:
+      - png
+    status: active
+    launchDate: "2026-03-17"
   - modelId: gpt-image-1-low
     provider: openai
     displayName: GPT Image 1 Low
