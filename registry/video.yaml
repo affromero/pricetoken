@@ -1,4 +1,14 @@
 models:
+  - modelId: fal-cogvideox5b
+    provider: fal
+    displayName: FAL CogVideoX-5B 480p
+    costPerMinute: 2
+    inputType: text
+    resolution: 480p
+    maxDuration: 6
+    qualityMode: standard
+    status: active
+    launchDate: "2024-08-06"
   - modelId: fal-cosmos2.5-720p
     provider: fal
     displayName: FAL Cosmos 2.5 720p
@@ -9,6 +19,26 @@ models:
     qualityMode: standard
     status: active
     launchDate: "2026-01-15"
+  - modelId: fal-hunyuan-480p
+    provider: fal
+    displayName: FAL Hunyuan Video 480p
+    costPerMinute: 4.8
+    inputType: text
+    resolution: 480p
+    maxDuration: 5
+    qualityMode: standard
+    status: active
+    launchDate: "2024-12-03"
+  - modelId: fal-hunyuan1.5-480p
+    provider: fal
+    displayName: FAL Hunyuan Video 1.5 480p
+    costPerMinute: 4.5
+    inputType: text
+    resolution: 480p
+    maxDuration: 5
+    qualityMode: standard
+    status: active
+    launchDate: "2025-11-01"
   - modelId: fal-kling-o3-1080p
     provider: fal
     displayName: FAL Kling O3 1080p
@@ -39,6 +69,26 @@ models:
     qualityMode: turbo
     status: active
     launchDate: "2025-09-23"
+  - modelId: fal-kling2.6-pro-1080p
+    provider: fal
+    displayName: FAL Kling 2.6 Pro 1080p
+    costPerMinute: 4.2
+    inputType: image
+    resolution: 1080p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2025-12-01"
+  - modelId: fal-kling2.6-pro-1080p-audio
+    provider: fal
+    displayName: FAL Kling 2.6 Pro 1080p (with audio)
+    costPerMinute: 8.4
+    inputType: image
+    resolution: 1080p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2025-12-01"
   - modelId: fal-kling3-1080p
     provider: fal
     displayName: FAL Kling 3.0 1080p
@@ -49,6 +99,26 @@ models:
     qualityMode: standard
     status: active
     launchDate: "2026-02-05"
+  - modelId: fal-ltx2.0-fast-1080p
+    provider: fal
+    displayName: FAL LTX-2.0 Fast 1080p
+    costPerMinute: 2.4
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 5
+    qualityMode: turbo
+    status: active
+    launchDate: "2025-06-01"
+  - modelId: fal-ltx2.0-pro-1080p
+    provider: fal
+    displayName: FAL LTX-2.0 Pro 1080p
+    costPerMinute: 3.6
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 5
+    qualityMode: professional
+    status: active
+    launchDate: "2025-06-01"
   - modelId: fal-ltx2.3-1080p
     provider: fal
     displayName: FAL LTX-2.3 1080p
@@ -69,6 +139,26 @@ models:
     qualityMode: standard
     status: active
     launchDate: "2026-03-16"
+  - modelId: fal-magi-720p
+    provider: fal
+    displayName: FAL Magi 720p
+    costPerMinute: 12
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 4
+    qualityMode: standard
+    status: active
+    launchDate: "2025-09-01"
+  - modelId: fal-magi-distilled-720p
+    provider: fal
+    displayName: FAL Magi Distilled 720p
+    costPerMinute: 4.8
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 4
+    qualityMode: turbo
+    status: active
+    launchDate: "2025-09-01"
   - modelId: fal-ovi-720p
     provider: fal
     displayName: FAL Ovi Text to Video 720p
@@ -79,6 +169,36 @@ models:
     qualityMode: standard
     status: active
     launchDate: "2026-03-01"
+  - modelId: fal-pixverse5.5-720p
+    provider: fal
+    displayName: FAL PixVerse v5.5 720p
+    costPerMinute: 9
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 5
+    qualityMode: standard
+    status: active
+    launchDate: "2026-01-01"
+  - modelId: fal-pixverse5.5-1080p
+    provider: fal
+    displayName: FAL PixVerse v5.5 1080p
+    costPerMinute: 24
+    inputType: text,image
+    resolution: 1080p
+    maxDuration: 5
+    qualityMode: professional
+    status: active
+    launchDate: "2026-01-01"
+  - modelId: fal-seedance1.0-pro-1080p
+    provider: fal
+    displayName: FAL Seedance 1.0 Pro 1080p
+    costPerMinute: 7.44
+    inputType: image
+    resolution: 1080p
+    maxDuration: 10
+    qualityMode: professional
+    status: active
+    launchDate: "2025-09-01"
   - modelId: fal-sora2-720p
     provider: fal
     displayName: FAL Sora 2 720p
@@ -109,6 +229,16 @@ models:
     qualityMode: professional
     status: active
     launchDate: "2025-09-30"
+  - modelId: fal-stable-video
+    provider: fal
+    displayName: FAL Stable Video Diffusion
+    costPerMinute: 1.13
+    inputType: image
+    resolution: 576p
+    maxDuration: 4
+    qualityMode: standard
+    status: active
+    launchDate: "2024-03-01"
   - modelId: fal-veo3-1080p
     provider: fal
     displayName: FAL Veo 3 1080p
@@ -129,6 +259,26 @@ models:
     qualityMode: turbo
     status: active
     launchDate: "2025-12-01"
+  - modelId: fal-vidu-q3-turbo
+    provider: fal
+    displayName: FAL Vidu Q3 Turbo
+    costPerMinute: 2.1
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 8
+    qualityMode: turbo
+    status: active
+    launchDate: "2025-06-01"
+  - modelId: fal-wan2.2-a14b-480p
+    provider: fal
+    displayName: FAL Wan 2.2 A14B 480p
+    costPerMinute: 6
+    inputType: text,image
+    resolution: 480p
+    maxDuration: 5
+    qualityMode: standard
+    status: active
+    launchDate: "2025-03-01"
   - modelId: fal-wan2.5-480p
     provider: fal
     displayName: FAL WAN 2.5 480p
@@ -139,6 +289,16 @@ models:
     qualityMode: standard
     status: active
     launchDate: "2025-06-01"
+  - modelId: fal-wan2.6-480p
+    provider: fal
+    displayName: FAL Wan 2.6 480p
+    costPerMinute: 3
+    inputType: text,image
+    resolution: 480p
+    maxDuration: 5
+    qualityMode: standard
+    status: active
+    launchDate: "2026-01-01"
   - modelId: grok-imagine-video
     provider: xai
     displayName: Grok Imagine Video
@@ -339,6 +499,86 @@ models:
     qualityMode: null
     status: active
     launchDate: "2025-11-24"
+  - modelId: replicate-haiper-v2-720p
+    provider: replicate
+    displayName: Replicate Haiper Video 2 720p
+    costPerMinute: 3
+    inputType: text,image
+    resolution: 720p
+    maxDuration: 6
+    qualityMode: standard
+    status: active
+    launchDate: "2025-06-01"
+  - modelId: replicate-ltx-video-768p
+    provider: replicate
+    displayName: Replicate LTX-Video 768p
+    costPerMinute: 0.26
+    inputType: text
+    resolution: 768p
+    maxDuration: 3
+    qualityMode: standard
+    status: active
+    launchDate: "2024-11-01"
+  - modelId: replicate-pixverse-v4-360p
+    provider: replicate
+    displayName: Replicate PixVerse v4 360p
+    costPerMinute: 3.6
+    inputType: text,image
+    resolution: 360p
+    maxDuration: 5
+    qualityMode: standard
+    status: active
+    launchDate: "2025-09-01"
+  - modelId: replicate-seedance1-lite-480p
+    provider: replicate
+    displayName: Replicate Seedance 1.0 Lite 480p
+    costPerMinute: 1.08
+    inputType: text
+    resolution: 480p
+    maxDuration: 10
+    qualityMode: standard
+    status: active
+    launchDate: "2025-09-01"
+  - modelId: replicate-seedance1-pro-fast-720p
+    provider: replicate
+    displayName: Replicate Seedance 1.0 Pro Fast 720p
+    costPerMinute: 2.4
+    inputType: image
+    resolution: 720p
+    maxDuration: 5
+    qualityMode: turbo
+    status: active
+    launchDate: "2025-09-01"
+  - modelId: replicate-wan2.1-i2v-480p
+    provider: replicate
+    displayName: Replicate WaveSpeed Wan 2.1 I2V 480p
+    costPerMinute: 5.4
+    inputType: image
+    resolution: 480p
+    maxDuration: 5
+    qualityMode: standard
+    status: active
+    launchDate: "2025-03-01"
+  - modelId: replicate-wan2.1-i2v-720p
+    provider: replicate
+    displayName: Replicate WaveSpeed Wan 2.1 I2V 720p
+    costPerMinute: 15
+    inputType: image
+    resolution: 720p
+    maxDuration: 5
+    qualityMode: standard
+    status: active
+    launchDate: "2025-03-01"
+  - modelId: replicate-wan2.2-t2v-fast-480p
+    provider: replicate
+    displayName: Replicate Wan 2.2 5B Fast T2V 480p
+    costPerMinute: 0.18
+    inputType: text
+    resolution: 480p
+    maxDuration: 5
+    qualityMode: turbo
+    status: active
+    launchDate: "2025-03-01"
   - modelId: runway-gen3alpha-720p
     provider: runway
     displayName: Runway Gen-3 Alpha 720p
