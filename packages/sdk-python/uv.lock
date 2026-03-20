@@ -201,7 +201,7 @@ wheels = [
 
 [[package]]
 name = "pricetoken"
-version = "0.13.9"
+version = "0.13.10"
 source = { editable = "." }
 
 [package.dev-dependencies]
