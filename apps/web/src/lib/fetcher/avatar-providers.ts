@@ -24,4 +24,17 @@ export const AVATAR_PROVIDERS: Record<string, ProviderConfig> = {
     fallbackUrls: ['https://docs.dev.runwayml.com/guides/models/'],
     browserOptions: { waitMs: 5000, scrollToBottom: true },
   },
+  replicate: {
+    url: 'https://replicate.com/collections/text-to-video',
+    displayName: 'Replicate',
+    requiresBrowser: true,
+    fallbackUrls: [
+      'https://replicate.com/veed/fabric-1.0',
+      'https://replicate.com/cjwbw/sadtalker',
+      'https://replicate.com/devxpy/cog-wav2lip',
+      'https://replicate.com/chenxwh/video-retalking',
+      'https://replicate.com/bytedance/dreamactor-m2.0',
+    ],
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
+  },
 };

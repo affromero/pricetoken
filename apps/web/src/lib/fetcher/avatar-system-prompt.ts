@@ -38,8 +38,10 @@ IMPORTANT — use these exact modelId values when extracting:
   Note: FAL hosts HeyGen Avatar 4 models as API aggregator. Prefix with "fal-".
 - Runway: runway-characters
   Note: Runway Characters (GWM-1 Avatars) uses credit-based pricing at $0.01/credit. Convert: 2 credits upfront + 2 credits per 6 seconds = $0.20/min ongoing rate. Use the per-minute ongoing rate for costPerMinute (exclude one-time session fees).
+- Replicate: replicate-veed-fabric-480p, replicate-veed-fabric-720p, replicate-wav2lip, replicate-sadtalker, replicate-video-retalking, replicate-dreamactor-m2
+  Note: Replicate hosts open-source lip-sync/avatar models. VEED Fabric has 480p/720p tiers. Wav2Lip and SadTalker are audio-driven face animation. VideoRetalking re-syncs existing video to new audio. DreamActor M2.0 animates from image + driving video.
 
-Map display names to these IDs. For example: "Photo Avatar IV" → "heygen-photo-avatar-iv", "Digital Twin IV" → "heygen-digital-twin-iv", "Photo Avatar III" → "heygen-photo-avatar-iii", "Translation (Speed)" → "heygen-translation-speed", "GWM Avatars" or "gwm1_avatars" → "runway-characters".
+Map display names to these IDs. For example: "Photo Avatar IV" → "heygen-photo-avatar-iv", "Digital Twin IV" → "heygen-digital-twin-iv", "Photo Avatar III" → "heygen-photo-avatar-iii", "Translation (Speed)" → "heygen-translation-speed", "GWM Avatars" or "gwm1_avatars" → "runway-characters", "Fabric 1.0" → "replicate-veed-fabric-720p", "Wav2Lip" → "replicate-wav2lip", "SadTalker" → "replicate-sadtalker".
 
 Additional rules:
 - Each avatar type/tier should be a separate entry (standard vs premium vs translation).
