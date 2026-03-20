@@ -92,6 +92,16 @@ export const VIDEO_PROVIDERS: Record<string, ProviderConfig> = {
     requiresBrowser: true,
     browserOptions: { waitMs: 8000, scrollToBottom: true },
   },
+  replicate: {
+    url: 'https://replicate.com/collections/text-to-video',
+    displayName: 'Replicate',
+    requiresBrowser: true,
+    fallbackUrls: [
+      'https://replicate.com/pricing',
+      'https://replicate.com/collections/image-to-video',
+    ],
+    browserOptions: { waitMs: 8000, scrollToBottom: true },
+  },
 };
 
 export const PRICING_PROVIDERS: Record<string, ProviderConfig> = {

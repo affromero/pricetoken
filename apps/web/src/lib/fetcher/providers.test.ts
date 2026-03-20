@@ -76,11 +76,11 @@ describe('PRICING_PROVIDERS', () => {
 });
 
 describe('VIDEO_PROVIDERS', () => {
-  it('exports configs for all 11 video providers', () => {
+  it('exports configs for all 12 video providers', () => {
     expect(Object.keys(VIDEO_PROVIDERS)).toEqual(
-      expect.arrayContaining(['runway', 'sora', 'veo', 'pika', 'kling', 'luma', 'minimax', 'seedance', 'fal', 'ltx', 'xai'])
+      expect.arrayContaining(['runway', 'sora', 'veo', 'pika', 'kling', 'luma', 'minimax', 'seedance', 'fal', 'ltx', 'xai', 'replicate'])
     );
-    expect(Object.keys(VIDEO_PROVIDERS)).toHaveLength(11);
+    expect(Object.keys(VIDEO_PROVIDERS)).toHaveLength(12);
   });
 
   it('all URLs are valid HTTPS URLs', () => {
@@ -96,7 +96,7 @@ describe('VIDEO_PROVIDERS', () => {
   });
 
   it('most video providers require browser scraping', () => {
-    const browserProviders = ['runway', 'pika', 'kling', 'minimax', 'seedance', 'fal'];
+    const browserProviders = ['runway', 'pika', 'kling', 'minimax', 'seedance', 'fal', 'replicate'];
     for (const id of browserProviders) {
       expect(VIDEO_PROVIDERS[id]!.requiresBrowser).toBe(true);
     }

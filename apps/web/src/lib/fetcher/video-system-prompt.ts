@@ -45,7 +45,8 @@ IMPORTANT — use these exact modelId values when extracting:
 - MiniMax: minimax-hailuo02-512p, minimax-hailuo02-768p, minimax-hailuo02-pro-1080p, minimax-hailuo23-fast-768p, minimax-hailuo23-fast-1080p
 - Seedance: seedance-2.0-1080p, seedance-1.5-pro-720p, seedance-1.5-pro-720p-audio, seedance-1.5-pro-480p, seedance-1.5-pro-480p-audio
 - LTX: ltx-2.3-fast-1080p, ltx-2.3-pro-1080p, ltx-2.3-fast-4k, ltx-2.3-pro-4k
-- FAL: fal-veo3-1080p, fal-veo3-fast-1080p, fal-kling3-1080p, fal-kling-o3-1080p, fal-kling-v3-pro-1080p, fal-kling2.5-turbo-1080p, fal-wan2.5-480p, fal-ovi-720p, fal-cosmos2.5-720p, fal-ltx2.3-1080p, fal-sora2-720p, fal-sora2-pro-720p, fal-sora2-pro-1080p
+- FAL: fal-veo3-1080p, fal-veo3-fast-1080p, fal-kling3-1080p, fal-kling-o3-1080p, fal-kling-v3-pro-1080p, fal-kling2.5-turbo-1080p, fal-kling2.6-pro-1080p, fal-kling2.6-pro-1080p-audio, fal-wan2.5-480p, fal-wan2.6-480p, fal-wan2.2-a14b-480p, fal-ovi-720p, fal-cosmos2.5-720p, fal-ltx2.3-1080p, fal-ltx2.0-fast-1080p, fal-ltx2.0-pro-1080p, fal-sora2-720p, fal-sora2-pro-720p, fal-sora2-pro-1080p, fal-hunyuan-480p, fal-hunyuan1.5-480p, fal-magi-720p, fal-magi-distilled-720p, fal-pixverse5.5-720p, fal-pixverse5.5-1080p, fal-seedance1.0-pro-1080p, fal-vidu-q3-turbo, fal-cogvideox5b, fal-stable-video
+- Replicate: replicate-wan2.2-t2v-fast-480p, replicate-wan2.1-i2v-480p, replicate-wan2.1-i2v-720p, replicate-seedance1-pro-fast-720p, replicate-seedance1-lite-480p, replicate-haiper-v2-720p, replicate-ltx-video-768p, replicate-pixverse-v4-360p
 - xAI: grok-imagine-video
 
 Map display names to these IDs. For example: "Gen-4" → "runway-gen4-720p", "Hailuo 02" → "minimax-hailuo02-768p", "Hailuo 02 512p" → "minimax-hailuo02-512p", "Hailuo 2.3 Fast" → "minimax-hailuo23-fast-768p", "Ray 2" → "luma-ray2-720p", "Ray Flash 2" → "luma-ray-flash2-720p", "Seedance 1.5 Pro" → "seedance-1.5-pro-720p".
