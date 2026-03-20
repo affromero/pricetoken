@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.10] - 2026-03-20
+
+### Added
+- 6 Replicate avatar/lip-sync models: VEED Fabric 1.0 (480p/720p), Wav2Lip, SadTalker, VideoRetalking, DreamActor M2.0
+- Replicate as new avatar provider with fallback URLs and system prompt wiring
+- Avatar model count: 18 → 24
+
 ## [0.13.9] - 2026-03-20
 
 ### Added
