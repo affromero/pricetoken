@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.9] - 2026-03-20
+
+### Added
+- 24 new video generation models (49 → 73 total): Hunyuan Video, Vidu Q3, Magi, PixVerse, CogVideoX-5B, Seedance 1.0 Pro, Stable Video, Wan 2.2/2.6, Kling 2.6, LTX 2.0, and more
+- Replicate as new video provider with 8 models — including Seedance 1 Pro Fast and Wan 2.2 5B Fast ($0.18/min, cheapest video model in registry)
+- Scraper fallback URLs for all new FAL video models
+- DB seed corrections for all 24 new models
+
 ## [0.13.8] - 2026-03-17
 
 ### Added
