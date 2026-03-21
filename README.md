@@ -325,6 +325,14 @@ Found incorrect pricing? [Open an issue](https://github.com/affromero/pricetoken
 
 <sub>Using PriceToken? <a href="https://github.com/affromero/pricetoken/issues">Let us know</a> and we'll add you here.</sub>
 
+## Related Projects
+
+| Project | Description |
+|---------|-------------|
+| [**Fairtrail**](https://github.com/affromero/fairtrail) | Flight price evolution tracker with natural language search |
+| [**gitpane**](https://github.com/affromero/gitpane) | Multi-repo Git workspace dashboard for the terminal |
+| [**kin3o**](https://github.com/affromero/kin3o) | AI-powered Lottie animation generator CLI |
+
 ## License
 
 MIT
