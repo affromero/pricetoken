@@ -35,7 +35,7 @@ const securityHeaders = [
 const nextConfig = {
   output: 'standalone',
   transpilePackages: ['pricetoken'],
-  serverExternalPackages: ['better-sqlite3', 'geoip-lite'],
+  serverExternalPackages: ['better-sqlite3', 'geoip-lite', 'puppeteer-core'],
   env: {
     APP_VERSION: pkg.version,
   },
