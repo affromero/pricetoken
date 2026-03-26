@@ -143,51 +143,6 @@ models:
     maxOutputTokens: 65536
     status: preview
     launchDate: "2026-02-19"
-  - modelId: gpt-4.1
-    provider: openai
-    displayName: GPT-4.1
-    inputPerMTok: 2
-    outputPerMTok: 8
-    contextWindow: 1000000
-    maxOutputTokens: 32768
-    status: active
-    launchDate: "2025-04-14"
-  - modelId: gpt-4.1-mini
-    provider: openai
-    displayName: GPT-4.1 Mini
-    inputPerMTok: 0.4
-    outputPerMTok: 1.6
-    contextWindow: 1000000
-    maxOutputTokens: 32768
-    status: active
-    launchDate: "2025-04-14"
-  - modelId: gpt-4.1-nano
-    provider: openai
-    displayName: GPT-4.1 Nano
-    inputPerMTok: 0.1
-    outputPerMTok: 0.4
-    contextWindow: 1000000
-    maxOutputTokens: 32768
-    status: active
-    launchDate: "2025-04-14"
-  - modelId: gpt-4o
-    provider: openai
-    displayName: GPT-4o
-    inputPerMTok: 2.5
-    outputPerMTok: 10
-    contextWindow: 128000
-    maxOutputTokens: 16384
-    status: active
-    launchDate: "2024-05-13"
-  - modelId: gpt-4o-mini
-    provider: openai
-    displayName: GPT-4o Mini
-    inputPerMTok: 0.15
-    outputPerMTok: 0.6
-    contextWindow: 128000
-    maxOutputTokens: 16384
-    status: active
-    launchDate: "2024-07-18"
   - modelId: gpt-5
     provider: openai
     displayName: GPT-5
@@ -359,15 +314,6 @@ models:
     maxOutputTokens: null
     status: active
     launchDate: "2025-08-01"
-  - modelId: o3
-    provider: openai
-    displayName: o3
-    inputPerMTok: 2
-    outputPerMTok: 8
-    contextWindow: 200000
-    maxOutputTokens: 100000
-    status: active
-    launchDate: "2025-04-16"
   - modelId: o3-mini
     provider: openai
     displayName: o3 Mini
@@ -386,15 +332,6 @@ models:
     maxOutputTokens: 100000
     status: active
     launchDate: "2025-06-10"
-  - modelId: o4-mini
-    provider: openai
-    displayName: o4 Mini
-    inputPerMTok: 1.1
-    outputPerMTok: 4.4
-    contextWindow: 200000
-    maxOutputTokens: 100000
-    status: active
-    launchDate: "2025-04-16"
   - modelId: qwen3-max
     provider: qwen
     displayName: Qwen3 Max

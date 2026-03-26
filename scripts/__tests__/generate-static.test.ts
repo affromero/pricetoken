@@ -24,7 +24,7 @@ describe('generate-static', () => {
   it('generates all 14 static files from registry YAML', () => {
     const result = runGenerator();
     expect(result.exitCode).toBe(0);
-    expect(result.stdout).toContain('text: 46 models');
+    expect(result.stdout).toContain('text: 39 models');
     expect(result.stdout).toContain('tts: 64 models');
     expect(result.stdout).toContain('stt: 73 models');
     expect(result.stdout).toContain('avatar: 24 models');
