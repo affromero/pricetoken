@@ -5,7 +5,7 @@
 # ============================================
 
 # ---- Stage 1: Install dependencies ----
-FROM node:22-alpine AS deps
+FROM node:22-alpine3.21 AS deps
 RUN apk add --no-cache libc6-compat openssl python3 make g++
 WORKDIR /app
 
@@ -18,7 +18,7 @@ RUN --mount=type=cache,target=/root/.npm npm ci
 RUN npx prisma generate --schema=apps/web/prisma/schema.prisma
 
 # ---- Stage 2: Build the application ----
-FROM node:22-alpine AS builder
+FROM node:22-alpine3.21 AS builder
 RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
@@ -39,7 +39,7 @@ WORKDIR /app/apps/web
 RUN npm run build
 
 # ---- Stage 3: Production runner ----
-FROM node:22-alpine AS runner
+FROM node:22-alpine3.21 AS runner
 RUN apk add --no-cache libc6-compat openssl chromium
 RUN npm install -g @anthropic-ai/claude-code
 

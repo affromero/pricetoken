@@ -233,7 +233,7 @@ export async function runTtsFetch(): Promise<TtsFetchResult> {
 
       await saveFetchRun(providerId, currentModelIds, missing, newModels, consensus.approved.length);
     } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
+      const message = err instanceof Error ? err.message : JSON.stringify(err) ?? String(err);
       errors.push(`${config.displayName}: ${message}`);
       console.error(`Error fetching TTS pricing for ${config.displayName}:`, message);
       await saveFetchRun(providerId, [], [], [], 0, message).catch(() => {});
