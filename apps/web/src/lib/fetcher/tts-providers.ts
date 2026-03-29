@@ -75,6 +75,11 @@ export const TTS_PROVIDERS: Record<string, ProviderConfig> = {
       'Both models are active and generally available.',
     ].join('\n'),
   },
+  mistral: {
+    url: 'https://docs.mistral.ai/capabilities/audio/text_to_speech',
+    displayName: 'Mistral',
+    requiresBrowser: false,
+  },
   replicate: {
     url: 'https://replicate.com/inworld/tts-1.5-max',
     displayName: 'Replicate',

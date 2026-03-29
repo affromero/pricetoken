@@ -494,6 +494,15 @@ models:
     supportedLanguages: null
     status: active
     launchDate: "2018-03-27"
+  - modelId: mistral-voxtral
+    provider: mistral
+    displayName: Mistral Voxtral TTS
+    costPerMChars: 16
+    voiceType: neural
+    maxCharacters: null
+    supportedLanguages: 9
+    status: active
+    launchDate: "2026-03-26"
   - modelId: openai-gpt-4o-mini-tts
     provider: openai
     displayName: OpenAI GPT-4o Mini TTS

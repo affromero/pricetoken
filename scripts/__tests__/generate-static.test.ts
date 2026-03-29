@@ -25,7 +25,7 @@ describe('generate-static', () => {
     const result = runGenerator();
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain('text: 39 models');
-    expect(result.stdout).toContain('tts: 64 models');
+    expect(result.stdout).toContain('tts: 65 models');
     expect(result.stdout).toContain('stt: 73 models');
     expect(result.stdout).toContain('avatar: 24 models');
     expect(result.stdout).toContain('image: 49 models');
