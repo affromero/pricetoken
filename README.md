@@ -14,6 +14,9 @@ Real-time pricing data across text, image, video, avatar, TTS, and STT — scrap
 [![npm package size](https://img.shields.io/npm/unpacked-size/pricetoken)](https://www.npmjs.com/package/pricetoken)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Docker](https://img.shields.io/badge/Docker-deployed-2496ED?logo=docker&logoColor=white)](https://www.docker.com)
+[![Socket](https://img.shields.io/badge/Socket-protected-blueviolet?logo=socket.dev)](https://socket.dev)
+[![min-release-age](https://img.shields.io/badge/min--release--age-7%20days-brightgreen)](https://docs.npmjs.com/cli/v10/using-npm/config#min-release-age)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/affromero/pricetoken/pulls)
 
 [**pricetoken.ai**](https://pricetoken.ai) — Live dashboard, cost calculator, and API docs
