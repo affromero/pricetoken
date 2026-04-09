@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { deleteByPattern } from '@/lib/redis';
 import { apiSuccess, apiError } from '@/lib/api-response';
+import { getFetcherConfig } from '@/lib/fetcher-config';
 import { runPricingFetch } from '@/lib/fetcher/run-fetch';
 import { runAvatarFetch } from '@/lib/fetcher/run-avatar-fetch';
 import { runImagePricingFetch } from '@/lib/fetcher/run-image-fetch';
@@ -55,6 +56,11 @@ export async function GET(request: Request) {
 
   if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
     return apiError('Unauthorized', 401);
+  }
+
+  const config = await getFetcherConfig();
+  if (!config.enabled) {
+    return apiSuccess({ status: 'skipped', message: 'Fetcher disabled via admin config' });
   }
 
   const startOfDay = new Date(new Date().toISOString().split('T')[0] + 'T00:00:00Z');

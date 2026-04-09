@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { runSttFetch } from '@/lib/fetcher/run-stt-fetch';
 import { deleteByPattern } from '@/lib/redis';
 import { apiSuccess, apiError } from '@/lib/api-response';
+import { getFetcherConfig } from '@/lib/fetcher-config';
 
 export async function GET(request: Request) {
   const authHeader = request.headers.get('authorization');
@@ -9,6 +10,11 @@ export async function GET(request: Request) {
 
   if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
     return apiError('Unauthorized', 401);
+  }
+
+  const config = await getFetcherConfig();
+  if (!config.enabled) {
+    return apiSuccess({ status: 'skipped', message: 'Fetcher disabled via admin config' });
   }
 
   try {
