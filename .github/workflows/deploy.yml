@@ -21,6 +21,20 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Fetch secrets from Infisical
+        run: |
+          AT=$(curl -sS -X POST https://app.infisical.com/api/v1/auth/universal-auth/login \
+            -H 'Content-Type: application/json' \
+            -d "{\"clientId\":\"${{ secrets.INFISICAL_CLIENT_ID }}\",\"clientSecret\":\"${{ secrets.INFISICAL_CLIENT_SECRET }}\"}" \
+            | jq -r '.accessToken // empty')
+          [ -n "$AT" ] || { echo "Infisical login failed"; exit 1; }
+          ENV_B64=$(curl -sS -H "Authorization: Bearer $AT" \
+            "https://app.infisical.com/api/v3/secrets/raw?workspaceId=730076b1-5f72-4691-b271-139dc721529e&environment=dev&secretPath=%2F" \
+            | jq -r '.secrets[] | "\(.secretKey)=\(.secretValue)"' | base64 -w0)
+          [ -n "$ENV_B64" ] || { echo "Infisical returned no secrets"; exit 1; }
+          echo "::add-mask::$ENV_B64"
+          echo "ENV_B64=$ENV_B64" >> "$GITHUB_ENV"
+
       - name: Deploy via SSH
         id: deploy
         uses: appleboy/ssh-action@v1
@@ -28,13 +42,12 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
-          envs: REPO_TOKEN,DOPPLER_PRD_TOKEN
+          envs: ENV_B64
           script: |
             set -e
             cd ~/pricetoken
 
             echo "Pulling latest code..."
-            git remote set-url origin "https://x-access-token:${REPO_TOKEN}@github.com/affromero/pricetoken.git"
             git checkout -- .
             git clean -fd
             git pull origin main
@@ -43,18 +56,17 @@ jobs:
             sudo cp ~/pricetoken/Caddyfile /etc/caddy/conf.d/pricetoken.ai
             sudo caddy reload --config /etc/caddy/Caddyfile --force
 
-            echo "Generating .env from Doppler..."
-            if ! command -v doppler &>/dev/null; then
-              curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh | sudo sh
-            fi
-            DOPPLER_TOKEN="${DOPPLER_PRD_TOKEN}" doppler secrets download --no-file --format env-no-quotes > ~/pricetoken/.env
+            echo "Generating .env from Infisical..."
+            umask 077
+            echo "$ENV_B64" | base64 -d > ~/pricetoken/.env
+            test -s ~/pricetoken/.env || { echo "FATAL: .env is empty"; exit 1; }
 
             echo "Writing systemd env file..."
+            # Reuse the already-decoded .env instead of a second vault call.
             mkdir -p ~/.config/pricetoken
-            DOPPLER_TOKEN="${DOPPLER_PRD_TOKEN}" doppler secrets get CRON_SECRET --plain > /tmp/pt-cron-env
-            echo "CRON_SECRET=$(cat /tmp/pt-cron-env)" > ~/.config/pricetoken/env
+            grep '^CRON_SECRET=' ~/pricetoken/.env > ~/.config/pricetoken/env
+            test -s ~/.config/pricetoken/env || { echo "FATAL: CRON_SECRET missing"; exit 1; }
             chmod 600 ~/.config/pricetoken/env
-            rm -f /tmp/pt-cron-env
 
             echo "Building containers..."
             docker compose -f docker-compose.prod.yml build web
@@ -134,9 +146,6 @@ jobs:
             docker image prune -f
 
             echo "Deploy complete!"
-        env:
-          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
-          DOPPLER_PRD_TOKEN: ${{ secrets.DOPPLER_PRD_TOKEN }}
 
   notify:
     name: Telegram Notification
