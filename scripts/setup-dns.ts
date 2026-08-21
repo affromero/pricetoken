@@ -1,7 +1,7 @@
 /**
  * One-time Cloudflare DNS + email routing setup for pricetoken.ai
  *
- * Usage: doppler run -- npx tsx scripts/setup-dns.ts
+ * Usage: infisical run --projectId 730076b1-5f72-4691-b271-139dc721529e --env dev -- npx tsx scripts/setup-dns.ts
  *
  * Required env: CF_DNS_API_TOKEN, CF_ZONE_ID, CF_ACCOUNT_ID, HETZNER_IP, EMAIL_FORWARD_TO
  */

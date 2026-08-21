@@ -7,7 +7,7 @@
  * 3. Backfill inputType on existing records with null
  * 4. Backfill launchDate on existing records with null
  *
- * Usage: doppler run -- npx tsx scripts/seed-video.ts
+ * Usage: infisical run --projectId 730076b1-5f72-4691-b271-139dc721529e --env dev -- npx tsx scripts/seed-video.ts
  */
 
 import { PrismaClient } from '@prisma/client';
