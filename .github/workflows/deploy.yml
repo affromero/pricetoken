@@ -29,8 +29,8 @@ jobs:
             | jq -r '.accessToken // empty')
           [ -n "$AT" ] || { echo "Infisical login failed"; exit 1; }
           ENV_B64=$(curl -sS -H "Authorization: Bearer $AT" \
-            "https://app.infisical.com/api/v3/secrets/raw?workspaceId=730076b1-5f72-4691-b271-139dc721529e&environment=dev&secretPath=%2F" \
-            | jq -r '.secrets[] | "\(.secretKey)=\(.secretValue)"' | base64 -w0)
+            "https://app.infisical.com/api/v3/secrets/raw?workspaceId=730076b1-5f72-4691-b271-139dc721529e&environment=prod&secretPath=%2F" \
+            | jq -r '.secrets[] | "\(.secretKey)=\(.secretValue|@json)"' | base64 -w0)
           [ -n "$ENV_B64" ] || { echo "Infisical returned no secrets"; exit 1; }
           echo "::add-mask::$ENV_B64"
           echo "ENV_B64=$ENV_B64" >> "$GITHUB_ENV"
@@ -63,9 +63,12 @@ jobs:
 
             echo "Writing systemd env file..."
             # Reuse the already-decoded .env instead of a second vault call.
+            # Values are JSON-quoted in .env; strip the wrapping quotes so the
+            # systemd unit does not inherit them.
             mkdir -p ~/.config/pricetoken
-            grep '^CRON_SECRET=' ~/pricetoken/.env > ~/.config/pricetoken/env
-            test -s ~/.config/pricetoken/env || { echo "FATAL: CRON_SECRET missing"; exit 1; }
+            grep -m1 '^CRON_SECRET=' ~/pricetoken/.env \
+              | sed 's/^CRON_SECRET="\(.*\)"$/CRON_SECRET=\1/' > ~/.config/pricetoken/env
+            grep -q '^CRON_SECRET=.' ~/.config/pricetoken/env || { echo "FATAL: CRON_SECRET missing or empty"; exit 1; }
             chmod 600 ~/.config/pricetoken/env
 
             echo "Building containers..."
