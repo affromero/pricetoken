@@ -30,6 +30,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    # Built from this checkout unless an image is named. The deploy names
+    # one, so the server pulls what CI built instead of spending its disk on
+    # a build cache and a layer of every intermediate image.
+    image: ${PRICETOKEN_IMAGE:-pricetoken-web}:${PRICETOKEN_IMAGE_TAG:-local}
     ports:
       - '127.0.0.1:3001:3001'
     depends_on:

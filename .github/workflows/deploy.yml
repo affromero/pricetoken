@@ -10,8 +10,49 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # The image used to be built on the production box, which cost it a build
+  # cache and a layer of every intermediate image on a disk shared with nine
+  # other projects. A runner builds it now; the box only pulls.
+  image:
+    name: Build and Publish Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      tag: ${{ steps.build.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and publish
+        id: build
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OWNER: ${{ github.repository_owner }}
+          ACTOR: ${{ github.actor }}
+          # Compose insists on these at parse time; a build never reads them.
+          POSTGRES_PASSWORD: build-time-placeholder
+          ANTHROPIC_API_KEY: build-time-placeholder
+          CRON_SECRET: build-time-placeholder
+          ADMIN_PASSWORD: build-time-placeholder
+          ADMIN_SESSION_SECRET: build-time-placeholder
+        run: |
+          SHA=$(git rev-parse --short HEAD)
+          export PRICETOKEN_IMAGE="ghcr.io/${OWNER}/pricetoken-web"
+          export PRICETOKEN_IMAGE_TAG="$SHA"
+          # Built through compose so the image is named what it will be
+          # pushed as — no retag step to get wrong.
+          docker compose -f docker-compose.prod.yml build web
+          printf '%s' "$GH_TOKEN" |
+            docker login ghcr.io -u "$ACTOR" --password-stdin
+          docker push "${PRICETOKEN_IMAGE}:${SHA}"
+          docker tag "${PRICETOKEN_IMAGE}:${SHA}" "${PRICETOKEN_IMAGE}:main"
+          docker push "${PRICETOKEN_IMAGE}:main"
+          echo "tag=$SHA" >> "$GITHUB_OUTPUT"
+
   deploy:
     name: Deploy to Production
+    needs: image
     runs-on: ubuntu-latest
     outputs:
       deploy_status: ${{ steps.deploy.outcome }}
@@ -38,11 +79,14 @@ jobs:
       - name: Deploy via SSH
         id: deploy
         uses: appleboy/ssh-action@v1
+        env:
+          PRICETOKEN_IMAGE: ghcr.io/${{ github.repository_owner }}/pricetoken-web
+          PRICETOKEN_IMAGE_TAG: ${{ needs.image.outputs.tag }}
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
-          envs: ENV_B64
+          envs: ENV_B64,PRICETOKEN_IMAGE,PRICETOKEN_IMAGE_TAG
           script: |
             set -e
             cd ~/pricetoken
@@ -71,8 +115,9 @@ jobs:
             grep -q '^CRON_SECRET=.' ~/.config/pricetoken/env || { echo "FATAL: CRON_SECRET missing or empty"; exit 1; }
             chmod 600 ~/.config/pricetoken/env
 
-            echo "Building containers..."
-            docker compose -f docker-compose.prod.yml build web
+            echo "Pulling the published image..."
+            export PRICETOKEN_IMAGE PRICETOKEN_IMAGE_TAG
+            docker compose -f docker-compose.prod.yml pull web
 
             echo "Starting infra services..."
             docker compose -f docker-compose.prod.yml up -d --no-recreate postgres redis
@@ -112,7 +157,7 @@ jobs:
             done
 
             echo "Restarting web..."
-            docker compose -f docker-compose.prod.yml up -d --force-recreate --no-deps --remove-orphans web
+            docker compose -f docker-compose.prod.yml up -d --no-build --force-recreate --no-deps --remove-orphans web
 
             echo "Waiting for health check..."
             for i in $(seq 1 12); do
@@ -146,7 +191,8 @@ jobs:
             sudo systemctl enable --now pricetoken-fetch.timer
 
             echo "Cleaning up old images..."
-            docker image prune -f
+            # -a, or the superseded tag from each deploy is never reclaimed.
+            docker image prune -af --filter "until=168h"
 
             echo "Deploy complete!"
 
