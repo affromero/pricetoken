@@ -90,7 +90,7 @@ mv "$retention_tmp" "$retention_dir/pricetoken.json"
 
 docker exec "$postgres" sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Fc' > "$state/database.dump"
 test -s "$state/database.dump"
-docker exec -i "$postgres" pg_restore --list < "$state/database.dump" > /dev/null
+docker exec -i "$postgres" pg_restore --file=/dev/null < "$state/database.dump" > /dev/null
 python3 "$checker" before-switch --backup-path "$backup_root"
 
 switched=false

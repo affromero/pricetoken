@@ -46,6 +46,7 @@ else if (command.startsWith('image inspect')) {
 } else if (command.includes('schema.prisma') && !command.includes('db push')) {
   process.stdout.write(command.startsWith('run ') && process.env.SCHEMA_CHANGE ? 'new schema' : 'same schema');
 } else if (command.includes('pg_dump')) process.stdout.write('backup');
+else if (command.includes('pg_restore') && process.env.BACKUP_FAILURE) process.exit(1);
 else if (command.startsWith('container inspect')) process.exit(1);
 else if (command.includes(' up ')) {
   const override = args.filter((value) => value.endsWith('/image.json'))[0];
@@ -141,6 +142,7 @@ describe('immutable image deployment', () => {
     const result = deploy();
     expect(result.status, result.stderr).toBe(0);
     expect(result.stdout).toContain(`Deployed ${revision}`);
+    expect(result.operations).toContain('"pg_restore","--file=/dev/null"');
     expect(result.operations.indexOf('pg_restore')).toBeLessThan(
       result.operations.indexOf('"push"')
     );
@@ -153,6 +155,14 @@ describe('immutable image deployment', () => {
     const result = deploy({ PORT_CHANGE: '1' });
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain('Runtime mounts or ports differ');
+    expect(result.operations).not.toContain('"up"');
+  });
+
+  it('rejects an unreadable backup before migration or replacement', () => {
+    const result = deploy({ BACKUP_FAILURE: '1' });
+    expect(result.status).not.toBe(0);
+    expect(result.operations).toContain('"pg_restore","--file=/dev/null"');
+    expect(result.operations).not.toContain('"push"');
     expect(result.operations).not.toContain('"up"');
   });
 
