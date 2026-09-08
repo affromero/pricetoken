@@ -1,4 +1,6 @@
 import { createRequire } from 'module';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const pkg = require('./package.json');
@@ -34,6 +36,10 @@ const securityHeaders = [
 
 const nextConfig = {
   output: 'standalone',
+  outputFileTracingRoot: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..'),
+  outputFileTracingIncludes: {
+    '/*': ['../../node_modules/geoip-lite/data/**/*', '../../node_modules/.prisma/client/**/*'],
+  },
   transpilePackages: ['pricetoken'],
   serverExternalPackages: ['better-sqlite3', 'geoip-lite', 'puppeteer-core'],
   env: {
