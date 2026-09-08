@@ -10,200 +10,83 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # The image used to be built on the production box, which cost it a build
-  # cache and a layer of every intermediate image on a disk shared with nine
-  # other projects. A runner builds it now; the box only pulls.
   image:
-    name: Build and Publish Image
+    name: Build and Verify Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     outputs:
-      tag: ${{ steps.build.outputs.tag }}
+      digest: ${{ steps.build.outputs.digest }}
+      expanded: ${{ steps.build.outputs.expanded }}
+      compressed: ${{ steps.build.outputs.compressed }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Build and publish
+        with:
+          ref: ${{ github.sha }}
+      - name: Build, smoke-test and publish
         id: build
         env:
           GH_TOKEN: ${{ github.token }}
           OWNER: ${{ github.repository_owner }}
           ACTOR: ${{ github.actor }}
-          # Compose insists on these at parse time; a build never reads them.
-          POSTGRES_PASSWORD: build-time-placeholder
-          ANTHROPIC_API_KEY: build-time-placeholder
-          CRON_SECRET: build-time-placeholder
-          ADMIN_PASSWORD: build-time-placeholder
-          ADMIN_SESSION_SECRET: build-time-placeholder
+          REVISION: ${{ github.sha }}
         run: |
-          SHA=$(git rev-parse --short HEAD)
-          export PRICETOKEN_IMAGE="ghcr.io/${OWNER}/pricetoken-web"
-          export PRICETOKEN_IMAGE_TAG="$SHA"
-          # Built through compose so the image is named what it will be
-          # pushed as — no retag step to get wrong.
-          docker compose -f docker-compose.prod.yml build web
-          printf '%s' "$GH_TOKEN" |
-            docker login ghcr.io -u "$ACTOR" --password-stdin
-          docker push "${PRICETOKEN_IMAGE}:${SHA}"
-          docker tag "${PRICETOKEN_IMAGE}:${SHA}" "${PRICETOKEN_IMAGE}:main"
-          docker push "${PRICETOKEN_IMAGE}:main"
-          echo "tag=$SHA" >> "$GITHUB_OUTPUT"
-
-      # An image per commit is what lets a deploy pin a sha and roll back to
-      # one; ten versions covers any rollback that would realistically
-      # happen, and stops the list growing without end.
-      - uses: actions/delete-package-versions@25ad4af5be03aef10e0b3376b248688b7a44c40b # v5
-        with:
-          package-name: pricetoken-web
-          package-type: container
-          min-versions-to-keep: 10
+          set -euo pipefail
+          IMAGE="ghcr.io/${OWNER,,}/pricetoken-web:$REVISION"
+          python3 -m unittest discover -s scripts -p 'test_image_tools.py' -v
+          docker build --platform linux/amd64 --build-arg SOURCE_REVISION="$REVISION" -t "$IMAGE" .
+          bash scripts/smoke-image.sh "$IMAGE"
+          python3 scripts/measure-image.py "$IMAGE" > image-size.json
+          expanded=$(jq -er '.expanded_bytes' image-size.json)
+          compressed=$(jq -er '.compressed_bytes' image-size.json)
+          printf '%s' "$GH_TOKEN" | docker login ghcr.io -u "$ACTOR" --password-stdin
+          docker push "$IMAGE"
+          digest=$(docker image inspect --format '{{index .RepoDigests 0}}' "$IMAGE")
+          [[ $digest =~ @sha256:[a-f0-9]{64}$ ]]
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
+          echo "expanded=$expanded" >> "$GITHUB_OUTPUT"
+          echo "compressed=$compressed" >> "$GITHUB_OUTPUT"
 
   deploy:
-    name: Deploy to Production
+    name: Deploy Verified Image
     needs: image
     runs-on: ubuntu-latest
     outputs:
       deploy_status: ${{ steps.deploy.outcome }}
-
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
-
-      - name: Fetch secrets from Infisical
-        run: |
-          AT=$(curl -sS -X POST https://app.infisical.com/api/v1/auth/universal-auth/login \
-            -H 'Content-Type: application/json' \
-            -d "{\"clientId\":\"${{ secrets.INFISICAL_CLIENT_ID }}\",\"clientSecret\":\"${{ secrets.INFISICAL_CLIENT_SECRET }}\"}" \
-            | jq -r '.accessToken // empty')
-          [ -n "$AT" ] || { echo "Infisical login failed"; exit 1; }
-          ENV_B64=$(curl -sS -H "Authorization: Bearer $AT" \
-            "https://app.infisical.com/api/v3/secrets/raw?workspaceId=730076b1-5f72-4691-b271-139dc721529e&environment=prod&secretPath=%2F" \
-            | jq -r '.secrets[] | "\(.secretKey)=\(.secretValue|@json)"' | base64 -w0)
-          [ -n "$ENV_B64" ] || { echo "Infisical returned no secrets"; exit 1; }
-          echo "::add-mask::$ENV_B64"
-          echo "ENV_B64=$ENV_B64" >> "$GITHUB_ENV"
-
-      - name: Deploy via SSH
-        id: deploy
-        uses: appleboy/ssh-action@v1
-        env:
-          PRICETOKEN_IMAGE: ghcr.io/${{ github.repository_owner }}/pricetoken-web
-          PRICETOKEN_IMAGE_TAG: ${{ needs.image.outputs.tag }}
+          ref: ${{ github.sha }}
+      # Only small committed assets are transferred before the runner acquires
+      # the host lock. All image pulls happen inside its capacity checks.
+      - name: Transfer release assets
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
-          envs: ENV_B64,PRICETOKEN_IMAGE,PRICETOKEN_IMAGE_TAG
+          source: docker-compose.prod.yml,scripts/deploy-image.sh,scripts/retain-deployments.py
+          target: ~/pricetoken/.releases/${{ github.sha }}
+      - name: Deploy via SSH
+        id: deploy
+        uses: appleboy/ssh-action@v1
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+          RELEASE_IMAGE: ${{ needs.image.outputs.digest }}
+          IMAGE_BYTES: ${{ needs.image.outputs.expanded }}
+          TRANSFER_BYTES: ${{ needs.image.outputs.compressed }}
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          command_timeout: 30m
+          envs: RELEASE_SHA,RELEASE_IMAGE,IMAGE_BYTES,TRANSFER_BYTES
           script: |
-            set -e
-            cd ~/pricetoken
-
-            echo "Pulling latest code..."
-            git checkout -- .
-            git clean -fd
-            git pull origin main
-
-            echo "Syncing Caddy config..."
-            sudo cp ~/pricetoken/Caddyfile /etc/caddy/conf.d/pricetoken.ai
-            sudo caddy reload --config /etc/caddy/Caddyfile --force
-
-            echo "Generating .env from Infisical..."
-            umask 077
-            echo "$ENV_B64" | base64 -d > ~/pricetoken/.env
-            test -s ~/pricetoken/.env || { echo "FATAL: .env is empty"; exit 1; }
-
-            echo "Writing systemd env file..."
-            # Reuse the already-decoded .env instead of a second vault call.
-            # Values are JSON-quoted in .env; strip the wrapping quotes so the
-            # systemd unit does not inherit them.
-            mkdir -p ~/.config/pricetoken
-            grep -m1 '^CRON_SECRET=' ~/pricetoken/.env \
-              | sed 's/^CRON_SECRET="\(.*\)"$/CRON_SECRET=\1/' > ~/.config/pricetoken/env
-            grep -q '^CRON_SECRET=.' ~/.config/pricetoken/env || { echo "FATAL: CRON_SECRET missing or empty"; exit 1; }
-            chmod 600 ~/.config/pricetoken/env
-
-            echo "Pulling the published image..."
-            export PRICETOKEN_IMAGE PRICETOKEN_IMAGE_TAG
-            docker compose -f docker-compose.prod.yml pull web
-
-            echo "Starting infra services..."
-            docker compose -f docker-compose.prod.yml up -d --no-recreate postgres redis
-
-            echo "Syncing postgres password with .env..."
-            source ~/pricetoken/.env
-            PG_USER="${POSTGRES_USER:-pricetoken}"
-            printf "ALTER USER %s WITH PASSWORD '%s';\n" "$PG_USER" "$POSTGRES_PASSWORD" | \
-              docker compose -f docker-compose.prod.yml exec -T postgres psql -U "$PG_USER"
-
-            echo "Waiting for postgres to accept connections..."
-            for i in $(seq 1 15); do
-              if docker compose -f docker-compose.prod.yml exec -T postgres pg_isready -U "${PG_USER}" -q 2>/dev/null; then
-                echo "Postgres ready (attempt $i)"
-                break
-              fi
-              echo "Attempt $i/15 — postgres not ready"
-              sleep 2
-              if [ "$i" -eq 15 ]; then
-                echo "Postgres failed to start after 30s"
-                exit 1
-              fi
-            done
-
-            echo "Running Prisma migrations..."
-            for i in $(seq 1 3); do
-              if docker compose -f docker-compose.prod.yml run --rm --no-deps web npx prisma db push --schema=apps/web/prisma/schema.prisma; then
-                echo "Prisma migrations applied (attempt $i)"
-                break
-              fi
-              echo "Prisma attempt $i/3 failed — retrying in 5s..."
-              sleep 5
-              if [ "$i" -eq 3 ]; then
-                echo "Prisma migrations failed after 3 attempts"
-                exit 1
-              fi
-            done
-
-            echo "Restarting web..."
-            docker compose -f docker-compose.prod.yml up -d --no-build --force-recreate --no-deps --remove-orphans web
-
-            echo "Waiting for health check..."
-            for i in $(seq 1 12); do
-              sleep 10
-              HEALTH=$(curl -sf http://localhost:3001/api/health 2>/dev/null || echo "")
-              if [ -n "$HEALTH" ]; then
-                echo "Health check passed (attempt $i): $HEALTH"
-                break
-              fi
-              echo "Attempt $i/12 — not ready yet"
-              if [ "$i" -eq 12 ]; then
-                echo "Health check failed after 120s"
-                docker compose -f docker-compose.prod.yml logs --tail=50 web
-                exit 1
-              fi
-            done
-
-            echo "Seeding new models..."
-            docker compose -f docker-compose.prod.yml exec web npx tsx scripts/seed.ts
-            docker compose -f docker-compose.prod.yml exec web npx tsx scripts/seed-video.ts
-            docker compose -f docker-compose.prod.yml exec web npx tsx scripts/seed-avatar.ts
-            docker compose -f docker-compose.prod.yml exec web npx tsx scripts/seed-tts.ts
-            docker compose -f docker-compose.prod.yml exec web npx tsx scripts/seed-stt.ts
-            docker compose -f docker-compose.prod.yml exec web npx tsx scripts/seed-music.ts
-
-            echo "Syncing systemd timer..."
-            chmod +x ~/pricetoken/infra/fetch-all-pricing.sh
-            sudo cp ~/pricetoken/infra/pricetoken-fetch.service /etc/systemd/system/
-            sudo cp ~/pricetoken/infra/pricetoken-fetch.timer /etc/systemd/system/
-            sudo systemctl daemon-reload
-            sudo systemctl enable --now pricetoken-fetch.timer
-
-            echo "Cleaning up old images..."
-            # -a, or the superseded tag from each deploy is never reclaimed.
-            docker image prune -af --filter "until=168h"
-
-            echo "Deploy complete!"
+            set -eu
+            bash "$HOME/pricetoken/.releases/$RELEASE_SHA/scripts/deploy-image.sh" \
+              "$HOME/pricetoken" "$RELEASE_SHA" "$RELEASE_IMAGE" \
+              "$IMAGE_BYTES" "$TRANSFER_BYTES" https://pricetoken.ai/api/health
 
   notify:
     name: Telegram Notification

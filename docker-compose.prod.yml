@@ -1,5 +1,12 @@
+x-logging: &bounded-logging
+  driver: json-file
+  options:
+    max-size: '20m'
+    max-file: '3'
+
 services:
   postgres:
+    logging: *bounded-logging
     restart: unless-stopped
     image: postgres:16-alpine
     volumes:
@@ -14,6 +21,7 @@ services:
       timeout: 5s
       retries: 5
   redis:
+    logging: *bounded-logging
     restart: unless-stopped
     image: redis:7-alpine
     command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
@@ -23,6 +31,7 @@ services:
       timeout: 5s
       retries: 5
   web:
+    logging: *bounded-logging
     restart: unless-stopped
     mem_limit: 1536m
     memswap_limit: 2048m

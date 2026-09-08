@@ -27,6 +27,7 @@ COPY package.json ./
 COPY packages/sdk ./packages/sdk/
 COPY apps/web ./apps/web/
 COPY tsconfig.base.json ./
+COPY scripts ./scripts/
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
@@ -37,11 +38,17 @@ RUN npx tsup src/index.ts --format cjs,esm --dts --clean
 
 WORKDIR /app/apps/web
 RUN npm run build
+WORKDIR /app
+RUN node scripts/build-runtime.mjs
 
 # ---- Stage 3: Production runner ----
 FROM node:22-alpine3.22 AS runner
 RUN apk add --no-cache libc6-compat openssl chromium
-RUN npm install -g @anthropic-ai/claude-code
+ARG CLAUDE_CODE_VERSION=2.1.225
+RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION} \
+    && npm cache clean --force
+ARG SOURCE_REVISION
+LABEL org.opencontainers.image.revision=${SOURCE_REVISION}
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -54,36 +61,12 @@ RUN mkdir -p /home/node/.claude && chown node:node /home/node/.claude
 
 WORKDIR /app
 
-# Node modules (standalone trace fails in monorepo — copy full deps)
-COPY --from=deps --chown=node:node /app/node_modules ./node_modules
-
 # Standalone server + built app
 COPY --from=builder --chown=node:node /app/apps/web/.next/standalone ./
-# Static assets: server.js looks at both ./.next/static and ./apps/web/.next/static
-COPY --from=builder --chown=node:node /app/apps/web/.next/static ./.next/static
 COPY --from=builder --chown=node:node /app/apps/web/.next/static ./apps/web/.next/static
-COPY --from=builder /app/apps/web/public ./public
 COPY --from=builder /app/apps/web/public ./apps/web/public
 COPY --from=builder --chown=node:node /app/apps/web/prisma ./apps/web/prisma
-
-# Seed scripts + SDK source (for STATIC_*_PRICING imports via tsx)
-COPY --from=builder --chown=node:node /app/packages/sdk/src/static.ts ./packages/sdk/src/static.ts
-COPY --from=builder --chown=node:node /app/packages/sdk/src/static-image.ts ./packages/sdk/src/static-image.ts
-COPY --from=builder --chown=node:node /app/packages/sdk/src/video-static.ts ./packages/sdk/src/video-static.ts
-COPY --from=builder --chown=node:node /app/packages/sdk/src/avatar-static.ts ./packages/sdk/src/avatar-static.ts
-COPY --from=builder --chown=node:node /app/packages/sdk/src/tts-static.ts ./packages/sdk/src/tts-static.ts
-COPY --from=builder --chown=node:node /app/packages/sdk/src/stt-static.ts ./packages/sdk/src/stt-static.ts
-COPY --from=builder --chown=node:node /app/packages/sdk/src/music-static.ts ./packages/sdk/src/music-static.ts
-COPY --from=builder --chown=node:node /app/packages/sdk/src/types.ts ./packages/sdk/src/types.ts
-COPY --chown=node:node scripts/seed.ts ./scripts/seed.ts
-COPY --chown=node:node scripts/seed-video.ts ./scripts/seed-video.ts
-COPY --chown=node:node scripts/video-corrections.ts ./scripts/video-corrections.ts
-COPY --chown=node:node scripts/seed-avatar.ts ./scripts/seed-avatar.ts
-COPY --chown=node:node scripts/seed-tts.ts ./scripts/seed-tts.ts
-COPY --chown=node:node scripts/seed-stt.ts ./scripts/seed-stt.ts
-COPY --chown=node:node scripts/seed-music.ts ./scripts/seed-music.ts
-COPY --chown=node:node tsconfig.base.json ./tsconfig.base.json
-COPY --chown=node:node packages/sdk/tsconfig.json ./packages/sdk/tsconfig.json
+COPY --from=builder --chown=node:node /app/.next/runtime-tools ./runtime-tools
 
 COPY --chown=node:node docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
@@ -96,4 +79,4 @@ WORKDIR /app
 EXPOSE 3001
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["node", "server.js"]
+CMD ["node", "apps/web/server.js"]
