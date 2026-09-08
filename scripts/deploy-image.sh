@@ -101,7 +101,7 @@ healthy() {
 }
 wait_healthy() {
   for attempt in $(seq 1 30); do
-    if healthy; then return; fi
+    if healthy; then return 0; fi
     ((attempt < 30)) || return 1
     sleep 4
   done

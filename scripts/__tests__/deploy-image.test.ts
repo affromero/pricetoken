@@ -158,7 +158,7 @@ describe('immutable image deployment', () => {
 
   it('restores the previous image and retains the database when seeding fails', () => {
     const result = deploy({ SEED_FAILURE: '1' });
-    expect(result.status).not.toBe(0);
+    expect(result.status).toBe(1);
     expect(result.stderr).toContain('previous image verified healthy');
     expect(readFileSync(path.join(directory, 'operations.image'), 'utf8')).toBe(oldImage);
     expect(result.operations).not.toContain('"prune"');
